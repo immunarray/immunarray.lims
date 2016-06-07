@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<object name="materialsfolder" meta_type="Dexterity FTI" i18n:domain="plone"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+    <property name="title" i18n:translate="">MateralsFolder</property>
+    <property name="description" i18n:translate="">Folder containing Raw Materials</property>
+    <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
+    <property name="factory">Materials Folder</property>
+    <property name="add_view_expr">string:${folder_url}/++add++materialsfolder</property>
+    <property name="link_target"></property>
+    <property name="immediate_view">folder_listing</property>
+    <property name="global_allow">False</property>
+    <property name="filter_content_types">True</property>
+    <property name="allowed_content_types">
+        <element value="caseinsalt"/>
+        <element value="sodiumchloride"/>
+        <element value="potassiumchloride"/>
+        <element value="sodiumphosphatedibasic"/>
+        <element value="potassiumphosphatemonobasic"/>
+        <element value="sodiumhydroxide2_5N"/>
+        <element value="ethylalchol_denatured_reagent_grade"/>
+        <element value="tween20"/>
+        <element value="hydrochloricacid37percent"/>
+        <element value="glycerol"/>
+        <element value="igg_cy3"/>
+        <element value="igm_af647"/>
+    </property>
+    <property name="allow_discussion">False</property>
+    <property name="default_view">view</property>
+    <property name="view_methods">
+        <element value="view"/>
+        <element value="folder_listing"/>
+    </property>
+    <property name="default_view_fallback">False</property>
+    <property name="add_permission">cmf.AddPortalContent</property>
+    <property name="klass">plone.dexterity.content.Container</property>
+    <property name="behaviors">
+        <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
+        <!--<element value="plone.app.content.interfaces.INameFromTitle"/>-->
+    </property>
+    <property name="schema">immunarray.lims.content.materials.materialsfolder.IMaterialsFolder</property>
+    <property name="model_source"></property>
+    <property name="model_file"></property>
+    <property name="schema_policy">dexterity</property>
+    <alias from="(Default)" to="(dynamic view)"/>
+    <alias from="edit" to="@@edit"/>
+    <alias from="sharing" to="@@sharing"/>
+    <alias from="view" to="(selected layout)"/>
+</object>

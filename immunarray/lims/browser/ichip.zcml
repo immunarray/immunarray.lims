@@ -1,0 +1,12 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="immunarray.lims">
+
+    <browser:page
+            for="immunarray.lims.content.ichip.IIChip"
+            name="view"
+            class="immunarray.lims.browser.ichip.IChipView"
+            permission="zope2.View"
+    />
+</configure>

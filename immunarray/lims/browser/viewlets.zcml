@@ -1,0 +1,36 @@
+<configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:browser="http://namespaces.zope.org/browser"
+        i18n_domain="immunarray.lims">
+
+    <browser:viewlet
+            for="immunarray.lims.content.ichiplot.IIChipLot"
+            name="immunarray.lims.addichips"
+            class="immunarray.lims.browser.viewlets.AddMultipleIChipsViewlet"
+            manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+            permission="zope2.View"
+    />
+
+    <browser:page
+            for="immunarray.lims.content.ichiplot.IIChipLot"
+            name="ichips_add"
+            class="immunarray.lims.browser.viewlets.AddMultipleIChipsHandler"
+            permission="zope2.View"
+    />
+
+    <browser:viewlet
+            for="immunarray.lims.content.aliquot.IAliquot"
+            name="immunarray.lims.addworkingaliqutofrombulk"
+            class="immunarray.lims.browser.viewlets.AddWorkingAliquotFromBulkViewlet"
+            manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+            permission="zope2.View"
+    />
+
+    <browser:page
+            for="immunarray.lims.content.aliquot.IAliquot"
+            name="addworkingaliquotfrombulk"
+            class="immunarray.lims.browser.viewlets.AddWorkingAliquotFromBulkHandler"
+            permission="zope2.View"
+    />
+
+</configure>

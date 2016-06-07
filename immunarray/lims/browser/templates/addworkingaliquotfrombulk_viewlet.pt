@@ -1,0 +1,18 @@
+<html>
+<body>
+<style type="text/css">
+    .add-working-from-bulk .discreet{
+      font-size:50%;
+      color:#ddd;
+    }
+</style>
+
+<div class="add-working-from-bulk" style="padding: 10px 0px;">
+    <form name="add-working-from-bulk" action="addworkingaliquotfrombulk" method="POST">
+        <input name="count" type="number" class="count" placeholder="Number of aliquots">
+        <input name="volume" type="number" class="volume" placeholder="Volume of aliquots"><span class='discreet'>uL</span>
+        <br/><input type="submit" class="aliquots-add" value="Add Working Aliquots">
+    </form>
+</div>
+</body>
+</html>

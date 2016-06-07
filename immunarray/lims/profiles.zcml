@@ -1,0 +1,21 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="immunarray.lims">
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Immunarray LIMS"
+      directory="profiles/default"
+      description='Immunarray LIMS installation profile'
+      provides="Products.GenericSetup.interfaces.EXTENSION"/>
+
+  <genericsetup:importStep
+      name="immunarray.lims.various"
+      title="Immunarray LIMS: Various custom python setup actions"
+      description="Final site configuration actions"
+      handler="immunarray.lims.setuphandlers.setupVarious">
+    <depends name="content" />
+  </genericsetup:importStep>
+
+</configure>

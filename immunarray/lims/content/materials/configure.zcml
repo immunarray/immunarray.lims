@@ -1,0 +1,48 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <utility
+        component="immunarray.lims.content.materials.CaseinSaltVocabularyFactory"
+        name="immunarray.lims.content.materials.CaseinSaltVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.SodiumChlorideVocabularyFactory"
+        name="immunarray.lims.content.materials.SodiumChlorideVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.SodiumPhosphatedibasicVocabularyFactory"
+        name="immunarray.lims.content.materials.SodiumPhosphatedibasicVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.PotassiumPhosphatemonobasicVocabularyFactory"
+        name="immunarray.lims.content.materials.PotassiumPhosphatemonobasicVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.PotassiumChlorideVocabularyFactory"
+        name="immunarray.lims.content.materials.PotassiumChlorideVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.SodiumHydroxide2_5NVocabularyFactory"
+        name="immunarray.lims.content.materials.SodiumHydroxide2_5NVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.EthylalcholDenaturedReagentGradeVocabularyFactory"
+        name="immunarray.lims.content.materials.EthylalcholDenaturedReagentGradeVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.Tween20VocabularyFactory"
+        name="immunarray.lims.content.materials.Tween20Vocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.Hydrochloricacid37PercentVocabularyFactory"
+        name="immunarray.lims.content.materials.Hydrochloricacid37PercentVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.GlycerolVocabularyFactory"
+        name="immunarray.lims.content.materials.GlycerolVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.Igg_Cy3VocabularyFactory"
+        name="immunarray.lims.content.materials.Igg_Cy3Vocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.Igm_Af647VocabularyFactory"
+        name="immunarray.lims.content.materials.Igm_Af647Factory"/>
+    <utility
+        component="immunarray.lims.content.materials.PBS10xlotVocabularyFactory"
+        name="immunarray.lims.content.materials.PBS10xlotVocabulary"/>
+    <utility
+        component="immunarray.lims.content.materials.PBS1xlotVocabularyFactory"
+        name="immunarray.lims.content.materials.PBS1xlotVocabulary"/>
+
+</configure>

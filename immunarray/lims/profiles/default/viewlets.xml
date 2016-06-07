@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<object>
+    <hidden manager="plone.abovecontenttitle" skinname="*" purge="False">
+        <viewlet name="immunarray.lims.addichips"/>
+        <viewlet name="immunarray.lims.addworkingaliquotfrombulk"/>
+    </hidden>
+</object>
