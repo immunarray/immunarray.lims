@@ -36,7 +36,7 @@
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <!--<element value="plone.app.content.interfaces.INameFromTitle"/>-->
     </property>
-    <property name="schema">immunarray.lims.content.solutionsfolder.ISolutionsFolder</property>
+    <property name="schema">immunarray.lims.interfaces.solutionsfolder.ISolutionsFolder</property>
     <property name="model_source"></property>
     <property name="model_file"></property>
     <property name="schema_policy">dexterity</property>

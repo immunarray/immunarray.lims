@@ -1,6 +1,6 @@
 from zope import schema
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 from plone.supermodel import model
 
 
@@ -84,7 +84,7 @@ class I1xpbs(model.Schema):
     PBS1xBatchof10xpbs = schema.Choice(
             title=_(u"Batch of 10 x PBS Used"),
             description=_(u"Batch of 10 x Used"),
-            vocabulary="immunarray.lims.content.vocabulary.PBS10xlotVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.PBS10xlotVocabulary",
             required=False,
             )
     PBS1xVolumeof10xpbsAdded = schema.Float(
@@ -143,7 +143,7 @@ class I10xpbs(model.Schema):
     PBS10xSodiumChlorideLotAdded = schema.Choice(
             title=_(u"Lot of Sodium Chloride Added to PBS (10X)"),
             description=_(u"Lot of Sodium Chloride PBS (10X)"),
-            vocabulary="immunarray.lims.content.vocabulary.SodiumChlorideVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.SodiumChlorideVocabulary",
             required=False,
             )
     PBS10xMassSodiumChlorideAdded = schema.Float(
@@ -154,7 +154,7 @@ class I10xpbs(model.Schema):
     PBS10xPotassiumChlorideLotAdded = schema.Choice(
             title=_(u"Lot of Potassium Chloride Added to PBS (10X)"),
             description=_(u"Lot of Potassium Chloride PBS (10X)"),
-            vocabulary="immunarray.lims.content.vocabulary.PotassiumChlorideVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.PotassiumChlorideVocabulary",
             required=False,
             )
     PBS10xMassPotassiumChlorideAdded = schema.Float(
@@ -165,7 +165,7 @@ class I10xpbs(model.Schema):
     PBS10xLotSodiumPhosphatedibasicAdded = schema.Choice(
             title=_(u"Lot of Sodium Phosphate Dibasic Added to PBS (10X)"),
             description=_(u"Lot of Sodium Phosphate Dibasic PBS (10X)"),
-            vocabulary="immunarray.lims.content.vocabulary.SodiumPhosphatedibasicVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.SodiumPhosphatedibasicVocabulary",
             required=False,
             )
     PBS10xMassSodiumPhosphatedibasicAdded = schema.Float(
@@ -176,7 +176,7 @@ class I10xpbs(model.Schema):
     PBS10xLotPotassiumPhosphatemonobasicAdded = schema.Choice(
             title=_(u"Lot of Sodium Phosphate Dibasic Added to PBS (10X)"),
             description=_(u"Lot of Sodium Phosphate Dibasic PBS (10X)"),
-            vocabulary="immunarray.lims.content.vocabulary.PotassiumPhosphatemonobasicVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.PotassiumPhosphatemonobasicVocabulary",
             required=False,
             )
     PBS10xMassPotassiumPhosphatemonobasicAdded = schema.Float(
@@ -221,13 +221,13 @@ class I1PercentCasein(model.Schema):
     OnePercentCaseinLotofCaseinSalt = schema.Choice(
             title=_(u"Lot of Casein Salt Used"),
             description=_(u"Lot of Casein Salt Used"),
-            vocabulary="immunarray.lims.content.vocabulary.CaseinSaltVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.CaseinSaltVocabulary",
             required=False,
             )
     OnePercentCaseinLot1xpbs = schema.Choice(
             title=_(u"Lot of PBS (1X) Used"),
             description=_(u"Lot of PBS (1X) Used"),
-            vocabulary="immunarray.lims.content.vocabulary.PBS1xlotVocabulary",
+            vocabulary="immunarray.lims.interfaces.vocabulary.PBS1xlotVocabulary",
             required=False,
             )
     OnePercentCaseinAdded = schema.Float(

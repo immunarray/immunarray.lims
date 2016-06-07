@@ -5,7 +5,7 @@ from z3c.form import validator
 from zope import schema
 from zope.interface import Invalid
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 
 class IIChipLot(model.Schema):
     """An IChip Lot that will contain IChip objects.

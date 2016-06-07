@@ -5,7 +5,7 @@
  <object name="ichiplot" meta_type="Dexterity FTI"/>
  <object name="ichip" meta_type="Dexterity FTI"/>
  <object name="caseinsalt" meta_type="Dexterity FTI"/>
- <object name="ethylalcholdenatured-reagentgrade" meta_type="Dexterity FTI"/>
+ <object name="ethylalcholdenatured" meta_type="Dexterity FTI"/>
  <object name="glycerol" meta_type="Dexterity FTI"/>
  <object name="hydrochloricacid37percent" meta_type="Dexterity FTI"/>
  <object name="igg-cy3" meta_type="Dexterity FTI"/>
@@ -33,7 +33,6 @@
  <object name="sodiumphosphatedibasic" meta_type="Dexterity FTI"/>
  <object name="potassiumphosphatemonobasic" meta_type="Dexterity FTI"/>
  <object name="sodiumhydroxide2_5N" meta_type="Dexterity FTI"/>
- <object name="ethylalchol_denatured_reagent_grade" meta_type="Dexterity FTI"/>
  <object name="tween20" meta_type="Dexterity FTI"/>
  <object name="hydrochloricacid37percent" meta_type="Dexterity FTI"/>
  <object name="glycerol" meta_type="Dexterity FTI"/>
@@ -43,7 +42,6 @@
  <object name="nceitem" meta_type="Dexterity FTI"/>
  <object name="customerservicefolder" meta_type="Dexterity FTI"/>
  <object name="customerserviceclientfolder" meta_type="Dexterity FTI"/>
- <object name="addmultipleichips" meta_type="Dexterity FTI"/>
  <object name="aliquotfolder" meta_type="Dexterity FTI"/>
  <object name="aliquot" meta_type="Dexterity FTI"/>
  <object name="platefolder" meta_type="Dexterity FTI"/>

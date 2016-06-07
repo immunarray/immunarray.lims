@@ -5,7 +5,7 @@ from plone.directives import form
 
 from collective.z3cform.datagridfield import DictRow, DataGridFieldFactory
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 from zope.interface import Interface
 from zope import schema
 
@@ -141,26 +141,3 @@ class IWorklist(Interface):
         required=True,
         default=SOLUTIONS_DEFAULT
     )
-
-
-class WorklistEditForm(form.EditForm):
-    extends(form.EditForm)
-
-    fields = field.Fields(IWorklist)
-    label = u"Worklist"
-
-    fields['TestForm'].widgetFactory = DataGridFieldFactory
-    fields['Solutions'].widgetFactory = DataGridFieldFactory
-
-    def updateWidgets(self):
-        super(WorklistEditForm, self).updateWidgets()
-        self.widgets['TestForm'].allow_insert = False
-        self.widgets['TestForm'].allow_delete = False
-        self.widgets['TestForm'].auto_append = True
-        self.widgets['TestForm'].allow_reorder = False
-        # self.widgets['TestForm'].main_table_css_class = 'some-class'
-        self.widgets['Solutions'].allow_insert = False
-        self.widgets['Solutions'].allow_delete = False
-        self.widgets['Solutions'].auto_append = False
-        self.widgets['Solutions'].allow_reorder = False
-        # self.widgets['Solutions'].main_table_css_class = 'some-class'

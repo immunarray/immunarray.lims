@@ -1,13 +1,26 @@
 from zope import schema
-from zope.interface import Interface
-from immunarray.lims.content.organisation import IOrganisation
-from immunarray.lims import _
 
-class IPractice(IOrganisation):
-    """Base fields for all organisation types
+from zope.interface import Interface
+
+from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.person import IPerson
+
+
+class IDoctorFolder(Interface):
+    """Folder to hold test requisitions
+    """
+
+
+class IDoctor(IPerson):
+    """
     """
     Firstname = schema.ASCIILine(
-        title=_(u"Name"),
+        title=_(u"Firstname"),
+        description=_(u""),
+        required=False,
+    )
+    Lastname = schema.ASCIILine(
+        title=_(u"Lastname"),
         description=_(u""),
         required=False,
     )

@@ -1,7 +1,7 @@
 from zope import schema
 from zope.interface import Interface
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 
 class IPerson(Interface):
     """Doctor and Patient are based on this

@@ -2,8 +2,8 @@
 """
 import datetime
 
-from immunarray.lims import _
-from immunarray.lims.content.solution import *
+from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.solution import *
 
 
 def currentTime():

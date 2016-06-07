@@ -27,7 +27,7 @@
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <!--<element value="plone.app.content.interfaces.INameFromTitle"/>-->
     </property>
-    <property name="schema">immunarray.lims.content.worklist.IWorklistFolder</property>
+    <property name="schema">immunarray.lims.interfaces.worklistfolder.IWorklistFolder</property>
     <property name="model_source"></property>
     <property name="model_file"></property>
     <property name="schema_policy">dexterity</property>

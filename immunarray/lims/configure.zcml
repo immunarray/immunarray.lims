@@ -16,7 +16,7 @@
   <include file="permissions.zcml" />
 
   <include package=".adapters"/>
-  <include package=".content"/>
+  <include package=".interfaces"/>
   <include package=".browser"/>
   <include package=".static"/>
   <include package=".workflow"/>

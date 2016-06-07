@@ -4,7 +4,7 @@ from zope import schema
 from zope.interface import Interface
 import datetime
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 
 
 class ITestRequisitionFolder(Interface):
@@ -23,7 +23,7 @@ class ITestRequisition(model.Schema):
     Patient = schema.Choice(
         title=_(u"Patient"),
         description=_(u""),
-        vocabulary=u"immunarray.lims.content.patient.PatientVocabulary",
+        vocabulary=u"immunarray.lims.interfaces.patient.PatientVocabulary",
         required=True,
     )
     RepeatOrder = schema.Bool(
@@ -35,7 +35,7 @@ class ITestRequisition(model.Schema):
     Doctor = schema.Choice(
         title=_(u"Doctor"),
         description=_(u""),
-        vocabulary=u"immunarray.lims.content.doctor.DoctorVocabulary",
+        vocabulary=u"immunarray.lims.interfaces.doctor.DoctorVocabulary",
         required=True,
     )
 

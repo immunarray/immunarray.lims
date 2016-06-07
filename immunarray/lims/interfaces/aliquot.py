@@ -1,13 +1,15 @@
 from zope import schema
+
 from zope.interface import Interface
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 from plone.supermodel import model
 
 
 class IAliquotFolder(Interface):
     """Folder to hold aliquot
     """
+
 
 class IAliquot(model.Schema):
     """Object that can hold other aliquots, or be an aliquot
@@ -46,18 +48,18 @@ class IAliquot(model.Schema):
         required=True,
     )
     StorageLocation = schema.ASCIILine(
-        title=_(u"Storage Loation of Aliquot"),
+        title=_(u"Storage Location of Aliquot"),
         description=_(u"Storage Location of Aliquot"),
         required=True,
     )
     Volume = schema.Float(
-        title=_(u"Volume of Materail in uL"),
+        title=_(u"Volume of Material in uL"),
         description=_(u"volume of Material in uL"),
         required=True,
     )
     Status = schema.Choice(
         title=_(u"Aliquot Status"),
-        description=_(u"Aliquot Status Avilable/Consumed"),
+        description=_(u"Aliquot Status Available/Consumed"),
         values=[_(u"Available"),
                 _(u"Consumed")],
         default=u"Available",

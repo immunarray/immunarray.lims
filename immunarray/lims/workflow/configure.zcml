@@ -5,7 +5,7 @@
         i18n_domain="bika">
 
     <subscriber
-            for="immunarray.lims.content.testrequisition.ITestRequisition
+            for="immunarray.lims.interfaces.testrequisition.ITestRequisition
                  Products.DCWorkflow.interfaces.IAfterTransitionEvent"
             handler="immunarray.lims.workflow.testrequisition.TestRequisitionReceived"/>
 

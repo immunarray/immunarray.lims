@@ -4,7 +4,7 @@ from plone.namedfile import field as namedfile
 from plone.supermodel import model
 from zope import schema
 
-from immunarray.lims import _
+from immunarray.lims import messageFactory as _
 from plone.dexterity.utils import createContentInContainer
 
 
@@ -106,7 +106,3 @@ class IIChip(model.Schema):
         required=False,
     )
 
-
-class IAddMultipleiChips(model.Schema):
-    def multipleichipimport(self, ichiplot, ):
-        pass

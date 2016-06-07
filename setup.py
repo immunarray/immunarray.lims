@@ -26,7 +26,8 @@ setup(name='immunarray.lims',
           'setuptools',
           'plone.api',
           'plone.principalsource',
-          'collective.z3cform.datagridfield'
+          'collective.z3cform.datagridfield',
+          'magnitude',
       ],
       extras_require={
           'test': [

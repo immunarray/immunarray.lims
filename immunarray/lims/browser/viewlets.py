@@ -3,7 +3,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.viewlets import ViewletBase
 from plone import api
 
-from immunarray.lims.content.aliquot import IAliquot
+from immunarray.lims.interfaces.aliquot import IAliquot
 
 
 class AddMultipleIChipsViewlet(ViewletBase):

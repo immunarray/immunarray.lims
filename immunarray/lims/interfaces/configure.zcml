@@ -7,17 +7,6 @@
         xmlns:zcml="http://namespaces.zope.org/zcml"
         i18n_domain="immunarray.lims">
 
-    <browser:page
-            for=".worklist.IWorklist"
-            name="edit"
-            class=".worklist.WorklistEditForm"
-            permission="cmf.ModifyPortalContent"
-    />
 
-    <!-- Vocabularies -->
-    <utility
-            component="immunarray.lims.content.patient.PatientVocabularyFactory"
-            name="immunarray.lims.content.patient.PatientVocabulary"
-    />
 
 </configure>
