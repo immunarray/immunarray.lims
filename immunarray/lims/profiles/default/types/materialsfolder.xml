@@ -12,18 +12,7 @@
     <property name="global_allow">False</property>
     <property name="filter_content_types">True</property>
     <property name="allowed_content_types">
-        <element value="caseinsalt"/>
-        <element value="sodiumchloride"/>
-        <element value="potassiumchloride"/>
-        <element value="sodiumphosphatedibasic"/>
-        <element value="potassiumphosphatemonobasic"/>
-        <element value="sodiumhydroxide2_5N"/>
-        <element value="ethylalchol_denatured_reagent_grade"/>
-        <element value="tween20"/>
-        <element value="hydrochloricacid37percent"/>
-        <element value="glycerol"/>
-        <element value="igg_cy3"/>
-        <element value="igm_af647"/>
+        <element value="material"/>
     </property>
     <property name="allow_discussion">False</property>
     <property name="default_view">view</property>
