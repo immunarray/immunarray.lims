@@ -78,7 +78,7 @@ class IPatient(IPerson):
         description=_(u"Social Security Number"),
         required=False,
     )
-    RelationToInsured = schema.ASCIILine(
+    RelationToInsured = schema.Choice(
         title=_(u"Patient Relationship to Insured"),
         description=_(u"Patient relationship to Insured"),
         values=[_(u'Self'), _(u'Spouse'), _(u'Child')],
