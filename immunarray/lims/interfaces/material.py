@@ -17,11 +17,23 @@ class IMaterial(model.Schema):
     """
     # subverting Plone's default 'Type' index, which is normally
     # derived from the Title of the FTI.
-    Type = schema.ASCIILine(
+    Type = schema.Choice(
         title=_(u"Type"),
         description=_(u"Type of material"),
+        values=[_(u"caseinsalt"),
+                _(u"sodiumchloride"),
+                _(u"potassiumchloride"),
+                _(u"sodiumphosphatedibasic"),
+                _(u"potassiumphosphatemonobasic"),
+                _(u"sodiumhydroxide2_5N"),
+                _(u"ethylalchol_denatured_reagent_grade"),
+                _(u"tween20"),
+                _(u"hydrochloricacid37percent"),
+                _(u"glycerol"),
+                _(u"igg_cy3"),
+                _("igm_af647")],
         required=True,
-    )
+    ),
     LotNumber = schema.ASCIILine(
         title=_(u"Lot"),
         description=_(u"The identifier Lot of Casein Salt"),
