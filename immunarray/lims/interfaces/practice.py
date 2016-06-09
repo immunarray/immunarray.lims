@@ -27,23 +27,23 @@ class IPractice(IOrganisation):
         required=False,
     )
     LastName = schema.ASCIILine(
-        title=_(u"Last name of primay pratice contact"),
-        description=_(u"Last name of primay pratice contact"),
+        title=_(u"Last name of primay practice contact"),
+        description=_(u"Last name of primay practice contact"),
         required=False,
     )
     Fax = schema.ASCIILine(
         title=_(u"Fax number"),
-        description=_(u"Fax number of pratice"),
+        description=_(u"Fax number of practice"),
         required=False,
     )
     Address = schema.ASCIILine(
         title=_(u"Address"),
-        description=_(u"Address of pratice"),
+        description=_(u"Address of practice"),
         required=False,
     )
     Suite = schema.ASCIILine(
         title=_(u"Suite"),
-        description=_(u"Suite of pratice"),
+        description=_(u"Suite of practice"),
         required=False,
     )
     City = schema.ASCIILine(
@@ -69,6 +69,6 @@ class IPractice(IOrganisation):
     )
     MegaPraticeID = schema.Int(
         title = _(u"Mega Pratice ID"),
-        description=_(u"ID used to link multiple pratices as one entity"),
+        description=_(u"ID used to link multiple practices as one entity"),
         required=True,
     )
