@@ -64,3 +64,9 @@ class IProvider(IPerson):
         description=_(u"Fax number for result delivery"),
         required=False,
     )
+    PublishingPrefence = schema.Choice(
+        title =_(u"Publishing Preference"),
+        description=_(u"Providers desired publincation of resutls"),
+        values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],
+        required=True,
+    )
