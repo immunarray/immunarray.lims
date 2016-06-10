@@ -1,0 +1,6 @@
+<rolemap>
+    <permissions>
+        <permission name="LIMS: Add Material" acquire="False">
+        </permission>
+    </permissions>
+</rolemap>
