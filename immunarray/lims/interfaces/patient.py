@@ -64,7 +64,7 @@ class IPatient(IPerson):
     MaritalStatus = schema.Choice(
         title=_(u"Marital Status"),
         description=_(u"Marital Status"),
-        values=[_(u'Single'), _(u'Maried'), _(u'Other')],
+        values=[_(u'Single'), _(u'Married'), _(u'Other')],
         required=False,
     )
     Gender = schema.Choice(

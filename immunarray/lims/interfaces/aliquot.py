@@ -34,6 +34,7 @@ class IAliquot(model.Schema):
         description=_(u"Use of Aliquot Bulk or Working"),
         values=[_(u"Bulk"),
                 _(u"Working"),
+                _(u"Quality Control"),
                 _(u"Other")],
         default=u"Bulk",
         required=True,
@@ -50,7 +51,7 @@ class IAliquot(model.Schema):
     StorageLocation = schema.ASCIILine(
         title=_(u"Storage Location of Aliquot"),
         description=_(u"Storage Location of Aliquot"),
-        required=True,
+        required=False,
     )
     Volume = schema.Float(
         title=_(u"Volume of Material in uL"),

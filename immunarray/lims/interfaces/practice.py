@@ -62,12 +62,12 @@ class IPractice(IOrganisation):
         description=_(u"Zip Code"),
         required=False,
     )
-    ThearapakID = schema.Int(
+    TherapakID = schema.Int(
         title = _(u"ThearaPak Site ID"),
         description=_(u"ThearaPak Site ID"),
         required=True,
     )
-    MegaPraticeID = schema.Int(
+    MegaPracticeID = schema.Int(
         title = _(u"Mega Pratice ID"),
         description=_(u"ID used to link multiple practices as one entity"),
         required=True,

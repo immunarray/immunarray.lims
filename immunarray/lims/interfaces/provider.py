@@ -6,7 +6,7 @@ from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.person import IPerson
 
 
-class IDoctorFolder(Interface):
+class IProviderFolder(Interface):
     """Folder to hold test requisitions
     """
 
@@ -47,24 +47,24 @@ class IProvider(IPerson):
     TaxID = schema.ASCIILine(
         title=_(u"Tax ID"),
         description=_(u"Tax ID"),
-        required=True,
+        required=False,
     )
     PIN = schema.ASCIILine(
         title=_(u"PIN"),
         description=_(u"PIN"),
-        required=True,
+        required=False,
     )
     UPIN = schema.ASCIILine(
         title=_(u"UPIN"),
         description=_(u"UPIN"),
-        required=True,
+        required=False,
     )
     Fax = schema.ASCIILine(
         title=_(u"Fax Number"),
         description=_(u"Fax number for result delivery"),
-        required=False,
+        required=True,
     )
-    PublishingPrefence = schema.Choice(
+    PublishingPrefernce = schema.Choice(
         title =_(u"Publishing Preference"),
         description=_(u"Providers desired publincation of resutls"),
         values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],

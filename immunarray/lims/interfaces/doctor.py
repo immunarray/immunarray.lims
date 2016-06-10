@@ -47,7 +47,7 @@ class IDoctor(IPerson):
     TaxID = schema.ASCIILine(
         title=_(u"Tax ID"),
         description=_(u"Tax ID"),
-        required=True,
+        required=False,
     )
     PIN = schema.ASCIILine(
         title=_(u"PIN"),
