@@ -1,89 +1,74 @@
-"""To add custome slide content to immunarray.lims
-"""
-
-from zope import schema
+# -*- coding: utf-8 -*-
 
 from immunarray.lims import messageFactory as _
-from plone.indexer import indexer
+from plone.app.dexterity.interfaces import ITypeSettings
+from plone.autoform.interfaces import IFormFieldProvider
+from plone.dexterity.interfaces import IDexterityFTI
 from plone.namedfile import field as namedfile
 from plone.supermodel import model
-class IMaterialsFolder(Interface):
-    """Marker interface for a folder which contains Materials
-    (raw materials) objects
-    """
+from zope import schema
+from zope.interface import alsoProvides
+
 
 class IMaterial(model.Schema):
     """Base schema fields common to all Material types.
+
+    To use these fields, create a new Dexterity type and enable the
+    IMaterial behaviour for it.
     """
-    # subverting Plone's default 'Type' index, which is normally
-    # derived from the Title of the FTI.
-    Type = schema.Choice(
-        title=_(u"Type"),
-        description=_(u"Type of material"),
-        values=[_(u"caseinsalt"),
-                _(u"sodiumchloride"),
-                _(u"potassiumchloride"),
-                _(u"sodiumphosphatedibasic"),
-                _(u"potassiumphosphatemonobasic"),
-                _(u"sodiumhydroxide2_5N"),
-                _(u"ethylalchol_denatured_reagent_grade"),
-                _(u"tween20"),
-                _(u"hydrochloricacid37percent"),
-                _(u"glycerol"),
-                _(u"igg_cy3"),
-                _("igm_af647")],
-        required=True,
-    ),
     LotNumber = schema.ASCIILine(
         title=_(u"Lot"),
-        description=_(u"The identifier Lot of Casein Salt"),
-        required=True,
+        description=_(u"The lot number"),
+        required=True
     )
     Vendor = schema.ASCIILine(
         title=_(u"Vendor"),
         description=_(u"The vendor that supplied the lot"),
-        required=True,
+        required=True
     )
     CatalogNumber = schema.ASCIILine(
         title=_(u"Catalog Number"),
         description=_(u"The lot's catalog number"),
-        required=True,
+        required=True
     )
     ArrivalDate = schema.Date(
         title=_(u"Arrival Date"),
         description=_(u"The date on which the lot arrived"),
-        required=True,
+        required=True
     )
     ExpirationDate = schema.Date(
         title=_(u"Expiration Date"),
         description=_(
-            u"The date on which the lot expires and becomes unusable"),
-        required=True,
+            u"The date on which the lot expires"),
+        required=True
     )
     COA = namedfile.NamedBlobImage(
         title=_(u"Certificate of Analysis"),
         description=_(u"Certificate of Analysis"),
-        required=True,
+        required=True
     )
     ArrivalAmount = schema.ASCIILine(
         title=_(u"Amount of material at time of arrival"),
         description=_(u"Specify with SI units, eg: 1cm/2, 1', 20g, or 1kg."),
-        required=False,
+        required=True,
     )
     CurrentAmount = schema.ASCIILine(
         title=_(u"Amount of material currently remaining"),
         description=_(u"Specify with SI units, eg: 1cm/2, 1', 20g, or 1kg."),
-        required=False,
+        required=False
     )
     ReceivedBy = schema.Choice(
         title=_(u"Received by"),
         description=_(u"The operator that received the material lot"),
         vocabulary=u"plone.principalsource.Users",
-        required=False,  # value will be completed by workflow transition
+        required=False  # value will be completed by workflow transition
     )
     OpenedBy = schema.Choice(
         title=_(u"Opened by"),
         description=_(u"The operator that Opened the material lot"),
         vocabulary=u"plone.principalsource.Users",
-        required=False,  # value will be completed by workflow transition
+        required=False  # value will be completed by workflow transition
     )
+
+
+alsoProvides(IMaterial, IFormFieldProvider)
