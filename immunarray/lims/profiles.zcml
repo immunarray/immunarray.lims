@@ -11,10 +11,26 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
   <genericsetup:importStep
-      name="immunarray.lims.various"
-      title="Immunarray LIMS: Various custom python setup actions"
-      description="Final site configuration actions"
-      handler="immunarray.lims.setuphandlers.setupVarious">
+          name="immunarray.lims.various"
+          title="Immunarray LIMS: custom python setup actions"
+          description="imunarray.lims.setuphandlers.various"
+          handler="immunarray.lims.setuphandlers.setupVarious">
+    <depends name="content" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+          name="immunarray.lims.materials"
+          title="Immunarray LIMS: Configure Built-in Material Types"
+          description="from imunarray.lims.materials"
+          handler="immunarray.lims.setuphandlers.setupMaterials">
+    <depends name="content" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+          name="immunarray.lims.permissions"
+          title="Immunarray LIMS: Configure default permission"
+          description="from imunarray.lims.permissions"
+          handler="immunarray.lims.setuphandlers.setupMaterials">
     <depends name="content" />
   </genericsetup:importStep>
 
