@@ -8,7 +8,6 @@
     <object name="ichiplotfolder" meta_type="Dexterity FTI"/>
     <object name="ichiplot" meta_type="Dexterity FTI"/>
     <object name="ichip" meta_type="Dexterity FTI"/>
-    <object name="materialsfolder" meta_type="Dexterity FTI"/>
     <object name="material" meta_type="Dexterity FTI"/>
 
     <object name="solutionsfolder" meta_type="Dexterity FTI"/>
