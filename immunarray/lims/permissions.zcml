@@ -1,9 +1,12 @@
-<configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:cmf="http://namespaces.zope.org/cmf"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="immunarray.lims">
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           i18n_domain="immunarray.lims">
+
+    <configure zcml:condition="installed AccessControl.security">
+        <permission
+                id="immunarray.lims.permissions.AddMaterial"
+                title="Permit adding all IMaterial types"
+        />
+    </configure>
 
 </configure>

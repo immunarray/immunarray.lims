@@ -1,9 +1,4 @@
-"""All permissions are defined here.
-They are also defined in permissions.zcml.
-The two files must be kept in sync.
-
+"""Permission should be duplicated in permissions.py and permissions.zcml
 """
 
-# Add Permissions for specific types, if required
-ADD_CONTENT_PERMISSIONS = {
-}
+AddMaterial = "LIMS: Add Material"
