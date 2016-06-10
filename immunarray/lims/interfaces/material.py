@@ -7,7 +7,10 @@ from immunarray.lims import messageFactory as _
 from plone.indexer import indexer
 from plone.namedfile import field as namedfile
 from plone.supermodel import model
-
+class IMaterialsFolder(Interface):
+    """Marker interface for a folder which contains Materials
+    (raw materials) objects
+    """
 
 class IMaterial(model.Schema):
     """Base schema fields common to all Material types.

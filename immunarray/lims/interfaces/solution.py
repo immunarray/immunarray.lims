@@ -1,8 +1,11 @@
 from zope import schema
-
+from zope.interface import Interface
 from immunarray.lims import messageFactory as _
 from plone.supermodel import model
 
+class ISolutionsFolder(Interface):
+    """Marker interface for a folder which contains Solution objects,
+    """
 
 class ISolution(model.Schema):
     SolutionType = schema.Choice(
@@ -402,10 +405,10 @@ class I70PercentEthyanol(model.Schema):
             required=False,
             )
     SeventyPercentEthyanolVolumeWater = schema.Float(
-        title=_(u"Volume of Water Added"),
-        description=_(u"Volume of Water Added"),
-        required=False,
-    )
+            title=_(u"Volume of Water Added"),
+            description=_(u"Volume of Water Added"),
+            required=False,
+            )
 class I10Percenthcl(model.Schema):
     TenPercenthclBatch = schema.Int(
             title=_(u"Batch Number"),
