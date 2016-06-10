@@ -19,6 +19,7 @@
   <include package=".interfaces"/>
   <include package=".browser"/>
   <include package=".static"/>
+  <include package=".subscribers"/>
   <include package=".workflow"/>
 
   <include file="profiles.zcml" />

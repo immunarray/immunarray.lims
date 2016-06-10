@@ -1,0 +1,12 @@
+<configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:browser="http://namespaces.zope.org/browser"
+        xmlns:zcml="http://namespaces.zope.org/zcml"
+        i18n_domain="immunarray.lims">
+
+    <subscriber
+            for="immunarray.lims.interfaces.testrequisition.ITestRequisition
+                 Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+            handler="immunarray.lims.subscribers.testrequisition.Received"/>
+
+</configure>
