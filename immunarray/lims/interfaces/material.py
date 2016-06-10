@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from Products.CMFPlone.interfaces import ISelectableConstrainTypes
 from immunarray.lims import messageFactory as _
 from plone.app.dexterity.interfaces import ITypeSettings
 from plone.autoform.interfaces import IFormFieldProvider

@@ -5,7 +5,7 @@
     <configure zcml:condition="installed AccessControl.security">
         <permission
                 id="immunarray.lims.permissions.AddMaterial"
-                title="Permit adding all IMaterial types"
+                title="LIMS: Add Material"
         />
     </configure>
 

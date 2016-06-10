@@ -17,9 +17,8 @@ class Materials(object):
     def __call__(self, context):
         catalog = context.portal_catalog
         proxies = catalog({
-            'object_provides': 'immunarray.lims.interfaces.doctor.IDoctor',
+            'object_provides': 'immunarray.lims.interfaces.material.IMaterial',
             'sort_on': 'sortable_title',
-            'Type': self.material_type,  # subvert Plone's existing Type index
         })
         terms = [SimpleTerm(proxy.id, title=proxy.Title)
                  for proxy in proxies]
