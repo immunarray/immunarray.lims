@@ -24,8 +24,8 @@
     <property name="add_permission">cmf.AddPortalContent</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
-        <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <!--<element value="plone.app.content.interfaces.INameFromTitle"/>-->
+        <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.ichiplotfolder.IIChipLotFolder</property>
     <property name="model_source"></property>
