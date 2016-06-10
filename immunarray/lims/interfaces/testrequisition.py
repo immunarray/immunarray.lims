@@ -17,7 +17,6 @@ class ITestRequisition(model.Schema):
     """
     SampleID = schema.ASCIILine(
         title=_(u"Sample ID"),
-        description=_(u"asdf"),
         required=True,
     )
     Patient = schema.Choice(
@@ -31,7 +30,6 @@ class ITestRequisition(model.Schema):
         default=False,
         required=False,
     )
-
     Doctor = schema.Choice(
         title=_(u"Doctor"),
         description=_(u""),
