@@ -9,8 +9,11 @@ from plone.dexterity.fti import DexterityFTI
 from zope.interface import alsoProvides
 from zope.lifecycleevent import modified
 
-
 def setupMaterials(context):
+    """Configure a set of Materials types.  In normal operation, these can be
+    defined direcly by adding new Dexterity types and applying the IMaterial
+    behaviour to them.
+    """
     if context.readDataFile('immunarray.lims.txt') is None:
         return
 
@@ -18,21 +21,15 @@ def setupMaterials(context):
 
     # Create initial /materials folder if it doesn't yet exist
     if 'materials' not in portal:
-        api.content.create(container=portal,
-                           id='materials',
-                           type='Folder',
-                           title='Materials')
+        folder = api.content.create(container=portal,
+                                    id='materials',
+                                    type='Folder',
+                                    title='Materials')
         modified(portal.materials)
-        # base FTI can contain "material".
-        folder_fti = portal.portal_types['Folder']
-        material_fti = portal.portal_types['material']
 
-        # import pdb
-        # pdb.set_trace()
-        #
-        # folder_fti.manage_changeProperties(
-        #     allowed_types=types)
-        # view = folder.restrictedTraverse('@@select_default_page')()
+        # Restrict users who may add materials
+        mp = portal.materials.manage_permission
+        mp(AddMaterial, ['Manager', 'Owner'], 0)
 
     # built-in materials
     materials = [
@@ -88,34 +85,11 @@ def setupMaterials(context):
             ],
             add_permission='immunarray.lims.permissions.AddMaterial',
         )
-
         if id in portal.portal_types:
             del portal.portal_types[id]
         portal.portal_types._setObject(id, fti)
 
-        constraints = ISelectableConstrainTypes(portal.materials)
-        constraints.setConstrainTypesMode(ENABLED)
-
-        import sys
-        import pdb
-        for attr in ('stdin', 'stdout', 'stderr'):
-            setattr(sys, attr, getattr(sys, '__%s__' % attr))
-        pdb.set_trace()
-
-        constraints.setLocallyAllowedTypes(('material',))
-
-
     return "Created material types"
-
-
-def setupPermissions(context):
-    if context.readDataFile('immunarray.lims.txt') is None:
-        return
-
-    portal = context.getSite()
-
-    mp = portal.materials.manage_permission
-    mp(AddMaterial, ['Manager', 'Owner'], 0)
 
 
 def setupVarious(context):
@@ -123,3 +97,8 @@ def setupVarious(context):
         return
 
     portal = context.getSite()
+
+    # Restrict users who may add Materials (nobody!)
+    # the materials folder has different permissions.
+    mp = portal.manage_permission
+    mp(AddMaterial, [], 0)

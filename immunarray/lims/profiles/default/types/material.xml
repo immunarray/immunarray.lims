@@ -8,7 +8,7 @@
     <property name="add_view_expr">string:${folder_url}/++add++material</property>
     <property name="link_target"></property>
     <property name="immediate_view">view</property>
-    <property name="global_allow">False</property>
+    <property name="global_allow">True</property>
     <property name="filter_content_types">True</property>
     <property name="allowed_content_types">
     </property>
@@ -18,10 +18,11 @@
         <element value="view"/>
     </property>
     <property name="default_view_fallback">False</property>
-    <property name="add_permission">cmf.AddPortalContent</property>
+    <property name="add_permission">immunarray.lims.permission.AddMaterial</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
         <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <element value="plone.app.content.interfaces.IMaterial"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.material.IMaterial</property>
     <property name="model_source"></property>

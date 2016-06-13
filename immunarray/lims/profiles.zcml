@@ -19,19 +19,11 @@
   </genericsetup:importStep>
 
   <genericsetup:importStep
-          name="immunarray.lims.permissions"
-          title="Immunarray LIMS: Configure default permission"
-          description="from imunarray.lims.permissions"
-          handler="immunarray.lims.setuphandlers.setupPermissions">
-    <depends name="immunarray.lims.materials" />
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
           name="immunarray.lims.various"
           title="Immunarray LIMS: custom python setup actions"
           description="imunarray.lims.setuphandlers.various"
           handler="immunarray.lims.setuphandlers.setupVarious">
-    <depends name="immunarray.lims.permissions" />
+    <depends name="immunarray.lims.materials" />
   </genericsetup:importStep>
 
 </configure>
