@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+from zope import schema
+
+from zope.interface import alsoProvides
+
 from immunarray.lims import messageFactory as _
-from plone.app.dexterity.interfaces import ITypeSettings
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.interfaces import IDexterityFTI
 from plone.namedfile import field as namedfile
 from plone.supermodel import model
-from zope import schema
-from zope.interface import alsoProvides
 
 
 class IMaterial(model.Schema):

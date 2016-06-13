@@ -2,3 +2,4 @@
 """
 
 AddMaterial = "LIMS: Add Material"
+AddSolution = "LIMS: Add Solution"

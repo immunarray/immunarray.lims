@@ -9,19 +9,7 @@
     <object name="ichiplot" meta_type="Dexterity FTI"/>
     <object name="ichip" meta_type="Dexterity FTI"/>
     <object name="material" meta_type="Dexterity FTI"/>
-
-    <object name="solutionsfolder" meta_type="Dexterity FTI"/>
     <object name="solution" meta_type="Dexterity FTI"/>
-    <object name="1xpbs" meta_type="Dexterity FTI"/>
-    <object name="10xpbs" meta_type="Dexterity FTI"/>
-    <object name="1percentcasein" meta_type="Dexterity FTI"/>
-    <object name="tween22_4percentinpbs" meta_type="Dexterity FTI"/>
-    <object name="1mgpermligg_cy3" meta_type="Dexterity FTI"/>
-    <object name="1mgpermligm_af647" meta_type="Dexterity FTI"/>
-    <object name="3Mkcl" meta_type="Dexterity FTI"/>
-    <object name="50percentglycerol" meta_type="Dexterity FTI"/>
-    <object name="70percentethyanol" meta_type="Dexterity FTI"/>
-    <object name="10percenthcl" meta_type="Dexterity FTI"/>
 
     <object name="worklistfolder" meta_type="Dexterity FTI"/>
     <object name="worklist" meta_type="Dexterity FTI"/>

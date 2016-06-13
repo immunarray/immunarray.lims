@@ -2,5 +2,7 @@
     <permissions>
         <permission name="LIMS: Add Material" acquire="False">
         </permission>
+        <permission name="LIMS: Add Solution" acquire="False">
+        </permission>
     </permissions>
 </rolemap>

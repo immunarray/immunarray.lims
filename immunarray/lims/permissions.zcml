@@ -2,11 +2,13 @@
            xmlns:zcml="http://namespaces.zope.org/zcml"
            i18n_domain="immunarray.lims">
 
-    <configure zcml:condition="installed AccessControl.security">
-        <permission
-                id="immunarray.lims.permissions.AddMaterial"
-                title="LIMS: Add Material"
-        />
-    </configure>
+    <permission
+            id="immunarray.lims.permissions.AddMaterial"
+            title="LIMS: Add Material"
+    />
+    <permission
+            id="immunarray.lims.permissions.AddSolution"
+            title="LIMS: Add Solution"
+    />
 
 </configure>
