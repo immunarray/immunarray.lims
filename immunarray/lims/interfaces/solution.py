@@ -31,7 +31,7 @@ class ISolution(model.Schema):
     )
     SolutionViability = schema.Int(
         title=_(u"Solution Viability"),
-        description=_(u"Viability of solution in hours.  Leave blank if"
+        description=_(u"Viability of solution in hours.  Leave blank if "
                       u"solution does not expire."),
         required=False,
     )
