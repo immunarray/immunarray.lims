@@ -142,7 +142,7 @@ def setupSolutions(context):
          """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
         ("10percenthcl", _(u"10% HCl"),
          """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
-        ("3Mkcl", _(u"3M KCl"),
+        ("3mkcl", _(u"3M KCl"),
          """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
         ("1mgpermligm_af647", _(u"1 mg/mL IgM-AF647"),
          """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
