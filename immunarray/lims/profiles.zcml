@@ -13,9 +13,18 @@
   <genericsetup:importStep
           name="immunarray.lims.materials"
           title="Immunarray LIMS: Configure Built-in Material Types"
-          description="from imunarray.lims.materials"
+          description="from imunarray.lims.setuphandlers.setupMaterials"
           handler="immunarray.lims.setuphandlers.setupMaterials">
+    <depends name="typeinfo" />
     <depends name="content" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+          name="immunarray.lims.permissions"
+          title="Immunarray LIMS: Configure default permissions"
+          description="from imunarray.lims.setuphandlers.setupPermissions"
+          handler="immunarray.lims.setuphandlers.setupPermissions">
+    <depends name="immunarray.lims.materials" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
@@ -23,7 +32,8 @@
           title="Immunarray LIMS: custom python setup actions"
           description="imunarray.lims.setuphandlers.various"
           handler="immunarray.lims.setuphandlers.setupVarious">
-    <depends name="immunarray.lims.materials" />
+    <depends name="typeinfo" />
+    <depends name="content" />
   </genericsetup:importStep>
 
 </configure>
