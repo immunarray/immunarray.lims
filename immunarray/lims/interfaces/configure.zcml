@@ -5,8 +5,15 @@
 
     <plone:behavior
             title="LIMS: Raw Material"
-            description="This type will be registered as a material in the LIMS"
+            description="This FTI will be registered as a material in the LIMS"
             provides="immunarray.lims.interfaces.material.IMaterial"
     />
+
+    <plone:behavior
+            title="LIMS: Solution"
+            description="This FTI will be registered as a solution in the LIMS"
+            provides="immunarray.lims.interfaces.solution.ISolution"
+    />
+
 
 </configure>
