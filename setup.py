@@ -25,9 +25,7 @@ setup(name='immunarray.lims',
       install_requires=[
           'setuptools',
           'plone.api',
-          'plone.principalsource',
-          'collective.z3cform.datagridfield',
-          'magnitude',
+          'bika.lims',
       ],
       extras_require={
           'test': [
