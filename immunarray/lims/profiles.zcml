@@ -11,39 +11,6 @@
             provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
     <genericsetup:importStep
-            name="immunarray.lims.content"
-            title="Immunarray LIMS: Configure content folders"
-            description="imunarray.lims.setuphandlers.setupContent"
-            handler="immunarray.lims.setuphandlers.setupContent">
-        <depends name="catalog"/>
-    </genericsetup:importStep>
-
-    <genericsetup:importStep
-            name="immunarray.lims.materials"
-            title="Immunarray LIMS: Configure Built-in Material Types"
-            description="imunarray.lims.setuphandlers.setupMaterials"
-            handler="immunarray.lims.setuphandlers.setupMaterials">
-        <depends name="immunarray.lims.content"/>
-    </genericsetup:importStep>
-
-    <genericsetup:importStep
-            name="immunarray.lims.solutions"
-            title="Immunarray LIMS: Configure Built-in Solution Types"
-            description="imunarray.lims.setuphandlers.setupSolutions"
-            handler="immunarray.lims.setuphandlers.setupSolutions">
-        <depends name="immunarray.lims.content"/>
-    </genericsetup:importStep>
-
-    <genericsetup:importStep
-            name="immunarray.lims.permissions"
-            title="Immunarray LIMS: Configure default permissions"
-            description="imunarray.lims.setuphandlers.setupPermissions"
-            handler="immunarray.lims.setuphandlers.setupPermissions">
-        <depends name="immunarray.lims.materials"/>
-        <depends name="immunarray.lims.solutions"/>
-    </genericsetup:importStep>
-
-    <genericsetup:importStep
             name="immunarray.lims.various"
             title="Immunarray LIMS: custom python setup actions"
             description="imunarray.lims.setuphandlers.setupVarious"
