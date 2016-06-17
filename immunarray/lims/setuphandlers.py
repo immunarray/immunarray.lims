@@ -26,14 +26,6 @@ def setupContent(context):
                                         type=x['type'],
                                         title=x['title'])
             modified(portal[x['id']])
-            # Remove default allowed content types from folder
-            # folder.setConstrainTypesMode(1)
-            # folder.setLocallyAllowedTypes(("Collection", "File",))
-            # folder.setImmediatelyAddableTypes(("Collection", "File",))
-            # from Products.CMFPlone.interfaces import IConstrainTypes
-            # folder = IConstrainTypes(folder)
-            # folder.setLocallyAllowedTypes([])
-            # folder.setImmediatelyAddableTypes([])
 
 
 def setupMaterials(context):
@@ -47,18 +39,30 @@ def setupMaterials(context):
 
     # built-in materials
     materials = [
-        ("caseinsalt", _(u"Casein Salt"), ""),
-        ("ethylalcohol", _(u"Ethyl Alcahol Denatured"), ""),
-        ("glycerol", _(u"Glycerol"), ""),
-        ("nacl", _(u"Sodium Chloride (NaCl)"), ""),
-        ("kcl", _(u"Potassium Chloride (KCl)"), ""),
-        ("kh2po4", _(u"Potassium Phosphatemonobasic (KH2PO4)"), ""),
-        ("na2hpo4", _(u"Sodium Phosphatedibasic (Na2HPO4)"), ""),
-        ("naoh", _(u"Sodium Hydroxide 2.5N (NaOH)"), ""),
-        ("tween20", _(u"Tween 20"), ""),
-        ("hcl37", _(u"Hydrochloricacid 37%"), ""),
-        ("iggcy3", _(u"IgG-Cy3"), ""),
-        ("igmaf647", _(u"IgM-AF647"), ""),
+        ("caseinsalt", _(u"Casein Salt"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("ethylalcohol", _(u"Ethyl Alcahol Denatured"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("glycerol", _(u"Glycerol"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("nacl", _(u"Sodium Chloride (NaCl)"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("kcl", _(u"Potassium Chloride (KCl)"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("kh2po4", _(u"Potassium Phosphatemonobasic (KH2PO4)"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("na2hpo4", _(u"Sodium Phosphatedibasic (Na2HPO4)"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("naoh", _(u"Sodium Hydroxide 2.5N (NaOH)"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("tween20", _(u"Tween 20"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("hcl37", _(u"Hydrochloricacid 37%"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("iggcy3", _(u"IgG-Cy3"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
+        ("igmaf647", _(u"IgM-AF647"),
+         """<model xmlns="http://namespaces.plone.org/supermodel/schema"><schema></schema></model>"""),
     ]
 
     for tid, title, schema in materials:
