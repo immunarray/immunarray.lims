@@ -19,7 +19,7 @@
     />
 
     <browser:viewlet
-            for="immunarray.lims.interfaces.aliquot.IAliquot"
+            for="bika.lims.interfaces.aliquot.IAliquot"
             name="immunarray.lims.addworkingaliqutofrombulk"
             class="immunarray.lims.browser.viewlets.AddWorkingAliquotFromBulkViewlet"
             manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
@@ -27,7 +27,7 @@
     />
 
     <browser:page
-            for="immunarray.lims.interfaces.aliquot.IAliquot"
+            for="bika.lims.interfaces.aliquot.IAliquot"
             name="addworkingaliquotfrombulk"
             class="immunarray.lims.browser.viewlets.AddWorkingAliquotFromBulkHandler"
             permission="zope2.View"

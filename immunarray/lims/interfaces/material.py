@@ -15,17 +15,17 @@ class IMaterial(model.Schema):
     To use these fields, create a new Dexterity type and enable the
     IMaterial behaviour for it.
     """
-    LotNumber = schema.ASCIILine(
+    LotNumber = schema.TextLine(
         title=_(u"Lot"),
         description=_(u"The lot number"),
         required=True
     )
-    Vendor = schema.ASCIILine(
+    Vendor = schema.TextLine(
         title=_(u"Vendor"),
         description=_(u"The vendor that supplied the lot"),
         required=True
     )
-    CatalogNumber = schema.ASCIILine(
+    CatalogNumber = schema.TextLine(
         title=_(u"Catalog Number"),
         description=_(u"The lot's catalog number"),
         required=True
@@ -46,12 +46,12 @@ class IMaterial(model.Schema):
         description=_(u"Certificate of Analysis"),
         required=True
     )
-    ArrivalAmount = schema.ASCIILine(
+    ArrivalAmount = schema.TextLine(
         title=_(u"Amount of material at time of arrival"),
         description=_(u"Specify with SI units, eg: 1cm/2, 1', 20g, or 1kg."),
         required=True,
     )
-    CurrentAmount = schema.ASCIILine(
+    CurrentAmount = schema.TextLine(
         title=_(u"Amount of material currently remaining"),
         description=_(u"Specify with SI units, eg: 1cm/2, 1', 20g, or 1kg."),
         required=False

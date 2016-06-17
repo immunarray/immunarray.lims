@@ -11,13 +11,13 @@ class IIChipLot(model.Schema):
     """An IChip Lot that will contain IChip objects.
     """
 
-    # IChipLotCode = schema.ASCIILine(
+    # IChipLotCode = schema.TextLine(
     #         title=_(u"IChip Lot Code"),
     #         description=_(u"Code that could be use for external database longterm"),
     #         constraint=IChipLotCodeIsValid,
     #         )
 
-    IChipLotID = schema.ASCIILine(
+    IChipLotID = schema.TextLine(
         title=_(u"IChip Lot ID"),
         description=_(u"ID of IChip Lot"),
         required=True,

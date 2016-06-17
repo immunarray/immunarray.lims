@@ -3,8 +3,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.viewlets import ViewletBase
 from plone import api
 
-from immunarray.lims.interfaces.aliquot import IAliquot
-
 
 class AddMultipleIChipsViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/addichips_viewlet.pt")
@@ -80,7 +78,9 @@ class AddWorkingAliquotFromBulkHandler(BrowserView):
 
         for x in range(2, 100):
             tmp_id = "%s%02d"%(basename, x)
-            proxies = api.content.find(object_provides=IAliquot, id=tmp_id)
+            proxies = api.content.find(
+                object_provides='bika.lims.interfaces.aliquot.IAliquot',
+                id=tmp_id)
             if not proxies:
                 break
         else:

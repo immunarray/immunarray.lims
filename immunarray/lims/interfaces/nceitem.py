@@ -11,7 +11,7 @@ def currentTime():
 
 class INCEItem(model.Schema):
     """General NCE Item to be used to track non conformance events in the lab"""
-    NCETrackingNumber=schema.ASCIILine(
+    NCETrackingNumber=schema.TextLine(
             title=_(u"NCE Tracking Number"),
             description=_(u"NCE Tracking Number"),
             required=True,

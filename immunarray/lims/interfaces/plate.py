@@ -14,7 +14,7 @@ class IPlate96WellItem(model.Schema):
     """
     A 96 Well plate object
     """
-    CustomerServiceItemID = schema.ASCIILine(
+    CustomerServiceItemID = schema.TextLine(
         title=_(u"Customer Service Item ID"),
         description=_(u"Customer Service Item ID"),
         required=True,

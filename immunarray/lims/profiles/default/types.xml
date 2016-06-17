@@ -3,8 +3,6 @@
     <property name="title">
       Controls the available content types in your portal
     </property>
-    <object name="aliquotfolder" meta_type="Dexterity FTI"/>
-    <object name="aliquot" meta_type="Dexterity FTI"/>
     <object name="ichiplotfolder" meta_type="Dexterity FTI"/>
     <object name="ichiplot" meta_type="Dexterity FTI"/>
     <object name="ichip" meta_type="Dexterity FTI"/>

@@ -1,57 +1,50 @@
-from zope import schema
-
-from zope.interface import Interface
-
+from bika.lims.interfaces.person import IPerson
 from immunarray.lims import messageFactory as _
-from immunarray.lims.interfaces.person import IPerson
-
-
-class IPatientFolder(Interface):
-    """Folder to hold test requisitions
-    """
+from zope import schema
+from zope.interface import Interface
 
 
 class IPatient(IPerson):
     """
 
-    Firstname = schema.ASCIILine(
+    Firstname = schema.TextLine(
         title=_(u"Firstname"),
         description=_(u""),
         required=False,
     )
-    Lastname = schema.ASCIILine(
+    Lastname = schema.TextLine(
         title=_(u"Lastname"),
         description=_(u""),
         required=False,
     )
-    EmailAddress = schema.ASCIILine(
+    EmailAddress = schema.TextLine(
         title=_(u"EmailAddress"),
         description=_(u""),
         required=False,
     )
-    Phone = schema.ASCIILine(
+    Phone = schema.TextLine(
         title=_(u"Phone number"),
         description=_(u""),
         required=False,
     )
     """
-    Address = schema.ASCIILine(
+    Address = schema.TextLine(
         title=_(u"Address"),
         description=_(u"Street Address"),
         required=False,
     )
-    City = schema.ASCIILine(
+    City = schema.TextLine(
         title=_(u"City"),
         description=_(u"City"),
         required=False,
     )
-    State = schema.ASCIILine(
+    State = schema.TextLine(
         title=_(u"State"),
         description=_(u"State"),
         required=False,
     )
     """Should/Could we do a format or XXXXX-XXXX"""
-    ZipCode = schema.ASCIILine(
+    ZipCode = schema.TextLine(
         title=_(u"Zip Code"),
         description=_(u"Zip Code"),
         required=False,
@@ -73,7 +66,7 @@ class IPatient(IPerson):
         values=[_(u'Male'), _(u'Female'), _(u'Other')],
         required=False,
     )
-    SSN = schema.ASCIILine(
+    SSN = schema.TextLine(
         title=_(u"Social Security Number"),
         description=_(u"Social Security Number"),
         required=False,
@@ -84,7 +77,7 @@ class IPatient(IPerson):
         values=[_(u'Self'), _(u'Spouse'), _(u'Child')],
         required=False,
     )
-    UniqueSampleNumber = schema.ASCIILine(
+    UniqueSampleNumber = schema.TextLine(
         title=_(u"Unique Sample Number"),
         description=_(u"Sample ID from the blood draw kit"),
         required=False,

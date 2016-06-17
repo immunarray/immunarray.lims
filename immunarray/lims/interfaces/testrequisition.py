@@ -15,7 +15,7 @@ class ITestRequisitionFolder(Interface):
 class ITestRequisition(model.Schema):
     """
     """
-    SampleID = schema.ASCIILine(
+    SampleID = schema.TextLine(
         title=_(u"Sample ID"),
         required=True,
     )

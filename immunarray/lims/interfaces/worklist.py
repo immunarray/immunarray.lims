@@ -1,4 +1,3 @@
-from plone.directives import form
 from z3c.form.form import extends
 from z3c.form import field
 from plone.directives import form
@@ -109,12 +108,12 @@ SOLUTIONS_DEFAULT = [
 class IWorklist(Interface):
     """The main Worklist schema
     """
-    DocumentNumber = schema.ASCIILine(
+    DocumentNumber = schema.TextLine(
         title=_(u"Run Number"),
         description=_(u"Veracis Run Number"),
         required=True,
     )
-    Assay = schema.ASCIILine(
+    Assay = schema.TextLine(
         title=_(u"Assay"),
         description=_(u""),
         required=True,

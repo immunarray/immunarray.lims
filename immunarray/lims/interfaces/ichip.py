@@ -12,13 +12,13 @@ class IIChip(model.Schema):
     """An IChip Lot that will be the container class object
     """
 
-    # IChipLotCode = schema.ASCIILine(
+    # IChipLotCode = schema.TextLine(
     #        title=_(u"IChip Lot Code"),
     #        description=_(u"Code that could be use for external database longterm"),
     #        constraint=IChipLotCodeIsValid,
     #        )
 
-    """IChipID = schema.ASCIILine(
+    """IChipID = schema.TextLine(
         title=_(u"IChip ID"),
         description=_(u"ID of IChip"),
         required=True,
@@ -60,42 +60,42 @@ class IIChip(model.Schema):
         values=[_('EQ-76'), _('EQ-Unknown')],
         required=False,
     )
-    IChipWellA = schema.ASCIILine(
+    IChipWellA = schema.TextLine(
         title=_(u"iChip Well A"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well A"),
         required=False,
     )
-    IChipWellB = schema.ASCIILine(
+    IChipWellB = schema.TextLine(
         title=_(u"iChip Well B"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well B"),
         required=False,
     )
-    IChipWellC = schema.ASCIILine(
+    IChipWellC = schema.TextLine(
         title=_(u"iChip Well C"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well C"),
         required=False,
     )
-    IChipWellD = schema.ASCIILine(
+    IChipWellD = schema.TextLine(
         title=_(u"iChip Well D"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well D"),
         required=False,
     )
-    IChipWellE = schema.ASCIILine(
+    IChipWellE = schema.TextLine(
         title=_(u"iChip Well E"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well E"),
         required=False,
     )
-    IChipWellF = schema.ASCIILine(
+    IChipWellF = schema.TextLine(
         title=_(u"iChip Well F"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well F"),
         required=False,
     )
-    IChipWellG = schema.ASCIILine(
+    IChipWellG = schema.TextLine(
         title=_(u"iChip Well G"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well G"),
         required=False,
     )
-    IChipWellH = schema.ASCIILine(
+    IChipWellH = schema.TextLine(
         title=_(u"iChip Well H"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well H"),
         required=False,

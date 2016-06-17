@@ -14,16 +14,15 @@
   <five:registerPackage package="." initialize=".initialize" />
 
   <include file="permissions.zcml" />
+  <include file="behaviours.zcml" />
+  <include file="profiles.zcml" />
 
   <include package=".adapters"/>
-  <include package=".interfaces"/>
   <include package=".browser"/>
   <include package=".static"/>
   <include package=".subscribers"/>
   <include package=".workflow"/>
 
-  <include file="profiles.zcml" />
-
-  <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
+  <browser:resourceDirectory name="immunarray.lims" directory="static"/>
 
 </configure>

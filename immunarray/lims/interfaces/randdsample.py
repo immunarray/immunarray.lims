@@ -13,7 +13,7 @@ def currentDate():
 
 class IRandDSample(model.Schema):
     """General NCE Item to be used to track non conformance events in the lab"""
-    RandDSampleVeracisID=schema.ASCIILine(
+    RandDSampleVeracisID=schema.TextLine(
             title=_(u"R&D Veracis Sample ID"),
             description=_(u"NCE Tracking Numbe"),
             required=True,
@@ -30,22 +30,22 @@ class IRandDSample(model.Schema):
             vocabulary=u"plone.principalsource.Users",
             required=False,
     )
-    RandDSampleSource=schema.ASCIILine(
+    RandDSampleSource=schema.TextLine(
             title=_(u"Source of R&D Sample"),
             description=_(u"Source of R&D Sample"),
             required=False,
     )
-    RandDSamplePI=schema.ASCIILine(
+    RandDSamplePI=schema.TextLine(
             title=_(u"Primary Investigator (PI) of R&D Sample"),
             description=_(u"Primary Investigator (PI) of R&D Sample"),
             required=False,
     )
-    RandDSampleDescription=schema.ASCIILine(
+    RandDSampleDescription=schema.TextLine(
             title=_(u"Description of R&D Sample"),
             description=_(u"Description of R&D Sample"),
             required=False,
     )
-    RandDSampleSourceID=schema.ASCIILine(
+    RandDSampleSourceID=schema.TextLine(
             title=_(u"Source ID of R&D Sample"),
             description=_(u"Source ID of R&D Sample"),
             required=False,
