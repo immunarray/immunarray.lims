@@ -9,4 +9,9 @@
                  Products.DCWorkflow.interfaces.IAfterTransitionEvent"
             handler="immunarray.lims.subscribers.testrequisition.Received"/>
 
+    <subscriber
+            for="bika.lims.events.ILIMSCreatedEvent"
+            handler="immunarray.lims.subscribers.lims.LIMSCreated"
+    />
+
 </configure>

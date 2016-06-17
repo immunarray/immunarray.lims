@@ -15,7 +15,7 @@
             title="Immunarray LIMS: custom python setup actions"
             description="imunarray.lims.setuphandlers.setupVarious"
             handler="immunarray.lims.setuphandlers.setupVarious">
-        <depends name="immunarray.lims.permissions"/>
+        <depends name="content"/>
     </genericsetup:importStep>
 
 </configure>
