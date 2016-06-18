@@ -1,0 +1,33 @@
+<model
+        xmlns="http://namespaces.plone.org/supermodel/schema">
+    <schema>
+        <field name="lot_of_casein_salt"
+               type="z3c.relationfield.schema.RelationChoice">
+            <title>Lot of Casein Salt Used</title>
+            <description></description>
+            <required>False</required>
+            <portal_type>
+                <element>material</element>
+            </portal_type>
+        </field>
+        <field name="lot_of_1xpbs"
+               type="z3c.relationfield.schema.RelationChoice">
+            <title>Lot of PBS (1X) Used</title>
+            <description></description>
+            <required>False</required>
+            <portal_type>
+                <element>material</element>
+            </portal_type>
+        </field>
+        <field name="mass_of_casein_salt" type="zope.schema.Float">
+            <title>Mass of Casein Salt Added to PBS</title>
+            <description>(in grams)</description>
+            <required>False</required>
+        </field>
+        <field name="volume_of_1xpbs" type="zope.schema.Float">
+            <title>Volume of 1 x PBS Added</title>
+            <description>(in liters)</description>
+            <required>False</required>
+        </field>
+    </schema>
+</model>

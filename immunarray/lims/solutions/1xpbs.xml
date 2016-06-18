@@ -1,0 +1,34 @@
+<model
+        xmlns="http://namespaces.plone.org/supermodel/schema">
+    <schema>
+        <field name="batch_of_10_x_pbs_used"
+               type="z3c.relationfield.schema.RelationChoice">
+            <title>Batch of 10x PBS Used</title>
+            <description/>
+            <required>False</required>
+            <portal_type>
+                <element>plate96well</element>
+            </portal_type>
+        </field>
+        <field name="volumeof10xpbsadded" type="zope.schema.Float">
+            <title>Volume of 10x PBS Added</title>
+            <description>(in liters)</description>
+            <required>False</required>
+        </field>
+        <field name="volume_of_water_added" type="zope.schema.Float">
+            <title>Volume of Water Added to 10x PBS</title>
+            <description>(in liters)</description>
+            <required>False</required>
+        </field>
+        <field name="pbs_1x_verify_ph_meter" type="zope.schema.TextLine">
+            <title>Verify pH</title>
+            <description></description>
+            <required>False</required>
+        </field>
+        <field name="observed_ph_of_1_x_pbs" type="zope.schema.TextLine">
+            <title>Observed pH of 1 x PBS</title>
+            <description>(xxx)</description>
+            <required>False</required>
+        </field>
+    </schema>
+</model>

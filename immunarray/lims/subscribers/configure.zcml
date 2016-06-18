@@ -7,11 +7,12 @@
     <subscriber
             for="immunarray.lims.interfaces.testrequisition.ITestRequisition
                  Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-            handler="immunarray.lims.subscribers.testrequisition.Received"/>
+            handler="immunarray.lims.subscribers.testrequisition.Received"
+    />
 
     <subscriber
-            for="bika.lims.events.ILIMSCreatedEvent"
-            handler="immunarray.lims.subscribers.lims.LIMSCreated"
+            for="bika.lims.events.LIMSCreatedEvent"
+            handler="immunarray.lims.subscribers.limsroot.LIMSCreated"
     />
 
 </configure>
