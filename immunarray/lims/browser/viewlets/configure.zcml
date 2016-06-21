@@ -4,24 +4,24 @@
         i18n_domain="immunarray.lims">
 
     <browser:viewlet
-            for="immunarray.lims.interfaces.ichiplot.IIChipLot"
-            name="immunarray.lims.addichips"
-            class="immunarray.lims.browser.viewlets.AddMultipleIChipsViewlet"
+            for="immunarray.lims.interfaces.ichiplot.IiChipLot"
+            name="addichips-viewlet"
+            class=".addichips.AddMultipleiChipsViewlet"
             manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
             permission="zope2.View"
     />
 
     <browser:page
-            for="immunarray.lims.interfaces.ichiplot.IIChipLot"
-            name="ichips_add"
-            class="immunarray.lims.browser.viewlets.AddMultipleIChipsHandler"
+            for="immunarray.lims.interfaces.ichiplot.IiChipLot"
+            name="addichips"
+            class=".addichips.AddMultipleiChipsHandler"
             permission="zope2.View"
     />
 
     <browser:viewlet
             for="bika.lims.interfaces.aliquot.IAliquot"
-            name="immunarray.lims.addworkingaliqutofrombulk"
-            class="immunarray.lims.browser.viewlets.AddWorkingAliquotFromBulkViewlet"
+            name="addworkingaliqutfrombulk-viewlet"
+            class=".addworkingaliquotfrombulk.AddWorkingAliquotFromBulkViewlet"
             manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
             permission="zope2.View"
     />
@@ -29,7 +29,7 @@
     <browser:page
             for="bika.lims.interfaces.aliquot.IAliquot"
             name="addworkingaliquotfrombulk"
-            class="immunarray.lims.browser.viewlets.AddWorkingAliquotFromBulkHandler"
+            class=".addworkingaliquotfrombulk.AddWorkingAliquotFromBulkHandler"
             permission="zope2.View"
     />
 

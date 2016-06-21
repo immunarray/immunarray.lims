@@ -5,50 +5,6 @@ from zope.interface import Interface
 
 
 class IPatient(IPerson):
-    """
-
-    Firstname = schema.TextLine(
-        title=_(u"Firstname"),
-        description=_(u""),
-        required=False,
-    )
-    Lastname = schema.TextLine(
-        title=_(u"Lastname"),
-        description=_(u""),
-        required=False,
-    )
-    EmailAddress = schema.TextLine(
-        title=_(u"EmailAddress"),
-        description=_(u""),
-        required=False,
-    )
-    Phone = schema.TextLine(
-        title=_(u"Phone number"),
-        description=_(u""),
-        required=False,
-    )
-    """
-    Address = schema.TextLine(
-        title=_(u"Address"),
-        description=_(u"Street Address"),
-        required=False,
-    )
-    City = schema.TextLine(
-        title=_(u"City"),
-        description=_(u"City"),
-        required=False,
-    )
-    State = schema.TextLine(
-        title=_(u"State"),
-        description=_(u"State"),
-        required=False,
-    )
-    """Should/Could we do a format or XXXXX-XXXX"""
-    ZipCode = schema.TextLine(
-        title=_(u"Zip Code"),
-        description=_(u"Zip Code"),
-        required=False,
-    )
     DOB = schema.Date(
         title=_(u"Date of Birth"),
         description=_(u"Date of Birth"),

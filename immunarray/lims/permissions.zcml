@@ -2,13 +2,13 @@
            xmlns:zcml="http://namespaces.zope.org/zcml"
            i18n_domain="immunarray.lims">
 
-    <permission
-            id="immunarray.lims.permissions.AddMaterial"
-            title="LIMS: Add Material"
-    />
-    <permission
-            id="immunarray.lims.permissions.AddSolution"
-            title="LIMS: Add Solution"
-    />
+    <permission id="immunarray.lims.permissions.AddiChip" title="LIMS: Add iChip"/>
+    <permission id="immunarray.lims.permissions.AddiChipLot" title="LIMS: Add iChip Lot"/>
+    <permission id="immunarray.lims.permissions.AddMaterial" title="LIMS: Add Material"/>
+    <permission id="immunarray.lims.permissions.AddNCE" title="LIMS: Add NCE"/>
+    <permission id="immunarray.lims.permissions.AddPatient" title="LIMS: Add Patient"/>
+    <permission id="immunarray.lims.permissions.AddProvider" title="LIMS: Add Provider"/>
+    <permission id="immunarray.lims.permissions.AddSolution" title="LIMS: Add Solution"/>
+    <permission id="immunarray.lims.permissions.AddWorklist" title="LIMS: Add Worklist"/>
 
 </configure>

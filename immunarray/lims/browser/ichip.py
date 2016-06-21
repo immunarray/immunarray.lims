@@ -7,8 +7,8 @@ from plone.dexterity.browser.view import DefaultView
 class SessionView(DefaultView):
     pass
 
-class IChipView(BrowserView):
-    """"IChipView """
+class iChipView(BrowserView):
+    """"iChipView """
     template = ViewPageTemplateFile("templates/ichipview.pt")
 
     def __call__(self):

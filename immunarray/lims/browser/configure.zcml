@@ -10,6 +10,6 @@
 
     <include file="ichip.zcml"/>
 
-    <include file="viewlets.zcml"/>
+    <include package=".viewlets"/>
 
 </configure>

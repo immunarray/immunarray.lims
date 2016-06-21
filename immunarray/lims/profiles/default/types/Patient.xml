@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<object name="plate96well" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="Patient" meta_type="Dexterity FTI" i18n:domain="plone"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
-    <property name="title" i18n:translate="">plate96well</property>
+    <property name="title" i18n:translate="">Patient</property>
     <property name="description" i18n:translate=""></property>
     <property name="icon_expr">string:${portal_url}/document_icon.png</property>
-    <property name="factory">ichip</property>
-    <property name="add_view_expr">string:${folder_url}/++add++plate96well</property>
+    <property name="factory">Patient</property>
+    <property name="add_view_expr">string:${folder_url}/++add++Patient</property>
     <property name="link_target"></property>
     <property name="immediate_view">view</property>
-    <property name="global_allow">False</property>
+    <property name="global_allow">True</property>
     <property name="filter_content_types">True</property>
     <property name="allowed_content_types"/>
     <property name="allow_discussion">False</property>
@@ -18,13 +18,13 @@
         <element value="view"/>
     </property>
     <property name="default_view_fallback">False</property>
-    <property name="add_permission">cmf.AddPortalContent</property>
+    <property name="add_permission">immunarray.lims.permissions.AddPatient</property>
     <property name="klass">plone.dexterity.content.Item</property>
     <property name="behaviors">
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
-    <property name="schema">immunarray.lims.interfaces.plate.IPlate96WellItem</property>
+    <property name="schema">immunarray.lims.interfaces.patient.IPatient</property>
     <property name="model_source"></property>
     <property name="model_file"></property>
     <property name="schema_policy">dexterity</property>

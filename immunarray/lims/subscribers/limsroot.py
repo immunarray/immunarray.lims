@@ -4,10 +4,16 @@ from plone import api
 from plone.dexterity.fti import DexterityFTI
 from zope.component.hooks import getSite
 
-from immunarray.lims.permissions import AddMaterial, AddSolution
+from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
+    AddProvider
+from immunarray.lims.permissions import AddSolution
+from immunarray.lims.permissions import AddWorklist
+from immunarray.lims.permissions import AddiChipLot
+
 
 def get_schema_filename(folder, name):
     return resource_filename('immunarray.lims', '%s/%s.xml' % (folder, name))
+
 
 def LIMSCreated(event):
     """LIMS root object has been created
@@ -16,17 +22,45 @@ def LIMSCreated(event):
     lims = event.lims
     portal = getSite()
 
-    configuration = lims.configuration
-    m = api.content.create(configuration, 'Folder', 'materials', 'Materials')
-    mp = m.manage_permission
-    mp(AddMaterial, ['Manager', 'LabManager', 'Owner'], 0)
+    create_structure(lims)
+    structure_permissions(lims)
+    create_material_types(portal)
+    create_solution_types(portal)
 
-    s = api.content.create(configuration, 'Folder', 'solutions', 'Solutions')
-    mp = s.manage_permission
-    mp(AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
-    # built-in material types and schemas
-    # -----------------------------------
+def create_structure(lims):
+    for x in [
+        ['lims', 'Folder', 'materials', 'Materials'],
+        ['lims', 'Folder', 'solutions', 'Solutions'],
+        ['lims', 'Folder', 'ichiplots', 'iChip Lots'],
+        ['lims', 'Folder', 'worklists', 'Worklists'],
+        ['lims', 'Folder', 'plates', 'Plates'],
+        ['lims', 'Folder', 'nce', 'Nonconformance'],
+        ['lims', 'Folder', 'patients', 'Patients'],
+        ['lims', 'Folder', 'providers', 'Providers'],
+    ]:
+        path = lims.unrestrictedTraverse(x[0])
+        api.content.create(path, x[1], x[2], x[3])
+
+
+def structure_permissions(lims):
+    lims.materials.manage_permission(
+        AddMaterial, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.solutions.manage_permission(
+        AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(
+        AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.worklists.manage_permission(
+        AddWorklist, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.nce.manage_permission(
+        AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(
+        AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.providers.manage_permission(
+        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+
+
+def create_material_types(portal):
     materials = [
         ("caseinsalt", u"Casein Salt"),
         ("ethylalcohol", u"Ethyl Alcahol Denatured"),
@@ -41,7 +75,6 @@ def LIMSCreated(event):
         ("iggcy3", u"IgG-Cy3"),
         ("igmaf647", u"IgM-AF647"),
     ]
-
     for tid, title in materials:
         fti = DexterityFTI(tid)
         fti.manage_changeProperties(
@@ -49,7 +82,7 @@ def LIMSCreated(event):
             title=title.encode('utf8'),
             description=u"Material: {0}".format(title.encode()),
             i18n_domain='immunarray.lims',
-            klass='immunarray.lims.interfaces.material.IMaterial',
+            klass='plone.dexterity.content.Item',
             model_file=get_schema_filename('materials', tid),
             immediate_view='folder_contents',
             icon_expr='string:document_icon.png',
@@ -65,6 +98,8 @@ def LIMSCreated(event):
             del portal.portal_types[tid]
         portal.portal_types._setObject(tid, fti)
 
+
+def create_solution_types(portal):
     solutions = [
         ("1xpbs", u"PBS (1X)"),
         ("10xpbs", u"PBS (10X)"),
@@ -77,7 +112,6 @@ def LIMSCreated(event):
         ("1mgpermligm_af647", u"1 mg/mL IgM-AF647"),
         ("1mgpermligg_cy3", u"1 mg/mL IgG-Cy3"),
     ]
-
     for tid, title in solutions:
         fti = DexterityFTI(tid)
         fti.manage_changeProperties(
@@ -85,7 +119,7 @@ def LIMSCreated(event):
             title=title.encode('utf8'),
             description=u"Solution: {0}".format(title.encode()),
             i18n_domain='immunarray.lims',
-            klass='immunarray.lims.interfaces.solution.ISolution',
+            klass='plone.dexterity.content.Item',
             model_file=get_schema_filename('solutions', tid),
             immediate_view='folder_contents',
             icon_expr='string:document_icon.png',

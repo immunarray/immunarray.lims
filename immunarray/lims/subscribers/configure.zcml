@@ -15,4 +15,10 @@
             handler="immunarray.lims.subscribers.limsroot.LIMSCreated"
     />
 
+    <subscriber
+            for="immunarray.lims.interfaces.ichiplot.IiChipLot
+                 zope.lifecycleevent.IObjectAddedEvent"
+            handler="immunarray.lims.subscribers.ichiplot.iChipLotAdded"
+    />
+
 </configure>

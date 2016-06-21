@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <object>
     <hidden manager="plone.abovecontenttitle" skinname="*" purge="False">
-        <viewlet name="immunarray.lims.addichips" insert-before="*"/>
-        <viewlet name="immunarray.lims.addworkingaliquotfrombulk" insert-before="*"/>
+        <viewlet name="addichips-viewlet" insert-before="*"/>
+        <viewlet name="addworkingaliquotfrombulk-viewlet" insert-before="*"/>
     </hidden>
 </object>

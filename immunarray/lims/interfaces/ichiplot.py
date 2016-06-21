@@ -7,77 +7,77 @@ from zope.interface import Invalid
 
 from immunarray.lims import messageFactory as _
 
-class IIChipLot(model.Schema):
-    """An IChip Lot that will contain IChip objects.
+class IiChipLot(model.Schema):
+    """An iChip Lot that will contain iChip objects.
     """
 
-    # IChipLotCode = schema.TextLine(
-    #         title=_(u"IChip Lot Code"),
+    # iChipLotCode = schema.TextLine(
+    #         title=_(u"iChip Lot Code"),
     #         description=_(u"Code that could be use for external database longterm"),
-    #         constraint=IChipLotCodeIsValid,
+    #         constraint=iChipLotCodeIsValid,
     #         )
 
-    IChipLotID = schema.TextLine(
-        title=_(u"IChip Lot ID"),
-        description=_(u"ID of IChip Lot"),
+    iChipLotID = schema.TextLine(
+        title=_(u"iChip Lot ID"),
+        description=_(u"ID of iChip Lot"),
         required=True,
     )
-    IChipLotPrintDate = schema.Date(
-        title=_(u"IChip Lot Print Date"),
-        description=_(u"Print Date of IChip Lot"),
+    iChipLotPrintDate = schema.Date(
+        title=_(u"iChip Lot Print Date"),
+        description=_(u"Print Date of iChip Lot"),
         required=True,
     )
-    IChipLotArrivalDate = schema.Date(
-        title=_(u"IChip Lot Arrival Date"),
-        description=_(u"Arrival Date of IChip Lot"),
+    iChipLotArrivalDate = schema.Date(
+        title=_(u"iChip Lot Arrival Date"),
+        description=_(u"Arrival Date of iChip Lot"),
         required=True,
     )
-    IChipLotExpDate = schema.Date(
-        title=_(u"IChip Lot Expiration Date"),
-        description=_(u"Expiration Date of IChip Lot"),
+    iChipLotExpDate = schema.Date(
+        title=_(u"iChip Lot Expiration Date"),
+        description=_(u"Expiration Date of iChip Lot"),
         required=True,
     )
-    IChipLotTempLot = schema.Bytes(
-        title=_(u"IChip Lot Travel Temperature Log"),
-        description=_(u"Travle Temperature Log of IChip Lot"),
+    iChipLotTempLot = schema.Bytes(
+        title=_(u"iChip Lot Travel Temperature Log"),
+        description=_(u"Travle Temperature Log of iChip Lot"),
         required=False,
     )
-    IChipLotAcceptanceStatus = schema.Choice(
-        title=_(u"IChip Acceptance Status"),
-        description=_(u"Acceptance Status of IChip Lot"),
+    iChipLotAcceptanceStatus = schema.Choice(
+        title=_(u"iChip Acceptance Status"),
+        description=_(u"Acceptance Status of iChip Lot"),
         values=[_(u"Quarantined"), _(u"Passed")],
         required=True,
     )
-    IChipLotCofA = schema.Bytes(
-        title=_(u"IChip Certificate of Analysis"),
-        description=_(u"Certificate of Analysis of IChip Lot"),
+    iChipLotCofA = schema.Bytes(
+        title=_(u"iChip Certificate of Analysis"),
+        description=_(u"Certificate of Analysis of iChip Lot"),
         required=False,
     )
-    IChipLotBatchRelease = schema.Bytes(
-        title=_(u"IChip Batch Release Document"),
-        description=_(u"Batch Release Document of IChip Lot"),
+    iChipLotBatchRelease = schema.Bytes(
+        title=_(u"iChip Batch Release Document"),
+        description=_(u"Batch Release Document of iChip Lot"),
         required=False,
     )
 
 
-class ValidateIChipLotUniqueness(validator.SimpleFieldValidator):
-    """Validate fuction to ensure that the IChip Lot ID is unique on add/edit
+class ValidateiChipLotUniqueness(validator.SimpleFieldValidator):
+    """Validate fuction to ensure that the iChip Lot ID is unique on add/edit
     """
 
     def validate(self, value):
-        super(ValidateIChipLotUniqueness, self).validate(value)
+        super(ValidateiChipLotUniqueness, self).validate(value)
         if value is not None:
             catalog = getToolByName(self.context, 'portal_catalog')
             results = catalog(
-                {'IChipLotID': value, 'object_provides': IChip.__identifier__})
+                {'iChipLotID': value, 'object_provides': iChip.__identifier__})
 
             contextUUID = IUUID(self.context, None)
             for result in results:
                 if result.UID != contextUUID:
-                    raise Invalid(_(u"The IChip Lot is already in assigned"))
+                    raise Invalid(_(u"The iChip Lot is already in assigned"))
 
 
 validator.WidgetValidatorDiscriminators(
-    ValidateIChipLotUniqueness,
-    field=IIChipLot['IChipLotID'],
+    ValidateiChipLotUniqueness,
+    field=IiChipLot['iChipLotID'],
 )

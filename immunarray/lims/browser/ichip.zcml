@@ -4,9 +4,9 @@
     i18n_domain="immunarray.lims">
 
     <browser:page
-            for="immunarray.lims.interfaces.ichip.IIChip"
+            for="immunarray.lims.interfaces.ichip.IiChip"
             name="view"
-            class="immunarray.lims.browser.ichip.IChipView"
+            class="immunarray.lims.browser.ichip.iChipView"
             permission="zope2.View"
     />
 </configure>

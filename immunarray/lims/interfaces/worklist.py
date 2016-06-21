@@ -1,17 +1,9 @@
-from z3c.form.form import extends
-from z3c.form import field
+from collective.z3cform.datagridfield import DictRow
 from plone.directives import form
-
-from collective.z3cform.datagridfield import DictRow, DataGridFieldFactory
+from zope import schema
+from zope.interface import Interface
 
 from immunarray.lims import messageFactory as _
-from zope.interface import Interface
-from zope import schema
-
-
-class IWorklistFolder(Interface):
-    """Folder to hold worklists
-    """
 
 
 class ITestFormTableRowSchema(form.Schema):

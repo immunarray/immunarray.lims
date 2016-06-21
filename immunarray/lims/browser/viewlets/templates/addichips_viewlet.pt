@@ -1,7 +1,7 @@
 <html>
 <body>
     <div class="ichips_add_controls" style="padding: 10px 0px;">
-        <form name="ichips-add-form" action="ichips_add" method="POST">
+        <form name="ichips-add-form" action="addichips" method="POST">
             <input name="sequence_start" type="number" class="ichips-sequence-end" placeholder="First iChip">
             <input name="sequence_end" type="number" class="ichips-sequence-start" placeholder="Last iChip">
             <input type="submit" class="ichips-add" value="Add iChips">

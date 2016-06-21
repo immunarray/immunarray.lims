@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
-<object name="worklist" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="Worklist" meta_type="Dexterity FTI" i18n:domain="plone"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
     <property name="title" i18n:translate="">Worklist</property>
-    <property name="description" i18n:translate="">Worklist</property>
+    <property name="description" i18n:translate=""></property>
     <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
     <property name="factory">Worklist</property>
-    <property name="add_view_expr">string:${folder_url}/++add++worklist</property>
+    <property name="add_view_expr">string:${folder_url}/++add++Worklist</property>
     <property name="link_target"></property>
     <property name="immediate_view">folder_listing</property>
-    <property name="global_allow">False</property>
+    <property name="global_allow">True</property>
     <property name="filter_content_types">True</property>
     <property name="allowed_content_types">
-        <element value="worklist"/>
     </property>
     <property name="allow_discussion">False</property>
     <property name="default_view">view</property>
@@ -21,7 +20,7 @@
         <element value="folder_listing"/>
     </property>
     <property name="default_view_fallback">False</property>
-    <property name="add_permission">cmf.AddPortalContent</property>
+    <property name="add_permission">immunarray.lims.permissions.AddWorklist</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->

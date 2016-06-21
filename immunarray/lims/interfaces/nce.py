@@ -9,7 +9,7 @@ from immunarray.lims.interfaces.solution import *
 def currentTime():
     return datetime.datetime.now()
 
-class INCEItem(model.Schema):
+class INCE(model.Schema):
     """General NCE Item to be used to track non conformance events in the lab"""
     NCETrackingNumber=schema.TextLine(
             title=_(u"NCE Tracking Number"),
