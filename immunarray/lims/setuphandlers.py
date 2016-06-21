@@ -16,6 +16,7 @@ def setupVarious(context):
     mp(AddiChipLot, [], 0)
     mp(AddiChip, [], 0)
     mp(AddWorklist, [], 0)
+    mp(AddPlate, [], 0)
     mp(AddNCE, [], 0)
     mp(AddPatient, [], 0)
     mp(AddProvider, [], 0)

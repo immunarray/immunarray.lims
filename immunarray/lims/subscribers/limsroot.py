@@ -5,7 +5,7 @@ from plone.dexterity.fti import DexterityFTI
 from zope.component.hooks import getSite
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
-    AddProvider
+    AddProvider, AddPlate
 from immunarray.lims.permissions import AddSolution
 from immunarray.lims.permissions import AddWorklist
 from immunarray.lims.permissions import AddiChipLot
@@ -30,18 +30,17 @@ def LIMSCreated(event):
 
 def create_structure(lims):
     for x in [
-        ['lims', 'Folder', 'materials', 'Materials'],
-        ['lims', 'Folder', 'solutions', 'Solutions'],
-        ['lims', 'Folder', 'ichiplots', 'iChip Lots'],
-        ['lims', 'Folder', 'worklists', 'Worklists'],
-        ['lims', 'Folder', 'plates', 'Plates'],
-        ['lims', 'Folder', 'nce', 'Nonconformance'],
-        ['lims', 'Folder', 'patients', 'Patients'],
-        ['lims', 'Folder', 'providers', 'Providers'],
+        [lims, 'Folder', 'materials', 'Materials'],
+        [lims, 'Folder', 'solutions', 'Solutions'],
+        [lims, 'Folder', 'ichiplots', 'iChip Lots'],
+        [lims, 'Folder', 'worklists', 'Worklists'],
+        [lims, 'Folder', 'plates', 'Plates'],
+        [lims, 'Folder', 'nce', 'Nonconformance'],
+        [lims, 'Folder', 'patients', 'Patients'],
+        [lims, 'Folder', 'providers', 'Providers'],
     ]:
-        path = lims.unrestrictedTraverse(x[0])
-        api.content.create(path, x[1], x[2], x[3])
-
+        obj = api.content.create(container=x[0], type=x[1], id=x[2], title=x[3])
+        obj.setLayout('folder_contents')
 
 def structure_permissions(lims):
     lims.materials.manage_permission(
@@ -52,6 +51,8 @@ def structure_permissions(lims):
         AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.worklists.manage_permission(
         AddWorklist, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.plates.manage_permission(
+        AddPlate, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.nce.manage_permission(
         AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.patients.manage_permission(
