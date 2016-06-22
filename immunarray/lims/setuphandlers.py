@@ -20,11 +20,3 @@ def setupVarious(context):
     mp(AddNCE, [], 0)
     mp(AddPatient, [], 0)
     mp(AddProvider, [], 0)
-
-    # Display 'LIMSRoot' objects in the navigation
-    registry = getUtility(IRegistry)
-    settings = registry.forInterface(INavigationSchema, prefix="plone")
-    displayed_types = list(settings.displayed_types)
-    if 'LIMSRoot' not in displayed_types:
-        displayed_types.append('LIMSRoot')
-        settings.displayed_types = tuple(displayed_types)
