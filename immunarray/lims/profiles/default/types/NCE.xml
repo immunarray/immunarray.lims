@@ -25,7 +25,7 @@
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.nce.INCE</property>
-    <property name="model_source"></property>q
+    <property name="model_source"></property>
     <property name="model_file"></property>
     <property name="schema_policy">dexterity</property>
     <alias from="(Default)" to="(dynamic view)"/>
