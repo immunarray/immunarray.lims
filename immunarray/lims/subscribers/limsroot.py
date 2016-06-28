@@ -10,6 +10,7 @@ from immunarray.lims.permissions import AddSolution
 from immunarray.lims.permissions import AddWorklist
 from immunarray.lims.permissions import AddiChipLot
 
+from bika.lims.permissions import disallow_default_contenttypes
 
 def get_schema_filename(folder, name):
     return resource_filename('immunarray.lims', '%s/%s.xml' % (folder, name))
@@ -41,6 +42,7 @@ def create_structure(lims):
     ]:
         obj = api.content.create(container=x[0], type=x[1], id=x[2], title=x[3])
         obj.setLayout('folder_contents')
+        disallow_default_contenttypes(obj)
 
 def structure_permissions(lims):
     lims.materials.manage_permission(
