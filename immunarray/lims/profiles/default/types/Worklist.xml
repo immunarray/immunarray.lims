@@ -3,11 +3,11 @@
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
     <property name="title" i18n:translate="">Worklist</property>
-    <property name="description" i18n:translate=""></property>
+    <property name="description" i18n:translate=""/>
     <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
     <property name="factory">Worklist</property>
     <property name="add_view_expr">string:${folder_url}/++add++Worklist</property>
-    <property name="link_target"></property>
+    <property name="link_target"/>
     <property name="immediate_view">folder_listing</property>
     <property name="global_allow">True</property>
     <property name="filter_content_types">True</property>
@@ -27,8 +27,8 @@
         <!--<element value="plone.app.content.interfaces.INameFromTitle"/>-->
     </property>
     <property name="schema">immunarray.lims.interfaces.worklist.IWorklist</property>
-    <property name="model_source"></property>
-    <property name="model_file"></property>
+    <property name="model_source"/>
+    <property name="model_file"/>
     <property name="schema_policy">dexterity</property>
     <alias from="(Default)" to="(dynamic view)"/>
     <alias from="edit" to="@@edit"/>
