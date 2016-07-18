@@ -44,6 +44,9 @@ def create_structure(lims):
         obj.setLayout('folder_contents')
         disallow_default_contenttypes(obj)
 
+        # Configuration to bottom of nav.
+        lims.moveObjectsToBottom(['configuration'])
+
 def structure_permissions(lims):
     lims.materials.manage_permission(
         AddMaterial, ['Manager', 'LabManager', 'Owner'], 0)
