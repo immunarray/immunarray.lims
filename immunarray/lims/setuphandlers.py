@@ -14,7 +14,7 @@ class HiddenProfiles(object):
         and quickinstaller
         """
         return [
-            # 'bika.lims:default',
+            'bika.lims:default',
             'immunarray.lims:uninstall',
         ]
 
