@@ -10,9 +10,12 @@ from immunarray.lims.permissions import *
 @implementer(INonInstallable)
 class HiddenProfiles(object):
     def getNonInstallableProfiles(self):
-        """Hide uninstall profile from site-creation and quickinstaller"""
+        """Hide bika.lims and our own uninstall profile from site-creation
+        and quickinstaller
+        """
         return [
             'bika.lims:default',
+            'immunarray.lims:uninstall',
         ]
 
 def setupVarious(context):
