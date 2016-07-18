@@ -39,7 +39,7 @@ class IiChipLot(model.Schema):
     )
     iChipLotTempLot = schema.Bytes(
         title=_(u"iChip Lot Travel Temperature Log"),
-        description=_(u"Travle Temperature Log of iChip Lot"),
+        description=_(u"Travel Temperature Log of iChip Lot"),
         required=False,
     )
     iChipLotAcceptanceStatus = schema.Choice(
