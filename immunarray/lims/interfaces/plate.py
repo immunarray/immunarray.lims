@@ -9,8 +9,3 @@ class IPlate96Well(model.Schema):
     """
     A 96 Well plate object
     """
-    CustomerServiceItemID = schema.TextLine(
-        title=_(u"Customer Service Item ID"),
-        description=_(u"Customer Service Item ID"),
-        required=True,
-    )
