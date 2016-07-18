@@ -7,37 +7,40 @@ from bika.lims.interfaces.person import IPerson
 
 
 class IProvider(IPerson):
-    NPI = schema.TextLine(
+    """Care provider
+    """
+
+    npi = schema.TextLine(
         title=_(u"NPI"),
         description=_(u"NPI (unique to each provider)"),
         required=True,
     )
-    Credentials = schema.TextLine(
+
+    credentials = schema.TextLine(
         title=_(u"Provider Credentials"),
         description=_(u"Provider credentials (M.D.  D.O.)"),
         required=False,
     )
-    TaxID = schema.TextLine(
+
+    tax_id = schema.TextLine(
         title=_(u"Tax ID"),
         description=_(u"Tax ID"),
         required=False,
     )
-    PIN = schema.TextLine(
+
+    pin = schema.TextLine(
         title=_(u"PIN"),
         description=_(u"PIN"),
         required=False,
     )
-    UPIN = schema.TextLine(
+
+    upin = schema.TextLine(
         title=_(u"UPIN"),
         description=_(u"UPIN"),
         required=False,
     )
-    Fax = schema.TextLine(
-        title=_(u"Fax Number"),
-        description=_(u"Fax number for result delivery"),
-        required=True,
-    )
-    PublishingPrefernce = schema.Choice(
+
+    publishing_prefernce = schema.Choice(
         title =_(u"Publishing Preference"),
         description=_(u"Providers desired publincation of resutls"),
         values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],

@@ -9,22 +9,21 @@ from immunarray.lims.interfaces.solution import *
 def currentTime():
     return datetime.datetime.now()
 
+
 class INCE(model.Schema):
-    """General NCE Item to be used to track non conformance events in the lab"""
-    NCETrackingNumber=schema.TextLine(
-            title=_(u"NCE Tracking Number"),
-            description=_(u"NCE Tracking Number"),
-            required=True,
+    """General NCE Item to be used to track non conformance events in the lab
+    """
+
+    current_date_time = schema.Datetime(
+        title=_(u"Datetime of NCE"),
+        description=_(u"Datetime of NCE"),
+        defaultFactory=currentTime,
+        required=True,
     )
-    NCECurrentDateTime=schema.Datetime(
-            title=_(u"Datetime of NCE"),
-            description=_(u"Datetime of NCE"),
-            defaultFactory=currentTime,
-            required=True,
-    )
-    NCEReporter=schema.Choice(
-            title=_(u"Operator that is Reporting NCE"),
-            description=_(u"Operator that is Reporting NCE"),
-            vocabulary=u"plone.principalsource.Users",
-            required=False,
+
+    reporter = schema.Choice(
+        title=_(u"Operator that is Reporting NCE"),
+        description=_(u"Operator that is Reporting NCE"),
+        vocabulary=u"plone.principalsource.Users",
+        required=False,
     )

@@ -9,27 +9,35 @@ from immunarray.lims import messageFactory as _
 class ITestFormTableRowSchema(form.Schema):
     """A single row in the TestForm table
     """
+
     sequence = schema.TextLine(
         title=u"Sequence",
         readonly=True)
+
     scan_slot = schema.TextLine(
         title=u"Scan Slot",
         required=False)
+
     check_one = schema.TextLine(
         title=u"Confirm Sample in Well Position",
         required=False)
+
     slide_id = schema.TextLine(
         title=u"Slide ID/well position",
         required=False)
+
     check_two = schema.TextLine(
         title=u"Confirm Chip in Correct Scanning Position",
         required=False)
+
     specimen_id = schema.TextLine(
         title=u"Specimen ID",
         required=False)
+
     aliquot_id = schema.TextLine(
         title=u"Aliquot ID",
         required=False)
+
     comments = schema.TextLine(
         title=u"Comments",
         required=False)
@@ -50,12 +58,15 @@ TESTFORM_DEFAULT = [
 class ISolutionsTableRowSchema(form.Schema):
     """A single row in the TestForm table
     """
+
     solutions = schema.TextLine(
         title=u"Solutions",
         readonly=True)
+
     batch_number = schema.TextLine(
         title=u"Batch #",
         required=False)
+
     expiration_date = schema.Date(
         title=u"Expiration Date",
         required=False)
@@ -100,33 +111,21 @@ SOLUTIONS_DEFAULT = [
 class IWorklist(Interface):
     """The main Worklist schema
     """
-    DocumentNumber = schema.TextLine(
+
+    document_number = schema.TextLine(
         title=_(u"Run Number"),
         description=_(u"Veracis Run Number"),
         required=True,
     )
-    Assay = schema.TextLine(
-        title=_(u"Assay"),
-        description=_(u""),
-        required=True,
-    )
-    TestDate = schema.Date(
-        title=_(u"Date of Test"),
-        description=_(u"Date of Test Run"),
-        required=True,
-    )
-    ScanDate = schema.Date(
-        title=_(u"Date of Scan"),
-        description=_(u"Date of Scanning"),
-        required=True,
-    )
-    TestForm = schema.List(
+
+    test_form = schema.List(
         title=u"Test Form",
         value_type=DictRow(title=u"test", schema=ITestFormTableRowSchema),
         required=True,
         default=TESTFORM_DEFAULT
     )
-    Solutions = schema.List(
+
+    solutions = schema.List(
         title=u"Solutions",
         value_type=DictRow(title=u"solution", schema=ISolutionsTableRowSchema),
         required=True,

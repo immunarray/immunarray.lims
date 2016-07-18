@@ -5,40 +5,49 @@ from zope.interface import Interface
 
 
 class IPatient(IPerson):
-    DOB = schema.Date(
+    """Patient record
+    """
+
+    dob = schema.Date(
         title=_(u"Date of Birth"),
         description=_(u"Date of Birth"),
         required=False,
     )
-    MaritalStatus = schema.Choice(
+
+    marital_status = schema.Choice(
         title=_(u"Marital Status"),
         description=_(u"Marital Status"),
         values=[_(u'Single'), _(u'Married'), _(u'Other')],
         required=False,
     )
-    Gender = schema.Choice(
+
+    gender = schema.Choice(
         title=_(u"Gender"),
         description=_(u"Gender"),
         values=[_(u'Male'), _(u'Female'), _(u'Other')],
         required=False,
     )
-    SSN = schema.TextLine(
+
+    ssn = schema.TextLine(
         title=_(u"Social Security Number"),
         description=_(u"Social Security Number"),
         required=False,
     )
-    RelationToInsured = schema.Choice(
+
+    relation_to_insured = schema.Choice(
         title=_(u"Patient Relationship to Insured"),
         description=_(u"Patient relationship to Insured"),
         values=[_(u'Self'), _(u'Spouse'), _(u'Child')],
         required=False,
     )
-    UniqueSampleNumber = schema.TextLine(
+
+    unique_sample_number = schema.TextLine(
         title=_(u"Unique Sample Number"),
         description=_(u"Sample ID from the blood draw kit"),
         required=False,
     )
-    ResearchConsent = schema.Bool(
+
+    research_consent = schema.Bool(
         title=_(u"Patient Consent to Research"),
         description=_(u"Patient Gives consisent to research use"),
         required=False,
