@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <object>
-    <hidden manager="plone.abovecontenttitle" skinname="*" purge="False">
-        <viewlet name="addichips-viewlet" insert-before="*"/>
-        <viewlet name="addworkingaliquotfrombulk-viewlet" insert-before="*"/>
-    </hidden>
+    <order manager="plone.abovecontenttitle" skinname="*">
+        <viewlet name="addichips-viewlet"/>
+        <viewlet name="addworkingaliquotfrombulk-viewlet"/>
+    </order>
 </object>
