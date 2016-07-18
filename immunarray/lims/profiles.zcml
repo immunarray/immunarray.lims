@@ -26,5 +26,9 @@
             provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+    <utility
+            factory=".setuphandlers.HiddenProfiles"
+            name="immunarray.lims-hiddenprofiles"/>
+
 
 </configure>

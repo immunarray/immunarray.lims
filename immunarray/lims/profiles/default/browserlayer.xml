@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <layers>
   <layer
-    name="bika.immunarray"
-    interface="bika.lims.interfaces.IImmunarrayLayer"
+    name="immunarray.lims"
+    interface="immunarray.lims.interfaces.IImmunarrayLayer"
   />
 </layers>
