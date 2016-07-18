@@ -1,9 +1,19 @@
-from Products.CMFPlone.interfaces import INavigationSchema
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import INavigationSchema
+from Products.CMFPlone.interfaces import INonInstallable
 from zope.component import getUtility
+from zope.component.hooks import getSite
+from zope.interface import implementer
 
 from immunarray.lims.permissions import *
-from zope.component.hooks import getSite
+
+@implementer(INonInstallable)
+class HiddenProfiles(object):
+    def getNonInstallableProfiles(self):
+        """Hide uninstall profile from site-creation and quickinstaller"""
+        return [
+            'bika.lims:default',
+        ]
 
 def setupVarious(context):
     if context.readDataFile('immunarray.lims.txt') is None:

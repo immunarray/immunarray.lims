@@ -18,4 +18,13 @@
         <depends name="content"/>
     </genericsetup:importStep>
 
+    <genericsetup:registerProfile
+            name="uninstall"
+            title="bika.immunarray uninstall profile"
+            directory="profiles/uninstall"
+            description="Uninstalls the bika.immunarray add-on"
+            provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+
+
 </configure>
