@@ -14,12 +14,12 @@ class HiddenProfiles(object):
         and quickinstaller
         """
         return [
-            'bika.lims:default',
+            # 'bika.lims:default',
             'immunarray.lims:uninstall',
         ]
 
 def setupVarious(context):
-    if context.readDataFile('immunarray.lims.txt') is None:
+    if context.readDataFile('immunarraylims_default.txt') is None:
         return
 
     portal = getSite()
@@ -33,3 +33,10 @@ def setupVarious(context):
     mp(AddNCE, [], 0)
     mp(AddPatient, [], 0)
     mp(AddProvider, [], 0)
+
+def uninstall(context):
+    """Uninstall script"""
+    if context.readDataFile('immunarraylims_uninstall.txt') is None:
+        return
+    # Do something during the uninstallation of this package
+    pass

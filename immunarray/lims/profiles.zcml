@@ -20,11 +20,18 @@
 
     <genericsetup:registerProfile
             name="uninstall"
-            title="bika.immunarray uninstall profile"
+            title="immunarray.lims uninstall profile"
             directory="profiles/uninstall"
-            description="Uninstalls the bika.immunarray add-on"
+            description="Uninstalls the immunarray.lims add-on"
             provides="Products.GenericSetup.interfaces.EXTENSION"
     />
+
+    <genericsetup:importStep
+            name="immunarray.lims-uninstall"
+            title="immunarray.lims uninstall handler"
+            description="Import step run during ininstalling immunarray.lims"
+            handler=".setuphandlers.uninstall">
+    </genericsetup:importStep>
 
     <utility
             factory=".setuphandlers.HiddenProfiles"
