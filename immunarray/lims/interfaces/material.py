@@ -48,12 +48,12 @@ class IMaterial(model.Schema):
     )
     ArrivalAmount = schema.TextLine(
         title=_(u"Amount of material at time of arrival"),
-        description=_(u"Specify with SI units, eg: 1cm/2, 1', 20g, or 1kg."),
+        description=_(u"Specify with SI units, eg: 1uL, 1', 20g, or 1 kg."),
         required=True,
     )
     CurrentAmount = schema.TextLine(
         title=_(u"Amount of material currently remaining"),
-        description=_(u"Specify with SI units, eg: 1cm/2, 1', 20g, or 1kg."),
+        description=_(u"Specify with SI units, eg: 1uL, 1', 20g, or 1 kg."),
         required=False
     )
     ReceivedBy = schema.Choice(
