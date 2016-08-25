@@ -31,7 +31,7 @@ class AddMultipleiChipsHandler(BrowserView):
             self.request.response.redirect(ichiplot.absolute_url())
             return
 
-        title = ichiplot.iChipLotID
+        title = ichiplot.ichiplotID
 
         for x in range(start, end+1):
             objectname = "{0}_{1}".format(title, x)
