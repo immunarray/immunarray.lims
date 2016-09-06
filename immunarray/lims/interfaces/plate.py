@@ -9,3 +9,5 @@ class IPlate96Well(model.Schema):
     """
     A 96 Well plate object
     """
+    pass
+    
