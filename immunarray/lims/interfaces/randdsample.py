@@ -18,13 +18,18 @@ class IRandDSample(model.Schema):
     """R and D sample
     """
 
+    source_id = schema.TextLine(
+        title=_(u"R&D Source Sample ID"),
+        description=_(u"R&D Source Sample ID"),
+        required=False,
+    )
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
-        description=_(u"NCE Tracking Numbe"),
+        description=_(u"R&D Veracis Sample ID"),
         required=True,
     )
 
-    date_added = schema.Datetime(
+    date_added = schema.Date(
         title=_(u"Date R&D Sample was added to LIMS"),
         description=_(u"Date R&D Sample was added to LIMS"),
         defaultFactory=currentDate,
@@ -56,12 +61,6 @@ class IRandDSample(model.Schema):
         required=False,
     )
 
-    source_id = schema.TextLine(
-        title=_(u"Source ID of R&D Sample"),
-        description=_(u"Source ID of R&D Sample"),
-        required=False,
-    )
-
     volume = schema.Float(
         title=_(u"Volume of R&D Sample in micro liters (uL)"),
         description=_(u"Volume of R&D Sample in micro liters (uL)"),
@@ -89,7 +88,7 @@ class IRandDSample(model.Schema):
         title=_(u"R&D Fluid Type"),
         description=_(u"R&D Fluid Type"),
         values=[_(u"Serum"), _(u"Plasma"), _(u"CSF"), _(u"Tissue")],
-        required=False,
+        required=True,
     )
 
     date_received = schema.Date(
