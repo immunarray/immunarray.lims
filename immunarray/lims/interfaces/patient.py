@@ -34,21 +34,22 @@ class IPatient(IPerson):
         required=False,
     )
 
-    relation_to_insured = schema.Choice(
-        title=_(u"Patient Relationship to Insured"),
-        description=_(u"Patient relationship to Insured"),
-        values=[_(u'Self'), _(u'Spouse'), _(u'Child')],
-        required=False,
-    )
-
-    unique_sample_number = schema.TextLine(
-        title=_(u"Unique Sample Number"),
-        description=_(u"Sample ID from the blood draw kit"),
+    medical_record_number = schema.TextLine(
+        title=_(u"Medical Record Number"),
+        description=_(u"Medical Record Number"),
         required=False,
     )
 
     research_consent = schema.Bool(
         title=_(u"Patient Consent to Research"),
         description=_(u"Patient Gives consisent to research use"),
+        values=[_(u'No'), _(u'Yes')],
+        required=True,
+    )
+
+    race = schema.Bool(
+        title=_(u"Patient Race"),
+        description=_(u"Patient Race"),
+        values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u"Caucasian"), _(u"Hispanic or Latino"), _(u"Other")],
         required=False,
     )
