@@ -9,6 +9,12 @@ class ISample(ISample):
     """Sample that will contain all the billing info and high levle information
         that is applicalbe to all aliqouts made from this material
     """
+    unique_sample_number = schema.TextLine(
+        title=_(u"Unique Sample Number"),
+        description=_(u"Sample ID from the blood draw kit"),
+        required=False,
+    )
+
     sample_primary_insurance_name = schema.TextLine(
         title=_(u"Primary Insurance Name"),
         description =_(u"Primary Insurance Name"),
