@@ -50,6 +50,6 @@ class IPatient(IPerson):
     race = schema.Bool(
         title=_(u"Patient Race"),
         description=_(u"Patient Race"),
-        values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u"Caucasian"), _(u"Hispanic or Latino"), _(u"Other")],
+        values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u'Caucasian'), _(u'Hispanic or Latino'), _(u'Other')],
         required=False,
     )
