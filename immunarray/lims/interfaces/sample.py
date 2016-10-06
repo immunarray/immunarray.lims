@@ -94,81 +94,81 @@ class ISample(ISample):
         required=False,
     )
 
-sample_secondary_insurance_name = schema.TextLine(
-    title=_(u"Secondary Insurance Name"),
-    description =_(u"Secondary Insurance Name"),
-    required=False,
-)
+    sample_secondary_insurance_name = schema.TextLine(
+        title=_(u"Secondary Insurance Name"),
+        description =_(u"Secondary Insurance Name"),
+        required=False,
+    )
 
-sample_secondary_insurance_payerID = schema.TextLine(
-    title=_(u"Secondary Insurance Payer ID"),
-    description =_(u"Secondary Insurance Payer ID"),
-    required=False,
-)
+    sample_secondary_insurance_payerID = schema.TextLine(
+        title=_(u"Secondary Insurance Payer ID"),
+        description =_(u"Secondary Insurance Payer ID"),
+        required=False,
+    )
 
-sample_secondary_insurance_policy_number = schema.TextLine(
-    title=_(u"Secondary Insurance Policy Number"),
-    description =_(u"Secondary Insurance Policy Number"),
-    required=False,
-)
+    sample_secondary_insurance_policy_number = schema.TextLine(
+        title=_(u"Secondary Insurance Policy Number"),
+        description =_(u"Secondary Insurance Policy Number"),
+        required=False,
+    )
 
-sample_secondary_insurance_plan_number = schema.TextLine(
-    title=_(u"Secondary Insurance Plan Number"),
-    description =_(u"Secondary Insurance Plan Number"),
-    required=False,
-)
+    sample_secondary_insurance_plan_number = schema.TextLine(
+        title=_(u"Secondary Insurance Plan Number"),
+        description =_(u"Secondary Insurance Plan Number"),
+        required=False,
+    )
 
-sample_secondary_insurance_authorization_precertificate = schema.TextLine(
-    title=_(u"Secondary Insurance Authorization"),
-    description =_(u"Secondary Insurance Authorization"),
-    required=False,
-)
+    sample_secondary_insurance_authorization_precertificate = schema.TextLine(
+        title=_(u"Secondary Insurance Authorization"),
+        description =_(u"Secondary Insurance Authorization"),
+        required=False,
+    )
 
-sample_secondary_insurance_subscriber_name = schema.TextLine(
-    title=_(u"Secondary Insurance Subscriber Name"),
-    description =_(u"Secondary Insurance Subscriber Name"),
-    required=False,
-)
+    sample_secondary_insurance_subscriber_name = schema.TextLine(
+        title=_(u"Secondary Insurance Subscriber Name"),
+        description =_(u"Secondary Insurance Subscriber Name"),
+        required=False,
+    )
 
-sample_secondary_insurance_relation_to_insured = schema.Choice(
-    title=_(u"Secondary Insurance Relation to Insured"),
-    description =_(u"Secondary Insurance Relation to Insured"),
-    values=[_(u"Self"), _("Spouse"), _("Child"),_("Other")],
-    required=False,
-)
+    sample_secondary_insurance_relation_to_insured = schema.Choice(
+        title=_(u"Secondary Insurance Relation to Insured"),
+        description =_(u"Secondary Insurance Relation to Insured"),
+        values=[_(u"Self"), _("Spouse"), _("Child"),_("Other")],
+        required=False,
+    )
 
-sample_secondary_insurance_subscriber_DOB = schema.Date(
-    title=_(u"Secondary Insurance Subscriber DOB"),
-    description =_(u"Secondary Insurance Subscriber DOB"),
-    required=False,
-)
+    sample_secondary_insurance_subscriber_DOB = schema.Date(
+        title=_(u"Secondary Insurance Subscriber DOB"),
+        description =_(u"Secondary Insurance Subscriber DOB"),
+        required=False,
+    )
 
-sample_secondary_insurance_effective_date = schema.Date(
-    title=_(u"Secondary Insurance Effective Date"),
-    description =_(u"Secondary Insurance Effective Date"),
-    required=False,
-)
+    sample_secondary_insurance_effective_date = schema.Date(
+        title=_(u"Secondary Insurance Effective Date"),
+        description =_(u"Secondary Insurance Effective Date"),
+        required=False,
+    )
 
-sample_secondary_insurance_address = schema.TextLine(
-    title=_(u"Secondary Insurance Address"),
-    description =_(u"Secondary Insurance Address"),
-    required=False,
-)
+    sample_secondary_insurance_address = schema.TextLine(
+        title=_(u"Secondary Insurance Address"),
+        description =_(u"Secondary Insurance Address"),
+        required=False,
+    )
 
-sample_secondary_city = schema.TextLine(
-    title=_(u"Secondary Insurance City"),
-    description =_(u"Secondary Insurance City"),
-    required=False,
-)
+    sample_secondary_city = schema.TextLine(
+        title=_(u"Secondary Insurance City"),
+        description =_(u"Secondary Insurance City"),
+        required=False,
+    )
 
-sample_secondary_state = schema.TextLine(
-    title=_(u"Secondary Insurance State"),
-    description =_(u"Secondary Insurance State"),
-    required=False,
-)
+    sample_secondary_state = schema.TextLine(
+        title=_(u"Secondary Insurance State"),
+        description =_(u"Secondary Insurance State"),
+        required=False,
+    )
 
-sample_secondary_insurance_zip_code = schema.TextLine(
-    title=_(u"Secondary Insurance Zip Code"),
-    description =_(u"Secondary Insurance Zip Code"),
-    required=False,
-)
+    sample_secondary_insurance_zip_code = schema.TextLine(
+        title=_(u"Secondary Insurance Zip Code"),
+        description =_(u"Secondary Insurance Zip Code"),
+        required=False,
+    )
