@@ -21,7 +21,7 @@ class INCE(model.Schema):
         required=False,
     )
 
-    Date_of_NCE = schema.Date(
+    date_of_NCE = schema.Date(
         title=_(u"Date of NCE"),
         description=_(u"Date of NCE"),
         required=True,
