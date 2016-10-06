@@ -16,9 +16,10 @@ class IProvider(IPerson):
         required=True,
     )
 
-    credentials = schema.TextLine(
+    credentials = schema.Choice(
         title=_(u"Provider Credentials"),
         description=_(u"Provider credentials (M.D.  D.O.)"),
+        values=[_(u'MD'), _(u'DO'), _(u'PA'), _(u'MD/PhD'), _(u'PhD')],
         required=False,
     )
 
@@ -40,7 +41,7 @@ class IProvider(IPerson):
         required=False,
     )
 
-    publishing_prefernce = schema.Choice(
+    publishing_preference = schema.Choice(
         title =_(u"Publishing Preference"),
         description=_(u"Providers desired publincation of resutls"),
         values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],
