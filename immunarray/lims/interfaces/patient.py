@@ -40,14 +40,14 @@ class IPatient(IPerson):
         required=False,
     )
 
-    research_consent = schema.Bool(
+    research_consent = schema.Choice(
         title=_(u"Patient Consent to Research"),
         description=_(u"Patient Gives consisent to research use"),
         values=[_(u'No'), _(u'Yes')],
         required=True,
     )
 
-    race = schema.Bool(
+    race = schema.Choice(
         title=_(u"Patient Race"),
         description=_(u"Patient Race"),
         values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u'Caucasian'), _(u'Hispanic or Latino'), _(u'Other')],
