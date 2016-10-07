@@ -128,7 +128,7 @@ class INCE(model.Schema):
         description=_(u"Remedial Action"),
         required=False,
     )
-    
+
     is_follow_up_needed = schema.Bool(
         title=_(u"Is Follow Up Needed?"),
         description=_(u"Is Follow Up Needed?"),
