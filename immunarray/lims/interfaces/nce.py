@@ -90,6 +90,7 @@ class INCE(model.Schema):
         values=[_(u'Scanning'),_(u'Accessioning'),_(u'Test Preparation'),_(u'Blocking'),_(u'Testing'),_(u'Data Analysis')],
         required=False,
     )
+
     risk_score = schema.Choice(
         title=_(u"Risk Score"),
         description=_(u"Risk Score"),
@@ -127,6 +128,7 @@ class INCE(model.Schema):
         description=_(u"Remedial Action"),
         required=False,
     )
+    
     is_follow_up_needed = schema.Bool(
         title=_(u"Is Follow Up Needed?"),
         description=_(u"Is Follow Up Needed?"),
