@@ -47,3 +47,9 @@ class IProvider(IPerson):
         values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],
         required=True,
     )
+
+    kits_on_site = schema.Int(
+        title =_(u"Number of Kits on Site"),
+        description=_(u"Number of Kits on Site"),
+        required=False,
+    )
