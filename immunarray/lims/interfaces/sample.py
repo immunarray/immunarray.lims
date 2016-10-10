@@ -172,3 +172,10 @@ class ISample(ISample):
         description =_(u"Secondary Insurance Zip Code"),
         required=False,
     )
+
+    sample_use = schema.Choice(
+        title=_(u"Commercail Status"),
+        description=_(u"Commercial Status"),
+        required=True,
+        values=[_(u'Billable'), _(u'No Charge'), _(u'RUO')],
+    )
