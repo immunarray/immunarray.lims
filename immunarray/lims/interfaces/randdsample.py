@@ -18,9 +18,19 @@ class IRandDSample(model.Schema):
     """R and D sample
     """
 
-    source_id = schema.TextLine(
-        title=_(u"R&D Source Sample ID"),
-        description=_(u"R&D Source Sample ID"),
+    source_id_one = schema.TextLine(
+        title=_(u"Primary R&D Source Sample ID"),
+        description=_(u"Primary R&D Source Sample ID"),
+        required=False,
+    )
+    source_id_two = schema.TextLine(
+        title=_(u"Secondary R&D Source Sample ID"),
+        description=_(u"Secondary R&D Source Sample ID"),
+        required=False,
+    )
+    source_id_three = schema.TextLine(
+        title=_(u"Tertiary R&D Source Sample ID"),
+        description=_(u"Tertiary R&D Source Sample ID"),
         required=False,
     )
     veracis_id = schema.TextLine(
