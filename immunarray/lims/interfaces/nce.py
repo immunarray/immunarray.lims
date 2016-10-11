@@ -91,6 +91,12 @@ class INCE(model.Schema):
         required=False,
     )
 
+    category_tertiary = schema.Choice(
+        title=_(u"Category - Tertiary"),
+        description=_(u"Category - Tertiary"),
+        values=[_(u'Scanning'),_(u'Accessioning'),_(u'Test Preparation'),_(u'Blocking'),_(u'Testing'),_(u'Data Analysis')],
+        required=False,
+    )
     risk_score = schema.Choice(
         title=_(u"Risk Score"),
         description=_(u"Risk Score"),
