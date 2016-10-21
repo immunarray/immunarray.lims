@@ -7,7 +7,7 @@ from plone.autoform import directives
 from plone.supermodel import model
 from zope import schema
 
-class ICustomerServiceCall (model.Schema);
+class ICustomerServiceCall (model.Schema):
     """Interface for Customer Service Call objects CSC
     """
     csc_client = schema.Choice(
