@@ -12,4 +12,5 @@
     <object name="Provider" meta_type="Dexterity FTI"/>
     <object name="Solution" meta_type="Dexterity FTI"/>
     <object name="Worklist" meta_type="Dexterity FTI"/>
+    <object name="ClinicalSample" meta_type="Dexterity FTI"/>
 </object>
