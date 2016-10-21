@@ -12,4 +12,6 @@
 
     <include package=".viewlets"/>
 
+    <!--inclued file="controlpanel.zcml"/-->
+
 </configure>
