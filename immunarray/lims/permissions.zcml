@@ -11,5 +11,7 @@
     <permission id="immunarray.lims.permissions.AddProvider" title="LIMS: Add Provider"/>
     <permission id="immunarray.lims.permissions.AddSolution" title="LIMS: Add Solution"/>
     <permission id="immunarray.lims.permissions.AddWorklist" title="LIMS: Add Worklist"/>
+    <permission id="immunarray.lims.permissions.AddClinicalSample" title="LIMS: Add Clinical Sample"/>
+    <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
 
 </configure>
