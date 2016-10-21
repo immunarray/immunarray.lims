@@ -12,4 +12,5 @@ class iChipView(BrowserView):
     template = ViewPageTemplateFile("templates/ichipview.pt")
 
     def __call__(self):
+        raise "hello kitty"
         return self.template()
