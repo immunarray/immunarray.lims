@@ -50,7 +50,7 @@ class IMaterial(model.Schema):
     coa = NamedBlobImage(
         title=_(u"Certificate of Analysis"),
         description=_(u"Certificate of Analysis"),
-        required=True
+        required=False
     )
 
     arrival_amount = schema.TextLine(
