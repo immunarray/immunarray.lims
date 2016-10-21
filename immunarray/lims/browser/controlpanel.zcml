@@ -1,0 +1,6 @@
+<browser:page
+        name="immunarray-controlpanel"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".controlpanel.IImmunArrayPanelView"
+        permission="cmf.ManagePortal"
+/>
