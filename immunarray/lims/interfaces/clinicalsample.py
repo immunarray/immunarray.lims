@@ -4,6 +4,9 @@ from zope import schema
 from immunarray.lims import messageFactory as _
 from plone.dexterity.utils import createContentInContainer
 from bika.lims.interfaces.sample import ISample
+from plone.autoform import directives
+from z3c.form.browser.radio import RadioFieldWidget
+
 
 class IClinicalSample(ISample):
     """Sample that will contain all the billing info and high levle information
@@ -51,10 +54,14 @@ class IClinicalSample(ISample):
         required=False,
     )
 
+    directives.widget(level=RadioFieldWidget)
     sample_primary_insurance_relation_to_insured = schema.Choice(
         title=_(u"Primary Insurance Relation to Insured"),
         description =_(u"Primary Insurance Relation to Insured"),
-        values=[_(u"Self"), _("Spouse"), _("Child"),_("Other")],
+        values=[_(u"Self"),
+                _("Spouse"),
+                _("Child"),
+                _("Other")],
         required=False,
     )
 
@@ -130,10 +137,14 @@ class IClinicalSample(ISample):
         required=False,
     )
 
+    directives.widget(level=RadioFieldWidget)
     sample_secondary_insurance_relation_to_insured = schema.Choice(
         title=_(u"Secondary Insurance Relation to Insured"),
         description =_(u"Secondary Insurance Relation to Insured"),
-        values=[_(u"Self"), _("Spouse"), _("Child"),_("Other")],
+        values=[_(u"Self"),
+                _("Spouse"),
+                _("Child"),
+                _("Other")],
         required=False,
     )
 
@@ -173,11 +184,140 @@ class IClinicalSample(ISample):
         required=False,
     )
 
-    sample_use = schema.Choice(
+    directives.widget(level=RadioFieldWidget)
+    billable_code = schema.Choice(
         title=_(u"Commercail Status"),
         description=_(u"Commercial Status"),
         required=True,
-        values=[_(u'Billable'), _(u'No Charge'), _(u'RUO')],
+        values=[_(u'Billable'),
+                _(u'No Charge'),
+                _(u'RUO')],
     )
 
-alsoProvides(ISample, IFormFieldProvider)
+    sample_serial_number = schema.Int(
+        title=_(u"Sample Serial Number"),
+        description=_(u"Sample Serial Number"),
+        required=True,
+        """ Want to do an n+1 but allow be edited, should be unique"""
+    )
+
+    sample_ordering_healthcare_provider = schema.Choice(
+        title=_(u"Ordering Healthcare Provider"),
+        description=_(u"Ordering Healthcare Provider"),
+        vocabulary=u"immunarray.lims.interfaces.doctor.DoctorVocabulary",
+        required="False",
+    )
+    sample_ordering_healthcare_provider_signature=schema.Bool(
+        title=_(u"Ordering Healthcare Provider Signature Provided"),
+        description=_(u"Ordering Healthcare Provider Signature Provided"),
+        required="True"
+    )
+
+    primary_healthcare_provider = schema.Choice(
+        title=_(u"Primary Healthcare Provider"),
+        description=_(u"Primary Healthcare Provider"),
+        vocabulary=u"immunarray.lims.interfaces.doctor.DoctorVocabulary",
+        required="False",
+    )
+    directives.widget(level=RadioFieldWidget)
+    test_requested = schema.Choice(
+        title=_(u"Test(s) Requested"),
+        description=_(u"Test(s) Requested"),
+        vocabulary=u"immunarray.lims.interfaces.doctor.DoctorVocabulary",
+        required="False",
+    )
+
+    directives.widget(level=RadioFieldWidget)
+    ana_teesting = schema.Choice(
+        title=_(u"ANA Testing Results"),
+        description=_(u"ANA Testing Results"),
+        required=True,
+        values=[_(u'No Response'),
+                _(u'Not Performed'),
+                _(u'Negative'),
+                _(u'Positive')],
+    )
+
+    clinical_impression = schema.Choice(
+        title=_(u"Clinical Impression"),
+        description=_(u"Clinical Impression"),
+        required=True,
+        values=[_(u'Not Specified'),
+                _(u'Uncertain'),
+                _(u'Yes'),
+                _(u'No')],
+    )
+
+    other_test_ordered = schema.Tuple(
+        title=_(u"Other Test(s) Ordered"),
+        description =_(u"Other Test(s) Ordered Enter One Per Line"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    directives.widget(level=RadioFieldWidget)
+    symptoms_choice = schema.Choice(
+        title=_(u"Symptoms"),
+        description=_(u"Symptoms, Select All That Apply"),
+        required=True,
+        values=[_(u"Rash"),
+                _(u"Mouth sores"),
+                _(u"Joint Pain if yes, please specify"),
+                _(u"Inflammation, if yes, please specify"),
+                _(u"Seizures or psychosis"),
+                _(u"Hair loss")],
+    )
+
+    symptoms_text = schema.Tuple(
+        title=_(u"Symptom(s)"),
+        description =_(u"Symptom(s) Enter One Per Line"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    diagnosis_code = schema.Choice(
+        title=_(u"Diagnosis & ICD-10 Codes"),
+        description=_(u"Diagnosis & ICD-10 Codes"),
+        required=True,
+        values=[_(u"D89.89-Other specified disorders involving the immune mechanism, not elsewhere classified"),
+                _(u"D89.9-Disorder involving the immune mechanism, unspecified"),
+                _(u"L93.2-Other local lupus erythematosus"),
+                _(u"M32.10-Systemic lupus erythematosus, organ or system involvement unspecified"),
+                _(u"M35.9-Systemic involvement of connective tissue, unspecified"),
+                _(u"Other, please specify")],
+    )
+
+    diagnosis_code_other = = schema.Tuple(
+        title=_(u"Other Diagnosis Code(s)"),
+        description =_(u"Other Diagnosis Code(s) Enter one Per Line"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    phlebotomist_last_name = schema.TextLine(
+        title=_(u"Phlebotomist Last Name"),
+        description =_(u"Phlebotomist Last Name"),
+        required=False,
+    )
+
+    phlebotomist_signature_provided=schema.Bool(
+        title=_(u"Ordering Healthcare Provider Signature Provided"),
+        description=_(u"Ordering Healthcare Provider Signature Provided"),
+        required="True"
+    )
+
+    collection_date = schema.Date(
+        title=_(u"Sample Collection Date"),
+        description =_(u"Sample Collection Date"),
+        required=False,
+    )
+
+    received_date = schema.Date(
+        title=_(u"Sample Received Date"),
+        description =_(u"Sample Received Date"),
+        required=False,
+    )
+alsoProvides(IClinicalSample, IFormFieldProvider)
