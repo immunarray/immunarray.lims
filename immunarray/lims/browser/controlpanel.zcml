@@ -2,5 +2,6 @@
         name="immunarray-controlpanel"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         class=".controlpanel.IImmunArrayPanelView"
+        layer="immunarray.lims"
         permission="cmf.ManagePortal"
 />
