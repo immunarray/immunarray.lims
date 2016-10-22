@@ -1,12 +1,19 @@
-from zope import schema
-
-from Products.CMFCore.utils import getToolByName
+from immunarray.lims import messageFactory as _
 from plone.supermodel import model
-from plone.uuid.interfaces import IUUID
-from z3c.form import validator
+from zope import schema
 from zope.interface import Invalid
 
-from immunarray.lims import messageFactory as _
+
+def NonZeroConstraint(value):
+    """Check that the Int field has a value >0
+    """
+    try:
+        int(value)
+    except:
+        raise Invalid(_(u"Value must be an integer, not '%s'" % value))
+    if value < 1:
+        raise Invalid(_(u"Value must be >0, not '%s'" % value))
+    return True
 
 
 class IiChipLot(model.Schema):
@@ -43,10 +50,19 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    framecount = schema.Choice(
+    nr_ichips = schema.Choice(
+        title=_(u"Number of iChips"),
+        description=_(u"Number of iChips contained in this lot."),
+        required=True,
+        constraint=NonZeroConstraint,
+    )
+
+    frames = schema.Choice(
         title=_(u"iChip frames"),
         description=_(u"The type of ichips that are contained here"),
-        values=[_(u"No Frame iChips"), _(u"3 Frame iChips"), _(u"8 Frame iChips")],
+        values=[_(u"No Frame iChips"),
+                _(u"3 Frame iChips"),
+                _(u"8 Frame iChips")],
         required=True,
     )
 
