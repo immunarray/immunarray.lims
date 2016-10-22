@@ -31,6 +31,12 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
+    ship_date = schema.Date(
+        title=_(u"iChip Lot Shipped Date"),
+        description=_(u"iChip Lot Shipped Date"),
+        required=True,
+    )
+
     expiration_date = schema.Date(
         title=_(u"iChip Lot Expiration Date"),
         description=_(u"Expiration Date of iChip Lot"),
@@ -44,7 +50,7 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    temp_log = schema.Bytes(
+    temp_log = schema.NamedFile(
         title=_(u"iChip Lot Travel Temperature Log"),
         description=_(u"Travel Temperature Log of iChip Lot"),
         required=False,
@@ -57,14 +63,53 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    cofa = schema.Bytes(
+    cofa = schema.NamedFile(
         title=_(u"iChip Certificate of Analysis"),
         description=_(u"Certificate of Analysis of iChip Lot"),
         required=False,
     )
 
-    batch_release = schema.Bytes(
+    batch_release = schema.NamedFile(
         title=_(u"iChip Batch Release Document"),
         description=_(u"Batch Release Document of iChip Lot"),
         required=False,
+    )
+
+    gal_file = schema.NamedFile(
+        title=_(u"Gal File (.gal)"),
+        description=_(u"Gal File (.gal)"),
+        required=False,
+    )
+
+    shipping_box_integrity_maintained = schema.Choice(
+        title=_(u"iChip Shipping Box Integrity Maintained"),
+        description=_(u"iChip Shipping Box Integrity Maintained"),
+        values=[_(u"Yes"), _(u"No")],
+        required=True,
+    )
+
+    product_container_integrity_maintained = schema.Choice(
+        title=_(u"Product Container Integrity Maintained"),
+        description=_(u"Product Container Integrity Maintained"),
+        values=[_(u"Yes"), _(u"No")],
+        required=True,
+    )
+
+    other_damage = schema.TextLine(
+        title=_(u"Other Damage"),
+        description=_(u"Other Damage"),
+        required=False,
+    )
+
+    temp_on_arrival = schema.TextLine(
+        title=_(u"Temperature of iChips on Arrival"),
+        description=_(u"Temperature of iChips on Arrival"),
+        required=False,
+    )
+
+    temp_on_arrival_acceptable_limit = schema.Choice(
+        title=_(u"Temerature of iChips on Arrival Within Acceptable Limit"),
+        description=_(u"Temerature of iChips on Arrival Within Acceptable Limit"),
+        values=[_(u"Yes"), _(u"No")],
+        required=True,
     )
