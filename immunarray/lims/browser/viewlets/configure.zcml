@@ -4,21 +4,6 @@
         i18n_domain="immunarray.lims">
 
     <browser:viewlet
-            for="immunarray.lims.interfaces.ichiplot.IiChipLot"
-            name="addichips-viewlet"
-            class=".addichips.AddMultipleiChipsViewlet"
-            manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
-            permission="zope2.View"
-    />
-
-    <browser:page
-            for="immunarray.lims.interfaces.ichiplot.IiChipLot"
-            name="addichips"
-            class=".addichips.AddMultipleiChipsHandler"
-            permission="zope2.View"
-    />
-
-    <browser:viewlet
             for="bika.lims.interfaces.aliquot.IAliquot"
             name="addworkingaliqutfrombulk-viewlet"
             class=".addworkingaliquotfrombulk.AddWorkingAliquotFromBulkViewlet"
