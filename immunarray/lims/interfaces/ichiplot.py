@@ -18,44 +18,52 @@ class IiChipLot(model.Schema):
         description=_(u"iChip Lot ID"),
         required=True,
     )
-    ichiplot_print_date = schema.Date(
+
+    print_date = schema.Date(
         title=_(u"iChip Lot Print Date"),
         description=_(u"Print Date of iChip Lot"),
         required=True,
     )
 
-    ichiplot_arrival_date = schema.Date(
+    arrival_date = schema.Date(
         title=_(u"iChip Lot Arrival Date"),
         description=_(u"Arrival Date of iChip Lot"),
         required=True,
     )
 
-    ichiplot_expiration_date = schema.Date(
+    expiration_date = schema.Date(
         title=_(u"iChip Lot Expiration Date"),
         description=_(u"Expiration Date of iChip Lot"),
         required=True,
     )
 
-    ichiplot_temp_log = schema.Bytes(
+    framecount = schema.Choice(
+        title=_(u"iChip frames"),
+        description=_(u"The type of ichips that are contained here"),
+        values=[_(u"No Frame iChips"), _(u"3 Frame iChips"), _(u"8 Frame iChips")],
+        required=True,
+    )
+
+    temp_log = schema.Bytes(
         title=_(u"iChip Lot Travel Temperature Log"),
         description=_(u"Travel Temperature Log of iChip Lot"),
         required=False,
     )
 
-    ichiplot_acceptance_status = schema.Choice(
+    acceptance_status = schema.Choice(
         title=_(u"iChip Acceptance Status"),
         description=_(u"Acceptance Status of iChip Lot"),
         values=[_(u"Quarantined"), _(u"Passed")],
         required=True,
     )
 
-    ichiplot_cofa = schema.Bytes(
+    cofa = schema.Bytes(
         title=_(u"iChip Certificate of Analysis"),
         description=_(u"Certificate of Analysis of iChip Lot"),
         required=False,
     )
 
-    ichiplot_batch_release = schema.Bytes(
+    batch_release = schema.Bytes(
         title=_(u"iChip Batch Release Document"),
         description=_(u"Batch Release Document of iChip Lot"),
         required=False,
