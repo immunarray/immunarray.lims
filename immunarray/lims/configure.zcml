@@ -10,19 +10,23 @@
 
   <!-- Include dependencies listed in setup.py -->
   <includeDependencies package="." />
-
   <five:registerPackage package="." initialize=".initialize" />
-
   <include file="permissions.zcml" />
   <include file="behaviours.zcml" />
   <include file="profiles.zcml" />
-
   <include package=".adapters"/>
   <include package=".browser"/>
   <include package=".static"/>
   <include package=".subscribers"/>
   <include package=".workflow"/>
-
   <browser:resourceDirectory name="immunarray.lims" directory="static"/>
-
+  <utility 
+     name="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"
+     component="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"/>
+  <utility 
+     name="immunarray.lims.vocabularies.nce.SecondaryNCEVocabulary"
+     component="immunarray.lims.vocabularies.nce.SecondaryNCEVocabulary"/>
+  <utility 
+     name="immunarray.lims.vocabularies.nce.TertiaryNCEVocabulary"
+     component="immunarray.lims.vocabularies.nce.TertiaryNCEVocabulary"/>
 </configure>
