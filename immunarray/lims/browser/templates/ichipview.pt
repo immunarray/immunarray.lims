@@ -34,17 +34,17 @@
             </div>
             <div class="tr">
                 <div class="td label">iChip Run Date</div>
-                <div class="td value" tal:content="context/ichip_lot_run_date">
+                <div class="td value" tal:content="context/lot_run_date">
                 </div>
             </div>​
             <div class="tr">
                 <div class="td label">iChip Status</div>
-                <div class="td value" tal:content="context/ichip_status">
+                <div class="td value" tal:content="context/status">
                 </div>
             </div>​
             <div class="tr">
                 <div class="td label">iChip Storage Location</div>
-                <div class="td value" tal:content="context/ichip_storage_location">
+                <div class="td value" tal:content="context/storage_location">
                 </div>
             </div>​
         </div>
