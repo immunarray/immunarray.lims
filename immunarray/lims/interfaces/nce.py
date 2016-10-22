@@ -83,8 +83,6 @@ class INCE(model.Schema):
         vocabulary='immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary',
         required=False,
     )
-    """original vocab list[_(u'Process Management'),_(u'Purchasing and Inventory'),_(u'Equipment'),]
-    """
 
     category_secondary = schema.Choice(
         title=_(u"Category - Secondary"),
