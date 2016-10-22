@@ -1,7 +1,14 @@
-<browser:page
-        name="immunarray-controlpanel"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".controlpanel.IImmunArrayPanelView"
-        layer="immunarray.lims"
-        permission="cmf.ManagePortal"
-/>
+<configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:browser="http://namespaces.zope.org/browser"
+        i18n_domain="immunarray.lims">
+
+    <browser:page
+            name="immunarray-controlpanel"
+            for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+            class=".controlpanel.ImmunArrayControlPanelView"
+            permission="cmf.ManagePortal"
+    />
+</configure>
+
+
