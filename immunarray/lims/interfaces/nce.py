@@ -80,21 +80,23 @@ class INCE(model.Schema):
     category_primary = schema.Choice(
         title=_(u"Category - Primary"),
         description=_(u"Category - Primary"),
-        values=[_(u'Process Management'),_(u'Purchasing and Inventory'),_(u'Equipment'),],
+        vocabulary='immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary',
         required=False,
     )
+    """original vocab list[_(u'Process Management'),_(u'Purchasing and Inventory'),_(u'Equipment'),]
+    """
 
     category_secondary = schema.Choice(
         title=_(u"Category - Secondary"),
         description=_(u"Category - Secondary"),
-        values=[_(u'Scanning'),_(u'Accessioning'),_(u'Test Preparation'),_(u'Blocking'),_(u'Testing'),_(u'Data Analysis')],
+        vocabulary='immunarray.lims.vocabularies.nce.SecondaryNCEVocabulary',
         required=False,
     )
 
     category_tertiary = schema.Choice(
         title=_(u"Category - Tertiary"),
         description=_(u"Category - Tertiary"),
-        values=[_(u'Scanning'),_(u'Accessioning'),_(u'Test Preparation'),_(u'Blocking'),_(u'Testing'),_(u'Data Analysis')],
+        vocabulary='immunarray.lims.vocabularies.nce.TertiaryNCEVocabulary',
         required=False,
     )
     risk_score = schema.Choice(
