@@ -1,15 +1,40 @@
-class PrimaryNCE(object):
-    """Context source binder to provide a vocabulary of existing primaryNCE topics
-    """
+# -*- coding: utf-8 -*-
+from plone import api
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from zope.component import queryUtility
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary
 
-    implements(IContextSourceBinder)
+@implementer(IVocabularyFactory)
+class PrimaryNCE(object):
 
     def __call__(self, context):
-        catalog = context.portal_catalog
-        proxies = catalog({
-            'object_provides': 'immunarray.lims.interfaces.nce.INCE',
-            'sort_on': 'sortable_title',
-        })
-        terms = [SimpleTerm(proxy.id, title=proxy.Title)
-                 for proxy in proxies]
-        return SimpleVocabulary(terms)
+        values = api.portal.get_registry_record('immunarray.category_primary')
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(normalizer.normalize(i), i) for i in values]
+        return SimpleVocabulary.fromItems(items)
+
+PrimaryNCEVocabulary = PrimaryNCE()
+
+@implementer(IVocabularyFactory)
+class SecondaryNCE(object):
+
+    def __call__(self, context):
+        values = api.portal.get_registry_record('immunarray.category_secondary')
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(normalizer.normalize(i), i) for i in values]
+        return SimpleVocabulary.fromItems(items)
+
+SecondaryNCEVocabulary = SecondaryNCE()
+
+@implementer(IVocabularyFactory)
+class TertiaryNCE(object):
+
+    def __call__(self, context):
+        values = api.portal.get_registry_record('immunarray.category_tertiary')
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(normalizer.normalize(i), i) for i in values]
+        return SimpleVocabulary.fromItems(items)
+
+TertiaryNCEVocabulary = TertiaryNCE()
