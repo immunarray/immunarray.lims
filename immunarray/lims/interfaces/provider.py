@@ -47,9 +47,10 @@ class IProvider(IPerson):
         values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],
         required=True,
     )
-
-    kits_on_site = schema.Int(
-        title =_(u"Number of Kits on Site"),
-        description=_(u"Number of Kits on Site"),
-        required=False,
+    
+    test_report_preference = schema.Choice(
+        title =_(u"Publishing Preference"),
+        description=_(u"Providers desired publincation of resutls"),
+        values=[_(u'Standard'), _(u'Extended')],
+        required=True,
     )
