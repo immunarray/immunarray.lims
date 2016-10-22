@@ -47,7 +47,7 @@ class IProvider(IPerson):
         values=[_(u'Fax'), _(u'Mail'), _(u'EMR')],
         required=True,
     )
-    
+
     test_report_preference = schema.Choice(
         title =_(u"Publishing Preference"),
         description=_(u"Providers desired publincation of resutls"),
