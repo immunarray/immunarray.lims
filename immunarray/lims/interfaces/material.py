@@ -79,5 +79,67 @@ class IMaterial(model.Schema):
         required=False  # value will be completed by workflow transition
     )
 
+    product_name = schema.TextLine(
+        title=_(u"Product Name"),
+        description=_(u"Product Name"),
+        required=False
+    )
+    purchase_order = schema.TextLine(
+        title=_(u"Purchase Order"),
+        description=_(u"Purchase Order"),
+        required=False
+    )
+    shipping_tracking_number = schema.TextLine(
+        title=_(u"Shipping Tracking Number"),
+        description=_(u"Shipping Tracking Number"),
+        required=False
+    )
+
+    intended_use = schema.Choice(
+        title =_(u"Intended Use"),
+        description=_(u"Intended Use"),
+        values=[_(u'Commercial'), _(u'Development')],
+        required=True,
+    )
+
+    meets_raw_material_specifications = schema.Choice(
+        title =_(u"Meets Raw Material Specifications"),
+        description=_(u"Meets Raw Material Specifications"),
+        values=[_(u'Yes'), _(u'No')],
+        required=False,
+    )
+
+    shipping_box_integrity_maintained = schema.Choice(
+        title=_(u"Raw Materail Box Integrity Maintained"),
+        description=_(u"Raw Material Box Integrity Maintained"),
+        values=[_(u"Yes"), _(u"No")],
+        required=False,
+    )
+
+    product_container_integrity_maintained = schema.Choice(
+        title=_(u"Product Container Integrity Maintained"),
+        description=_(u"Product Container Integrity Maintained"),
+        values=[_(u"Yes"), _(u"No")],
+        required=False,
+    )
+
+    other_damage = schema.TextLine(
+        title=_(u"Other Damage"),
+        description=_(u"Other Damage"),
+        required=False,
+    )
+
+    temp_on_arrival = schema.TextLine(
+        title=_(u"Temperature of Raw Material on Arrival"),
+        description=_(u"Temperature of Raw Material on Arrival"),
+        required=False,
+    )
+
+    temp_on_arrival_acceptable_limit = schema.Choice(
+        title=_(u"Temerature of Raw Material on Arrival Within Acceptable Limit"),
+        description=_(u"Temerature of Raw Materail on Arrival Within Acceptable Limit"),
+        values=[_(u"Yes"), _(u"No")],
+        required=False,
+    )
 
 alsoProvides(IMaterial, IFormFieldProvider)
