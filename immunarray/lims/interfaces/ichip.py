@@ -1,11 +1,8 @@
-from datetime import date
+from immunarray.lims import messageFactory as _
 from plone.app.textfield import RichText
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from zope import schema
-
-from immunarray.lims import messageFactory as _
-from plone.dexterity.utils import createContentInContainer
 
 
 class IiChip(model.Schema):
@@ -22,7 +19,13 @@ class IiChip(model.Schema):
         title=_(u"iChip Status"),
         description=_(u"Status of iChip"),
         required=True,
-        values=[_(u'Quarantined'), _(u'Released'), _(u'Retained-US'),_(u'Retained-IA'),_(u'Planned'), _(u'Inprocess'), _(u'Used-QC-Passed'), _(u'Used-QC-Failed'), _(u'Residual')],
+        values=[_(u'Quarantined'),
+                _(u'Released'),
+                _(u'Retained'),
+                _(u'Inprocess'),
+                _(u'Used-QC-Passed'),
+                _(u'Used-QC-Failed'),
+                _(u'Residual')],
     )
 
     agilent_red = NamedBlobImage(
@@ -54,6 +57,12 @@ class IiChip(model.Schema):
         description=_(u"Storage Location of iChip"),
         values=[_('EQ-76'), _('EQ-Unknown')],
         required=False,
+    )
+
+    frames = schema.Choice(
+        title=_(u"iChip frames"),
+        description=_(u"What type of iChip is this"),
+        readonly=True,
     )
 
     well_a = schema.TextLine(
