@@ -9,6 +9,11 @@ class IiChip(model.Schema):
     """An iChip Lot that will be the container class object
     """
 
+    title = schema.TextLine(
+        title=_(u"iChip ID"),
+        required=True,
+    )
+
     lot_run_date = schema.Date(
         title=_(u"iChip Run Date"),
         description=_(u"Run Date of iChip"),
