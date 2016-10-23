@@ -59,7 +59,7 @@ class IiChip(model.Schema):
         required=False,
     )
 
-    frames = schema.Choice(
+    frames = schema.TextLine(
         title=_(u"iChip frames"),
         description=_(u"What type of iChip is this"),
         readonly=True,

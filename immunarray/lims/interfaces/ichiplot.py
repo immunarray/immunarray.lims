@@ -50,7 +50,7 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    nr_ichips = schema.Choice(
+    nr_ichips = schema.Int(
         title=_(u"Number of iChips"),
         description=_(u"Number of iChips contained in this lot."),
         required=True,
