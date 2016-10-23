@@ -25,7 +25,7 @@
         <element value="plone.app.content.interfaces.INameFromTitle"/>
         <element value="plone.app.content.interfaces.IClinicalSamples"/>
     </property>
-    <property name="schema">immunarray.lims.interfaces.clincalsample.IClinicalSample</property>
+    <property name="schema">immunarray.lims.interfaces.clinicalsample.IClinicalSample</property>
     <property name="model_source"/>
     <property name="model_file"/>
     <property name="schema_policy">dexterity</property>
