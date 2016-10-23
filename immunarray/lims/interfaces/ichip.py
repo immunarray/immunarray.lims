@@ -22,7 +22,7 @@ class IiChip(model.Schema):
         title=_(u"iChip Status"),
         description=_(u"Status of iChip"),
         required=True,
-        values=[_(u'Quarantined'), _(u'Released'), _(u'Retained'), _(u'Inprocess'), _(u'Used-QC-Passed'), _(u'Used-QC-Failed'), _(u'Residual')],
+        values=[_(u'Quarantined'), _(u'Released'), _(u'Retained-US'),_(u'Retained-IA'),_(u'Planned'), _(u'Inprocess'), _(u'Used-QC-Passed'), _(u'Used-QC-Failed'), _(u'Residual')],
     )
 
     agilent_red = NamedBlobImage(
