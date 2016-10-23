@@ -21,12 +21,6 @@ class IiChipLot(model.Schema):
     """An iChip Lot that will contain iChip objects.
     """
 
-    ichiplotID = schema.TextLine(
-        title=_(u"iChip Lot ID"),
-        description=_(u"iChip Lot ID"),
-        required=True,
-    )
-
     print_date = schema.Date(
         title=_(u"iChip Lot Print Date"),
         description=_(u"Print Date of iChip Lot"),

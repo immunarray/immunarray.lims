@@ -15,7 +15,6 @@ def set_ichiplot_permissions(instance):
 def set_ichiplot_title(instance):
     """I want the Title to be set from the ichiplotID
     """
-    instance.title = instance.ichiplotID
     instance.reindexObject(idxs=['Title'])
 
 
@@ -23,12 +22,11 @@ def create_ichips(instance):
     """I want to create X amount of iChips from form value.
     """
 
-    title = instance.ichiplotID
     for x in range(1, instance.nr_ichips + 1):
         ichip = create(container=instance,
                        type='iChip',
-                       id="{0}_{1:02d}".format(title, x),
-                       title="{0}_{1:02d}".format(title, x))
+                       id="{0}_{1:02d}".format(instance.title, x),
+                       title="{0}_{1:02d}".format(instance.title, x))
         # Configure each ichip to reflect the parent's settings
         ichip.frames = instance.frames
 

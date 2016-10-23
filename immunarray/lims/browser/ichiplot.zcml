@@ -4,8 +4,8 @@
     i18n_domain="immunarray.lims">
 
     <browser:page
-            for="immunarray.lims.interfaces.ichiplot.IiChipLot"
-            name="view"
+            for="*"
+            name="vieww"
             class="immunarray.lims.browser.ichiplot.IChipLotView"
             template="templates/ichiplotview.pt"
             permission="zope2.View"
