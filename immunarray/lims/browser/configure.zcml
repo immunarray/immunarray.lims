@@ -9,9 +9,8 @@
     i18n_domain="immunarray.lims">
 
     <include file="ichip.zcml"/>
+    <include file="ichiplot.zcml"/>
     <include file="controlpanel.zcml"/>
     <include package=".viewlets"/>
-
-    <!--inclued file="controlpanel.zcml"/-->
 
 </configure>
