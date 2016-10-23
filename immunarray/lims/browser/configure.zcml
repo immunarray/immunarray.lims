@@ -11,6 +11,7 @@
     <include file="ichip.zcml"/>
     <include file="ichiplot.zcml"/>
     <include file="controlpanel.zcml"/>
+
     <include package=".viewlets"/>
 
 </configure>

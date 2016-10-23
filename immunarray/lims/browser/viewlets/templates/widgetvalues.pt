@@ -1,0 +1,35 @@
+<html>
+<body>
+<style type="text/css">
+    .widget_values {
+        padding: 10px 0px;
+    }
+    .widget_values .discreet {
+        font-size:50%;
+        color:#ddd;
+    }
+</style>
+
+<div class="widget_values">
+
+    <tal:block repeat="widget view/widgets/values">
+        <div class="field" tal:condition="python:widget.__name__ not in ('IBasic.title', 'IBasic.description', 'title', 'description',)">
+            <label tal:content="widget/label"/>
+            <br/>
+            <div tal:content="structure widget/render"/>
+        </div>
+    </tal:block>
+
+    <fieldset tal:repeat="group view/groups"
+              tal:attributes="id python:''.join((group.prefix, 'groups.', group.__name__)).replace('.', '-')">
+        <legend tal:content="group/label"/>
+        <div class="field" tal:repeat="widget group/widgets/values">
+            <label tal:content="widget/label"/>
+            <br/>
+            <div tal:content="structure widget/render"/>
+        </div>
+    </fieldset>
+
+</div>
+</body>
+</html>

@@ -15,15 +15,14 @@
         <element value="iChip"/>
     </property>
     <property name="allow_discussion">False</property>
-    <property name="default_view">view</property>
+    <property name="default_view">folder_contents</property>
     <property name="view_methods">
-        <element value="view"/>
+        <element value="folder_contents"/>
     </property>
     <property name="default_view_fallback">False</property>
     <property name="add_permission">immunarray.lims.permissions.AddiChipLot</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
-        <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.ichiplot.IiChipLot</property>

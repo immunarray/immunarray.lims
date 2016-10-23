@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <object>
+
     <order manager="plone.abovecontenttitle" skinname="*">
-        <viewlet name="addichips-viewlet"/>
         <viewlet name="addworkingaliquotfrombulk-viewlet"/>
     </order>
+
+    <order manager="plone.abovecontentbody" skinname="*">
+        <viewlet name="widgetvalues-viewlet"/>
+    </order>
+
 </object>

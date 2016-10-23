@@ -3,12 +3,12 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="immunarray.lims">
 
-    <browser:page
-            for="*"
-            name="vieww"
-            class="immunarray.lims.browser.ichiplot.IChipLotView"
-            template="templates/ichiplotview.pt"
-            permission="zope2.View"
+    <browser:viewlet
+        for="immunarray.lims.interfaces.ichiplot.IiChipLot"
+        name="widgetvalues-viewlet"
+        class=".viewlets.widgetvalues.WidgetValuesViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+        permission="zope2.View"
     />
 
 </configure>
