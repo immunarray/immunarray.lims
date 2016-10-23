@@ -14,9 +14,10 @@ class IiChip(model.Schema):
         required=True,
     )
 
-    lot_run_date = schema.Date(
+    ichip_run_date = schema.TextLine(
         title=_(u"iChip Run Date"),
-        description=_(u"Run Date of iChip"),
+        description=_(u"Run Date of iChip (Read only)"),
+        readonly=True,
         required=False,
     )
 
@@ -26,7 +27,8 @@ class IiChip(model.Schema):
         required=True,
         values=[_(u'Quarantined'),
                 _(u'Released'),
-                _(u'Retained'),
+                _(u'Retained-US'),
+                _(u'Retained-IA'),
                 _(u'Inprocess'),
                 _(u'Used-QC-Passed'),
                 _(u'Used-QC-Failed'),
