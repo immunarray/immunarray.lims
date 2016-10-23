@@ -1,4 +1,5 @@
 from immunarray.lims import messageFactory as _
+from plone.namedfile.field import NamedFile
 from plone.supermodel import model
 from zope import schema
 from zope.interface import Invalid
@@ -66,7 +67,7 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    temp_log = schema.NamedFile(
+    temp_log = NamedFile(
         title=_(u"iChip Lot Travel Temperature Log"),
         description=_(u"Travel Temperature Log of iChip Lot"),
         required=False,
@@ -79,19 +80,19 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    cofa = schema.NamedFile(
+    cofa = NamedFile(
         title=_(u"iChip Certificate of Analysis"),
         description=_(u"Certificate of Analysis of iChip Lot"),
         required=False,
     )
 
-    batch_release = schema.NamedFile(
+    batch_release = NamedFile(
         title=_(u"iChip Batch Release Document"),
         description=_(u"Batch Release Document of iChip Lot"),
         required=False,
     )
 
-    gal_file = schema.NamedFile(
+    gal_file = NamedFile(
         title=_(u"Gal File (.gal)"),
         description=_(u"Gal File (.gal)"),
         required=False,
