@@ -9,29 +9,37 @@ from zope.interface import Interface
 
 class IImmunArrayControlPanel(Interface):
 
-    category_primary = schema.Tuple(
-        title=u'NCE Parimary Category',
-        default=(u'Process Management', u'Purchasing and Inventory',
-                 u'Equipment'),
-        missing_value=None,
+    category_primary = schema.List(
+        title=u"NCE Parimary Category",
+        description=u"NCE Parimary Category",
         required=False,
         value_type=schema.TextLine()
     )
 
-    category_secondary = schema.Tuple(
-        title=u'NCE Secondary Category',
-        default=(u'Scanning', u'Accessioning', u'Test Preparation',
-                 u'Blocking', u'Testing', u'Data Analysis'),
-        missing_value=None,
+    category_secondary = schema.List(
+        title=u"NCE Secondary Category",
+        description=u"NCE Secondary Category",
         required=False,
         value_type=schema.TextLine()
     )
 
-    category_tertiary = schema.Tuple(
+    category_tertiary = schema.List(
         title=u'NCE Tertiary Category',
-        default=(u'Scanning', u'Accessioning', u'Test Preparation',
-                 u'Blocking', u'Testing', u'Data Analysis'),
-        missing_value=None,
+        description=u'NCE Tertiary Category',
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    tests_offered = schema.List(
+        title=u'Tests Offered by Veracis',
+        description=u'Tests Offered by Veracis',
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    diagnostic_codes = schema.List(
+        title=u'Diagnostic/Billing Codes',
+        description=u'Diagnostic/Billing Codes',
         required=False,
         value_type=schema.TextLine()
     )
