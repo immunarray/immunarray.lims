@@ -118,7 +118,7 @@ class IiChipLot(model.Schema):
         required=False,
     )
 
-    temp_on_arrival = schema.TextLine(
+    temp_on_arrival = schema.Float(
         title=_(u"Temperature of iChips on Arrival"),
         description=_(u"Temperature of iChips on Arrival"),
         required=False,
