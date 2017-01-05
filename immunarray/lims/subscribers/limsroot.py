@@ -36,9 +36,10 @@ def create_structure(lims):
         [lims, 'Folder', 'ichiplots', 'iChip Lots'],
         [lims, 'Folder', 'worklists', 'Worklists'],
         [lims, 'Folder', 'plates', 'Plates'],
-        [lims, 'Folder', 'nce', 'Nonconformance'],
+        [lims, 'Folder', 'nce', 'Nonconformance Events'],
         [lims, 'Folder', 'patients', 'Patients'],
         [lims, 'Folder', 'providers', 'Providers'],
+        [lims, 'Folder', 'customerservicecall', 'Customer Service Calls']
     ]:
         obj = api.content.create(container=x[0], type=x[1], id=x[2], title=x[3])
         obj.setLayout('folder_contents')
@@ -63,6 +64,8 @@ def structure_permissions(lims):
     lims.patients.manage_permission(
         AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.providers.manage_permission(
+        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(
         AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
 
