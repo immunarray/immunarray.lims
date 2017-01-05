@@ -13,4 +13,5 @@
     <object name="Solution" meta_type="Dexterity FTI"/>
     <object name="Worklist" meta_type="Dexterity FTI"/>
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
+    <object name="iChipAssay" meta_type="Dexterity FTI"/>
 </object>
