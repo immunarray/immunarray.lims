@@ -38,4 +38,7 @@
   <utility
       name="immunarray.lims.vocabularies.provider.ProvidersVocabulary"
       component="immunarray.lims.vocabularies.provider.ProvidersVocabulary"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichipassay.IChipAssayVocabulary"
+      component="immunarray.lims.vocabularies.ichipassay.IChipAssayVocabulary"/>
 </configure>
