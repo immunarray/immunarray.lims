@@ -15,5 +15,5 @@ class IChipAssay (object):
         items = [(i, normalizer.normalize(i)) for i in values]
         return SimpleVocabulary.fromItems(items)
 
-IChipAssayVocabulary = ICHipAssay()
+IChipAssayVocabulary = IChipAssay()
 
