@@ -33,6 +33,7 @@ def setupVarious(context):
     mp(AddNCE, [], 0)
     mp(AddPatient, [], 0)
     mp(AddProvider, [], 0)
+    mp(AddiChipAssay, [], 0)
 
 def uninstall(context):
     """Uninstall script"""
