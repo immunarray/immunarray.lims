@@ -13,5 +13,6 @@
     <permission id="immunarray.lims.permissions.AddWorklist" title="LIMS: Add Worklist"/>
     <permission id="immunarray.lims.permissions.AddClinicalSample" title="LIMS: Add Clinical Sample"/>
     <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
+    <permission id="immunarray.lims.permissions.AddiChipAssay" title="LIMS: Add iChip Assay"/>
 
 </configure>
