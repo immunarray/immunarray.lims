@@ -9,6 +9,8 @@ from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
 from immunarray.lims.permissions import AddSolution
 from immunarray.lims.permissions import AddWorklist
 from immunarray.lims.permissions import AddiChipLot
+from immunarray.lims.permissions import AddiChipAssay
+from immunarray.lims.permissions import AddCustomerServiceCall
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -64,10 +66,10 @@ def structure_permissions(lims):
         AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.patients.manage_permission(
         AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.providers.manage_permission(
-        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichipassay.manage_permission(
+        AddiChipAssay, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.customerservicecall.manage_permission(
-        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
 
 def create_material_types(portal):
