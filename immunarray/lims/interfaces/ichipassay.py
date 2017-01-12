@@ -2,6 +2,7 @@
 from datetime import date
 from plone.app.textfield import RichText
 from zope import schema
+from plone.supermodel import model
 from immunarray.lims import messageFactory as _
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.utils import createContentInContainer
@@ -9,8 +10,7 @@ from plone.autoform import directives
 from zope.interface import alsoProvides
 
 class IiChipAssay(model.Schema):
-""" Interface that will allow for creation of new iChip Assays
-"""
+    """ Interface that will allow for creation of new iChip Assays"""
     name = schema.TextLine(
         title=_(u"Title"),
         description =_(u"Title"),
@@ -89,4 +89,3 @@ class IiChipAssay(model.Schema):
         required = False,
     )
 
-alsoProvides(IiChipAssay, IFormFieldProvider)
