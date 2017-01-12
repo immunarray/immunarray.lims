@@ -14,5 +14,6 @@
     <permission id="immunarray.lims.permissions.AddClinicalSample" title="LIMS: Add Clinical Sample"/>
     <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
     <permission id="immunarray.lims.permissions.AddiChipAssay" title="LIMS: Add iChip Assay"/>
+    <permission id="immunarray.lims.permissions.AddCustomerServiceCall" title="LIMS: Add Customer Service Call"/>
 
 </configure>
