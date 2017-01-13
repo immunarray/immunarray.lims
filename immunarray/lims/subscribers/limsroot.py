@@ -38,7 +38,7 @@ def create_structure(lims):
         [lims, 'Folder', 'ichiplots', 'iChip Lots'],
         [lims, 'Folder', 'worklists', 'Worklists'],
         [lims, 'Folder', 'plates', 'Plates'],
-        [lims, 'Folder', 'nce', 'Nonconformance Events'],
+        [lims, 'Folder', 'nce', 'Non Conformance Events'],
         [lims, 'Folder', 'patients', 'Patients'],
         [lims, 'Folder', 'providers', 'Providers'],
         [lims, 'Folder', 'ichipassay', 'iChip Assay'],
