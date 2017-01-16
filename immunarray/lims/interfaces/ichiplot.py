@@ -59,11 +59,19 @@ class IiChipLot(model.Schema):
     )
 
     frames = schema.Choice(
-        title=_(u"iChip frames"),
-        description=_(u"The type of ichips that are contained here"),
+        title=_(u"iChip Layout"),
+        description=_(u"iChip Layout"),
         values=[_(u"No Frame iChips"),
                 _(u"3 Frame iChips"),
                 _(u"8 Frame iChips")],
+        required=True,
+    )
+    intended_assay = schema.Choice(
+        title=_(u"Intended Assay(s)"),
+        description=_(u"Intended Assay(s)"),
+        values=[_(u"SLE_RO"),
+                _(u"DA"),
+                _(u"DA and ####")],
         required=True,
     )
 
