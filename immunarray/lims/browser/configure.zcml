@@ -14,4 +14,11 @@
 
     <include package=".viewlets"/>
 
+    <browser:page
+        name="rec"
+        for="*"
+        template="analysisrequest/templates/accessioning/acc.html"
+        permission="zope2.View"
+    />
+
 </configure>
