@@ -42,7 +42,7 @@ def create_structure(lims):
         [lims, 'Folder', 'patients', 'Patients'],
         [lims, 'Folder', 'providers', 'Providers'],
         [lims, 'Folder', 'ichipassay', 'iChip Assay'],
-        [lims, 'Folder', 'customerservicecall', 'Customer Service Calls']
+        [lims, 'Folder', 'customerservicecall', 'Customer Service Call']
     ]:
         obj = api.content.create(container=x[0], type=x[1], id=x[2], title=x[3])
         obj.setLayout('folder_contents')
