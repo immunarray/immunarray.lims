@@ -5,12 +5,8 @@ from plone.dexterity.fti import DexterityFTI
 from zope.component.hooks import getSite
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
-    AddProvider, AddPlate
-from immunarray.lims.permissions import AddSolution
-from immunarray.lims.permissions import AddWorklist
-from immunarray.lims.permissions import AddiChipLot
-from immunarray.lims.permissions import AddiChipAssay
-from immunarray.lims.permissions import AddCustomerServiceCall
+    AddProvider, AddPlate, AddSolution, AddWorklist, AddiChipLot, \
+    AddiChipAssay, AddCustomerServiceCall, AddClinicalSample
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -53,7 +49,7 @@ def create_structure(lims):
 
 def structure_permissions(lims):
     lims.materials.manage_permission(
-        AddMaterial, ['Manager', 'LabManager', 'Owner'], 0)
+        AddMaterial, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
     lims.solutions.manage_permission(
         AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.ichiplots.manage_permission(
@@ -70,6 +66,8 @@ def structure_permissions(lims):
         AddiChipAssay, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.customerservicecall.manage_permission(
         AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.provider.manage_permission(
+        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
 
 def create_material_types(portal):
