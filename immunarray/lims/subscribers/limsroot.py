@@ -66,7 +66,7 @@ def structure_permissions(lims):
         AddiChipAssay, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.customerservicecall.manage_permission(
         AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.provider.manage_permission(
+    lims.providers.manage_permission(
         AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
 
