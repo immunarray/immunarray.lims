@@ -64,10 +64,11 @@ def structure_permissions(lims):
         AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.ichipassay.manage_permission(
         AddiChipAssay, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(
-        AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.providers.manage_permission(
         AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(
+        AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+
 
 
 def create_material_types(portal):
