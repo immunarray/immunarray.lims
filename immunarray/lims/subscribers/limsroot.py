@@ -6,7 +6,7 @@ from zope.component.hooks import getSite
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
     AddProvider, AddPlate, AddSolution, AddWorklist, AddiChipLot, \
-    AddiChipAssay, AddCustomerServiceCall
+    AddiChipAssay, AddCustomerServiceCall, AddRack
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -35,6 +35,7 @@ def create_structure(lims):
         [lims, 'Folder', 'worklists', 'Worklists'],
         [lims, 'Folder', 'plates', 'Plates'],
         [lims, 'Folder', 'nce', 'Non Conformance Events'],
+        [lims, 'Folder', 'inventory', 'Inventory'],
         [lims, 'Folder', 'patients', 'Patients'],
         [lims, 'Folder', 'providers', 'Providers'],
         [lims, 'Folder', 'ichipassay', 'iChip Assays'],
@@ -68,6 +69,8 @@ def structure_permissions(lims):
         AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.customerservicecall.manage_permission(
         AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.inventory.manage_permission(
+        AddRack, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
 
 
