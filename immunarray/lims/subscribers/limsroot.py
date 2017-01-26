@@ -6,7 +6,7 @@ from zope.component.hooks import getSite
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
     AddProvider, AddPlate, AddSolution, AddWorklist, AddiChipLot, \
-    AddiChipAssay, AddCustomerServiceCall, AddClinicalSample
+    AddiChipAssay, AddCustomerServiceCall
 
 from bika.lims.permissions import disallow_default_contenttypes
 
