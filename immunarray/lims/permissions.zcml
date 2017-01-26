@@ -15,5 +15,9 @@
     <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
     <permission id="immunarray.lims.permissions.AddiChipAssay" title="LIMS: Add iChip Assay"/>
     <permission id="immunarray.lims.permissions.AddCustomerServiceCall" title="LIMS: Add Customer Service Call"/>
+    <permission id="immunarray.lims.permissions.AddFreezer" title="LIMS: Add Freezer"/>
+    <permission id="immunarray.lims.permissions.AddShelf" title="LIMS: Add Shelf"/>
+    <permission id="immunarray.lims.permissions.AddRack" title="LIMS: Add Rack"/>
+    <permission id="immunarray.lims.permissions.AddBox" title="LIMS: Add Box"/>
 
 </configure>
