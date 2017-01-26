@@ -36,6 +36,7 @@ def setupVarious(context):
     mp(AddClinicalSample, [], 0)
     mp(AddiChipAssay, [], 0)
     mp(AddCustomerServiceCall, [], 0)
+    mp(AddRandDSample, [], 0)
 
 def uninstall(context):
     """Uninstall script"""
