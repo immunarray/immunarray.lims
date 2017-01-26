@@ -13,6 +13,7 @@
     <object name="Provider" meta_type="Dexterity FTI"/>
     <object name="Worklist" meta_type="Dexterity FTI"/>
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
+    <object name="RandDSample" meta_type="Dexterity FTI"/>
     <object name="iChipAssay" meta_type="Dexterity FTI"/>
     <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
 </object>
