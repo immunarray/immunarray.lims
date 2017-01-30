@@ -66,12 +66,6 @@ class IiChip(model.Schema):
         required=False,
     )
 
-    frames = schema.TextLine(
-        title=_(u"iChip frames"),
-        description=_(u"What type of iChip is this"),
-        readonly=True,
-    )
-
     well_a = schema.TextLine(
         title=_(u"iChip Well A"),
         description=_(u"Aliquot ID of Sample Placed in iChip Well A"),
