@@ -19,6 +19,7 @@
   <include package=".static"/>
   <include package=".subscribers"/>
   <include package=".workflow"/>
+  <include package=".utils"/>
   <browser:resourceDirectory name="immunarray.lims" directory="static"/>
   <utility
       name="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"
