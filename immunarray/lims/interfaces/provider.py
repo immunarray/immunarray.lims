@@ -17,7 +17,7 @@ class IProvider(IPerson):
     credentials = schema.Choice(
         title=_(u"Provider Credentials"),
         description=_(u"Provider credentials (M.D.  D.O.)"),
-        values=[_(u'MD'), _(u'DO'), _(u'PA'), _(u'MD/PhD'), _(u'PhD')],
+        values=[_(u'MD'), _(u'DO'), _(u'PA-C'), _(u'MD/PhD'), _(u'PhD')],
         required=False,
     )
 
