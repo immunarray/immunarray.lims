@@ -18,7 +18,24 @@ class IRack(model.Schema):
     it will hold.  (5x4=20 boxes, or 4x4=16 boxes)
     """
 
-    pass
+    title = schema.Choice(
+        title=_(u"Rack ID"),
+        description=_(u"Rack ID"),
+        required=True,
+        values=[_(u'A'),
+                _(u'B'),
+                _(u'C'),
+                _(u'D'),
+                _(u'E'),
+                _(u'F'),
+                _(u'G'),
+                _(u'H')],
+    )
+
+    size = schema.Int(
+        title = _(u'Rack Size'),
+        description= _(u'Number of boxes rack can hold'),
+    )
 
 
 class IBox(model.Schema):
