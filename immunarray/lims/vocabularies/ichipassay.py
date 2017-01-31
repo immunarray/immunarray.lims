@@ -17,3 +17,13 @@ class IChipAssay (object):
 
 IChipAssayVocabulary = IChipAssay()
 
+class IChipAssayList(object):
+
+    def __call__(self, context):
+        values = context.ichipassay.objectValues()
+        names = [" ".join([v.title, v.status]) for v in values]
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(n, normalizer.normalize(n)) for n in names]
+        return SimpleVocabulary.fromItems(items)
+
+IChipAssayListVocabulary = IChipAssayList()
