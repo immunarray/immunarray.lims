@@ -8,6 +8,12 @@ class IProvider(IPerson):
     """Care provider
     """
 
+    site_ID = schema.Int(
+        title=_(u"Primary Site ID"),
+        description=_(u"Primary Site ID"),
+        required=False,
+    )
+
     npi = schema.TextLine(
         title=_(u"NPI"),
         description=_(u"NPI (unique to each provider)"),
