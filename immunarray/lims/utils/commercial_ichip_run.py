@@ -15,11 +15,13 @@ from immunarray.lims.interfaces import ichipassay
 #ichip count of any lot less than 1
 
 #set var iChipLot_Count
+#set var max_iChipLots
 
-#query iChipLots with "Passed" status, count results, set var Max_iChipLots
+#query iChipLots with "Passed" status, count results
 
 #if loop for count >=10
-
+    #make list with oldest first based on ichiplot.print_date
+    #of
 #than loop for count <10
 
 #query iChipLots that have "Passed" (want the oldest, based on ichiplot.print_date)
