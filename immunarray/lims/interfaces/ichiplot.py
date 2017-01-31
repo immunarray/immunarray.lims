@@ -1,4 +1,5 @@
 from immunarray.lims import messageFactory as _
+from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.namedfile.field import NamedFile
 from plone.supermodel import model
 from zope import schema
