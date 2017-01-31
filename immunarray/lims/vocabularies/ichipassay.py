@@ -4,7 +4,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface import implements
-from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.interfaces import IVocabularyFactory, IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
 @implementer(IVocabularyFactory)
@@ -20,7 +20,7 @@ IChipAssayVocabulary = IChipAssay()
 
 class IChipAssayList(object):
 
-    implements(IVocabularyFactory)
+    implements(IVocabularyFactory, IContextSourceBinder)
 
     def __call__(self, context):
         values = context.ichipassay.objectValues()
