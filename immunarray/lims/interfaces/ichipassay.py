@@ -11,9 +11,8 @@ from zope.interface import alsoProvides
 
 class IiChipAssay(model.Schema):
     """ Interface that will allow for creation of new iChip Assays"""
-    name = schema.TextLine(
-        title=_(u"Title"),
-        description=_(u"Title"),
+    title = schema.TextLine(
+        title=_(u"iChip Assay"),
         required=True,
     )
 
@@ -89,6 +88,15 @@ class IiChipAssay(model.Schema):
         description=_(u"Desired Working Aliquot Volume (uL)"),
         required=True,
         default=12,
+    )
+
+    status = schema.Choice(
+        title=_(u"iChip Assay Status"),
+        description=_(u"iChip Layout"),
+        values=[_(u"Research Use Only"),
+                _(u"Commercial"),
+                _(u"Retired (No Longer Offered)")],
+        required=True,
     )
 
     comments = RichText(
