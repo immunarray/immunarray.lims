@@ -7,6 +7,8 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.utils import createContentInContainer
 from bika.lims.interfaces.sample import ISample
 from plone.autoform import directives
+from plone.autoform import directives as form
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope.interface import alsoProvides
 
@@ -62,9 +64,9 @@ class IClinicalSample(ISample):
         title=_(u"Primary Insurance Relation to Insured"),
         description =_(u"Primary Insurance Relation to Insured"),
         values=[_(u"Self"),
-                _("Spouse"),
-                _("Child"),
-                _("Other")],
+                _(u"Spouse"),
+                _(u"Child"),
+                _(u"Other")],
         required=False,
     )
 
@@ -145,9 +147,9 @@ class IClinicalSample(ISample):
         title=_(u"Secondary Insurance Relation to Insured"),
         description =_(u"Secondary Insurance Relation to Insured"),
         values=[_(u"Self"),
-                _("Spouse"),
-                _("Child"),
-                _("Other")],
+                _(u"Spouse"),
+                _(u"Child"),
+                _(u"Other")],
         required=False,
     )
 
@@ -259,17 +261,18 @@ class IClinicalSample(ISample):
         value_type=schema.TextLine()
     )
 
-    """directives.widget(level=RadioFieldWidget)"""
-    symptoms_choice = schema.Choice(
+    """working example of multi choice input jp 1-31-17"""
+    form.widget(symptoms_choice=CheckBoxFieldWidget)
+    symptoms_choice = schema.List(
         title=_(u"Symptoms"),
         description=_(u"Symptoms, Select All That Apply"),
-        required=True,
-        values=[_(u"Rash"),
+        required=False,
+        value_type=schema.Choice(values=[_(u"Rash"),
                 _(u"Mouth sores"),
                 _(u"Joint Pain if yes, please specify"),
                 _(u"Inflammation, if yes, please specify"),
                 _(u"Seizures or psychosis"),
-                _(u"Hair loss")],
+                _(u"Hair loss")]),
     )
 
     symptoms_text = schema.List(
@@ -279,17 +282,17 @@ class IClinicalSample(ISample):
         required=False,
         value_type=schema.TextLine()
     )
-
-    diagnosis_code = schema.Choice(
+    form.widget(diagnosis_code=CheckBoxFieldWidget)
+    diagnosis_code = schema.List(
         title=_(u"Diagnosis & ICD-10 Codes"),
         description=_(u"Diagnosis & ICD-10 Codes"),
         required=True,
-        values=[_(u"D89.89-Other specified disorders involving the immune mechanism, not elsewhere classified"),
+        value_type=schema.Choice(values=[_(u"D89.89-Other specified disorders involving the immune mechanism, not elsewhere classified"),
                 _(u"D89.9-Disorder involving the immune mechanism, unspecified"),
                 _(u"L93.2-Other local lupus erythematosus"),
                 _(u"M32.10-Systemic lupus erythematosus, organ or system involvement unspecified"),
                 _(u"M35.9-Systemic involvement of connective tissue, unspecified"),
-                _(u"Other, please specify")],
+                _(u"Other, please specify")]),
     )
 
     diagnosis_code_other = schema.List(
