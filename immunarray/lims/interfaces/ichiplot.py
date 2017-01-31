@@ -3,6 +3,8 @@ from plone.namedfile.field import NamedFile
 from plone.supermodel import model
 from zope import schema
 from zope.interface import Invalid
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from plone.autoform import directives as form
 
 
 def NonZeroConstraint(value):
@@ -66,13 +68,18 @@ class IiChipLot(model.Schema):
                 _(u"8 Frame iChips")],
         required=True,
     )
-    intended_assay = schema.Choice(
+    #Allow mutiple selections!
+    #Need to connect this to iChipAssay.name
+    form.widget(intended_assay=CheckBoxFieldWidget)
+    intended_assay = schema.List(
         title=_(u"Intended Assay(s)"),
         description=_(u"Intended Assay(s)"),
-        values=[_(u"SLE_RO"),
-                _(u"DA"),
-                _(u"DA and ####")],
         required=True,
+        value_type=schema.Choice(
+            values=[_(u"SLE_RO"),
+                _(u"DA"),
+                _(u"DA and ####")]),
+
     )
 
     temp_log = NamedFile(
