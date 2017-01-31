@@ -42,4 +42,7 @@
   <utility
       name="immunarray.lims.vocabularies.ichipassay.IChipAssayVocabulary"
       component="immunarray.lims.vocabularies.ichipassay.IChipAssayVocabulary"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
+      component="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"/>
 </configure>
