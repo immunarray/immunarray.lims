@@ -40,7 +40,17 @@ class IRack(model.Schema):
 
 class IBox(model.Schema):
     """Boxes can hold either 100 sampels or 81 samples"""
-    pass
+    title = schema.TextLine(
+        title = _(u''),
+        description = _(u''),
+        required=True,
+    )
+
+    max_samples = schema.Int(
+        title=_(u'Max Number of Samples'),
+        description=_(u'Max Number of Samples'),
+        default=81,
+    )
 
 class IAcidStorage(model.Schema):
     """Container that will hold all acidic items for the lab"""
