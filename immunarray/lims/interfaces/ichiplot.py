@@ -5,6 +5,7 @@ from zope import schema
 from zope.interface import Invalid
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.autoform import directives as form
+from immunarray.lims.vocabularies import ichipassay
 
 
 def NonZeroConstraint(value):
@@ -75,11 +76,7 @@ class IiChipLot(model.Schema):
         title=_(u"Intended Assay(s)"),
         description=_(u"Intended Assay(s)"),
         required=True,
-        value_type=schema.Choice(
-            values=[_(u"SLE_RO"),
-                _(u"DA"),
-                _(u"DA and ####")]),
-
+        value_type=schema.Choice(source=IChipAssayListVocabulary),
     )
 
     temp_log = NamedFile(
