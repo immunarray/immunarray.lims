@@ -267,7 +267,8 @@ class IClinicalSample(ISample):
         title=_(u"Symptoms"),
         description=_(u"Symptoms, Select All That Apply"),
         required=False,
-        value_type=schema.Choice(values=[_(u"Rash"),
+        value_type=schema.Choice(
+            values=[_(u"Rash"),
                 _(u"Mouth sores"),
                 _(u"Joint Pain if yes, please specify"),
                 _(u"Inflammation, if yes, please specify"),
@@ -287,7 +288,8 @@ class IClinicalSample(ISample):
         title=_(u"Diagnosis & ICD-10 Codes"),
         description=_(u"Diagnosis & ICD-10 Codes"),
         required=True,
-        value_type=schema.Choice(values=[_(u"D89.89-Other specified disorders involving the immune mechanism, not elsewhere classified"),
+        value_type=schema.Choice(
+            values=[_(u"D89.89-Other specified disorders involving the immune mechanism, not elsewhere classified"),
                 _(u"D89.9-Disorder involving the immune mechanism, unspecified"),
                 _(u"L93.2-Other local lupus erythematosus"),
                 _(u"M32.10-Systemic lupus erythematosus, organ or system involvement unspecified"),
