@@ -32,7 +32,10 @@ class IiChip(model.Schema):
                 _(u'Inprocess'),
                 _(u'Used-QC-Passed'),
                 _(u'Used-QC-Failed'),
-                _(u'Residual')],
+                _(u'Residual'),
+                _(u'Broken'),
+                _(u'Used-Training'),
+                _(u'Used-Validaiton')],
     )
 
     agilent_red = NamedBlobImage(
