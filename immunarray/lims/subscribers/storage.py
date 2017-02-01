@@ -11,4 +11,3 @@ def RackAdded(instance, event):
     instance.manage_permission(AddBox, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
 
     disallow_default_contenttypes(instance)
-
