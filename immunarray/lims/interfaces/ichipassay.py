@@ -60,7 +60,7 @@ class IiChipAssay(model.Schema):
         title=_(u"Material Dilution Factor"),
         description=_(u"Material Dilution Factor"),
         required=True,
-        default=80,
+        default=75,
     )
 
     sample_qc_dilution_material = schema.TextLine(
@@ -93,7 +93,7 @@ class IiChipAssay(model.Schema):
     status = schema.Choice(
         title=_(u"iChip Assay Status"),
         description=_(u"iChip Layout"),
-        values=[_(u"Research Use Only"),
+        values=[_(u"Development"),
                 _(u"Commercial"),
                 _(u"Retired (No Longer Offered)")],
         required=True,
