@@ -53,8 +53,8 @@ class IProvider(IPerson):
     )
 
     test_report_preference = schema.Choice(
-        title =_(u"Publishing Preference"),
-        description=_(u"Providers desired publincation of resutls"),
+        title =_(u"Labortory Report Preference"),
+        description=_(u"Labortory Report Preference"),
         values=[_(u'Standard'), _(u'Extended')],
         required=True,
     )
