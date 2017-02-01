@@ -11,6 +11,8 @@ from plone.autoform import directives as form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope.interface import alsoProvides
+from immunarray.lims.vocabularies.provider import ProvidersVocabulary
+
 
 
 class IClinicalSample(ISample):
