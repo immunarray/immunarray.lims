@@ -38,7 +38,21 @@ class IRack(model.Schema):
     )
 
 
-class IBox(model.Schema):
+class ICommercialBox(model.Schema):
+    """Boxes can hold either 100 sampels or 81 samples"""
+    title = schema.TextLine(
+        title = _(u''),
+        description = _(u''),
+        required=True,
+    )
+
+    max_samples = schema.Int(
+        title=_(u'Max Number of Samples'),
+        description=_(u'Max Number of Samples'),
+        default=81,
+    )
+
+class IRandDBox(model.Schema):
     """Boxes can hold either 100 sampels or 81 samples"""
     title = schema.TextLine(
         title = _(u''),
