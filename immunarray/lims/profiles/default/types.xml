@@ -19,5 +19,6 @@
     <object name="Freezer" meta_type="Dexterity FTI"/>
     <object name="Shelf" meta_type="Dexterity FTI"/>
     <object name="Rack" meta_type="Dexterity FTI"/>
-    <object name="Box" meta_type="Dexterity FTI"/>
+    <object name="CommercialBox" meta_type="Dexterity FTI"/>
+    <object name="RandDBox" meta_type="Dexterity FTI"/>
 </object>
