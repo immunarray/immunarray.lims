@@ -42,6 +42,7 @@ def setupVarious(context):
     mp(AddRack, [], 0)
     mp(AddRandDBox, [], 0)
     mp(AddCommercialBox, [], 0)
+    mp(AddSite, [], 0)
 
 def uninstall(context):
     """Uninstall script"""

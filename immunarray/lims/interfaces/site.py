@@ -1,9 +1,10 @@
 from zope import schema
 from zope.interface import Interface
 from immunarray.lims import messageFactory as _
-from bika.lims.interfaces.person import IPerson
+from bika.lims.interfaces.organisation import IOrganisation
 
 
-class IProvider(IPerson):
+class ISite(IOrganisation):
     """Care provider
     """
+    pass
