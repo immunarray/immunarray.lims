@@ -40,7 +40,8 @@ def setupVarious(context):
     mp(AddFreezer, [], 0)
     mp(AddShelf, [], 0)
     mp(AddRack, [], 0)
-    mp(AddBox, [], 0)
+    mp(AddRandDBox, [], 0)
+    mp(AddCommercialBox, [], 0)
 
 def uninstall(context):
     """Uninstall script"""
