@@ -18,6 +18,7 @@
     <permission id="immunarray.lims.permissions.AddFreezer" title="LIMS: Add Freezer"/>
     <permission id="immunarray.lims.permissions.AddShelf" title="LIMS: Add Shelf"/>
     <permission id="immunarray.lims.permissions.AddRack" title="LIMS: Add Rack"/>
-    <permission id="immunarray.lims.permissions.AddBox" title="LIMS: Add Box"/>
+    <permission id="immunarray.lims.permissions.AddCommercialBox" title="LIMS: Add Commercial Box"/>
+    <permission id="immunarray.lims.permissions.AddRandDBox" title="LIMS: Add RandD Box"/>
 
 </configure>
