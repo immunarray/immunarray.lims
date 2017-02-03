@@ -100,8 +100,8 @@ class IiChipAssay(model.Schema):
     )
 
     comments = RichText(
-        title = _(u"Comments"),
-        description= _(u"Comments"),
+        title=_(u"Comments"),
+        description=_(u"Comments"),
         required=False,
     )
 
