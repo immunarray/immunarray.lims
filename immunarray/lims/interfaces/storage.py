@@ -18,18 +18,10 @@ class IRack(model.Schema):
     it will hold.  (5x4=20 boxes, or 4x4=16 boxes)
     """
 
-    title = schema.Choice(
+    title = schema.TextLine(
         title=_(u"Rack ID"),
         description=_(u"Rack ID"),
         required=True,
-        values=[_(u'A'),
-                _(u'B'),
-                _(u'C'),
-                _(u'D'),
-                _(u'E'),
-                _(u'F'),
-                _(u'G'),
-                _(u'H')],
     )
 
     size = schema.Int(
@@ -37,12 +29,17 @@ class IRack(model.Schema):
         description= _(u'Number of boxes rack can hold'),
     )
 
+    freezer = schema.TextLine(
+        title=_(u"Freezer"),
+        description=_(u"Freezer where rack is stored"),
+        required=True,
+    )
 
 class ICommercialBox(model.Schema):
     """Boxes can hold either 100 sampels or 81 samples"""
     title = schema.TextLine(
-        title = _(u''),
-        description = _(u''),
+        title = _(u'Box Number'),
+        description = _(u'Box Number'),
         required=True,
     )
 
@@ -55,8 +52,8 @@ class ICommercialBox(model.Schema):
 class IRandDBox(model.Schema):
     """Boxes can hold either 100 sampels or 81 samples"""
     title = schema.TextLine(
-        title = _(u''),
-        description = _(u''),
+        title = _(u'R&D Box Number'),
+        description = _(u'R&D Box Number'),
         required=True,
     )
 
