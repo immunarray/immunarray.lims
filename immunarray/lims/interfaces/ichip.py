@@ -32,7 +32,10 @@ class IiChip(model.Schema):
                 _(u'Inprocess'),
                 _(u'Used-QC-Passed'),
                 _(u'Used-QC-Failed'),
-                _(u'Residual')],
+                _(u'Residual'),
+                _(u'Broken'),
+                _(u'Used-Training'),
+                _(u'Used-Validaiton')],
     )
 
     agilent_red = NamedBlobImage(
@@ -64,12 +67,6 @@ class IiChip(model.Schema):
         description=_(u"Storage Location of iChip"),
         values=[_('EQ-76'), _('EQ-Unknown')],
         required=False,
-    )
-
-    frames = schema.TextLine(
-        title=_(u"iChip frames"),
-        description=_(u"What type of iChip is this"),
-        readonly=True,
     )
 
     well_a = schema.TextLine(

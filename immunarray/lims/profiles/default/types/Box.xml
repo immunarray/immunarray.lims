@@ -1,30 +1,29 @@
 <?xml version="1.0"?>
-<object name="Patient" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="Box" meta_type="Dexterity FTI" i18n:domain="plone"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
-    <property name="title" i18n:translate="">Patient</property>
+    <property name="title" i18n:translate="">Box</property>
     <property name="description" i18n:translate=""/>
     <property name="icon_expr">string:${portal_url}/document_icon.png</property>
-    <property name="factory">Patient</property>
-    <property name="add_view_expr">string:${folder_url}/++add++Patient</property>
+    <property name="factory">iChipLot</property>
+    <property name="add_view_expr">string:${folder_url}/++add++Box</property>
     <property name="link_target"/>
     <property name="immediate_view">view</property>
     <property name="global_allow">True</property>
-    <property name="filter_content_types">True</property>
+    <property name="filter_content_types">False</property>
     <property name="allowed_content_types"/>
     <property name="allow_discussion">False</property>
-    <property name="default_view">view</property>
+    <property name="default_view">folder_contents</property>
     <property name="view_methods">
-        <element value="view"/>
+        <element value="folder_contents"/>
     </property>
     <property name="default_view_fallback">False</property>
-    <property name="add_permission">immunarray.lims.permissions.AddPatient</property>
+    <property name="add_permission">immunarray.lims.permissions.AddBox</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
-        <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <element value="plone.app.content.interfaces.INameFromTitle"/>
     </property>
-    <property name="schema">immunarray.lims.interfaces.patient.IPatient</property>
+    <property name="schema">immunarray.lims.interfaces.storage.IBox</property>
     <property name="model_source"/>
     <property name="model_file"/>
     <property name="schema_policy">dexterity</property>

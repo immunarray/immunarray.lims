@@ -3,12 +3,14 @@ from pkg_resources import resource_filename
 from plone import api
 from plone.dexterity.fti import DexterityFTI
 from zope.component.hooks import getSite
+from Products.CMFCore.permissions import ModifyPortalContent
+from plone.app.contenttypes import permissions
+
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
-    AddProvider, AddPlate
-from immunarray.lims.permissions import AddSolution
-from immunarray.lims.permissions import AddWorklist
-from immunarray.lims.permissions import AddiChipLot
+    AddProvider, AddPlate, AddSolution, AddWorklist, AddiChipLot, \
+    AddiChipAssay, AddCustomerServiceCall, AddRack, AddCommercialBox,\
+    AddRandDBox
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -36,10 +38,11 @@ def create_structure(lims):
         [lims, 'Folder', 'ichiplots', 'iChip Lots'],
         [lims, 'Folder', 'worklists', 'Worklists'],
         [lims, 'Folder', 'plates', 'Plates'],
-        [lims, 'Folder', 'nce', 'Nonconformance Events'],
+        [lims, 'Folder', 'nce', 'Non Conformance Events'],
+        [lims, 'Folder', 'inventory', 'Inventory'],
         [lims, 'Folder', 'patients', 'Patients'],
         [lims, 'Folder', 'providers', 'Providers'],
-        [lims, 'Folder', 'ichipassay', 'iChip Assay'],
+        [lims, 'Folder', 'ichipassay', 'iChip Assays'],
         [lims, 'Folder', 'customerservicecall', 'Customer Service Calls']
     ]:
         obj = api.content.create(container=x[0], type=x[1], id=x[2], title=x[3])
@@ -51,25 +54,44 @@ def create_structure(lims):
 
 def structure_permissions(lims):
     lims.materials.manage_permission(
-        AddMaterial, ['Manager', 'LabManager', 'Owner'], 0)
+        AddMaterial, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.materials.manage_permission(permissions.AddFolder, [], 0)
     lims.solutions.manage_permission(
         AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.solutions.manage_permission(permissions.AddFolder, [], 0)
     lims.ichiplots.manage_permission(
         AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
     lims.worklists.manage_permission(
         AddWorklist, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.worklists.manage_permission(permissions.AddFolder, [], 0)
     lims.plates.manage_permission(
-        AddPlate, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        AddPlate, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.plates.manage_permission(permissions.AddFolder, [], 0)
     lims.nce.manage_permission(
         AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.nce.manage_permission(permissions.AddFolder, [], 0)
     lims.patients.manage_permission(
         AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(permissions.AddFolder, [], 0)
+    lims.ichipassay.manage_permission(
+        AddiChipAssay, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
     lims.providers.manage_permission(
         AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.providers.manage_permission(permissions.AddFolder, [], 0)
     lims.customerservicecall.manage_permission(
+<<<<<<< HEAD
         AddiChipAssay, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.customerservicecall.manage_permission(
         AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+=======
+        AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
+    lims.inventory.manage_permission(
+        AddRack, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.inventory.manage_permission(permissions.AddFolder, [], 0)
+>>>>>>> origin/master
 
 
 def create_material_types(portal):

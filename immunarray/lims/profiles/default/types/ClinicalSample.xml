@@ -2,7 +2,7 @@
 <object name="ClinicalSample" meta_type="Dexterity FTI" i18n:domain="plone"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
-    <property name="title" i18n:translate="">ClinicalSample</property>
+    <property name="title" i18n:translate="">Clinical Sample</property>
     <property name="description" i18n:translate=""/>
     <property name="icon_expr">string:${portal_url}/document_icon.png</property>
     <property name="factory">ClinicalSample</property>
@@ -12,6 +12,7 @@
     <property name="global_allow">True</property>
     <property name="filter_content_types">True</property>
     <property name="allowed_content_types"/>
+        <element value="NCE"/>
     <property name="allow_discussion">False</property>
     <property name="default_view">view</property>
     <property name="view_methods">
@@ -23,7 +24,6 @@
     <property name="behaviors">
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <element value="plone.app.content.interfaces.INameFromTitle"/>
-        <element value="plone.app.content.interfaces.IClinicalSamples"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.clinicalsample.IClinicalSample</property>
     <property name="model_source"/>

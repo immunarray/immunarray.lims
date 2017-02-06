@@ -1,24 +1,40 @@
 <configure
-        xmlns="http://namespaces.zope.org/zope"
-        xmlns:browser="http://namespaces.zope.org/browser"
-        xmlns:zcml="http://namespaces.zope.org/zcml"
-        i18n_domain="immunarray.lims">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="immunarray.lims">
 
-    <subscriber
-            for="immunarray.lims.interfaces.testrequisition.ITestRequisition
-                 Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-            handler="immunarray.lims.subscribers.testrequisition.Received"
-    />
+  <subscriber
+      for="immunarray.lims.interfaces.testrequisition.ITestRequisition
+           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
+      handler="immunarray.lims.subscribers.testrequisition.Received"
+  />
 
-    <subscriber
-            for="bika.lims.events.LIMSCreatedEvent"
-            handler="immunarray.lims.subscribers.limsroot.LIMSCreated"
-    />
+  <subscriber
+      for="bika.lims.events.LIMSCreatedEvent"
+      handler="immunarray.lims.subscribers.limsroot.LIMSCreated"
+  />
 
-    <subscriber
-            for="immunarray.lims.interfaces.ichiplot.IiChipLot
-                 zope.lifecycleevent.IObjectAddedEvent"
-            handler="immunarray.lims.subscribers.ichiplot.iChipLotAdded"
-    />
+  <subscriber
+      for="immunarray.lims.interfaces.ichiplot.IiChipLot
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.ichiplot.iChipLotAdded"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.storage.IRack
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.storage.RackAdded"
+  />
+  <subscriber
+      for="immunarray.lims.interfaces.storage.ICommercialBox
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.storage.CommercialBoxAdded"
+  />
+  <subscriber
+      for="immunarray.lims.interfaces.storage.IRandDBox
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.storage.RandDBoxAdded"
+  />
 
 </configure>

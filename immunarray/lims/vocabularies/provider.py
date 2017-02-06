@@ -11,7 +11,7 @@ class Providers(object):
 
     def __call__(self, context):
         values = context.providers.objectValues()
-        names = [" ".join([v.first_name, v.last_name]) for v in values]
+        names = [" ".join([str(v.site_ID), v.first_name, v.last_name]) for v in values]
         normalizer = queryUtility(IIDNormalizer)
         items = [(n, normalizer.normalize(n)) for n in names]
         return SimpleVocabulary.fromItems(items)

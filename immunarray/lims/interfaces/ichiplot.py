@@ -1,8 +1,12 @@
 from immunarray.lims import messageFactory as _
+from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.namedfile.field import NamedFile
 from plone.supermodel import model
 from zope import schema
 from zope.interface import Invalid
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from plone.autoform import directives as form
+from immunarray.lims.vocabularies import ichipassay
 
 
 def NonZeroConstraint(value):
@@ -59,12 +63,21 @@ class IiChipLot(model.Schema):
     )
 
     frames = schema.Choice(
-        title=_(u"iChip frames"),
-        description=_(u"The type of ichips that are contained here"),
+        title=_(u"iChip Layout"),
+        description=_(u"iChip Layout"),
         values=[_(u"No Frame iChips"),
                 _(u"3 Frame iChips"),
                 _(u"8 Frame iChips")],
         required=True,
+    )
+    #Allow mutiple selections!
+    #Need to connect this to iChipAssay.name
+    form.widget(intended_assay=CheckBoxFieldWidget)
+    intended_assay = schema.List(
+        title=_(u"Intended Assay(s)"),
+        description=_(u"Intended Assay(s)"),
+        required=True,
+        value_type=schema.Choice(source=IChipAssayListVocabulary),
     )
 
     temp_log = NamedFile(

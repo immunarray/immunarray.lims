@@ -9,35 +9,35 @@ from zope.interface import Interface
 
 class IImmunArrayControlPanel(Interface):
 
-    category_primary = schema.List(
+    category_primary = schema.Tuple(
         title=u"NCE Parimary Category",
         description=u"NCE Parimary Category",
         required=False,
         value_type=schema.TextLine()
     )
 
-    category_secondary = schema.List(
+    category_secondary = schema.Tuple(
         title=u"NCE Secondary Category",
         description=u"NCE Secondary Category",
         required=False,
         value_type=schema.TextLine()
     )
 
-    category_tertiary = schema.List(
+    category_tertiary = schema.Tuple(
         title=u'NCE Tertiary Category',
         description=u'NCE Tertiary Category',
         required=False,
         value_type=schema.TextLine()
     )
 
-    tests_offered = schema.List(
+    tests_offered = schema.Tuple(
         title=u'Tests Offered by Veracis',
         description=u'Tests Offered by Veracis',
         required=False,
         value_type=schema.TextLine()
     )
 
-    diagnostic_codes = schema.List(
+    diagnostic_codes = schema.Tuple(
         title=u'Diagnostic/Billing Codes',
         description=u'Diagnostic/Billing Codes',
         required=False,

@@ -19,6 +19,7 @@
   <include package=".static"/>
   <include package=".subscribers"/>
   <include package=".workflow"/>
+  <include package=".utils"/>
   <browser:resourceDirectory name="immunarray.lims" directory="static"/>
   <utility
       name="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"
@@ -41,4 +42,8 @@
   <utility
       name="immunarray.lims.vocabularies.ichipassay.IChipAssayVocabulary"
       component="immunarray.lims.vocabularies.ichipassay.IChipAssayVocabulary"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
+      component="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
 </configure>

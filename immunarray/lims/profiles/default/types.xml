@@ -6,12 +6,21 @@
     <object name="iChip" meta_type="Dexterity FTI"/>
     <object name="iChipLot" meta_type="Dexterity FTI"/>
     <object name="Material" meta_type="Dexterity FTI"/>
+    <object name="Solution" meta_type="Dexterity FTI"/>
     <object name="NCE" meta_type="Dexterity FTI"/>
     <object name="Patient" meta_type="Dexterity FTI"/>
     <object name="Plate96Well" meta_type="Dexterity FTI"/>
     <object name="Provider" meta_type="Dexterity FTI"/>
-    <object name="Solution" meta_type="Dexterity FTI"/>
     <object name="Worklist" meta_type="Dexterity FTI"/>
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
+    <object name="RandDSample" meta_type="Dexterity FTI"/>
     <object name="iChipAssay" meta_type="Dexterity FTI"/>
+    <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
+    <object name="Freezer" meta_type="Dexterity FTI"/>
+    <object name="Shelf" meta_type="Dexterity FTI"/>
+    <object name="Rack" meta_type="Dexterity FTI"/>
+    <object name="CommercialBox" meta_type="Dexterity FTI"/>
+    <object name="RandDBox" meta_type="Dexterity FTI"/>
+    <object name="Site" meta_type="Dexterity FTI"/>
+    <object name="iChipAssayQC" meta_type="Dexterity FTI"/>
 </object>

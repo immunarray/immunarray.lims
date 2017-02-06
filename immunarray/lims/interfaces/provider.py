@@ -1,7 +1,5 @@
 from zope import schema
-
 from zope.interface import Interface
-
 from immunarray.lims import messageFactory as _
 from bika.lims.interfaces.person import IPerson
 
@@ -9,6 +7,12 @@ from bika.lims.interfaces.person import IPerson
 class IProvider(IPerson):
     """Care provider
     """
+
+    site_ID = schema.Int(
+        title=_(u"Primary Site ID"),
+        description=_(u"Primary Site ID"),
+        required=False,
+    )
 
     npi = schema.TextLine(
         title=_(u"NPI"),
@@ -19,7 +23,7 @@ class IProvider(IPerson):
     credentials = schema.Choice(
         title=_(u"Provider Credentials"),
         description=_(u"Provider credentials (M.D.  D.O.)"),
-        values=[_(u'MD'), _(u'DO'), _(u'PA'), _(u'MD/PhD'), _(u'PhD')],
+        values=[_(u'MD'), _(u'DO'), _(u'PA-C'), _(u'MD/PhD'), _(u'PhD')],
         required=False,
     )
 
@@ -49,8 +53,8 @@ class IProvider(IPerson):
     )
 
     test_report_preference = schema.Choice(
-        title =_(u"Publishing Preference"),
-        description=_(u"Providers desired publincation of resutls"),
+        title =_(u"Labortory Report Preference"),
+        description=_(u"Labortory Report Preference"),
         values=[_(u'Standard'), _(u'Extended')],
         required=True,
     )

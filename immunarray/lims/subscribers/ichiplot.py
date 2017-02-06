@@ -18,6 +18,6 @@ def iChipLotAdded(instance, event):
     for x in range(1, instance.nr_ichips + 1):
         ichip = create(container=instance,
                        type='iChip',
-                       title="{0}_{1:02d}".format(instance.title, x))
+                       title="{0}_{1:03d}".format(instance.title, x))
         # Configure each ichip to reflect the parent's settings
         ichip.frames = instance.frames
