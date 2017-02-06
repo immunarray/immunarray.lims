@@ -1,4 +1,5 @@
-"""To add custome slide content to immunarray.lims
+"""To add custome slide content to immunarray.lims 
+    (needs to be randd_aliquot, we don't have randd_samples)
 """
 import datetime
 
@@ -15,7 +16,7 @@ def currentDate():
 
 
 class IRandDSample(model.Schema):
-    """R and D sample
+    """R and D aliquot!
     """
 
     source_id_one = schema.TextLine(
@@ -76,21 +77,19 @@ class IRandDSample(model.Schema):
         description=_(u"Volume of R&D Sample in micro liters (uL)"),
         required=False,
     )
-#wrong place for this element
     rand_sample_type = schema.Choice(
         title=_(u"R&D Sample Type (Bulk or Working)"),
         description=_(u"R&D Sample Type (Bulk or Working)"),
         values=[_(u"Working"), _(u"Bulk")],
         required=False,
     )
-#what is this about???
     status = schema.Choice(
         title=_(
             u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
         description=_(
             u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
         values=[_(u"Available"), _(u"In Process"), _(u"Retained"),
-                _(u"Consumed")],
+                _(u"Quarantined"), _(u"Consumed")],
         required=False,
     )
 
