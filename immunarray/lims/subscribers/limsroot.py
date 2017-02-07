@@ -53,45 +53,29 @@ def create_structure(lims):
         lims.moveObjectsToBottom(['configuration'])
 
 def structure_permissions(lims):
-    lims.materials.manage_permission(
-        AddMaterial, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.materials.manage_permission(AddMaterial, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
     lims.materials.manage_permission(permissions.AddFolder, [], 0)
-    lims.solutions.manage_permission(
-        AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.solutions.manage_permission(AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.solutions.manage_permission(permissions.AddFolder, [], 0)
-    lims.ichiplots.manage_permission(
-        AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
-    lims.worklists.manage_permission(
-        AddWorklist, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.worklists.manage_permission(AddWorklist, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.worklists.manage_permission(permissions.AddFolder, [], 0)
-    lims.plates.manage_permission(
-        AddPlate, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.plates.manage_permission(AddPlate, ['Manager', 'LabManager', 'Owner'], 0)
     lims.plates.manage_permission(permissions.AddFolder, [], 0)
-    lims.nce.manage_permission(
-        AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.nce.manage_permission(AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.nce.manage_permission(permissions.AddFolder, [], 0)
-    lims.patients.manage_permission(
-        AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.patients.manage_permission(permissions.AddFolder, [], 0)
-    lims.ichipassay.manage_permission(
-        AddiChipAssay, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.ichipassay.manage_permission(AddiChipAssay, ['Manager', 'LabManager', 'Owner'], 0)
     lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
-    lims.providers.manage_permission(
-        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.providers.manage_permission(AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.providers.manage_permission(permissions.AddFolder, [], 0)
-    lims.customerservicecall.manage_permission(
-<<<<<<< HEAD
-        AddiChipAssay, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(
-        AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-=======
-        AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
-    lims.inventory.manage_permission(
-        AddRack, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.inventory.manage_permission(AddRack, ['Manager', 'LabManager', 'Owner'], 0)
     lims.inventory.manage_permission(permissions.AddFolder, [], 0)
->>>>>>> origin/master
+
 
 
 def create_material_types(portal):
