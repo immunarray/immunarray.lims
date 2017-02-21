@@ -25,7 +25,7 @@ class IChipAssayList(object):
     def __call__(self, context):
         values = context.ichipassay.objectValues()
         names = [" ".join([v.title, v.status]) for v in values
-                 if v.status != 'Retired (No Longer Offered)']
+                 if 'retired' not in v.status.lower()]
         normalizer = queryUtility(IIDNormalizer)
         items = [(n, normalizer.normalize(n).upper()) for n in names]
         return SimpleVocabulary.fromItems(items)
