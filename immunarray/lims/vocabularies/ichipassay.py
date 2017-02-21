@@ -27,7 +27,7 @@ class IChipAssayList(object):
         names = [" ".join([v.title, v.status]) for v in values
                  if v.status != 'Retired (No Longer Offered)']
         normalizer = queryUtility(IIDNormalizer)
-        items = [(n, normalizer.normalize(n)) for n in names]
+        items = [(n, normalizer.normalize(n).upper()) for n in names]
         return SimpleVocabulary.fromItems(items)
 
 IChipAssayListVocabulary = IChipAssayList()
