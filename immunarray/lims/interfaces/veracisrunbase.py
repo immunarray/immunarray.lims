@@ -1,10 +1,13 @@
 from datetime import date
 from plone.app.textfield import RichText
 from zope import schema
+from plone.supermodel import model
 from immunarray.lims import messageFactory as _
 from plone.dexterity.utils import createContentInContainer
 from bika.lims.interfaces.sample import ISample
 from plone.autoform import directives
+from zope.interface import alsoProvides
+from plone.autoform.interfaces import IFormFieldProvider
 from z3c.form.browser.radio import RadioFieldWidget
 
 
@@ -26,11 +29,11 @@ class IVeracisRunBase(model.Schema):
     )
     veracis_test_run_date=schema.Date(
         title=_(u"Veracis Test Run Date"),
-        description=_(u"Veracis Test Run Date"),
+        description=_(u"Veracis Test Run Date (MM/DD/YYYY)"),
     )
     veracis_test_scan_date=schema.Date(
         title=_(u"Veracis Test Scan Date"),
-        description=_(u"Veracis Test Scan Date"),
+        description=_(u"Veracis Test Scan Date (MM/DD/YYYYY)"),
     )
 
-alsoProvides( IFormFieldProvider)
+alsoProvides(IVeracisRunBase, IFormFieldProvider)

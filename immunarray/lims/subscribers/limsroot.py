@@ -8,9 +8,9 @@ from plone.app.contenttypes import permissions
 
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
-    AddProvider, AddPlate, AddSolution, AddWorklist, AddiChipLot, \
-    AddiChipAssay, AddCustomerServiceCall, AddRack, AddCommercialBox,\
-    AddRandDBox
+    AddProvider, AddPlate, AddSolution, AddiChipLot,AddiChipAssay, \
+    AddCustomerServiceCall, AddRack, AddCommercialBox,\
+    AddRandDBox, AddTestRun, AddNoFrameRun, AddEightFrameRun, AddThreeFrameRun
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -36,7 +36,7 @@ def create_structure(lims):
         [lims, 'Folder', 'materials', 'Materials'],
         [lims, 'Folder', 'solutions', 'Solutions'],
         [lims, 'Folder', 'ichiplots', 'iChip Lots'],
-        [lims, 'Folder', 'worklists', 'Worklists'],
+        [lims, 'Folder', 'testruns', 'Test Runs'],
         [lims, 'Folder', 'plates', 'Plates'],
         [lims, 'Folder', 'nce', 'Non Conformance Events'],
         [lims, 'Folder', 'inventory', 'Inventory'],
@@ -59,8 +59,6 @@ def structure_permissions(lims):
     lims.solutions.manage_permission(permissions.AddFolder, [], 0)
     lims.ichiplots.manage_permission(AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
-    lims.worklists.manage_permission(AddWorklist, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.worklists.manage_permission(permissions.AddFolder, [], 0)
     lims.plates.manage_permission(AddPlate, ['Manager', 'LabManager', 'Owner'], 0)
     lims.plates.manage_permission(permissions.AddFolder, [], 0)
     lims.nce.manage_permission(AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
@@ -75,6 +73,12 @@ def structure_permissions(lims):
     lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
     lims.inventory.manage_permission(AddRack, ['Manager', 'LabManager', 'Owner'], 0)
     lims.inventory.manage_permission(permissions.AddFolder, [], 0)
+    lims.testruns.manage_permission(AddTestRun, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(AddNoFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(AddEightFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(AddThreeFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(permissions.AddFolder, [], 0)
+
 
 
 

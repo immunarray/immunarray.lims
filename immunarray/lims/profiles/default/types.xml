@@ -11,7 +11,9 @@
     <object name="Patient" meta_type="Dexterity FTI"/>
     <object name="Plate96Well" meta_type="Dexterity FTI"/>
     <object name="Provider" meta_type="Dexterity FTI"/>
-    <object name="Worklist" meta_type="Dexterity FTI"/>
+    <object name="NoFrameRun" meta_type="Dexterity FTI"/>
+    <object name="EightFrameRun" meta_type="Dexterity FTI"/>
+    <object name="ThreeFrameRun" meta_type="Dexterity FTI"/>
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
     <object name="RandDSample" meta_type="Dexterity FTI"/>
     <object name="iChipAssay" meta_type="Dexterity FTI"/>
