@@ -1,8 +1,7 @@
 from datetime import date
-from immunarray.lims.interfaces import veracisrunbase
+from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims import messageFactory as _
 from plone.app.textfield import RichText
-from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from zope import schema
 
