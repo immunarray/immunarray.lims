@@ -27,6 +27,11 @@ class IVeracisRunBase(model.Schema):
         title=_(u"Veracis Run Serial Number"),
         description=_(u"Veracis Run Serial Number"),
     )
+    veracis_run_operator = schema.TextLine(
+        title=_(u"Veracis Run Operator"),
+        description=_(u"Veracis Run Operator"),
+        required=True,
+    )
     veracis_test_run_date=schema.Date(
         title=_(u"Veracis Test Run Date"),
         description=_(u"Veracis Test Run Date (MM/DD/YYYY)"),
