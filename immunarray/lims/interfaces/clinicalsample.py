@@ -12,8 +12,7 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope.interface import alsoProvides
 from immunarray.lims.vocabularies.provider import ProvidersVocabulary
-
-
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
 
 class IClinicalSample(ISample):
     """Sample that will contain all the billing info and high levle information
@@ -220,6 +219,7 @@ class IClinicalSample(ISample):
         required=True,
     )
 
+    directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
     primary_healthcare_provider = schema.Choice(
         title=_(u"Primary Healthcare Provider"),
         description=_(u"Primary Healthcare Provider"),
