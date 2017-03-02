@@ -34,7 +34,7 @@
             </div>
             <div class="tr">
                 <div class="td label">iChip Run Date</div>
-                <div class="td value" tal:content="context/lot_run_date">
+                <div class="td value" tal:content="context/ichip_run_date">
                 </div>
             </div>​
             <div class="tr">
