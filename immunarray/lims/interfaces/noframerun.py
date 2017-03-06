@@ -6,8 +6,7 @@ from plone.supermodel import model
 from zope import schema
 
 class INoFrameRun(IVeracisRunBase):
-    pass
     status = schema.Dict(
         key_type=schema.TextLine(title=u""),
-        values_type=schema.TextLine(title=u"iChip_ID")
+        value_type=schema.TextLine(title=u"iChip_ID")
     )
