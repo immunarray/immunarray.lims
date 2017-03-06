@@ -13,11 +13,7 @@ class IChipsInUS (object):
 
     def __call__(self, context):
         values = context.ichip.objectValues()
-        ichips = [v.id for v in values
-                if 'released' in v.status.lower()
-                or 'retained-us' in v.status.lower()
-                or 'quarantined' in v.status.lower()
-                or 'retained-us' in v.status.lower()]
+        ichips = [v.id for v in values]
         normalizer = queryUtility(IIDNormalizer)
         items = [(i, normalizer.normalize(i)) for i in ichips]
         return SimpleVocabulary.fromItems(items)

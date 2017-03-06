@@ -10,10 +10,11 @@ from immunarray.lims.vocabularies import ichip
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from immunarray.lims.vocabularies import ichipassay
 from immunarray.lims.vocabularies.provider import ProvidersVocabulary
+from zope.schema.interfaces import IVocabularyFactory
 
 
 class IThreeFrameRun(IVeracisRunBase):
     aliquot_to_well = schema.Dict(
         key_type=schema.TextLine(title=u"Aliquot ID"),
-        value_type=schema.Choice(vocabulary='immunarray.lims.vocabularies.ichip.IChipsInUSVocabulary')
+        value_type=schema.Choice(source=IChipsInUSVocabulary)
     )
