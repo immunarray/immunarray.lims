@@ -2,31 +2,40 @@
 from plone import api
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
+from zope.interface import implements
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.interfaces import IContextSourceBinder
 
 @implementer(IVocabularyFactory)
 class IChipsInUS (object):
+
     def __call__(self, context):
         values = context.ichip.objectValues()
-        ichips = [v.title for v in values
-                  if 'released' in v.status.lower()
-                  or 'retained-us' in v.status.lower()
-                  or 'quarantined' in v.status.lower()
-                  or 'retained-us' in v.status.lower()]
+        ichips = [v.id for v in values
+                if 'released' in v.status.lower()
+                or 'retained-us' in v.status.lower()
+                or 'quarantined' in v.status.lower()
+                or 'retained-us' in v.status.lower()]
         normalizer = queryUtility(IIDNormalizer)
         items = [(i, normalizer.normalize(i)) for i in ichips]
+        return SimpleVocabulary.fromItems(items)
+
 IChipsInUSVocabulary = IChipsInUS()
 
+
 class IChipsForCommercialTesting (object):
+    implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         values = context.ichip.objectValues()
         ichips = [v.title for v in values
                   if 'released' in v.status.lower()]
         normalizer = queryUtility(IIDNormalizer)
         items = [(i, normalizer.normalize(i)) for i in ichips]
+        return SimpleVocabulary.fromItems(items)
 IChipsForCommercialTestingVocabulary = IChipsForCommercialTesting()
+
 
 """class Providers(object):
     def __call__(self, context):
@@ -50,4 +59,10 @@ values=[_(u'Quarantined'),
                 _(u'Used-Training'),
                 _(u'Used-Validaiton')],
     )
+
+
+                  if 'released' in v.status.lower()
+                  or 'retained-us' in v.status.lower()
+                  or 'quarantined' in v.status.lower()
+                  or 'retained-us' in v.status.lower()
     """
