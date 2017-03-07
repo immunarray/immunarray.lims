@@ -54,4 +54,8 @@
       name="immunarray.lims.vocabularies.ichip.IChipsForCommercialTestingVocabulary"
       component="immunarray.lims.vocabularies.ichip.IChipsForCommercialTestingVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichip.IChipsAllVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IChipsAllVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
 </configure>
