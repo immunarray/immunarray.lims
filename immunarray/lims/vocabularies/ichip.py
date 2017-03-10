@@ -9,44 +9,48 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.utils import getToolByName
+from zope.interface import alsoProvides
 
 
+@implementer(IVocabularyFactory)
 class IChipsInUS (object):
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
-        catalog = getToolByName(context, 'portal_catalog')
-        values = catalog.searchResults(portal_type='crap')
+        #catalog = getToolByName(context, 'portal_catalog')
+        values = api.content.find(context=api.portal.get(), depth=10, portal_type='IChip')
         ichips = [v.title for v in values]
         normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i)) for i in ichips]
+        items = [(i, normalizer.normalize(i)) for i in values]
         return SimpleVocabulary.fromItems(items)
 
 IChipsInUSVocabulary = IChipsInUS()
 
 
+@implementer(IVocabularyFactory)
 class IChipsForCommercialTesting (object):
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         values = api.content.find(context=api.portal.get(), portal_type='IChip')
-        ichips = [str(v.id) for v in values
+        ichips = [(v.id) for v in values
                   if 'released' in v.status.lower()]
         normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i)) for i in ichips]
+        items = [(i, normalizer.normalize(i).upper()) for i in ichips]
         return SimpleVocabulary.fromItems(items)
 IChipsForCommercialTestingVocabulary = IChipsForCommercialTesting()
 
+
+@implementer(IVocabularyFactory, IContextSourceBinder)
 class IChipsAll(object):
 
-    implements(IVocabularyFactory, IContextSourceBinder)
     #want to not have v.status = 'Retired (No Longer Offered)'
     def __call__(self, context):
-        values = api.content.find(context=api.portal.get(), portal_type='IChip')
-        names = [" ".join([v.title, v.status]) for v in values
-             if 'retired' not in v.status.lower()]
+        well = ['A','B','C','D','E','F','G','H']
+        catalog = getToolByName(context, 'portal_catalog')
+        values = catalog(portal_type='iChip')
+        names = [([v.id]) for v in values]
         normalizer = queryUtility(IIDNormalizer)
         items = [(n, normalizer.normalize(n).upper()) for n in names]
         return SimpleVocabulary.fromItems(items)
-
 IChipsAllVocabulary = IChipsAll()
 
 """class Providers(object):
