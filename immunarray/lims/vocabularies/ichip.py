@@ -10,6 +10,8 @@ from zope.schema.interfaces import IContextSourceBinder
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.utils import getToolByName
 from zope.interface import alsoProvides
+from plone.autoform.interfaces import IFormFieldProvider
+from plone.directives import form
 
 
 @implementer(IVocabularyFactory)
@@ -17,10 +19,14 @@ class IChipsInUS (object):
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         #catalog = getToolByName(context, 'portal_catalog')
-        values = api.content.find(context=api.portal.get(), depth=10, portal_type='IChip')
-        ichips = [v.title for v in values]
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.id for v in values]
+        unique_ichips=[]
+        for u in ichips:
+            if u not in unique_ichips:
+                unique_ichips.append(u)
         normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i)) for i in values]
+        items = [(i, normalizer.normalize(i)) for i in unique_ichips]
         return SimpleVocabulary.fromItems(items)
 
 IChipsInUSVocabulary = IChipsInUS()
@@ -44,7 +50,6 @@ class IChipsAll(object):
 
     #want to not have v.status = 'Retired (No Longer Offered)'
     def __call__(self, context):
-        well = ['A','B','C','D','E','F','G','H']
         catalog = getToolByName(context, 'portal_catalog')
         values = catalog(portal_type='iChip')
         names = [([v.id]) for v in values]
@@ -52,6 +57,8 @@ class IChipsAll(object):
         items = [(n, normalizer.normalize(n).upper()) for n in names]
         return SimpleVocabulary.fromItems(items)
 IChipsAllVocabulary = IChipsAll()
+alsoProvides(IChipsAll, IFormFieldProvider)
+
 
 """class Providers(object):
     def __call__(self, context):
