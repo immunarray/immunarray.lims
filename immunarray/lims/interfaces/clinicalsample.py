@@ -2,6 +2,7 @@
 from datetime import date
 from plone.app.textfield import RichText
 from zope import schema
+from plone.supermodel import model
 from immunarray.lims import messageFactory as _
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.utils import createContentInContainer
@@ -13,15 +14,26 @@ from z3c.form.browser.radio import RadioFieldWidget
 from zope.interface import alsoProvides
 from immunarray.lims.vocabularies.provider import ProvidersVocabulary
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 
-class IClinicalSample(ISample):
+class IClinicalSample(model.Schema):
     """Sample that will contain all the billing info and high levle information
-        that is applicalbe to all aliqouts made from this material
+        that is applicalbe to all aliqouts made from this material, location of
+        tests ordered on sample
     """
     unique_sample_number = schema.TextLine(
         title=_(u"Unique Sample Number"),
         description=_(u"Sample ID from the blood draw kit"),
         required=False,
+    )
+    # list or tuple? JP 3-14-17, let this be blank for remote order
+    # option at a later date, need test ordered and status!
+    form.widget(tests_ordered=CheckBoxFieldWidget)
+    tests_ordered = schema.Tuple(
+        title=_(u"Test(s) Ordered"),
+        description=_(u"Test(s) Ordered"),
+        required=False,
+        value_type=schema.Choice(source=IChipAssayListVocabulary),
     )
 
     sample_primary_insurance_name = schema.TextLine(
@@ -154,13 +166,13 @@ class IClinicalSample(ISample):
         required=False,
     )
 
-    sample_secondary_insurance_subscriber_DOB = schema.Date(
+    sample_secondary_insurance_subscriber_DOB = schema.Datetime(
         title=_(u"Secondary Insurance Subscriber DOB"),
         description =_(u"Secondary Insurance Subscriber DOB"),
         required=False,
     )
 
-    sample_secondary_insurance_effective_date = schema.Date(
+    sample_secondary_insurance_effective_date = schema.Datetime(
         title=_(u"Secondary Insurance Effective Date"),
         description =_(u"Secondary Insurance Effective Date"),
         required=False,
@@ -226,14 +238,6 @@ class IClinicalSample(ISample):
         vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
         required=False,
     )
-    """directives.widget(level=RadioFieldWidget)"""
-    test_requested = schema.Choice(
-        title=_(u"Test(s) Requested"),
-        description=_(u"Test(s) Requested"),
-        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
-        required=False,
-    )
-
     """directives.widget(level=RadioFieldWidget)"""
     ana_teesting = schema.Choice(
         title=_(u"ANA Testing Results"),
@@ -322,11 +326,13 @@ class IClinicalSample(ISample):
         title=_(u"Sample Collection Date"),
         description =_(u"Sample Collection Date"),
         required=False,
+        default=date.today(),
     )
 
     received_date = schema.Date(
         title=_(u"Sample Received Date"),
         description =_(u"Sample Received Date"),
         required=False,
+        default=date.today(),
     )
 alsoProvides(IClinicalSample, IFormFieldProvider)
