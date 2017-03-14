@@ -19,7 +19,7 @@ class IChipsInUS (object):
     def __call__(self, context):
         wells = ["A","B","C","D","E","F","G","H"]
         values = api.content.find(context=api.portal.get(), portal_type='iChip')
-        ichips = [v.id for v in values]
+        ichips = [v.Title for v in values]
         unique_ichips=[]
         for u in ichips:
             if u not in unique_ichips:
