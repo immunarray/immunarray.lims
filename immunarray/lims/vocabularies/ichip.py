@@ -14,11 +14,10 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.directives import form
 
 
-@implementer(IVocabularyFactory)
 class IChipsInUS (object):
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
-        #catalog = getToolByName(context, 'portal_catalog')
+        wells = ["A","B","C","D","E","F","G","H"]
         values = api.content.find(context=api.portal.get(), portal_type='iChip')
         ichips = [v.id for v in values]
         unique_ichips=[]
@@ -26,9 +25,8 @@ class IChipsInUS (object):
             if u not in unique_ichips:
                 unique_ichips.append(u)
         normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i)) for i in unique_ichips]
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichips]
         return SimpleVocabulary.fromItems(items)
-
 IChipsInUSVocabulary = IChipsInUS()
 
 
