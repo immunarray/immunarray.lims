@@ -47,8 +47,28 @@
       component="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
   <utility
-      name="immunarray.lims.vocabularies.ichip.IChipsInUSVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IChipsInUSVocabulary"
+      name="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichip.IEightFrameChipsInUSVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IEightFrameChipsInUSVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichip.IThreeNoChipsInUSVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IThreeNoChipsInUSVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichip.IThreeFrameChipsAllVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IThreeFrameChipsAllVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichip.IEightFrameChipsAllVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IEightFrameChipsAllVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.ichip.IThreeNoChipsAllVocabulary"
+      component="immunarray.lims.vocabularies.ichip.IThreeNoChipsAllVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
   <utility
       name="immunarray.lims.vocabularies.ichip.IChipsForCommercialTestingVocabulary"
