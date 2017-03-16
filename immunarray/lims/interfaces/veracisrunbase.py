@@ -35,10 +35,12 @@ class IVeracisRunBase(model.Schema):
     veracis_test_run_date=schema.Date(
         title=_(u"Veracis Test Run Date"),
         description=_(u"Veracis Test Run Date (MM/DD/YYYY)"),
+        default=date.today(),
     )
     veracis_test_scan_date=schema.Date(
         title=_(u"Veracis Test Scan Date"),
         description=_(u"Veracis Test Scan Date (MM/DD/YYYYY)"),
+        default=date.today(),
     )
 
 alsoProvides(IVeracisRunBase, IFormFieldProvider)
