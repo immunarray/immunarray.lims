@@ -13,49 +13,147 @@ from zope.interface import alsoProvides
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.directives import form
 
-
-class IChipsInUS (object):
+#updated jp 3-16-17
+#Vocabs for iChips
+class INoFrameChipsInUS (object):
+    """Produces full list of all iChip well options for no frame iChip
+    does not require addition of
+    """
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
-        wells = ["A","B","C","D","E","F","G","H"]
+        wells = []
         values = api.content.find(context=api.portal.get(), portal_type='iChip')
         ichips = [v.Title for v in values]
-        unique_ichips=[]
-        for u in ichips:
-            if u not in unique_ichips:
-                unique_ichips.append(u)
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
         normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichips]
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
         return SimpleVocabulary.fromItems(items)
-IChipsInUSVocabulary = IChipsInUS()
+INoFrameChipsInUSVocabulary = INoFrameChipsInUS()
 
-
-@implementer(IVocabularyFactory)
-class IChipsForCommercialTesting (object):
+class IThreeFrameChipsInUS (object):
+    """Produces full list of all iChips
+    """
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
-        values = api.content.find(context=api.portal.get(), portal_type='IChip')
-        ichips = [(v.id) for v in values
-                  if 'released' in v.status.lower()]
+        wells = []
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.Title for v in values]
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
         normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i).upper()) for i in ichips]
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
         return SimpleVocabulary.fromItems(items)
-IChipsForCommercialTestingVocabulary = IChipsForCommercialTesting()
+IThreeFrameChipsVocabulary = IThreeFrameChipsInUS()
 
-
-@implementer(IVocabularyFactory, IContextSourceBinder)
-class IChipsAll(object):
-
-    #want to not have v.status = 'Retired (No Longer Offered)'
+class IEightFrameChipsInUS (object):
+    """Produces full list of all iChips
+    """
+    implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
-        catalog = getToolByName(context, 'portal_catalog')
-        values = catalog(portal_type='iChip')
-        names = [([v.id]) for v in values]
+        wells = []
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.Title for v in values]
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
         normalizer = queryUtility(IIDNormalizer)
-        items = [(n, normalizer.normalize(n).upper()) for n in names]
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
         return SimpleVocabulary.fromItems(items)
-IChipsAllVocabulary = IChipsAll()
-alsoProvides(IChipsAll, IFormFieldProvider)
+IEightFrameChipsInUSVocabulary = IEightFrameChipsInUS()
+
+#Vocabs for Commercial Testable iChip well IDs in the US
+class IThreeFrameChipWellsInUS (object):
+    """Produces full list of all iChip well options for three frame iChip
+    """
+    implements(IVocabularyFactory, IContextSourceBinder)
+    def __call__(self, context):
+        wells = ["-A","-B","-C"]
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.Title for v in values]
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
+        return SimpleVocabulary.fromItems(items)
+IThreeFrameChipWellsInUSVocabulary = IThreeFrameChipWellsInUS()
+
+class IEightFrameChipWellsInUS (object):
+    """Produces full list of all iChip well options for eight frame iChip
+    does not require addition of
+    """
+    implements(IVocabularyFactory, IContextSourceBinder)
+    def __call__(self, context):
+        wells = ["-A","-B","-C","-D","-E","-F","-H"]
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.Title for v in values]
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
+        return SimpleVocabulary.fromItems(items)
+IEightFrameChipWellsInUSVocabulary = IEightFrameChipWellsInUS()
+
+
+#Vocabs for ALL iChip well ID in the US (R&D use)
+class IThreeFrameChipWellsAll (object):
+    """Produces full list of all iChip well options for three frame iChip
+    """
+    implements(IVocabularyFactory, IContextSourceBinder)
+    def __call__(self, context):
+        wells = ["-A","-B","-C"]
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.Title for v in values]
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
+        return SimpleVocabulary.fromItems(items)
+IThreeFrameChipWellsAllVocabulary = IThreeFrameChipWellsAll()
+
+class IEightFrameChipWellsAll (object):
+    """Produces full list of all iChip well options for eight frame iChip
+    does not require addition of
+    """
+    implements(IVocabularyFactory, IContextSourceBinder)
+    def __call__(self, context):
+        wells = ["-A","-B","-C","-D","-E","-F","-H"]
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        ichips = [v.Title for v in values]
+        unique_ichip_wells=[]
+        for o in ichips:
+            for w in wells:
+                well_location = o + w
+                unique_ichip_wells.append(well_location)
+
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
+        return SimpleVocabulary.fromItems(items)
+IEightFrameChipWellsAllVocabulary = IEightFrameChipWellsAll()
+
 
 
 """class Providers(object):
