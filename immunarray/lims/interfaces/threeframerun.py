@@ -5,14 +5,12 @@ from plone.app.textfield import RichText
 from plone.supermodel import model
 from zope import schema
 from plone.autoform.interfaces import IFormFieldProvider
-from immunarray.lims.vocabularies.ichip import IThreeFrameChipsInUSVocabulary
-from immunarray.lims.vocabularies.ichip import IChipsForCommercialTestingVocabulary
+from immunarray.lims.vocabularies.ichip import *
 from immunarray.lims.vocabularies import ichip
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from immunarray.lims.vocabularies import ichipassay
 from immunarray.lims.vocabularies.provider import ProvidersVocabulary
 from z3c.relationfield import RelationChoice
-from immunarray.lims.vocabularies.ichip import IChipsAllVocabulary
 from plone.directives import form
 from plone import api
 from plone.i18n.normalizer.interfaces import IIDNormalizer
@@ -42,7 +40,7 @@ class IThreeFrameRun(IVeracisRunBase):
 """
     aliquot_to_well = schema.Dict(
         key_type=schema.TextLine(title=u"Aliquot ID", required=False),
-        value_type=schema.Choice(source=IThreeFrameChipsInUSVocabulary, required=False)
+        value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
     )
 alsoProvides(IThreeFrameRun, IFormFieldProvider)
 

@@ -36,6 +36,7 @@ class IiChip(model.Schema):
                 _(u'Broken'),
                 _(u'Used-Training'),
                 _(u'Used-Validaiton')],
+        default=_(u'Quarantined'),
     )
 
     agilent_red = NamedBlobImage(
