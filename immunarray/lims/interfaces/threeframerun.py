@@ -26,8 +26,6 @@ from plone.app.z3cform.widget import *
 from plone.autoform import directives
 
 
-
-@implementer(IVocabularyFactory, IContextSourceBinder)
 class IThreeFrameRun(IVeracisRunBase):
 
     """testiChipvocab = schema.Choice(
@@ -38,6 +36,10 @@ class IThreeFrameRun(IVeracisRunBase):
     )
 
 """
+
+@button.buttonAndHandler(_(u'Order'))
+def handleApply(self, action):
+
     aliquot_to_well = schema.Dict(
         key_type=schema.TextLine(title=u"Aliquot ID", required=False),
         value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
