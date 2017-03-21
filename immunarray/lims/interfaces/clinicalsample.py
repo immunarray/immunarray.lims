@@ -14,6 +14,7 @@ from z3c.form.browser.radio import RadioFieldWidget
 from zope.interface import alsoProvides
 from immunarray.lims.vocabularies.provider import ProvidersVocabulary
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 
 class IClinicalSample(model.Schema):
@@ -259,7 +260,7 @@ class IClinicalSample(model.Schema):
                 _(u'No')],
     )
 
-    other_test_ordered = schema.Tuple(
+    other_test_ordered = schema.List(
         title=_(u"Other Test(s) Ordered"),
         description =_(u"Other Test(s) Ordered Enter One Per Line"),
         missing_value=None,
