@@ -117,18 +117,26 @@ ICommercialNoFrameChipsVocabulary = ICommercialNoFrameChips()
 class ICommercialThreeFrameChipWells (object):
     """Produces full list of all iChip well options for three frame iChip
     """
-    implements(IVocabularyFactory, IContextSourceBinder)
+    implements(IContextSourceBinder)
+
+    #def __init__(self, ichip, frames):
+    #   self.i = ichip
+    #   self.f = frames
+
     def __call__(self, context):
-        wells = ["-A","-B","-C"]
-        values = api.content.find(portal_type='iChip')
+        no_well = []
+        three_well = ["-A","-B","-C"]
+        eight_well = ["-A","-B","-C","-D","-E","-F","-G","-H"]
+        values = api.content.find(context=api.portal.get(), portal_type='iChip')
         ichips = []
+
         for v in values:
-            a= v.getObject()
+            a = v.getObject()
             if "released" in a.status.lower():
                 ichips.append("-".join([a.title, str(a.status)]))
         unique_ichip_wells=[]
         for o in ichips:
-            for w in wells:
+            for w in three_well:
                 well_location = o + w
                 unique_ichip_wells.append(well_location)
 

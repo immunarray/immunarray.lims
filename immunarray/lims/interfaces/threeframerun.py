@@ -24,21 +24,9 @@ from Products.CMFCore.utils import getToolByName
 from zope.interface import alsoProvides
 from plone.app.z3cform.widget import *
 from plone.autoform import directives
-
+from z3c.form import form, button
 
 class IThreeFrameRun(IVeracisRunBase):
-
-    """testiChipvocab = schema.Choice(
-        title=_(u"Test Vocab"),
-        description=_(u"Test Vocab"),
-        required=False,
-        source=IChipsInUSVocabulary,
-    )
-
-"""
-
-@button.buttonAndHandler(_(u'Order'))
-def handleApply(self, action):
 
     aliquot_to_well = schema.Dict(
         key_type=schema.TextLine(title=u"Aliquot ID", required=False),
