@@ -7,7 +7,7 @@ from bika.lims.permissions import AddAliquot
 
 
 def RackAdded(instance, event):
-    """a new Rack has been created!
+    """A new Rack has been created!
     """
 
     # Permit Commercial Boxes to be added here
