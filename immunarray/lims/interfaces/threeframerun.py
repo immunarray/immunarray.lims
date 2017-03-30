@@ -32,5 +32,23 @@ class IThreeFrameRun(IVeracisRunBase):
         key_type=schema.TextLine(title=u"Aliquot ID", required=False),
         value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
     )
+
+    ten_x_pbs = schema.TextLine(
+        title=_(u"10X PBS Lot Used"),
+        description=_(u"10X PBS Lot Used"),
+        required=False,
+    )
+
+    one_x_pbs = schema.TextLine(
+        title=_(u"1X PBS Lot Used"),
+        description=_(u"1X PBS Lot Used"),
+        required=False,
+    )
+
+    one_x_pbs_22_tween20 = schema.TextLine(
+        title=_(u"1X PBS - 22% Tween 20 Lot Used"),
+        description=_(u"1X PBS - 22% Tween 20 Lot Used"),
+        required=False,
+    )
 alsoProvides(IThreeFrameRun, IFormFieldProvider)
 
