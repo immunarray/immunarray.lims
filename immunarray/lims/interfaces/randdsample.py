@@ -24,16 +24,19 @@ class IRandDSample(model.Schema):
         description=_(u"Primary R&D Source Sample ID"),
         required=False,
     )
+    
     source_id_two = schema.TextLine(
         title=_(u"Secondary R&D Source Sample ID"),
         description=_(u"Secondary R&D Source Sample ID"),
         required=False,
     )
+
     source_id_three = schema.TextLine(
         title=_(u"Tertiary R&D Source Sample ID"),
         description=_(u"Tertiary R&D Source Sample ID"),
         required=False,
     )
+
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
         description=_(u"R&D Veracis Sample ID"),
@@ -109,7 +112,7 @@ class IRandDSample(model.Schema):
     date_disposed = schema.Date(
         title=_(u"Date R&D Sample was Disposed"),
         description=_(u"Date R&D Sample was Disposed"),
-        required=True,
+        required=False,
     )
 
     comment = schema.Text(
