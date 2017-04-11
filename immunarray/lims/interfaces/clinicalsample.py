@@ -22,13 +22,15 @@ class IClinicalSample(model.Schema):
         that is applicalbe to all aliqouts made from this material, location of
         tests ordered on sample
     """
-    unique_sample_number = schema.TextLine(
+    title = schema.TextLine(
         title=_(u"Unique Sample Number"),
         description=_(u"Sample ID from the blood draw kit"),
         required=False,
     )
     # list or tuple? JP 3-14-17, let this be blank for remote order
     # option at a later date, need test ordered and status!
+    # use this to drive a setup handler that will make the lists of what should
+    # be tested! (jp 4-11-17)
     form.widget(tests_ordered=CheckBoxFieldWidget)
     tests_ordered = schema.Tuple(
         title=_(u"Test(s) Ordered"),
