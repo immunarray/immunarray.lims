@@ -32,7 +32,7 @@ class IClinicalSample(model.Schema):
     # use this to drive a setup handler that will make the lists of what should
     # be tested! (jp 4-11-17)
     form.widget(tests_ordered=CheckBoxFieldWidget)
-    tests_ordered = schema.Tuple(
+    tests_ordered = schema.List(
         title=_(u"Test(s) Ordered"),
         description=_(u"Test(s) Ordered"),
         required=False,
