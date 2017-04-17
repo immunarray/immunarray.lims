@@ -163,14 +163,14 @@
               <input type="radio" name="ethnicity" value="Caucasian"/>Caucasian
               <input type="radio" name="ethnicity" value="Hispanic or Latino"/>Hispanic or Latino
               <input type="radio" name="ethnicity" value="Other, please specify"/>Other, please specify:
-              <input type="text" name="ethnicity_other"/>
+              <input type="text" name="ethnicity_specify"/>
               </p>
             </td>
           </tr>
           <tr>
             <td colspan="2">
               <p>
-                Street Address:<input type="text" name="add_street"/>
+                Street Address:<input type="text" name="p_add_street"/>
               </p>
             </td>
             <td colspan="2">
@@ -183,11 +183,11 @@
           </tr>
           <tr>
             <td>
-              <p>City:<input type="text" name="add_city"/></p>
+              <p>City:<input type="text" name="p_add_city"/></p>
             </td>
             <td>
               State:
-              <select name="add_state">
+              <select name="p_add_state">
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -244,7 +244,7 @@
             <!-- State Selection -->
             <td>
               <p>Zip Code:
-              <input type="zip" name="add_zip"/></p>
+              <input type="zip" name="p_add_zip"/></p>
             </td>
             <td>
               <p>Phone Number:
@@ -279,7 +279,7 @@
           </tr>
           <tr>
             <td>
-              <p>Printed Name <input type="text" name="consent_printed_name"/></p>
+              <p>Printed Name <input type="text" name="consent_name"/></p>
             </td>
             <td>
               <p>Signed
@@ -321,8 +321,8 @@
             <td>
               <p>Other Tests Ordered:
               <input type="checkbox" name="test-xray"/>X-ray
-              <input type="checkbox"/>Other Dx (list):
-              <input type="text" name="test-other"/>
+              <input type="checkbox" name="test-other"/>Other Dx (list):
+              <input type="text" name="test-other-specify"/>
               </p>
 
             </td>
@@ -394,6 +394,7 @@
             <td>
               <p>
                 <input type="checkbox" name="diag-D89.89"/>
+        #
                 <u>D89.89</u>-Other specified disorders involving the immune mechanism, not elsewhere classified
               </p>
             </td>
@@ -421,14 +422,14 @@
           <tr>
             <td>
               <p>
-                <input type="checkbox" name="l93.2"/>
+                <input type="checkbox" name="diag-L93.2"/>
                 <u>L93.2</u>-Other local lupus erythematosus
               </p>
             </td>
             <td>
               <p>
-                <input type="checkbox" name="other"/>Other, please specify
-                <input type="text" name="diag_other_specify"/>
+                <input type="checkbox" name="diag-other"/>Other, please specify
+                <input type="text" name="diag-other-specify"/>
               </p>
             </td>
           </tr>

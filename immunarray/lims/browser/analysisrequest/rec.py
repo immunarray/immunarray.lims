@@ -17,9 +17,10 @@ class AddRecView(BrowserView):
         if "submitted" not in request:
             return self.template()
 
-        #
+        # ID
         usn = request.get("usn")
-        #
+
+        # Patient Info
         repeat_order = request.get("repeat_order")
         first = request.get("patient_first_name")
         last = request.get("patient_last_name")
@@ -28,32 +29,64 @@ class AddRecView(BrowserView):
         dob = request.get("dob")
         gender = request.get("gender")
         ethnicity = request.get("ethnicity")
-        ethnicity_other = request.get("ethnicity_other")
+        ethnicity_other = request.get("ethnicity_specify")
         marital_status = request.get("marital_status")
-        patient_address = request.get("add_street")
-        patient_city = request.get("add_city")
-        patient_state = request.get("add_state")
-        patient_zip_code = request.get("add_zip")
+        patient_address = request.get("p_add_street")
+        patient_city = request.get("p_add_city")
+        patient_state = request.get("p_add_state")
+        patient_zip_code = request.get("p_add_zip")
         patient_phone = request.get("phone_number")
-        #
+
+        # Consent
         consent_acquired = request.get("consent_acquired")
         consent_signed = request.get("consent_signed")
         consent_name = request.get("consent_name")
         consent_date = request.get("consent_date")
-        #
-        ana_testing = request.get("ana_testing")
-        #
-        other_tests =
 
+        # Tests
+        ana_testing = request.get("ana_testing")
+        test_xray = request.get("test-xray")
+        test_other = request.get("test-other")
+        test_other_specify = request.get("test-other-specify")
+
+        # Clinical info
+        clins = {}
+        for key in request.keys():
+            if key.startswith("clin-"):
+                code = key.split("clin-")[-1]
+                clins[code] = request[key]
+
+        # Diagnosis
+        diags = {}
+        for key in request.keys():
+            if key.startswith("diag-"):
+                code = key.split("diag-")[-1]
+                diags[code] = request[key]
+
+        provider = {
+            "practice_name": request.get("practice_name"),
+            "npi": request.get("npi"),
+            "provider_printed_name": request.get("provider_printed_name"),
+            "signed": request.get("signed"),
+            "signed_date": request.get("signed_date")
+        }
+
+        specimen = {
+            "draw_location": request.get("draw_location"),
+            "draw_tel": request.get("draw_tel"),
+            "draw_signed": request.get("draw_signed"),
+            "collection_date": request.get("collection_date"),
+            "shipment_date": request.get("shipment_date"),
+        }
 
         import pdb;pdb.set_trace()
 
         # check unique sample ID
-        if not usid:
+        if not usn:
             self.errors.append(
                 {"UniqueSampleNumber": "Sample number was not specified."})
         else:
-            self.check_unique_sample_id(usid)
+            self.check_unique_sample_id(usn)
 
         # validate patient data (only a few fields are required)
         if not first:
@@ -66,27 +99,12 @@ class AddRecView(BrowserView):
             self.errors.append(
                 {"DOB": "Patient DOB not specified."})
 
-
-# 'DateofCollection': '',
-# 'DateofShipment': '',
-# 'DrawLocation': '',
-# 'DrawingLabPhoneNumber': '',
-# 'HealthCareProviderPrintedName': '',
-# 'LocationofInflmmation': '',
-# 'NPI': '',
-# 'OtherDiagnosisCode': '',
-# 'OtherSymptoms': '',
-# 'OtherTestsRun': '',
-# 'PhlebotomistName': '',
-# 'PracticeName': '',
-# 'SignatureDate': '',
-
         if self.errors:
-            raise up
+            # We must re-render the form, making sure to pass existing request
+            # values formatted so that the form can consume them and provide
+            # the alread-entered values to the user.
+            import pdb;pdb.set_trace()
 
-    def check_unique_sample_id(self, usid):
-
-        self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usid})
+    def check_unique_sample_id(self, usn):
+        self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
         return False
-
-        return True
