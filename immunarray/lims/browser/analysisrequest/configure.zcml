@@ -15,5 +15,12 @@
         template="templates/accessioning/acc.pt"
         permission="zope2.View"
     />
+    <browser:page
+        name="insurance"
+        class="immunarray.lims.browser.analysisrequest.insurance.AddInsuranceView"
+        for="*"
+        template="templates/billing/insurance.pt"
+        permission="zope2.View"
+    />
 
 </configure>
