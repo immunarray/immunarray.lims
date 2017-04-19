@@ -68,7 +68,7 @@
           <tr>
             <td>
               <div id="Veracis_image">
-                <img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/SLE-keylogo-Registered.jpg"
+                <img tal:attributes="src string:${context/@@plone_portal_state/portal_url}zeocluster/src/immunarray.lims/immunarray/lims/static/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"
                      style="width:1.88in;height:1.11in; text-align:left;"/>
               </div>
             </td>
@@ -78,7 +78,7 @@
               </strong>
             </td>
             <td>
-              <p style="text-align:right; font-size:15pt;">
+              <p style="text-align:center; font-size:15pt;">
                 Unique Sample ID
                 <input style="background-color:yellow" type="text" name="usn" autofocus/>
               </p>
@@ -145,7 +145,7 @@
           <td colspan="2">
             <strong>
               <p>
-                Date of Birth (mm/dd/yyyy):<input style="background-color:yellow" type="date" name="dob"/>
+                Date of Birth (mm/dd/yyyy): <input style="background-color:yellow" type="date" name="dob"/>
               </p>
             </strong>
           </td>
@@ -243,7 +243,7 @@
             </td>
             <!-- State Selection -->
             <td>
-              <p>Zip Code:
+              <p>Zip Code: <br />
               <input type="zip" name="p_add_zip"/></p>
             </td>
             <td>
@@ -282,14 +282,14 @@
               <p>Printed Name <input type="text" name="consent_name"/></p>
             </td>
             <td>
-              <p>Signed
+              <p style="text-align: center; vertical-align: middle">Signed
               <input type="radio" name="consent_signed"/>Yes
               &nbsp;
               <input type="radio" name="consent_signed"/>No
               </p>
             </td>
             <td>
-              <p>Date<input type="date" name="consent_date"/></p>
+              <p>Date:  <input type="date" name="consent_date"/></p>
             </td>
           </tr>
         </table>
@@ -545,7 +545,7 @@
             </td>
           </tr>
         </table>
-        <input type="submit" value="submit"/>
+        <input type="submit" value="Submit"/>
       </form>
     </metal:main>
   </body>
