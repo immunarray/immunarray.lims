@@ -63,6 +63,8 @@ class AddRecView(BrowserView):
                 code = key.split("diag-")[-1]
                 diags[code] = request[key]
 
+        # Should exist in the system before the sample arrives
+        # make practice_name and npi lookup from existing providers (dropdowns)
         provider = {
             "practice_name": request.get("practice_name"),
             "npi": request.get("npi"),
