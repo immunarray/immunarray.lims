@@ -56,7 +56,7 @@ i18n:domain="immunarray.lims">>
             <strong><p style="text-align:center;font-family:Helvetica;font-size:20pt">Billing Information</p></strong>
         </td>
         <td>
-            <p style="text-align:right; font-size:15pt;">Unique Sample ID&nbsp;&nbsp;<input style="background-color:yellow" type="text" name="UniqueSampleNumber" autofocus></p>
+            <p style="text-align:center; font-size:15pt;">Unique Sample ID&nbsp;&nbsp;<input style="background-color:yellow" type="text" name="usn" autofocus></p>
         </td>
     </tr>
 </table>
@@ -312,7 +312,7 @@ i18n:domain="immunarray.lims">>
         </td>
     </tr>
 </table>
-<!--  2. Secondary Insurance Information -->
+<!--  3. Release and Assignment of Benefits -->
 <table id="table6" class="alpha" style="width:100%">
     <tr>
         <td>
@@ -326,17 +326,18 @@ i18n:domain="immunarray.lims">>
             <p>Printed Name:&nbsp;&nbsp;<input type="text" name="AssignmentofBenefitsPatientName"></p>
         </td>
         <td>
-            <p>Signed:<input type="checkbox">Yes&nbsp;&nbsp;<input type="checkbox">No</p>
+            <p>Signed:&nbsp;<input type="checkbox">Yes&nbsp;&nbsp;<input type="checkbox">No</p>
         </td>
         <td>
-            <p>Date:<input type="date" name="AssignmentofBenefitsSignatureDate"></p>
+            <p>Date:&nbsp;<input type="date" name="AssignmentofBenefitsSignatureDate"></p>
         </td>
     </tr>
 </table>
+    <!--  4. Payment Authorization -->
 <table id="table8" class="alpha" style="width:100%">
     <tr>
         <td>
-            <strong><p style="font-family:Helvetica; background-color:#660066; color:white; font-size:12pt">4.&nbsp;&nbsp;&nbsp;Payment Authorization Signature (insured, Patient or Authorized Personal Representative)</p></strong>
+            <strong><p style="font-family:Helvetica; background-color:#660066; color:white; font-size:12pt">4.<!--  2. Secondary Insurance Information -->&nbsp;&nbsp;Payment Authorization Signature (Insured, Patient or Authorized Personal Representative)</p></strong>
         </td>
     </tr>
 </table>
@@ -346,10 +347,10 @@ i18n:domain="immunarray.lims">>
             <p>Printed Name:&nbsp;&nbsp;<input type="text" name="AuthorizationSignaturePatientName"></p>
         </td>
         <td>
-            <p>Signed:<input type="checkbox">Yes&nbsp;&nbsp;<input type="checkbox">No</p>
+            <p>Signed:&nbsp;<input type="checkbox">Yes&nbsp;&nbsp;<input type="checkbox">No</p>
         </td>
         <td>
-            <p>Date:<input type="date" name="AuthorizationSignatureSignatureDate"></p>
+            <p>Date:&nbsp;<input type="date" name="AuthorizationSignatureSignatureDate"></p>
         </td>
     </tr>
 </table>
