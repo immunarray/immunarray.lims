@@ -99,7 +99,16 @@ i18n:domain="immunarray.lims">>
             <strong><p>Insurance Subscriber Name:&nbsp;&nbsp;<input style="background-color:yellow" type="text" name="InsuranceSubscriberName"></p></strong>
         </td>
         <td colspan="2">
-            <strong><p>Relationship to Insured&nbsp;&nbsp;<input type="checkbox">Self&nbsp;&nbsp;<input type="checkbox">Spouse&nbsp;&nbsp;<input type="checkbox">Child&nbsp;&nbsp;<input type="checkbox">Other&nbsp;&nbsp;</p></strong>
+            <strong><p>Relationship to Insured
+                &nbsp;
+                <input type="radio" value="Self" name="relationship_to_insured">Self
+                &nbsp;
+                <input type="radio" value="Spouse" name="relationship_to_insured">Spouse
+                &nbsp;
+                <input type="radio" value="Child" name="relationship_to_insured">Child
+                &nbsp;
+                <input type="radio" value="Other" name="relationship_to_insured">Other
+            </p></strong>
         </td>
     </tr>
     <tr>
@@ -107,7 +116,11 @@ i18n:domain="immunarray.lims">>
             <strong><p>Insurance Subscriber Date of Birth:&nbsp;&nbsp;<input style="background-color:yellow" type="date" name="InsuranceSubscriberDOB"></p></strong>
         </td>
         <td colspan="2">
-            <strong><p>Insurance Subscriber Gender:&nbsp;&nbsp;<input type="checkbox">Female&nbsp;&nbsp;<input type="checkbox">Male</p></strong>
+            <strong><p>Insurance Subscriber Gender:&nbsp;&nbsp;
+                <input type="radio" value="Female" name="insurance_subscriber_gender">Female
+                &nbsp;
+                <input type="radio" value="Male" name="insurance_subscriber_gender">Male
+            </p></strong>
         </td>
     </tr>
     <tr>
@@ -225,7 +238,16 @@ i18n:domain="immunarray.lims">>
             <strong><p>Insurance Subscriber Name:&nbsp;&nbsp;<input style="background-color:yellow" type="text" name="SecondaryInsuranceSubscriberName"></p></strong>
         </td>
         <td colspan="2">
-            <strong><p>Relationship to Insured&nbsp;&nbsp;<input type="checkbox">Self&nbsp;&nbsp;<input type="checkbox">Spouse&nbsp;&nbsp;<input type="checkbox">Child&nbsp;&nbsp;<input type="checkbox">Other&nbsp;&nbsp;</p></strong>
+            <strong><p>Relationship to Insured
+                &nbsp;
+                <input type="radio" value="Self" name="relationship_to_insured">Self
+                &nbsp;
+                <input type="radio" value="Spouse" name="relationship_to_insured">Spouse
+                &nbsp;
+                <input type="radio" value="Child" name="relationship_to_insured">Child
+                &nbsp;
+                <input type="radio" value="Other" name="relationship_to_insured">Other
+            </p></strong>
         </td>
     </tr>
     <tr>
@@ -233,7 +255,12 @@ i18n:domain="immunarray.lims">>
             <strong><p>Insurance Subscriber Date of Birth:&nbsp;&nbsp;<input style="background-color:yellow" type="date" name="SecondaryInsuranceSubscriberDOB"></p></strong>
         </td>
         <td colspan="2">
-            <strong><p>Insurance Subscriber Gender:&nbsp;&nbsp;<input type="checkbox">Female&nbsp;&nbsp;<input type="checkbox">Male</p></strong>
+            <strong><p>Insurance Subscriber Gender:
+                &nbsp;
+                <input type="radio" value="Female" name="insurance_subscriber_gender">Female
+                &nbsp;
+                <input type="radio" value="Male" name="insurance_subscriber_gender">Male
+            </p></strong>
         </td>
     </tr>
     <tr>
@@ -326,7 +353,12 @@ i18n:domain="immunarray.lims">>
             <p>Printed Name:&nbsp;&nbsp;<input type="text" name="AssignmentofBenefitsPatientName"></p>
         </td>
         <td>
-            <p>Signed:&nbsp;<input type="checkbox">Yes&nbsp;&nbsp;<input type="checkbox">No</p>
+            <p>Signed:
+                &nbsp;
+                <input type="radio" value="yes" name="release_signed">Yes
+                &nbsp;
+                <input type="radio" value="No" name="release_signed">No
+            </p>
         </td>
         <td>
             <p>Date:&nbsp;<input type="date" name="AssignmentofBenefitsSignatureDate"></p>
@@ -347,13 +379,19 @@ i18n:domain="immunarray.lims">>
             <p>Printed Name:&nbsp;&nbsp;<input type="text" name="AuthorizationSignaturePatientName"></p>
         </td>
         <td>
-            <p>Signed:&nbsp;<input type="checkbox">Yes&nbsp;&nbsp;<input type="checkbox">No</p>
+            <p>Signed:
+                &nbsp;
+                <input type="radio" value="yes" name="payment_signed">Yes
+                &nbsp;
+                <input type="radio" value="No" name="payment_signed">No
+            </p>
         </td>
         <td>
             <p>Date:&nbsp;<input type="date" name="AuthorizationSignatureSignatureDate"></p>
         </td>
     </tr>
 </table>
+<input type="submit" value="Submit"/>
 </metal:main>
 </body>
 </html>
