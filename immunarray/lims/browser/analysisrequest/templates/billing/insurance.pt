@@ -240,13 +240,13 @@ i18n:domain="immunarray.lims">>
         <td colspan="2">
             <strong><p>Relationship to Insured
                 &nbsp;
-                <input type="radio" value="Self" name="relationship_to_insured">Self
+                <input type="radio" value="Self" name="secondary_relationship_to_insured">Self
                 &nbsp;
-                <input type="radio" value="Spouse" name="relationship_to_insured">Spouse
+                <input type="radio" value="Spouse" name="secondary_relationship_to_insured">Spouse
                 &nbsp;
-                <input type="radio" value="Child" name="relationship_to_insured">Child
+                <input type="radio" value="Child" name="secondary_relationship_to_insured">Child
                 &nbsp;
-                <input type="radio" value="Other" name="relationship_to_insured">Other
+                <input type="radio" value="Other" name="secondary_relationship_to_insured">Other
             </p></strong>
         </td>
     </tr>
@@ -257,9 +257,9 @@ i18n:domain="immunarray.lims">>
         <td colspan="2">
             <strong><p>Insurance Subscriber Gender:
                 &nbsp;
-                <input type="radio" value="Female" name="insurance_subscriber_gender">Female
+                <input type="radio" value="Female" name="secondary_insurance_subscriber_gender">Female
                 &nbsp;
-                <input type="radio" value="Male" name="insurance_subscriber_gender">Male
+                <input type="radio" value="Male" name="secondary_insurance_subscriber_gender">Male
             </p></strong>
         </td>
     </tr>
