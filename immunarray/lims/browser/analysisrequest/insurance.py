@@ -18,6 +18,9 @@ class AddInsuranceView(BrowserView):
             return self.template()
 
         # ID
+        # This ID should exist in the system as this step follows in the process
+        # The USN should selected from ones that have been entered previously
+
         usn = request.get("usn")
         # Primary Insurance
         insurance_name = request.get("InsuranceName")
