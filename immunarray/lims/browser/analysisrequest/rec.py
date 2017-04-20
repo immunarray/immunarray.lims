@@ -1,5 +1,7 @@
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from immunarray.lims.interfaces.clinicalsample import IClinicalSample
+from plone.dexterity.utils import createContentInContainer
 
 
 class AddRecView(BrowserView):
@@ -110,3 +112,4 @@ class AddRecView(BrowserView):
     def check_unique_sample_id(self, usn):
         self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
         return False
+
