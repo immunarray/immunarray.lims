@@ -39,6 +39,7 @@ class AddInsuranceView(BrowserView):
         effective_date = request.get("EffectiveDate")
         insurance_address = request.get("InsuranceAddress")
         insurance_city = request.get("InsuranceCity")
+        insurance_state = request.get("InsuranceState")
         insurance_zip_code = request.get("InsuranceZipCode")
         # Secondary Insurance
         secondary_insurance_name = request.get("SecondaryInsuranceName")
@@ -55,64 +56,50 @@ class AddInsuranceView(BrowserView):
         secondary_effective_date = request.get("SecondaryEffectiveDate")
         secondary_insurance_address = request.get("SecondaryInsuranceAddress")
         secondary_insurance_city = request.get("SecondaryInsuranceCity")
-        secondary_insurance_zip_code = request.get("SecondaryInsuranceZipCode")
+        secondary_insurance_zip_code= request.get("SecondaryInsuranceZipCode")
+        secondary_insurance_state = request.get("SecondaryInsuranceState")
         # Signature section (need to add this to clinical sample!)
-        assignment_of_benefits_patient_name = request.get("AssignmentofBenefitsPatientName")
+         = request.get("AssignmentofBenefitsPatientName")
         release_signed = request.get("release_signed")
         assignment_of_benefits_signature_date = request.get("AssignmentofBenefitsSignatureDate")
         authorization_signature_patient_name = request.get("AuthorizationSignaturePatientName")
         payment_signed = request.get("payment_signed")
         authorization_signature_date = request.get("AuthorizationSignatureSignatureDate")
 
-
-
-    def add_insurance_info_to_clinical_sample(self):
-        # find sample that has the usn
-        # update fields with data from this input
         portal = api.portal.get("samples")
         obj = api.content.create(
             type = 'ClinicalSample',
             title = usn,
-            tests_ordered = ,
-            sample_primary_insurance_name = schema.TextLine,
-            sample_primary_insurance_payerID = schema.TextLine,
-            sample_primary_insurance_policy_number = schema.TextLine,
-            sample_primary_insurance_plan_number = schema.TextLine,
-            sample_primary_insurance_subscriber_name = schema.TextLine,
-            sample_primary_insurance_relation_to_insured = schema.Choice,
-            sample_primary_insurance_subscriber_DOB = schema.Date,
-            sample_primary_insurance_effective_date = schema.Date,
-            sample_primary_insurance_address = schema.TextLine,
-            sample_primary_city = schema.TextLine,
-            sample_primary_state = schema.TextLine,
-            sample_primary_insurance_zip_code = schema.TextLine,
-            sample_secondary_insurance_name = schema.TextLine,
-            sample_secondary_insurance_payerID = schema.TextLine,
-            sample_secondary_insurance_policy_number = schema.TextLine,
-            sample_secondary_insurance_plan_number = schema.TextLine,
-            sample_secondary_insurance_authorization_precertificate = schema.TextLine,
-            sample_secondary_insurance_subscriber_name = schema.TextLine,
-            sample_secondary_insurance_relation_to_insured = schema.Choice,
-            sample_secondary_insurance_subscriber_DOB = schema.Datetime,
-            sample_secondary_insurance_effective_date = schema.Datetime,
-            sample_secondary_insurance_address = schema.TextLine,
-            sample_secondary_city = schema.TextLine,
-            sample_secondary_state = schema.TextLine,
-            sample_secondary_insurance_zip_code = schema.TextLine,
-            billable_code = schema.Choice,
-            sample_serial_number = schema.Int,
-            sample_ordering_healthcare_provider = schema.Choice,
-            sample_ordering_healthcare_provider_signature = schema.Bool,
-            primary_healthcare_provider = schema.Choice,
-            ana_teesting = schema.Choice,
-            clinical_impression = schema.Choice,
-            other_test_ordered = schema.List,
-            symptoms_choice = schema.List,
-            symptoms_text = schema.List,
-            diagnosis_code = schema.List,
-            diagnosis_code_other = schema.List,
-            phlebotomist_last_name = schema.TextLine,
-            phlebotomist_signature_provided=schema.Bool,
-            collection_date = schema.Date,
-            received_date = schema.Date,
-        )
+            tests_ordered = insurance_name,
+            sample_primary_insurance_name = insurance_name, # schema.TextLine,
+            sample_primary_insurance_payerID = insurance_payer_id, # schema.TextLine,
+            sample_primary_insurance_policy_number = insurance_policy_number, # schema.TextLine,
+            sample_primary_insurance_plan_number = insurance_plan_number, # schema.TextLine,
+            sample_primary_insurance_subscriber_name = insurance_subscriber_name, # schema.TextLine,
+            sample_primary_insurance_relation_to_insured = relationship_to_insured, # schema.Choice,
+            sample_primary_insurance_subscriber_DOB = secondary_insurance_subscriber_dob, # schema.Date,
+            sample_primary_insurance_effective_date = effective_date, # schema.Date,
+            sample_primary_insurance_address = insurance_address, # schema.TextLine,
+            sample_primary_city = insurance_city, # schema.TextLine,
+            sample_primary_state = insurance_state, # schema.TextLine,
+            sample_primary_insurance_zip_code = insurance_zip_code, # schema.TextLine,
+            sample_secondary_insurance_name = secondary_insurance_name, # schema.TextLine,
+            sample_secondary_insurance_payerID = secondary_insurance_payer_id, # schema.TextLine,
+            sample_secondary_insurance_policy_number = secondary_insurance_policy_number, # schema.TextLine,
+            sample_secondary_insurance_plan_number = secondary_insurance_plan_number, # schema.TextLine,
+            sample_secondary_insurance_authorization_precertificate = secondary_authorization_precertification, # schema.TextLine,
+            sample_secondary_insurance_subscriber_name = secondary_insurance_subscriber_dob, # schema.TextLine,
+            sample_secondary_insurance_relation_to_insured = secondary_relationship_to_insured, # schema.Choice,
+            sample_secondary_insurance_subscriber_DOB = secondary_insurance_subscriber_dob, # schema.Datetime,
+            sample_secondary_insurance_effective_date = secondary_effective_date, # schema.Datetime,
+            sample_secondary_insurance_address = secondary_insurance_address, # schema.TextLine,
+            sample_secondary_city = secondary_insurance_city, # schema.TextLine,
+            sample_secondary_state = secondary_insurance_state, # schema.TextLine,
+            sample_secondary_insurance_zip_code = secondary_insurance_zip_code, # schema.TextLine,
+            assignment_of_benefits_patient_name = assignment_of_benefits_patient_name, # schema.TextLine
+            release_signed = release_signed, # schema.Bool
+            assignment_of_benefits_signature_date = assignment_of_benefits_signature_date, # schema.Date
+            authorization_signature_patient_name = authorization_signature_patient_name, # schema.TextLine
+            payment_signed = payment_signed, #schema.Bool
+            authorization_signature_date = authorization_signature_date, #schema.Date
+            )
