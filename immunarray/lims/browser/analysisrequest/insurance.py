@@ -56,13 +56,13 @@ class AddInsuranceView(BrowserView):
         secondary_insurance_address = request.get("SecondaryInsuranceAddress")
         secondary_insurance_city = request.get("SecondaryInsuranceCity")
         secondary_insurance_zip_code = request.get("SecondaryInsuranceZipCode")
-        assignment_of_benefits_patient_name = request.get("AssignmentofBenefitsPatientName")
         # Signature section (need to add this to clinical sample!)
+        assignment_of_benefits_patient_name = request.get("AssignmentofBenefitsPatientName")
         release_signed = request.get("release_signed")
         assignment_of_benefits_signature_date = request.get("AssignmentofBenefitsSignatureDate")
         authorization_signature_patient_name = request.get("AuthorizationSignaturePatientName")
         payment_signed = request.get("payment_signed")
-        authorization_signature_signature_date = request.get("AuthorizationSignatureSignatureDate")
+        authorization_signature_date = request.get("AuthorizationSignatureSignatureDate")
 
 
 
