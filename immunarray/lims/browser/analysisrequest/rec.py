@@ -2,6 +2,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from plone.dexterity.utils import createContentInContainer
+from plone import api
 
 
 class AddRecView(BrowserView):
@@ -37,7 +38,7 @@ class AddRecView(BrowserView):
         patient_city = request.get("p_add_city")
         patient_state = request.get("p_add_state")
         patient_zip_code = request.get("p_add_zip")
-        patient_phone = request.get("phone_number")
+        patient_phone = request.get("patient_phone")
 
         # Consent
         consent_acquired = request.get("consent_acquired")
@@ -46,6 +47,7 @@ class AddRecView(BrowserView):
         consent_date = request.get("consent_date")
 
         # Tests
+        # other_test_ordered = schema.List() need to make this into a list of data!
         ana_testing = request.get("ana_testing")
         test_xray = request.get("test-xray")
         test_other = request.get("test-other")
@@ -112,4 +114,66 @@ class AddRecView(BrowserView):
     def check_unique_sample_id(self, usn):
         self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
         return False
+
+    def make_clinical_sample(self):
+        portal = api.portal.get("samples")
+        obj = api.content.create(
+            type = 'ClinicalSample',
+            title = usn,
+            tests_ordered = ,
+            sample_primary_insurance_name = schema.TextLine,
+            sample_primary_insurance_payerID = schema.TextLine,
+            sample_primary_insurance_policy_number = schema.TextLine,
+            sample_primary_insurance_plan_number = schema.TextLine,
+            sample_primary_insurance_subscriber_name = schema.TextLine,
+            sample_primary_insurance_relation_to_insured = schema.Choice,
+            sample_primary_insurance_subscriber_DOB = schema.Date,
+            sample_primary_insurance_effective_date = schema.Date,
+            sample_primary_insurance_address = schema.TextLine,
+            sample_primary_city = schema.TextLine,
+            sample_primary_state = schema.TextLine,
+            sample_primary_insurance_zip_code = schema.TextLine,
+            sample_secondary_insurance_name = schema.TextLine,
+            sample_secondary_insurance_payerID = schema.TextLine,
+            sample_secondary_insurance_policy_number = schema.TextLine,
+            sample_secondary_insurance_plan_number = schema.TextLine,
+            sample_secondary_insurance_authorization_precertificate = schema.TextLine,
+            sample_secondary_insurance_subscriber_name = schema.TextLine,
+            sample_secondary_insurance_relation_to_insured = schema.Choice,
+            sample_secondary_insurance_subscriber_DOB = schema.Datetime,
+            sample_secondary_insurance_effective_date = schema.Datetime,
+            sample_secondary_insurance_address = schema.TextLine,
+            sample_secondary_city = schema.TextLine,
+            sample_secondary_state = schema.TextLine,
+            sample_secondary_insurance_zip_code = schema.TextLine,
+            billable_code = schema.Choice,
+            sample_serial_number = schema.Int,
+            sample_ordering_healthcare_provider = schema.Choice,
+            sample_ordering_healthcare_provider_signature = schema.Bool,
+            primary_healthcare_provider = schema.Choice,
+            ana_teesting = schema.Choice,
+            clinical_impression = schema.Choice,
+            other_test_ordered = schema.List,
+            symptoms_choice = schema.List,
+            symptoms_text = schema.List,
+            diagnosis_code = schema.List,
+            diagnosis_code_other = schema.List,
+            phlebotomist_last_name = schema.TextLine,
+            phlebotomist_signature_provided=schema.Bool,
+            collection_date = schema.Date,
+            received_date = schema.Date,
+            )
+
+
+
+
+
+
+
+
+
+
+
+
+        )
 
