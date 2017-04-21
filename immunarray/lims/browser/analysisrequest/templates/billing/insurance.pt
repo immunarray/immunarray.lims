@@ -387,7 +387,7 @@ i18n:domain="immunarray.lims">>
             </p>
         </td>
         <td>
-            <p>Date:&nbsp;<input type="date" name="AuthorizationSignatureSignatureDate"></p>
+            <p>Date:&nbsp;<input type="date" name="AuthorizationSignatureDate"></p>
         </td>
     </tr>
 </table>
