@@ -138,7 +138,7 @@
             </td>
             <td colspan="2">
               <p>
-                Social Security Number:<input style="background-color:yellow" type="text" name="ssn"/>
+                Social Security Number:<input pattern="\d{3}[\-]\d{2}[\-]\d{4}" style="background-color:yellow" type="text" name="ssn"/>
               </p>
             </td>
           </tr>
@@ -175,9 +175,9 @@
             </td>
             <td colspan="2">
               <p>Marital Status:
-              <input type="radio" name="marital_status"/>Single
-              <input type="radio" name="marital_status"/>Married
-              <input type="radio" name="marital_status"/>Other
+              <input type="radio" name="marital_status" value="Single"/>Single
+              <input type="radio" name="marital_status" value="Married"/>Married
+              <input type="radio" name="marital_status" value="Other"/>Other
               </p>
             </td>
           </tr>
@@ -244,11 +244,11 @@
             <!-- State Selection -->
             <td>
               <p>Zip Code: <br />
-              <input type="zip" name="p_add_zip"/></p>
+              <input type="zip" pattern="\d{5}-?(\d{4})?"name="p_add_zip"/></p>
             </td>
             <td>
               <p>Phone Number:
-              <input type="text" pattern="\d{5}-?(\d{4})?" name="patient_phone"/></p>
+              <input type="text" pattern="\d{3}[\-]\d{3}[\-]\d{4}" name="patient_phone"/></p>
             </td>
           </tr>
         </table>
@@ -271,9 +271,9 @@
           <tr>
             <td>
               <p>
-                <input type="radio" name="consent_acquired"/>Yes
+                <input type="radio" name="consent_acquired" value="Yes"/>Yes
                 &nbsp;
-                <input type="radio" name="consent_acquired"/>No
+                <input type="radio" name="consent_acquired" value="No"/>No
               </p>
             </td>
           </tr>
@@ -283,9 +283,9 @@
             </td>
             <td>
               <p style="text-align: center; vertical-align: middle">Signed
-              <input type="radio" name="consent_signed"/>Yes
+              <input type="radio" name="consent_signed" value="Yes"/>Yes
               &nbsp;
-              <input type="radio" name="consent_signed"/>No
+              <input type="radio" name="consent_signed" value="No"/>No
               </p>
             </td>
             <td>
@@ -313,15 +313,15 @@
             <td>
               <p>
                 ANA Testing:
-                <input type="radio" name="ana_testing"/>Positive
-                <input type="radio" name="ana_testing"/>Negative
-                <input type="radio" name="ana_testing"/>Not performed
+                <input type="radio" name="ana_testing" value="Positive"/>Positive
+                <input type="radio" name="ana_testing" value="Negative"/>Negative
+                <input type="radio" name="ana_testing" value="Not performed"/>Not performed
               </p>
             </td>
             <td>
               <p>Other Tests Ordered:
-              <input type="checkbox" name="test-xray"/>X-ray
-              <input type="checkbox" name="test-other"/>Other Dx (list):
+              <input type="checkbox" name="test-xray" value="X-Ray"/>X-ray
+              <input type="checkbox" name="test-other" value="Other"/>Other Dx (list):
               <input type="text" name="test-other-specify"/>
               </p>
 
@@ -330,37 +330,37 @@
           <tr>
             <td>
               <p>
-                <input type="checkbox" name="clin-rash"/>Rash
+                <input type="checkbox" name="clin-rash" value="Rash"/>Rash
               </p>
             </td>
             <td>
               <p>
-                <input type="checkbox" name="clin-seiz-psych"/>Seizures or psychosis
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <p>
-                <input type="checkbox" name="clin-mouth-sores"/>Mouth sores
-              </p>
-            </td>
-            <td>
-              <p>
-                <input type="checkbox" name="clin-hair-loss"/>Hair loss
+                <input type="checkbox" name="clin-seiz-psych" value="Seizures or Psychosis"/>Seizures or psychosis
               </p>
             </td>
           </tr>
           <tr>
             <td>
               <p>
-                <input type="checkbox" name="clin-joint-pain"/>Joint pain, if yes please specify
+                <input type="checkbox" name="clin-mouth-sores"value="Mouth Sores"/>Mouth sores
+              </p>
+            </td>
+            <td>
+              <p>
+                <input type="checkbox" name="clin-hair-loss" value="Hair Loss"/>Hair loss
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                <input type="checkbox" name="clin-joint-pain" value="Joint Pain"/>Joint pain, if yes please specify
                 <input type="text" name="clin-joint-pain-specify"/>
               </p>
             </td>
             <td>
               <p>
-                <input type="checkbox" name="clin-inflam"/>Inflammation, if yes, please specify
+                <input type="checkbox" name="clin-inflam" value="Inflammation"/>Inflammation, if yes, please specify
                 <input type="text" name="clin-inflam-specify"/>
               </p>
             </td>
@@ -368,7 +368,7 @@
           <tr>
             <td colspan="2">
               <p>
-                <input type="checkbox" name="clin-other"/>Other symptoms, please specify
+                <input type="checkbox" name="clin-other" value="Other Symptoms"/>Other symptoms, please specify
                 <input type="text" name="clin-other-specify"/>
               </p>
             </td>
