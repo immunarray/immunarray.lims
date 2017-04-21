@@ -140,7 +140,7 @@ i18n:domain="immunarray.lims">>
         </td>
         <td>
             State:
-            <select>
+            <select name="InsuranceState">
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -280,7 +280,7 @@ i18n:domain="immunarray.lims">>
         </td>
         <td>
             State:
-            <select>
+            <select name="SecondaryInsuranceState">
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
