@@ -31,6 +31,16 @@ class IClinicalSample(model.Schema):
     # option at a later date, need test ordered and status!
     # use this to drive a setup handler that will make the lists of what should
     # be tested! (jp 4-11-17)
+
+    front_end_qa = schema.Choice(
+        title = _(u"Front End QA Status"),
+        description = _(u"Front End QA Status"),
+        required = True,
+        values=[_(u"Inital"),
+                _(u"Review Pass"),
+                _(u"Held"),],
+    )
+
     form.widget(tests_ordered=CheckBoxFieldWidget)
     tests_ordered = schema.List(
         title=_(u"Test(s) Ordered"),
@@ -335,6 +345,41 @@ class IClinicalSample(model.Schema):
     received_date = schema.Date(
         title=_(u"Sample Received Date"),
         description =_(u"Sample Received Date"),
+        required=False,
+        default=date.today(),
+    )
+
+    assignment_of_benefits_patient_name = schema.TextLine(
+        title=_(u"Assignment of Benefits Patient Name"),
+        description =_(u"Assignment of Benefits Patient Name"),
+        required=False,
+    )
+
+    release_signed = schema.Bool(
+        title=_(u"Release Signed"),
+        description=_(u"Release Signed"),
+    )
+
+    assignment_of_benefits_signature_date = schema.Date(
+        title=_(u"Assignment of Benefits Signature Date"),
+        description =_(u"Assignment of Benefits Signature Date"),
+        required=False,
+        default=date.today(),
+    )
+
+    authorization_signature_patient_name = schema.TextLine(
+        title=_(u"Authorization Signature Patient Name"),
+        description =_(u"Authorization Signature Patient Name"),
+        required=False,
+    )
+    payment_signed = schema.Bool(
+        title=_(u"Payment Signed"),
+        description=_(u"Payment Signed"),
+    )
+
+    authorization_signature_date = schema.Date(
+        title=_(u"Authorization Signature Date"),
+        description =_(u"Authorization Signature Date"),
         required=False,
         default=date.today(),
     )
