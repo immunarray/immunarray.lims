@@ -119,11 +119,11 @@ class AddRecView(BrowserView):
         portal = api.portal.get("samples")
         obj = api.content.create(
             type = 'ClinicalSample',
-            title = usn,
+            title = usn, # schema.TextLine
             tests_ordered = ,
-            sample_primary_insurance_name = schema.TextLine,
-            sample_primary_insurance_payerID = schema.TextLine,
-            sample_primary_insurance_policy_number = schema.TextLine,
+            sample_primary_insurance_name = ,#schema.TextLine,
+            sample_primary_insurance_payerID = ,#schema.TextLine,
+            sample_primary_insurance_policy_number = , # schema.TextLine,
             sample_primary_insurance_plan_number = schema.TextLine,
             sample_primary_insurance_subscriber_name = schema.TextLine,
             sample_primary_insurance_relation_to_insured = schema.Choice,
