@@ -119,7 +119,10 @@ class AddRecView(BrowserView):
         portal = api.portal.get("samples")
         obj = api.content.create(
             type = 'ClinicalSample',
-            title = usn, # schema.TextLine
+            title = usn,
+        )
+            # schema.TextLine
+"""
             tests_ordered = ,
             sample_primary_insurance_name = ,#schema.TextLine,
             sample_primary_insurance_payerID = ,#schema.TextLine,
@@ -162,18 +165,5 @@ class AddRecView(BrowserView):
             phlebotomist_signature_provided=schema.Bool,
             collection_date = schema.Date,
             received_date = schema.Date,
-            )
-
-
-
-
-
-
-
-
-
-
-
-
-        )
+"""
 
