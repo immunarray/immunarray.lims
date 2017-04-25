@@ -66,6 +66,7 @@ class AddInsuranceView(BrowserView):
         payment_signed = request.get("payment_signed")
         authorization_signature_date = request.get("AuthorizationSignatureSignatureDate")
 
+# update clinical sample!
         portal = api.portal.get("samples")
         obj = api.content.create(
             type = 'ClinicalSample',
