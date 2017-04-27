@@ -40,6 +40,7 @@ class INoFrameChipsInUS (object):
     """
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
+
         wells = []
         values = api.content.find(context=api.portal.get(), portal_type='iChip')
         ichips = [v.Title for v in values]
