@@ -19,15 +19,18 @@ class IChipAssay (object):
 IChipAssayVocabulary = IChipAssay()
 
 class IChipAssayList(object):
-
+    """Produces full list of all iChips
+    """
     implements(IVocabularyFactory, IContextSourceBinder)
-    #want to not have v.status = 'Retired (No Longer Offered)'
     def __call__(self, context):
-        values = context.ichipassay.objectValues()
-        names = [" ".join([v.title, v.status]) for v in values
-                 if 'retired' not in v.status.lower()]
+        values = api.content.find(context=api.portal.get(), portal_type='iChipAssay')
+        ichipassay = []
+        ichipassay_ids = [v.UID for v in values]
+        for i in ichipassay_ids:
+            value = i.getObject()
+            ichipassay.append("-".join([value.title, value.status]))
         normalizer = queryUtility(IIDNormalizer)
-        items = [(n, normalizer.normalize(n).upper()) for n in names]
+        items = [(o, normalizer.normalize(o).upper()) for o in ichipassay]
         return SimpleVocabulary.fromItems(items)
 
 IChipAssayListVocabulary = IChipAssayList()
