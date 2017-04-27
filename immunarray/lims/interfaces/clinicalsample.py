@@ -27,6 +27,14 @@ class IClinicalSample(model.Schema):
         description=_(u"Sample ID from the blood draw kit"),
         required=False,
     )
+
+    sample_status = schema.Choice(
+        title = _(u"Status of Testing"),
+        description = _(u"Status of Testing"),
+        required = True,
+        values=[_(u"Recived"),
+                _(u"All Tests Closed"),],
+    )
     # list or tuple? JP 3-14-17, let this be blank for remote order
     # option at a later date, need test ordered and status!
     # use this to drive a setup handler that will make the lists of what should
@@ -39,6 +47,18 @@ class IClinicalSample(model.Schema):
         values=[_(u"Inital"),
                 _(u"Review Pass"),
                 _(u"Held"),],
+    )
+    # dictonary with value stauts and key test ordered
+    test_ordered_status = schema.Dict(
+        key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
+        value_type=schema.Choice(values=[_(u"Recived"),
+                                         _(u"To Be Tested"),
+                                         _(u"In Que"),
+                                         _(u"Testing"),
+                                         _(u"Rerun"),
+                                         _(u"Resulted"),
+                                         _(u"Billing Message Sent"),
+                                         _(u"Closed"), ], required=True)
     )
 
     form.widget(tests_ordered=CheckBoxFieldWidget)
