@@ -27,7 +27,7 @@ class IChipAssayList(object):
         ichipassay = []
         ichipassay_ids = [v.UID for v in values]
         for i in ichipassay_ids:
-            value = i.getObject()
+            value = api.content.get(UID=i)
             ichipassay.append("-".join([value.title, value.status]))
         normalizer = queryUtility(IIDNormalizer)
         items = [(o, normalizer.normalize(o).upper()) for o in ichipassay]
