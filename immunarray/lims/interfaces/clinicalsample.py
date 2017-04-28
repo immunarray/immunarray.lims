@@ -240,7 +240,7 @@ class IClinicalSample(model.Schema):
     sample_serial_number = schema.Int(
         title=_(u"Sample Serial Number"),
         description=_(u"Sample Serial Number"),
-        required=True,
+        required=False,
     )
     """ Want to do an n+1 but allow be edited, should be unique"""
 
@@ -253,7 +253,7 @@ class IClinicalSample(model.Schema):
     sample_ordering_healthcare_provider_signature = schema.Bool(
         title=_(u"Ordering Healthcare Provider Signature Provided"),
         description=_(u"Ordering Healthcare Provider Signature Provided"),
-        required=True,
+        required=False,
     )
 
     directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
