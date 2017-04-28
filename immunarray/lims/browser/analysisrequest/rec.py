@@ -94,7 +94,8 @@ class AddRecView(BrowserView):
         else:
             self.check_unique_sample_id(usn)
 
-        # validate patient data (only a few fields are required)
+        # validate patient data (only a few fields are required, Ignore this we
+        # we need to add logic to prevent reports being made for missing data)
         if not first:
             self.errors.append(
                 {"PatientFirstName": "Patient First Name not specified."})
