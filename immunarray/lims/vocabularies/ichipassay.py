@@ -7,17 +7,6 @@ from zope.interface import implements
 from zope.schema.interfaces import IVocabularyFactory, IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
-@implementer(IVocabularyFactory)
-class IChipAssay (object):
-    pass
-    def __call__(self, context):
-        values = api.portal.get_registry_record('immunarray.category_primary')
-        normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i)) for i in values]
-        return SimpleVocabulary.fromItems(items)
-
-IChipAssayVocabulary = IChipAssay()
-
 class IChipAssayList(object):
     """Produces full list of all iChips
     """
