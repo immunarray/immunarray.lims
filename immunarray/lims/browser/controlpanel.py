@@ -30,13 +30,6 @@ class IImmunArrayControlPanel(Interface):
         value_type=schema.TextLine()
     )
 
-    tests_offered = schema.Tuple(
-        title=u'Tests Offered by Veracis',
-        description=u'Tests Offered by Veracis',
-        required=False,
-        value_type=schema.TextLine()
-    )
-
     diagnostic_codes = schema.Tuple(
         title=u'Diagnostic/Billing Codes',
         description=u'Diagnostic/Billing Codes',
