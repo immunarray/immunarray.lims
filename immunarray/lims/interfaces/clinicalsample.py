@@ -61,14 +61,6 @@ class IClinicalSample(model.Schema):
                                          _(u"Closed"), ], required=True)
     )
 
-    form.widget(tests_ordered=CheckBoxFieldWidget)
-    tests_ordered = schema.List(
-        title=_(u"Test(s) Ordered"),
-        description=_(u"Test(s) Ordered"),
-        required=False,
-        value_type=schema.Choice(source=IChipAssayListVocabulary),
-    )
-
     sample_primary_insurance_name = schema.TextLine(
         title=_(u"Primary Insurance Name"),
         description =_(u"Primary Insurance Name"),
