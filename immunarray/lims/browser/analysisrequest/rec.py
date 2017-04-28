@@ -117,10 +117,26 @@ class AddRecView(BrowserView):
         return False
 
     def make_clinical_sample(self):
+        a = self.__call__()
         portal = api.portal.get("samples")
         obj = api.content.create(
             type = 'ClinicalSample',
-            title = usn,
+            title = a.usn,
+            diagnosis_code_other = a.diags,
+        )
+
+    def make_clinical_patient(self):
+        a = self.__call__()
+        portal = api.portal.get("person")
+        obj = api.content.create(container="Patient",
+            type = 'Patient',
+            dob = a.dob,
+            marital_status = a.marital_stauts,
+            gender = a.gender,
+            ssn = a.ssn,
+            medical_record_number = a.mrn,
+            research_consent = a.consent_acquired,
+            race = a.race,
         )
             # schema.TextLine
 """
@@ -161,7 +177,7 @@ class AddRecView(BrowserView):
             symptoms_choice = schema.List,
             symptoms_text = schema.List,
             diagnosis_code = schema.List,
-            diagnosis_code_other = schema.List,
+
             phlebotomist_last_name = schema.TextLine,
             phlebotomist_signature_provided=schema.Bool,
             collection_date = schema.Date,
