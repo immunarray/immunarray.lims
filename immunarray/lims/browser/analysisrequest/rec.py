@@ -3,6 +3,10 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from plone.dexterity.utils import createContentInContainer
 from plone import api
+from bika.lims.permissions import disallow_default_contenttypes
+from immunarray.lims.permissions import AddClinicalSample
+from immunarray.lims.permissions import AddPatient
+from plone.dexterity.utils import createContentInContainer
 
 
 class AddRecView(BrowserView):
@@ -85,61 +89,40 @@ class AddRecView(BrowserView):
             "shipment_date": request.get("shipment_date"),
         }
 
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
+        self.make_clinical_sample(usn)
 
-        # check unique sample ID
-        if not usn:
-            self.errors.append(
-                {"UniqueSampleNumber": "Sample number was not specified."})
-        else:
-            self.check_unique_sample_id(usn)
-
-        # validate patient data (only a few fields are required, Ignore this we
-        # we need to add logic to prevent reports being made for missing data)
-        if not first:
-            self.errors.append(
-                {"PatientFirstName": "Patient First Name not specified."})
-        if not last:
-            self.errors.append(
-                {"PatientLastName": "Patient Last Name not specified."})
-        if not dob:
-            self.errors.append(
-                {"DOB": "Patient DOB not specified."})
-
-        if self.errors:
-            # We must re-render the form, making sure to pass existing request
-            # values formatted so that the form can consume them and provide
-            # the alread-entered values to the user.
-            import pdb;pdb.set_trace()
 
     def check_unique_sample_id(self, usn):
-        self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
-        return False
+        values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
+        all_usns = []
+        cs_uid = [v.UID for v in values]
+        for i in cs_uid:
+            value = api.content.get(UID=i)
+            all_usn.append(value.usn)
+            normalizer = queryUtility(IIDNormalizer)
+        return all_usns
+        #self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
+        #return False
 
-    def make_clinical_sample(self):
-        a = self.__call__()
-        portal = api.portal.get("samples")
-        obj = api.content.create(
-            type = 'ClinicalSample',
-            title = a.usn,
-            diagnosis_code_other = a.diags,
-        )
+    def make_clinical_sample(self, usn):
+        # set permission for clinical sample
+        cs = api.portal.get(UID='d23d19b06480450b85febb1abbae3193')
+        cs.manage_permission(
+            AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        disallow_default_contenttypes(cs)
+        clinical_sample = api.content.create(container=cs,
+                                            type = 'ClinicalSample',
+                                            id = 'SerialNumber',
+                                            title = usn,
+                                            safe_id=True,
+                                            #diagnosis_code_other = a.diags,
+                                            )
+        import pdb;pdb.set_trace()
 
-    def make_clinical_patient(self):
-        a = self.__call__()
-        portal = api.portal.get("person")
-        obj = api.content.create(container="Patient",
-            type = 'Patient',
-            dob = a.dob,
-            marital_status = a.marital_stauts,
-            gender = a.gender,
-            ssn = a.ssn,
-            medical_record_number = a.mrn,
-            research_consent = a.consent_acquired,
-            race = a.race,
-        )
-            # schema.TextLine
-"""
+
+    """        # schema.TextLine
+
             tests_ordered = ,
             sample_primary_insurance_name = ,#schema.TextLine,
             sample_primary_insurance_payerID = ,#schema.TextLine,
@@ -182,5 +165,24 @@ class AddRecView(BrowserView):
             phlebotomist_signature_provided=schema.Bool,
             collection_date = schema.Date,
             received_date = schema.Date,
-"""
 
+        # make patient record (if new patient, check first, last name, and
+        # dob to see if it is a unique person)
+
+        # check unique sample ID
+        if not usn:
+            self.errors.append(
+                {"UniqueSampleNumber": "Sample number was not specified."})
+        else:
+            self.check_unique_sample_id(usn)
+
+        if self.errors:
+            # We must re-render the form, making sure to pass existing request
+            # values formatted so that the form can consume them and provide
+            # the alread-entered values to the user.
+            import pdb;pdb.set_trace()
+        else:
+            # make clinical sample
+            pass
+
+"""
