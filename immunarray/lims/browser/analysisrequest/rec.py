@@ -107,7 +107,7 @@ class AddRecView(BrowserView):
 
     def make_clinical_sample(self, usn):
         # set permission for clinical sample
-        cs = api.portal.get(UID='d23d19b06480450b85febb1abbae3193')
+        cs = api.portal.get()
         cs.manage_permission(
             AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
         disallow_default_contenttypes(cs)
