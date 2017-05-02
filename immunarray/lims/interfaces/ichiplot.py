@@ -49,7 +49,7 @@ class IiChipLot(model.Schema):
         required=True,
     )
 
-    expiration_date = schema.Date(
+    ichip_lot_expiration_date = schema.Date(
         title=_(u"iChip Lot Expiration Date"),
         description=_(u"Expiration Date of iChip Lot"),
         required=True,
