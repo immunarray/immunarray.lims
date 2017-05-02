@@ -28,6 +28,14 @@ class IClinicalSample(model.Schema):
         required=False,
     )
 
+    #want to index this field
+    sample_serial_number = schema.Int(
+        title=_(u"Sample Serial Number"),
+        description=_(u"Sample Serial Number"),
+        required=False,
+    )
+    """ Want to do an n+1 but allow be edited, should be unique"""
+
     sample_status = schema.Choice(
         title = _(u"Status of Testing"),
         description = _(u"Status of Testing"),
@@ -236,13 +244,6 @@ class IClinicalSample(model.Schema):
                 _(u'No Charge'),
                 _(u'RUO')],
     )
-
-    sample_serial_number = schema.Int(
-        title=_(u"Sample Serial Number"),
-        description=_(u"Sample Serial Number"),
-        required=False,
-    )
-    """ Want to do an n+1 but allow be edited, should be unique"""
 
     sample_ordering_healthcare_provider = schema.Choice(
         title=_(u"Ordering Healthcare Provider"),
