@@ -90,34 +90,47 @@ class AddRecView(BrowserView):
         }
 
         # import pdb;pdb.set_trace()
+        self.check_unique_sample_id(usn)
         self.make_clinical_sample(usn)
 
 
     def check_unique_sample_id(self, usn):
+        #get all usn (titles) of ClinicalSamples in LIMS
         values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
         all_usns = []
         cs_uid = [v.UID for v in values]
         for i in cs_uid:
             value = api.content.get(UID=i)
-            all_usn.append(value.usn)
-            normalizer = queryUtility(IIDNormalizer)
+            all_usns.append(value.title)
+        #Check to see that usn (from call) is not in list of all_usns
+        import pdb;pdb.set_trace()
         return all_usns
+        #if usn in all_usns:
+        #    self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
+        #    return False
+        #else:
+            # usn (from call) is not in the list of all_usns
+        #    return True
         #self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
         #return False
-
     def make_clinical_sample(self, usn):
+        # assign serial number for sample (index
         # set permission for clinical sample
         cs = api.portal.get()
-        cs.manage_permission(
+        sample = cs['lims']['samples']
+        sample.manage_permission(
             AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-        disallow_default_contenttypes(cs)
-        clinical_sample = api.content.create(container=cs,
+        disallow_default_contenttypes(sample)
+        clinical_sample = api.content.create(container=sample,
                                             type = 'ClinicalSample',
                                             id = 'SerialNumber',
                                             title = usn,
                                             safe_id=True,
                                             #diagnosis_code_other = a.diags,
                                             )
+        #set destination of lims/samples
+        #sample = cs['lims']['samples']
+        #api.content.move(source=cs, target=sample)
         import pdb;pdb.set_trace()
 
 
