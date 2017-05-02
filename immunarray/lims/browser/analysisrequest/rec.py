@@ -147,18 +147,27 @@ class AddRecView(BrowserView):
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
                      ethnicity_other, marital_status, patient_address,
                      patient_city, patient_state, patient_zip_code,
-                     patient_phone):
-        # set permission for patient
-        cs = api.portal.get()
-        sample = cs['lims']['patients']
-        sample.manage_permission(
+                     patient_phone, usn, consent_acquired):
+        # determine if ethnicity or ethnicity_other is filled
+        # determine if patient has been tested before
+        # set permission for new patient
+        pt = api.portal.get()
+        patient = pt['lims']['patients']
+        patient.manage_permission(
             AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-        disallow_default_contenttypes(sample)
-        clinical_sample = api.content.create(container=sample,
-                                             type='ClinicalSample',
-                                             title=usn,
+        disallow_default_contenttypes(patient)
+        clinical_sample = api.content.create(container=patient,
+                                             type='Patient',
                                              safe_id=True,
-                                             sample_serial_number=serial_number,
+                                             dob = dob,
+                                             marital_status = marital_status,
+                                             gender= gender,
+                                             ssn = ssn,
+                                             medical_record_number = mrn,
+                                             research_consent = consent_acquired,
+                                             ethnicity = ethnicity,
+                                             ethnicity_other = ethnicity_other,
+                                             tested_unique_sample_ids = usn,
                                              )
         import pdb;pdb.set_trace()
 
