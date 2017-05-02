@@ -9,6 +9,7 @@ from plone.autoform import directives
 from zope.interface import alsoProvides
 from plone.autoform.interfaces import IFormFieldProvider
 from z3c.form.browser.radio import RadioFieldWidget
+from plone.namedfile.field import NamedBlobImage
 
 
 class IVeracisRunBase(model.Schema):
@@ -32,15 +33,20 @@ class IVeracisRunBase(model.Schema):
         description=_(u"Veracis Run Operator"),
         required=True,
     )
-    veracis_test_run_date=schema.Date(
+    veracis_test_run_date = schema.Date(
         title=_(u"Veracis Test Run Date"),
         description=_(u"Veracis Test Run Date (MM/DD/YYYY)"),
         default=date.today(),
     )
-    veracis_test_scan_date=schema.Date(
+    veracis_test_scan_date = schema.Date(
         title=_(u"Veracis Test Scan Date"),
         description=_(u"Veracis Test Scan Date (MM/DD/YYYYY)"),
         default=date.today(),
+    )
+    pdf_veracis_run = NamedBlobImage(
+        title=_(u"PDF Upload of Test Form"),
+        description=_(u"PDF Upload of Test Form"),
+        required=False,
     )
 
 alsoProvides(IVeracisRunBase, IFormFieldProvider)
