@@ -47,10 +47,16 @@ class IPatient(IPerson):
         required=True,
     )
 
-    race = schema.Choice(
+    ethnicity = schema.Choice(
         title=_(u"Patient Race"),
         description=_(u"Patient Race"),
         values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u'Caucasian'), _(u'Hispanic or Latino'), _(u'Other')],
+        required=False,
+    )
+
+    ethnicity_other = scheam.TextLine(
+        title=_(u"Ethnicity Other"),
+        description=_(u"Ethnicity Other"),
         required=False,
     )
 
