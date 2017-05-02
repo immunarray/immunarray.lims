@@ -21,7 +21,7 @@ class IiChip(model.Schema):
         required=False,
     )
 
-    status = schema.Choice(
+    ichip_status = schema.Choice(
         title=_(u"iChip Status"),
         description=_(u"Status of iChip"),
         required=True,
