@@ -90,8 +90,12 @@ class AddRecView(BrowserView):
         }
 
         # import pdb;pdb.set_trace()
+        # pop up to select assays that are active in system!
         self.check_unique_sample_id(usn)
         self.make_clinical_sample(usn)
+
+        # clear rec form and reset for next sample entry
+
 
 
     def check_unique_sample_id(self, usn):
@@ -114,7 +118,18 @@ class AddRecView(BrowserView):
         #self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
         #return False
     def make_clinical_sample(self, usn):
-        # assign serial number for sample (index
+        # assign serial number for sample
+        sn = api.content.find(context=api.portal.get(),
+                              portal_type='ClinicalSample')
+        all_sn = []
+        #list of all serial numbers
+        sn_uid = [s.UID for s in sn]
+        for i in sn_uid:
+            value = api.content.get(UID=i)
+            all_sn.append(value.sample_serial_number)
+        serial_number = max(all_sn) + 1
+        import pdb;pdb.set_trace()
+
         # set permission for clinical sample
         cs = api.portal.get()
         sample = cs['lims']['samples']
@@ -122,15 +137,29 @@ class AddRecView(BrowserView):
             AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
         disallow_default_contenttypes(sample)
         clinical_sample = api.content.create(container=sample,
-                                            type = 'ClinicalSample',
-                                            id = 'SerialNumber',
-                                            title = usn,
-                                            safe_id=True,
-                                            #diagnosis_code_other = a.diags,
+                                             type='ClinicalSample',
+                                             title=usn,
+                                             safe_id=True,
+                                             sample_serial_number=serial_number,
                                             )
-        #set destination of lims/samples
-        #sample = cs['lims']['samples']
-        #api.content.move(source=cs, target=sample)
+        import pdb;pdb.set_trace()
+
+    def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
+                     ethnicity_other, marital_status, patient_address,
+                     patient_city, patient_state, patient_zip_code,
+                     patient_phone):
+        # set permission for patient
+        cs = api.portal.get()
+        sample = cs['lims']['patients']
+        sample.manage_permission(
+            AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        disallow_default_contenttypes(sample)
+        clinical_sample = api.content.create(container=sample,
+                                             type='ClinicalSample',
+                                             title=usn,
+                                             safe_id=True,
+                                             sample_serial_number=serial_number,
+                                             )
         import pdb;pdb.set_trace()
 
 
