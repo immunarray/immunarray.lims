@@ -53,3 +53,12 @@ class IPatient(IPerson):
         values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u'Caucasian'), _(u'Hispanic or Latino'), _(u'Other')],
         required=False,
     )
+
+    # append to this list to track the sample run on a particular patient
+
+    tested_unique_sample_ids = schema.List(
+        title=_(u"List of Unique Sample Numbers"),
+        description =_(u"List of Unique Sample Numbers"),
+        required=False,
+        value_type=schema.TextLine()
+    )
