@@ -15,7 +15,7 @@ class INCE(model.Schema):
     """General NCE Item to be used to track non conformance events in the lab
     """
 
-    tracking_number = schema.TextLine(
+    nce_tracking_number = schema.TextLine(
         title=_(u"Tracking Number"),
         description=_(u"Tracking Number"),
         required=False,
