@@ -54,7 +54,7 @@ class IPatient(IPerson):
         required=False,
     )
 
-    ethnicity_other = scheam.TextLine(
+    ethnicity_other = schema.TextLine(
         title=_(u"Ethnicity Other"),
         description=_(u"Ethnicity Other"),
         required=False,
