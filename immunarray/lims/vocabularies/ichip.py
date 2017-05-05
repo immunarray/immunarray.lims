@@ -129,12 +129,14 @@ class ICommercialThreeFrameChipWells (object):
         three_well = ["-A","-B","-C"]
         eight_well = ["-A","-B","-C","-D","-E","-F","-G","-H"]
         values = api.content.find(context=api.portal.get(), portal_type='iChip')
+        # filter __parent__ to get only 3 frame iChips
+        import pdb;pdb.set_trace()
         ichips = []
 
         for v in values:
             a = v.getObject()
-            if "released" in a.status.lower():
-                ichips.append("-".join([a.title, str(a.status)]))
+            if "released" in a.ichip_status.lower():
+                ichips.append("-".join([a.title, str(a.ichip_status)]))
         unique_ichip_wells=[]
         for o in ichips:
             for w in three_well:
