@@ -21,4 +21,7 @@
   <index name="billable_code" meta_type="FieldIndex">
   </index>
   <column value="billable_code"/>
+  <index name="ichip_status" meta_type="FieldIndex">
+  </index>
+  <column value="ichip_status"/>
 </object>
