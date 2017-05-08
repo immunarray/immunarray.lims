@@ -58,6 +58,10 @@ INoFrameChipsInUSVocabulary = INoFrameChipsInUS()
 class IThreeFrameChipsInUS (object):
     """Produces full list of all iChips
     """
+    # get all IChipLots where iChipLot.acceptance_status = ("Quarantined" or"Passed")
+    # values = api.content.find(context=api.portal.get(), portal_type='iChip')
+    # get all iChipLots where iChipLot.frames = 3 Frame iChips (base iChipLots to use)
+    #
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         wells = []
@@ -77,6 +81,7 @@ IThreeFrameChipsInUSVocabulary = IThreeFrameChipsInUS()
 class IEightFrameChipsInUS (object):
     """Produces full list of all iChips
     """
+    # get all iChipLots where iChipLot.frames = 8 Frame iChips
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         wells = []
