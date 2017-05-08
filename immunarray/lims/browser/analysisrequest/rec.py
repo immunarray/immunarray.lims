@@ -91,7 +91,10 @@ class AddRecView(BrowserView):
 
         # import pdb;pdb.set_trace()
         # pop up to select assays that are active in system!
+        # Make a viewlet that is a multi choice radio widget of all active
+        # tests at the top
         self.check_unique_sample_id(usn)
+        # check if patient is unique
         self.make_clinical_sample(usn)
 
         # clear rec form and reset for next sample entry
