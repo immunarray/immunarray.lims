@@ -15,6 +15,7 @@
     <object name="EightFrameRun" meta_type="Dexterity FTI"/>
     <object name="ThreeFrameRun" meta_type="Dexterity FTI"/>
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
+    <object name="ClinicalAliqout" meta_type="Dexterity FTI"/>
     <object name="RandDSample" meta_type="Dexterity FTI"/>
     <object name="iChipAssay" meta_type="Dexterity FTI"/>
     <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
