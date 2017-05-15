@@ -7,6 +7,7 @@ from bika.lims.permissions import disallow_default_contenttypes
 from immunarray.lims.permissions import AddClinicalSample
 from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
+from Products.CMFPlone.resources import add_resource_on_request
 
 
 class AddRecView(BrowserView):
@@ -19,14 +20,16 @@ class AddRecView(BrowserView):
         self.errors = []
 
     def __call__(self):
+        add_resource_on_request(self.request, "static.js.rec")
         request = self.request
 
         if "submitted" not in request:
             return self.template()
 
-        # ID
+        # ID 11-1234-12345 lenght = 12 usn =lenght(0:9) site = lenght (10:12)
         usn = request.get("usn")
-
+        site_from_usn = usn[0:2]
+        usn_from_form = usn[3:]
         # Patient Info
         repeat_order = request.get("repeat_order")
         first = request.get("patient_first_name")
@@ -88,7 +91,7 @@ class AddRecView(BrowserView):
             "collection_date": request.get("collection_date"),
             "shipment_date": request.get("shipment_date"),
         }
-
+        import pdb;pdb.set_trace()
         # import pdb;pdb.set_trace()
         # pop up to select assays that are active in system!
         # Make a viewlet that is a multi choice radio widget of all active
@@ -101,7 +104,7 @@ class AddRecView(BrowserView):
 
 
 
-    def check_unique_sample_id(self, usn):
+    def check_unique_sample_id(self, usn_from_form):
         #get all usn (titles) of ClinicalSamples in LIMS
         values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
         all_usns = []
@@ -120,7 +123,8 @@ class AddRecView(BrowserView):
         #    return True
         #self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
         #return False
-    def make_clinical_sample(self, usn):
+
+    def make_clinical_sample(self, usn_from_form):
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -141,7 +145,7 @@ class AddRecView(BrowserView):
         disallow_default_contenttypes(sample)
         clinical_sample = api.content.create(container=sample,
                                              type='ClinicalSample',
-                                             title=usn,
+                                             id=usn_from_form,
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                             )
@@ -150,18 +154,22 @@ class AddRecView(BrowserView):
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
                      ethnicity_other, marital_status, patient_address,
                      patient_city, patient_state, patient_zip_code,
-                     patient_phone, usn, consent_acquired):
+                     patient_phone, usn, site_from_usn, usn_from_form,
+                     consent_acquired):
         # determine if ethnicity or ethnicity_other is filled
         # determine if patient has been tested before
         # set permission for new patient
+        title = first + " " + last
+        import pdb;pdb.set_trace()
         pt = api.portal.get()
         patient = pt['lims']['patients']
         patient.manage_permission(
             AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
         disallow_default_contenttypes(patient)
         clinical_sample = api.content.create(container=patient,
-                                             type='Patient',
-                                             safe_id=True,
+                                             type = 'Patient',
+                                             id = first +" "+ last,
+                                             safe_id = True,
                                              dob = dob,
                                              marital_status = marital_status,
                                              gender= gender,
@@ -170,7 +178,7 @@ class AddRecView(BrowserView):
                                              research_consent = consent_acquired,
                                              ethnicity = ethnicity,
                                              ethnicity_other = ethnicity_other,
-                                             tested_unique_sample_ids = usn,
+                                             tested_unique_sample_ids = usn_from_form,
                                              )
         import pdb;pdb.set_trace()
 
