@@ -37,6 +37,7 @@ def setupVarious(context):
     mp(AddPatient, [], 0)
     mp(AddProvider, [], 0)
     mp(AddClinicalSample, [], 0)
+    mp(AddClinicalAliquot, [], 0)
     mp(AddiChipAssay, [], 0)
     mp(AddCustomerServiceCall, [], 0)
     mp(AddRandDSample, [], 0)
