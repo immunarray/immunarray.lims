@@ -16,10 +16,10 @@ import pdb
 
 #broken code for dict
 
-
 @implementer(IVocabularyFactory, IContextSourceBinder)
 class IChipsAllBroken(object):
-#want to not have v.status = 'Retired (No Longer Offered)'
+    """ Produces all iChips that have been decared as broken
+    """
     def __call__(self, context):
         pdb.set_trace()
         catalog = getToolByName(context, 'portal_catalog')
@@ -35,8 +35,7 @@ alsoProvides(IChipsAllBroken, IFormFieldProvider)
 #updated jp 3-16-17
 #Vocabs for iChips
 class INoFrameChipsInUS (object):
-    """Produces full list of all iChip well options for no frame iChip
-    does not require addition of
+    """Produces full list of all iChips of the no frame varity
     """
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
@@ -61,7 +60,7 @@ class IThreeFrameChipsInUS (object):
     # get all IChipLots where iChipLot.acceptance_status = ("Quarantined" or"Passed")
     # values = api.content.find(context=api.portal.get(), portal_type='iChip')
     # get all iChipLots where iChipLot.frames = 3 Frame iChips (base iChipLots to use)
-    #
+    # Metadata of "ichip_status" can be used to filter.
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         wells = []
@@ -242,4 +241,7 @@ values=[_(u'Quarantined'),
                   or 'retained-us' in v.status.lower()
                   or 'quarantined' in v.status.lower()
                   or 'retained-us' in v.status.lower()
+
+        pt = api.portal.get()
+        patient = pt['lims']['patients']
     """
