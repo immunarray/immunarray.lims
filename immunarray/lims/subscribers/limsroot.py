@@ -10,7 +10,8 @@ from plone.app.contenttypes import permissions
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
     AddProvider, AddPlate, AddSolution, AddiChipLot,AddiChipAssay, \
     AddCustomerServiceCall, AddRack, AddCommercialBox,\
-    AddRandDBox, AddTestRun, AddNoFrameRun, AddEightFrameRun, AddThreeFrameRun
+    AddRandDBox, AddTestRun, AddNoFrameRun, AddEightFrameRun, AddThreeFrameRun,\
+    AddClinicalAliquot
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -78,8 +79,8 @@ def structure_permissions(lims):
     lims.testruns.manage_permission(AddEightFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
     lims.testruns.manage_permission(permissions.AddFolder, [], 0)
-
-
+    lims.sample.clinicalsample.manage_permission(AddClinicalAliquot, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.sample.clinicalsample.manage_permission(permissions.AddFolder, [], 0)
 
 
 def create_material_types(portal):
