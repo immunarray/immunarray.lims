@@ -548,5 +548,6 @@
         <input type="submit" value="Submit"/>
       </form>
     </metal:main>
+    <script src= "++resource++immunarray.lims/js/rec.js"></script>
   </body>
 </html>
