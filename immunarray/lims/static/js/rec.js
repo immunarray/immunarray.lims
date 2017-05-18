@@ -9,19 +9,19 @@ require([
       var $ptdob = $('.dob')
 
       $('#usn').on("change", function(){
-        alert("USN was changed")
+        //alert("USN was changed")
       });
 
       $('#patient_first_name').on("change", function(){
-        alert("PT first name was changed")
+        //alert("PT first name was changed")
       });
 
       $('#patient_last_name').on("change", function(){
-         alert("PT last name was changed")
+         //alert("PT last name was changed")
       });
 
       $('#dob').on("change", function(){
-         alert("PT DOB was changed")
+         //alert("PT DOB was changed")
       });
 })
 })
