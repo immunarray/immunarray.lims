@@ -68,7 +68,7 @@
           <tr>
             <td>
               <div id="Veracis_image">
-                <img tal:attributes="src string:${context/@@plone_portal_state/portal_url}zeocluster/src/immunarray.lims/immunarray/lims/static/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"
+                <img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"
                      style="width:1.88in;height:1.11in; text-align:left;"/>
               </div>
             </td>
