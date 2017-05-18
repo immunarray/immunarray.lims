@@ -3,17 +3,19 @@ require([
 ],
   (function($) {
     $(function() {
-      var $usn=$('#usn')
-
+      var $usn=$('.usn')
       var $ptFirstName =$('.patient_first_name')
       var $ptLastName =$('.patient_last_name')
       var $ptdob = $('.dob')
-
+      // clean up raw input to seperate site id from 
       $('#usn').on("change", function(){
         //alert("USN was changed")
-        var $usn=$('#usn')
         var usnParts = $(usn).val().split("-");
-        return usnParts;
+        var site = usnParts[0];
+        var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
+        alert("site: " + site);
+        alert("Unique Sample Number: " + uniqueSampleNumber);
+        //return uniqueSampleNumber, site;
       });
 
       $('#patient_first_name').on("change", function(){
