@@ -27,6 +27,7 @@ class AddRecView(BrowserView):
             return self.template()
 
         # ID 11-1234-12345 lenght = 12 usn =lenght(0:9) site = lenght (10:12)
+        # Need to parse on '-' (jp 5/18/17)
         usn = request.get("usn")
         site_from_usn = usn[0:2]
         usn_from_form = usn[3:]
@@ -156,9 +157,12 @@ class AddRecView(BrowserView):
                      patient_city, patient_state, patient_zip_code,
                      patient_phone, usn, site_from_usn, usn_from_form,
                      consent_acquired):
-        # determine if ethnicity or ethnicity_other is filled
-        # determine if patient has been tested before
-        # set permission for new patient
+
+        """determine if ethnicity or ethnicity_other is filled
+         determine if patient has been tested before
+         set permission for new patient
+        """
+
         title = first + " " + last
         import pdb;pdb.set_trace()
         pt = api.portal.get()
