@@ -7,7 +7,7 @@ require([
       var $ptFirstName =$('.patient_first_name')
       var $ptLastName =$('.patient_last_name')
       var $ptdob = $('.dob')
-      // clean up raw input to seperate site id from 
+      // clean up raw input to seperate site id from
       $('#usn').on("change", function(){
         //alert("USN was changed")
         var usnParts = $(usn).val().split("-");
@@ -20,14 +20,20 @@ require([
 
       $('#patient_first_name').on("change", function(){
         //alert("PT first name was changed")
+        var ptFirstName = $(patient_first_name).val();
+        alert("Pt First Name: " + ptFirstName);
       });
 
       $('#patient_last_name').on("change", function(){
          //alert("PT last name was changed")
+         var ptLastName= $(patient_last_name).val();
+         alert("Pt Last Name: " + ptLastName);
       });
 
-      $('#dob').on("change", function(){
+      $('#dob').on("focusout", function(){
          //alert("PT DOB was changed")
+         var ptdob = $(dob).val();
+         alert("Pt DOB: " + ptdob);
       });
 
       // Make form easier to use, hide all boxes that have click dependency
