@@ -1,71 +1,80 @@
+/**
+ * Brain for acc.pt
+ */
 require([
   'jquery'
 ],
-  (function($) {
-    $(function() {
-      var $usn=$('.usn')
-      var $ptFirstName =$('.patient_first_name')
-      var $ptLastName =$('.patient_last_name')
-      var $ptdob = $('.dob')
-      // clean up raw input to seperate site id from
-      $('#usn').on("change", function(){
-        //alert("USN was changed")
-        var usnParts = $(usn).val().split("-");
-        var site = usnParts[0];
-        var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
-        alert("site: " + site);
-        alert("Unique Sample Number: " + uniqueSampleNumber);
-        //return uniqueSampleNumber, site;
-      });
+    (function($) {
+        $(function() {
+            $('#usn').on("change", function() {
+                // split USN field into site and true usn
+                var usnParts = $(usn).val().split("-");
+                var site = usnParts[0];
+                var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
+                alert("site: " + site);
+                alert("Unique Sample Number: " + uniqueSampleNumber);
+                // is usn unique?
+                function checkUSN(uniqueSampleNumber){
+                    authenticator = $('input[name="_authenticator"]').val();
+                    $ajax({
+                        type: 'POST',
+                        url: '',
+                        data: {
+                            'entry': uniqueSampleNumber,
+                            '_authenticator': authenticator},
+                        success: function(){
+                        }
+                    });
+                }
+            })
+        });
 
-      $('#patient_first_name').on("change", function(){
-        //alert("PT first name was changed")
-        var ptFirstName = $(patient_first_name).val();
-        alert("Pt First Name: " + ptFirstName);
-      });
+        $('#patient_first_name').on("change", function(){
+            // get patient first name on change of field
+            var ptFirstName = $(patient_first_name).val();
+            alert("Pt First Name: " + ptFirstName);
+        });
 
-      $('#patient_last_name').on("change", function(){
-         //alert("PT last name was changed")
-         var ptLastName= $(patient_last_name).val();
-         alert("Pt Last Name: " + ptLastName);
-      });
+        $('#patient_last_name').on("change", function(){
+            //alert("PT last name was changed")
+            var ptLastName= $(patient_last_name).val(); //YYYY-MM-DD
+            alert("Pt Last Name: " + ptLastName);
+        });
 
-      $('#dob').on("focusout", function(){
-         //alert("PT DOB was changed")
-         var ptdob = $(dob).val();
-         alert("Pt DOB: " + ptdob);
-      });
-
-      // Make form easier to use, hide all boxes that have click dependency
-      $('#ethnicity_specify').hide();
-      $('#ethnicity_other').on('click', function(){
-        $(this).next().slideToggle(400);
-      });
-
-      $('#test-other-specify').hide();
-      $('#test-other').on('click', function(){
-        $(this).next().slideToggle(400);
-      });
-
-      $('#clin-joint-pain-specify').hide();
-      $('#clin-joint-pain').on('click', function(){
-        $(this).next().slideToggle(400);
-      });
-
-      $('#clin-inflam-specify').hide();
-      $('#clin-inflam').on('click', function(){
-              $(this).next().slideToggle(400);
-            });
-
-      $('#clin-other-specify').hide();
-      $('#clin-other').on('click', function(){
-        $(this).next().slideToggle(400);
-      });
-
-      $('#diag-other-specify').hide();
-      $('#diag-other').on('click', function(){
-        $(this).next().slideToggle(400);
-      });
-})
-})
+        $('#dob').on("focusout", function(){
+            //alert("PT DOB was changed")
+            var ptdob = $(dob).val();
+            alert("Pt DOB: " + ptdob);
+        });
+        // is patient a repeate that first name, last name, and dob match existing
+        // patient?
+        // if yes load previous, and append usn to patient
+        // if no allow user to continue to fill out form
+        // load primary provider from site data
+        // Make form easier to use, hide all boxes that have click dependency
+        $('#ethnicity_specify').hide();
+        $('#ethnicity_other').on('click', function(){
+            $(this).next().slideToggle(400);
+        });
+        $('#test-other-specify').hide();
+        $('#test-other').on('click', function(){
+            $(this).next().slideToggle(400);
+        });
+        $('#clin-joint-pain-specify').hide();
+        $('#clin-joint-pain').on('click', function(){
+            $(this).next().slideToggle(400);
+        });
+        $('#clin-inflam-specify').hide();
+        $('#clin-inflam').on('click', function(){
+            $(this).next().slideToggle(400);
+        });
+        $('#clin-other-specify').hide();
+        $('#clin-other').on('click', function(){
+            $(this).next().slideToggle(400);
+        });
+        $('#diag-other-specify').hide();
+        $('#diag-other').on('click', function(){
+            $(this).next().slideToggle(400);
+        });
+    })
 )
