@@ -9,6 +9,7 @@ from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
 import plone.protect
+import json
 
 
 class AddRecView(BrowserView):
@@ -27,7 +28,7 @@ class AddRecView(BrowserView):
         if "submitted" not in request:
             return self.template()
 
-        if "submitted1" in request:
+        if "submitted" in request:
             try:
                 import pdb;pdb.set_trace()
                 plone.protect.CheckAuthenticator (self.request)
@@ -36,7 +37,10 @@ class AddRecView(BrowserView):
                     'success': False,
                     'failure': True,
                     'error': 'Can not verify authenticator token'
-        })
+                })
+
+        if "submitted1" not in request:
+            import pdb;pdb.set_trace()
 
         # ID 11-1234-12345 lenght = 12 usn =lenght(0:9) site = lenght (10:12)
         # Need to parse on '-' (jp 5/18/17)
@@ -264,22 +268,3 @@ class AddRecView(BrowserView):
             pass
 
 """
-
-class CheckValues(AddRecView):
-    """Evaluate the values from the acc.pt from by way of rec.js
-    """
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-        self.errors = []
-
-    def __call__(self):
-        try:
-            plone.protect.CheckAuthenticator (self.request)
-        except:
-            return self.return_json({
-                '': False,
-                'failure': True,
-                'error': 'Can not verify authenticator token'
-            })
