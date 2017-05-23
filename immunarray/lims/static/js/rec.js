@@ -14,23 +14,21 @@ require([
                 alert("site: " + site);
                 alert("Unique Sample Number: " + uniqueSampleNumber);
                 // is usn unique?
-                function checkUSN(uniqueSampleNumber){
-                    authenticator = $('input[name="_authenticator"]').val();
-                    alert(authenticator);
-                    $ajax({
-                        type: 'POST',
-                        url: 'rec',
-                        data: {
-                            'submitted':1,
-                            'entry': uniqueSampleNumber,
-                            '_authenticator': authenticator},
-                        success: function(responseText, statusText, xhr, $form){
-                            if(responseText.success) {
-                                window.location.href = responseText.url;
-                            }
+                authenticator = $('input[name="_authenticator"]').val();
+                alert(authenticator);
+                $ajax({
+                    type: 'POST',
+                    url: 'rec',
+                    data: {
+                        'submitted':1,
+                        'entry': uniqueSampleNumber,
+                        '_authenticator': authenticator},
+                    success: function(responseText, statusText, xhr, $form){
+                        if(responseText.success) {
+                            window.location.href = responseText.url;
                         }
-                    });
-                }
+                    }
+                });
             })
         });
 
