@@ -16,13 +16,18 @@ require([
                 // is usn unique?
                 function checkUSN(uniqueSampleNumber){
                     authenticator = $('input[name="_authenticator"]').val();
+                    alert(authenticator);
                     $ajax({
                         type: 'POST',
-                        url: '',
+                        url: 'rec',
                         data: {
+                            'submitted':1,
                             'entry': uniqueSampleNumber,
                             '_authenticator': authenticator},
-                        success: function(){
+                        success: function(responseText, statusText, xhr, $form){
+                            if(responseText.success) {
+                                window.location.href = responseText.url;
+                            }
                         }
                     });
                 }
@@ -46,7 +51,7 @@ require([
             var ptdob = $(dob).val();
             alert("Pt DOB: " + ptdob);
         });
-        // is patient a repeate that first name, last name, and dob match existing
+        // is patient a repeat that first name, last name, and dob match existing
         // patient?
         // if yes load previous, and append usn to patient
         // if no allow user to continue to fill out form
