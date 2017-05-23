@@ -16,12 +16,14 @@ require([
                 // is usn unique?
                 authenticator = $('input[name="_authenticator"]').val();
                 alert(authenticator);
-                $ajax({
-                    type: 'POST',
+                var url = window.location.href;
+                $.ajax({
                     url: 'rec',
+                    type: 'POST',
                     data: {
                         'submitted':1,
-                        'entry': uniqueSampleNumber,
+                        'usn': uniqueSampleNumber,
+                        'side_id': site,
                         '_authenticator': authenticator},
                     success: function(responseText, statusText, xhr, $form){
                         if(responseText.success) {
