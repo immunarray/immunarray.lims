@@ -8,7 +8,7 @@ from immunarray.lims.permissions import AddClinicalSample
 from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
-import plone.protect
+from plone.protect import check
 import json
 
 
@@ -28,10 +28,9 @@ class AddRecView(BrowserView):
         if "submitted" not in request:
             return self.template()
 
-        if "submitted" in request:
+        if "submitted1" in request:
             try:
-                import pdb;pdb.set_trace()
-                plone.protect.CheckAuthenticator (self.request)
+                check (self.request)
             except:
                 return self.return_json({
                     'success': False,
@@ -39,14 +38,11 @@ class AddRecView(BrowserView):
                     'error': 'Can not verify authenticator token'
                 })
 
-        if "submitted1" not in request:
-            import pdb;pdb.set_trace()
-
-        # ID 11-1234-12345 lenght = 12 usn =lenght(0:9) site = lenght (10:12)
+        # ID 11-1234-12345 length = 12 usn =length(0:9) site = length (10:12)
         # Need to parse on '-' (jp 5/18/17)
-        usn = request.get("usn")
-        site_from_usn = usn[0:2]
-        usn_from_form = usn[3:]
+        # (getting this from ajax input)usn = request.get("usn")
+        # (getting this from ajax input) site_from_usn = usn[0:2]
+        # (getting this from ajax input) usn_from_form = usn[3:]
         # Patient Info
         repeat_order = request.get("repeat_order")
         first = request.get("patient_first_name")
