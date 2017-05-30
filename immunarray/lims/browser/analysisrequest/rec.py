@@ -9,6 +9,8 @@ from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
 import plone.protect
+import json
+
 
 
 class AddRecView(BrowserView):
@@ -25,11 +27,13 @@ class AddRecView(BrowserView):
         request = self.request
 
         if "submitted" not in request:
-            return self.template()
+             return self.template()
+            #import pdb;pdb.set_trace()
 
-        if "submitted1" in request:
+        if "submitted1" in request.keys():
+            import pdb;pdb.set_trace()
             try:
-                check (self.request)
+                plone.protect.CheckAuthenticator(self.request)
             except:
                 return self.return_json({
                     'success': False,
@@ -39,7 +43,7 @@ class AddRecView(BrowserView):
 
         # ID 11-1234-12345 lenght = 12 usn =lenght(0:9) site = lenght (10:12)
         # Need to parse on '-' (jp 5/18/17)
-        # (getting this from ajax input)usn = request.get("usn")
+        # usn = request.get("usn")
         # (getting this from ajax input) site_from_usn = usn[0:2]
         # (getting this from ajax input) usn_from_form = usn[3:]
         # Patient Info
@@ -103,14 +107,13 @@ class AddRecView(BrowserView):
             "collection_date": request.get("collection_date"),
             "shipment_date": request.get("shipment_date"),
         }
-        import pdb;pdb.set_trace()
         # import pdb;pdb.set_trace()
         # pop up to select assays that are active in system!
         # Make a viewlet that is a multi choice radio widget of all active
         # tests at the top
-        self.check_unique_sample_id(usn)
+        # self.check_unique_sample_id(usn)
         # check if patient is unique
-        self.make_clinical_sample(usn)
+        # self.make_clinical_sample(usn)
 
         # clear rec form and reset for next sample entry
 
@@ -263,22 +266,3 @@ class AddRecView(BrowserView):
             pass
 
 """
-
-class CheckValues(AddRecView):
-    """Evaluate the values from the acc.pt from by way of rec.js
-    """
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-        self.errors = []
-
-    def __call__(self):
-        try:
-            plone.protect.CheckAuthenticator (self.request)
-        except:
-            return self.return_json({
-                '': False,
-                'failure': True,
-                'error': 'Can not verify authenticator token'
-            })
