@@ -21,7 +21,7 @@ require([
                     url: 'rec',
                     type: 'POST',
                     data: {
-                        'submitted1': 1,
+                        'usn_update': 1,
                         'usn': uniqueSampleNumber,
                         'site_id': site,
                         '_authenticator': authenticator},
