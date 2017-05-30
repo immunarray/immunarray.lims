@@ -25,19 +25,21 @@ class AddRecView(BrowserView):
     def __call__(self):
         add_resource_on_request(self.request, "static.js.rec")
         request = self.request
+        json_values = self.request.form.items()
+        import pdb;pdb.set_trace()
 
         if "submitted" not in request:
              return self.template()
-            #import pdb;pdb.set_trace()
+             import pdb;pdb.set_trace()
 
-        if "submitted1" in request.keys():
+        if "usn_update" in request.form.items():
             import pdb;pdb.set_trace()
             try:
                 plone.protect.CheckAuthenticator(self.request)
             except:
                 return self.return_json({
-                    'success': False,
-                    'failure': True,
+                    'success': True,
+                    'failure': False,
                     'error': 'Can not verify authenticator token'
         })
 
