@@ -11,21 +11,7 @@
     <include file="ichip.zcml"/>
     <include file="ichiplot.zcml"/>
     <include file="controlpanel.zcml"/>
+    <include file="analysisrequest/configure.zcml"/>
     <include package=".viewlets"/>
-
-    <browser:page
-        name="rec"
-        class="immunarray.lims.browser.analysisrequest.rec.AddRecView"
-        for="*"
-        template="analysisrequest/templates/accessioning/acc.pt"
-        permission="zope2.View"
-    />
-
-    <browser:page
-        name="insurance"
-        for="*"
-        template="analysisrequest/templates/billing/insurance.pt"
-        permission="zope2.View"
-    />
 
 </configure>
