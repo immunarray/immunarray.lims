@@ -11,19 +11,19 @@ require([
                 var usnParts = $(usn).val().split("-");
                 var site = usnParts[0];
                 var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
-                alert("site: " + site);
-                alert("Unique Sample Number: " + uniqueSampleNumber);
+                // alert("site: " + site);
+                // alert("Unique Sample Number: " + uniqueSampleNumber);
                 // is usn unique?
                 authenticator = $('input[name="_authenticator"]').val();
-                alert(authenticator);
+                // alert(authenticator);
                 var url = window.location.href;
                 $.ajax({
                     url: 'rec',
                     type: 'POST',
                     data: {
-                        'submitted':1,
+                        'submitted1': 1,
                         'usn': uniqueSampleNumber,
-                        'side_id': site,
+                        'site_id': site,
                         '_authenticator': authenticator},
                     success: function(responseText, statusText, xhr, $form){
                         if(responseText.success) {
