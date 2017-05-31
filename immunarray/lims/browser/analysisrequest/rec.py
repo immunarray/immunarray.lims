@@ -25,29 +25,17 @@ class AddRecView(BrowserView):
     def __call__(self):
         add_resource_on_request(self.request, "static.js.rec")
         request = self.request
-        json_values = self.request.form.items()
-        import pdb;pdb.set_trace()
+        #import pdb;pdb.set_trace()
 
-        if "submitted" not in request:
-             return self.template()
-             import pdb;pdb.set_trace()
-
-        if "usn_update" in request.form.items():
+        if "usn_update" in request.form:
             import pdb;pdb.set_trace()
-            try:
-                plone.protect.CheckAuthenticator(self.request)
-            except:
-                return self.return_json({
-                    'success': True,
-                    'failure': False,
-                    'error': 'Can not verify authenticator token'
-        })
 
-        # ID 11-1234-12345 lenght = 12 usn =lenght(0:9) site = lenght (10:12)
-        # Need to parse on '-' (jp 5/18/17)
-        # usn = request.get("usn")
-        # (getting this from ajax input) site_from_usn = usn[0:2]
-        # (getting this from ajax input) usn_from_form = usn[3:]
+            #check_unique_sample_id(self, usn)
+            try:
+                plone.protect.CheckAuthenticator(self.request.form)
+            except:
+                import pdb;pdb.set_trace()
+
         # Patient Info
         repeat_order = request.get("repeat_order")
         first = request.get("patient_first_name")
@@ -203,7 +191,14 @@ class AddRecView(BrowserView):
         import pdb;pdb.set_trace()
 
 
-    """        # schema.TextLine
+    """
+    cut from __call__()
+    if "submitted" not in request:
+             return self.template()
+             #import pdb;pdb.set_trace()
+
+
+    # schema.TextLine
 
             tests_ordered = ,
             sample_primary_insurance_name = ,#schema.TextLine,
