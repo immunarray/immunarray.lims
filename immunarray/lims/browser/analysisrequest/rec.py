@@ -25,17 +25,28 @@ class AddRecView(BrowserView):
     def __call__(self):
         add_resource_on_request(self.request, "static.js.rec")
         request = self.request
-        #import pdb;pdb.set_trace()
+
+        #if "submitted" in request:
+            # submit button pushed
+            # return self.template()
 
         if "usn_update" in request.form:
-            import pdb;pdb.set_trace()
-
-            #check_unique_sample_id(self, usn)
+            authenticator = request.form.get('_authenticator')
             try:
-                plone.protect.CheckAuthenticator(self.request.form)
+                plone.protect.CheckAuthenticator(authenticator)
             except:
                 import pdb;pdb.set_trace()
+            usn = request.form.get('usn')
+            site = request.form.get('site_id')
 
+            #import pdb;pdb.set_trace()
+
+            # Do things
+            self.check_unique_sample_id(usn)
+
+        if "submitted" in request:
+            import pdb;pdb.set_trace()
+            # Do things
         # Patient Info
         repeat_order = request.get("repeat_order")
         first = request.get("patient_first_name")
@@ -97,39 +108,28 @@ class AddRecView(BrowserView):
             "collection_date": request.get("collection_date"),
             "shipment_date": request.get("shipment_date"),
         }
+        return self.template()
         # import pdb;pdb.set_trace()
         # pop up to select assays that are active in system!
-        # Make a viewlet that is a multi choice radio widget of all active
         # tests at the top
         # self.check_unique_sample_id(usn)
         # check if patient is unique
         # self.make_clinical_sample(usn)
 
         # clear rec form and reset for next sample entry
+    def site_lookup(self, site_id):
+        values = api.content.find(context=api.portal.get(), portal_type='Site')
 
-
-
-    def check_unique_sample_id(self, usn_from_form):
-        #get all usn (titles) of ClinicalSamples in LIMS
+    def check_unique_sample_id(self, usn):
+        # Get all usn (titles) of ClinicalSamples in LIMS
         values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
-        all_usns = []
-        cs_uid = [v.UID for v in values]
-        for i in cs_uid:
-            value = api.content.get(UID=i)
-            all_usns.append(value.title)
-        #Check to see that usn (from call) is not in list of all_usns
-        import pdb;pdb.set_trace()
-        return all_usns
-        #if usn in all_usns:
-        #    self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
-        #    return False
-        #else:
-            # usn (from call) is not in the list of all_usns
-        #    return True
-        #self.errors.append({"UniqueSampleNumber", "Sample number %s is not unique"%usn})
-        #return False
+        usns = [v.Title for v in values]
 
-    def make_clinical_sample(self, usn_from_form):
+        if usn in usns:
+            self.context.plone_utils.addPortalMessage("USN Not Unique!!!",'info')
+            import pdb;pdb.set_trace()
+
+    def make_clinical_sample(self, usn):
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -193,9 +193,6 @@ class AddRecView(BrowserView):
 
     """
     cut from __call__()
-    if "submitted" not in request:
-             return self.template()
-             #import pdb;pdb.set_trace()
 
 
     # schema.TextLine
