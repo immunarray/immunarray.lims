@@ -34,29 +34,63 @@ require([
             })
         });
 
+        $(function checkNameAndDOB(ptFirstName, ptLastName, ptdob) {
+                            var ptFirstName = $(patient_first_name).val();
+                            var ptLastName= $(patient_last_name).val();
+                            var ptdob = $(dob).val();
+                            if ((!!ptFirstName) || (!!ptLastName) || (!!ptdob)){
+                            authenticator = $('input[name="_authenticator"]').val();
+                            var url = window.location.href;
+                            $.ajax({
+                                url: 'rec',
+                                type: 'POST',
+                                data: {
+                                    'check_name_and_dob': 1,
+                                    'dob': ptdob,
+                                    'patient_first_name': ptFirstName,
+                                    'patient_last_name': ptLastName,
+                                    '_authenticator': authenticator},
+                                success: function(responseText, statusText, xhr, $form){
+                                    if(responseText.success) {
+                                        window.location.href = responseText.url;
+                                    }
+                                }
+                            });
+                        }
+                    })
+
+
         $('#patient_first_name').on("change", function(){
             // get patient first name on change of field
             var ptFirstName = $(patient_first_name).val();
             alert("Pt First Name: " + ptFirstName);
+            return ptFirstName;
+            checkNameAndDOB(ptFirstName, ptLastName, ptdob);
         });
 
         $('#patient_last_name').on("change", function(){
-            //alert("PT last name was changed")
             var ptLastName= $(patient_last_name).val(); //YYYY-MM-DD
             alert("Pt Last Name: " + ptLastName);
+            return ptLastName;
+            checkNameAndDOB(ptFirstName, ptLastName, ptdob);
         });
 
         $('#dob').on("focusout", function(){
-            //alert("PT DOB was changed")
             var ptdob = $(dob).val();
             alert("Pt DOB: " + ptdob);
+            return ptdob;
+            checkNameAndDOB(ptFirstName, ptLastName, ptdob);
         });
+
+
+
         // is patient a repeat that first name, last name, and dob match existing
         // patient?
         // if yes load previous, and append usn to patient
         // if no allow user to continue to fill out form
         // load primary provider from site data
         // Make form easier to use, hide all boxes that have click dependency
+
         $('#ethnicity_specify').hide();
         $('#ethnicity_other').on('click', function(){
             $(this).next().slideToggle(400);
