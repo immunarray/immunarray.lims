@@ -34,15 +34,24 @@ class AddRecView(BrowserView):
             authenticator = request.form.get('_authenticator')
             try:
                 plone.protect.CheckAuthenticator(authenticator)
+                #is this working?  the except is not kicking off
+                # what does it do?
             except:
                 import pdb;pdb.set_trace()
             usn = request.form.get('usn')
             site = request.form.get('site_id')
-
-            #import pdb;pdb.set_trace()
-
             # Do things
             self.check_unique_sample_id(usn)
+            self.site_lookup(site)
+
+        if "check_name_and_dob" in request.form:
+            authenticator = request.form.get('_authenticator')
+            try:
+                plone.protect.CheckAuthenticator(authenticator)
+                #is this working?  the except is not kicking off
+                # what does it do?
+            except:
+                import pdb;pdb.set_trace()
 
         if "submitted" in request:
             import pdb;pdb.set_trace()
@@ -126,8 +135,13 @@ class AddRecView(BrowserView):
         usns = [v.Title for v in values]
 
         if usn in usns:
+            # Want to git a feedback to tell end user ID is not unique!
             self.context.plone_utils.addPortalMessage("USN Not Unique!!!",'info')
             import pdb;pdb.set_trace()
+
+    def repeat_order_check(self, pt_first, pt_last, pt_dob):
+        # want t
+        pass
 
     def make_clinical_sample(self, usn):
         # assign serial number for sample
