@@ -5,6 +5,10 @@ from bika.lims.interfaces.organisation import IOrganisation
 
 
 class ISite(IOrganisation):
-    """Care provider
+    """ Commercial Site
     """
-    pass
+    title = schema.TextLine(
+        title=_(u"Site ID"),
+        description=_(u"Site ID"),
+        required=False,
+    )
