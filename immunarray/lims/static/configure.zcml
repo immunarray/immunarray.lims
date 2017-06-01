@@ -20,4 +20,9 @@
       directory="js"
       />
 
+  <browser:resourceDirectory
+      name="immunarray.lims.py"
+      directory="py"
+  />
+
 </configure>
