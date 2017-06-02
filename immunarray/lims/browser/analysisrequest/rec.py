@@ -127,7 +127,16 @@ class AddRecView(BrowserView):
 
         # clear rec form and reset for next sample entry
     def site_lookup(self, site_id):
-        values = api.content.find(context=api.portal.get(), portal_type='Site')
+        ''' Build dict of site ID and Names
+        '''
+        site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
+        # get UID for object that site_objects.title = site_id
+        # get "name" after opening that object!
+
+        provider_objects = api.content.find(context=api.portal.get(), portal_type='Provider')
+        # build dict of site ID and Names
+        # build dict of site ID and Provider NPI's
+
 
     def check_unique_sample_id(self, usn):
         # Get all usn (titles) of ClinicalSamples in LIMS
@@ -136,11 +145,11 @@ class AddRecView(BrowserView):
 
         if usn in usns:
             # Want to git a feedback to tell end user ID is not unique!
-            self.context.plone_utils.addPortalMessage("USN Not Unique!!!",'info')
-            import pdb;pdb.set_trace()
+            self.context.plone_utils.addPortalMessage(u"USN Not Unique!!!",'info')
+            # import pdb;pdb.set_trace()
 
     def repeat_order_check(self, pt_first, pt_last, pt_dob):
-        # want t
+        values = api.content.find(context=api.portal.get(), portal_type='Patient')
         pass
 
     def make_clinical_sample(self, usn):
