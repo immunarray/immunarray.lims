@@ -177,6 +177,7 @@ class AddRecView(BrowserView):
             current_pt_list.append(pt_first_name + "," + pt_last_name + "," + pt_dob2)
         if entered_values in current_pt_list:
             import pdb;pdb.set_trace()
+            # give me the UID for ease of appending later.
 
         # wake up objects to check first, last, dob
         # direct to second function that will append current usn to list of usns
