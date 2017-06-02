@@ -43,6 +43,7 @@ class AddRecView(BrowserView):
             # Do things
             self.check_unique_sample_id(usn)
             self.site_lookup(site)
+            import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
             authenticator = request.form.get('_authenticator')
@@ -127,9 +128,22 @@ class AddRecView(BrowserView):
 
         # clear rec form and reset for next sample entry
     def site_lookup(self, site_id):
-        ''' Build dict of site ID and Names
+        ''' Site ID to get practice names
         '''
+        # git Site objects
+        # import pdb;pdb.set_trace()
         site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
+        # import pdb;pdb.set_trace()
+        # make a list of site_objects.Title
+        # loop over site ojects to find site_objects.title == site_id
+        for i in site_objects:
+            if i.Title == site_id:
+                uid = i.UID
+                site = api.content.get(UID=uid)
+                site_name = site.name
+                import pdb;pdb.set_trace()
+                return site_name
+
         # get UID for object that site_objects.title = site_id
         # get "name" after opening that object!
 
@@ -149,7 +163,23 @@ class AddRecView(BrowserView):
             # import pdb;pdb.set_trace()
 
     def repeat_order_check(self, pt_first, pt_last, pt_dob):
+        entered_values = str(pt_first) +","+ str(pt_last) +"," + pt_dob
         values = api.content.find(context=api.portal.get(), portal_type='Patient')
+        # make list of uids
+        uids = [u.UID for u in values]
+        current_pt_list = []
+        for i in uids:
+            record = api.content.get(UID=i)
+            pt_first_name = record.first_name
+            pt_last_name = record.last_name
+            pt_dob2 = record.dob
+            # make entry
+            current_pt_list.append(pt_first_name + "," + pt_last_name + "," + pt_dob2)
+        if entered_values in current_pt_list:
+            import pdb;pdb.set_trace()
+
+        # wake up objects to check first, last, dob
+        # direct to second function that will append current usn to list of usns
         pass
 
     def make_clinical_sample(self, usn):
