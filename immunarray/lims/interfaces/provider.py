@@ -9,8 +9,8 @@ class IProvider(IPerson):
     """
 
     site_ID = schema.Int(
-        title=_(u"Primary Site ID"),
-        description=_(u"Primary Site ID"),
+        title=_(u"Site ID"),
+        description=_(u"Site ID"),
         required=False,
     )
 
