@@ -115,5 +115,9 @@ require([
         $('#diag-other').on('click', function(){
             $(this).next().slideToggle(400);
         });
+
+        $(function usnNonUniquePopUp (){
+
+        });
     })
 )
