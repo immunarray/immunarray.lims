@@ -32,7 +32,7 @@ class AddInsuranceView(BrowserView):
         insurance_plan_number = request.get("InsurancePlanNumber")
         authorization_precertification = request.get("AuthorizationPrecertification")
         insurance_subscriber_name = request.get("InsuranceSubscriberName")
-        relationship_to_insured= request.get(relationship_to_insured)
+        relationship_to_insured= request.get("relationship_to_insured")
         insurance_subscriber_dob = request.get("InsuranceSubscriberDOB")
         insurance_subscriber_gender = request.get("insurance_subscriber_gender")
         number_of_days_authorized = request.get("NumberofDaysAuthorized")
@@ -59,14 +59,14 @@ class AddInsuranceView(BrowserView):
         secondary_insurance_zip_code= request.get("SecondaryInsuranceZipCode")
         secondary_insurance_state = request.get("SecondaryInsuranceState")
         # Signature section (need to add this to clinical sample!)
-         = request.get("AssignmentofBenefitsPatientName")
+        # = request.get("AssignmentofBenefitsPatientName")
         release_signed = request.get("release_signed")
         assignment_of_benefits_signature_date = request.get("AssignmentofBenefitsSignatureDate")
         authorization_signature_patient_name = request.get("AuthorizationSignaturePatientName")
         payment_signed = request.get("payment_signed")
         authorization_signature_date = request.get("AuthorizationSignatureSignatureDate")
 
-# update clinical sample!
+    # update clinical sample!
         portal = api.portal.get("samples")
         obj = api.content.create(
             type = 'ClinicalSample',
