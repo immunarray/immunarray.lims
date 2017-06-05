@@ -43,6 +43,7 @@ class AddRecView(BrowserView):
             # Do things
             self.check_unique_sample_id(usn)
             self.site_lookup(site)
+            # update kits on site
             import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
@@ -136,7 +137,7 @@ class AddRecView(BrowserView):
         site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
         # import pdb;pdb.set_trace()
         # make a list of site_objects.Title
-        # loop over site ojects to find site_objects.title == site_id
+        # loop over site objects to find site_objects.title == site_id
         for i in site_objects:
             if i.Title == site_id:
                 uid = i.UID
@@ -149,8 +150,16 @@ class AddRecView(BrowserView):
         # get "name" after opening that object!
 
         provider_objects = api.content.find(context=api.portal.get(), portal_type='Provider')
-        # build dict of site ID and Names
-        # build dict of site ID and Provider NPI's
+        provider_uids = [v.UID for v in provider_objects]
+        # build list of provider last name and npi's
+        providers_at_site= []
+        for i in provider_uids:
+            provider_object = api.content.get(UID=i)
+            if site_id == provider_object.site_id:
+                element = provider_object.last_name + "-"+provider_object.npi
+                providers_at_site.append(element)
+            return providers_at_site
+
 
 
     def check_unique_sample_id(self, usn):
@@ -191,6 +200,7 @@ class AddRecView(BrowserView):
                 return pt_UID
             else:
                 pt_UID = "new_patient"
+                return pt_UID
 
     def make_clinical_sample(self, usn):
         """Make a clinical sample via api, set serial number
