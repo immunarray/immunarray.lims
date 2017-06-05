@@ -50,7 +50,10 @@ i18n:domain="immunarray.lims">>
 <table id="table1">
     <tr>
         <td>
-            <div id="Veracis_image"><img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/SLE-keylogo-Registered.jpg" style="width:1.88in;height:1.11in; text-align:left;"></div>
+            <div id="Veracis_image">
+                <img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"
+                     style="width:1.88in;height:1.11in; text-align:left;"/>
+            </div>
         </td>
         <td>
             <strong><p style="text-align:center;font-family:Helvetica;font-size:20pt">Billing Information</p></strong>
