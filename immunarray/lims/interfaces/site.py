@@ -13,9 +13,21 @@ class ISite(IOrganisation):
         required=False,
     )
 
-    name = schema.TextLine(
+    site_name = schema.TextLine(
         title=_(u"Site Name"),
         description=_(u"Site Name"),
+        required=False,
+    )
+
+    sales_rep = schema.TextLine(
+        title=_(u"Sales Representative"),
+        description=_(u"Sales Representative"),
+        required=False,
+    )
+
+    setup_by = schema.TextLine(
+        title=_(u"Setup By"),
+        description=_(u"Setup By"),
         required=False,
     )
 
@@ -31,6 +43,13 @@ class ISite(IOrganisation):
         required=False,
     )
 
+    fax_confirmed = schema.Bool(
+        title=_(u"Fax Number Confirmed"),
+        description=_(u"Fax Number Confirmed"),
+        required=False,
+        default=False,
+    )
+
     megapractice_id = schema.TextLine(
         title=_(u"Mega Practice ID"),
         description=_(u"Link multiple sites together"),
@@ -40,7 +59,7 @@ class ISite(IOrganisation):
     inbound_shipping_method = schema.Choice(
         title=_(u"Inbound Shipping Method"),
         description=_(u"Inbound Shipping Method"),
-        values = [(u'FedEX'),(u'UPS')],
+        values = [(u'FedEx'),(u'UPS')],
         required=False,
     )
 
@@ -59,5 +78,11 @@ class ISite(IOrganisation):
     primary_contact_phone = schema.TextLine(
         title=_(u"Primary Office Contact Phone Number"),
         description=_(u"Primary Office Contact Phone Number"),
+        required=False,
+    )
+
+    site_notes = schema.Text(
+        title=_(u"Site Notes"),
+        description=_(u"Site Notes"),
         required=False,
     )
