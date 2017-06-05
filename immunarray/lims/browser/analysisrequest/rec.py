@@ -128,7 +128,8 @@ class AddRecView(BrowserView):
 
         # clear rec form and reset for next sample entry
     def site_lookup(self, site_id):
-        ''' Site ID to get practice names
+        ''' Site ID to get practice names, and make list of provider NIP's at that
+            practice
         '''
         # git Site objects
         # import pdb;pdb.set_trace()
@@ -153,6 +154,8 @@ class AddRecView(BrowserView):
 
 
     def check_unique_sample_id(self, usn):
+        """Check to see if USN is unique, alert use if not
+        """
         # Get all usn (titles) of ClinicalSamples in LIMS
         values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
         usns = [v.Title for v in values]
@@ -163,6 +166,8 @@ class AddRecView(BrowserView):
             # import pdb;pdb.set_trace()
 
     def repeat_order_check(self, pt_first, pt_last, pt_dob):
+        """Check for repeat patient
+        """
         # need to format inputs to work for the search? date field is the most troubling one
         values = api.content.find(context=api.portal.get(), portal_type='Patient')
         # make list of uids
@@ -188,6 +193,8 @@ class AddRecView(BrowserView):
                 pt_UID = "new_patient"
 
     def make_clinical_sample(self, usn):
+        """Make a clinical sample via api, set serial number
+        """
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -198,7 +205,7 @@ class AddRecView(BrowserView):
             value = api.content.get(UID=i)
             all_sn.append(value.sample_serial_number)
         serial_number = max(all_sn) + 1
-        import pdb;pdb.set_trace()
+        #import pdb;pdb.set_trace()
 
         # set permission for clinical sample
         cs = api.portal.get()
@@ -212,7 +219,7 @@ class AddRecView(BrowserView):
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                             )
-        import pdb;pdb.set_trace()
+        #import pdb;pdb.set_trace()
 
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
                      ethnicity_other, marital_status, patient_address,
@@ -246,65 +253,11 @@ class AddRecView(BrowserView):
                                              ethnicity_other = ethnicity_other,
                                              tested_unique_sample_ids = usn_from_form,
                                              )
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
 
 
     """
     cut from __call__()
-
-
-    # schema.TextLine
-
-            tests_ordered = ,
-            sample_primary_insurance_name = ,#schema.TextLine,
-            sample_primary_insurance_payerID = ,#schema.TextLine,
-            sample_primary_insurance_policy_number = , # schema.TextLine,
-            sample_primary_insurance_plan_number = schema.TextLine,
-            sample_primary_insurance_subscriber_name = schema.TextLine,
-            sample_primary_insurance_relation_to_insured = schema.Choice,
-            sample_primary_insurance_subscriber_DOB = schema.Date,
-            sample_primary_insurance_effective_date = schema.Date,
-            sample_primary_insurance_address = schema.TextLine,
-            sample_primary_city = schema.TextLine,
-            sample_primary_state = schema.TextLine,
-            sample_primary_insurance_zip_code = schema.TextLine,
-            sample_secondary_insurance_name = schema.TextLine,
-            sample_secondary_insurance_payerID = schema.TextLine,
-            sample_secondary_insurance_policy_number = schema.TextLine,
-            sample_secondary_insurance_plan_number = schema.TextLine,
-            sample_secondary_insurance_authorization_precertificate = schema.TextLine,
-            sample_secondary_insurance_subscriber_name = schema.TextLine,
-            sample_secondary_insurance_relation_to_insured = schema.Choice,
-            sample_secondary_insurance_subscriber_DOB = schema.Datetime,
-            sample_secondary_insurance_effective_date = schema.Datetime,
-            sample_secondary_insurance_address = schema.TextLine,
-            sample_secondary_city = schema.TextLine,
-            sample_secondary_state = schema.TextLine,
-            sample_secondary_insurance_zip_code = schema.TextLine,
-            billable_code = schema.Choice,
-            sample_serial_number = schema.Int,
-            sample_ordering_healthcare_provider = schema.Choice,
-            sample_ordering_healthcare_provider_signature = schema.Bool,
-            primary_healthcare_provider = schema.Choice,
-            ana_teesting = schema.Choice,
-            clinical_impression = schema.Choice,
-            other_test_ordered = schema.List,
-            symptoms_choice = schema.List,
-            symptoms_text = schema.List,
-            diagnosis_code = schema.List,
-
-            phlebotomist_last_name = schema.TextLine,
-            phlebotomist_signature_provided=schema.Bool,
-            collection_date = schema.Date,
-            received_date = schema.Date,
-
-        # make patient record (if new patient, check first, last name, and
-        # dob to see if it is a unique person)
-
-        # check unique sample ID
-        if not usn:
-            self.errors.append(
-                {"UniqueSampleNumber": "Sample number was not specified."})
         else:
             self.check_unique_sample_id(usn)
 
@@ -317,4 +270,4 @@ class AddRecView(BrowserView):
             # make clinical sample
             pass
 
-"""
+    """
