@@ -163,7 +163,7 @@ class AddRecView(BrowserView):
             # import pdb;pdb.set_trace()
 
     def repeat_order_check(self, pt_first, pt_last, pt_dob):
-        entered_values = str(pt_first) +","+ str(pt_last) +"," + pt_dob
+        # need to format inputs to work for the search? date field is the most troubling one
         values = api.content.find(context=api.portal.get(), portal_type='Patient')
         # make list of uids
         uids = [u.UID for u in values]
@@ -174,14 +174,18 @@ class AddRecView(BrowserView):
             pt_last_name = record.last_name
             pt_dob2 = record.dob
             # make entry
-            current_pt_list.append(pt_first_name + "," + pt_last_name + "," + pt_dob2)
-        if entered_values in current_pt_list:
-            import pdb;pdb.set_trace()
-            # give me the UID for ease of appending later.
-
-        # wake up objects to check first, last, dob
-        # direct to second function that will append current usn to list of usns
-        pass
+            current_pt_list.append(pt_first_name + "," + pt_last_name + "," +
+                                   pt_dob2 + ","+ i)
+        # for loop to look at two lists and pull the UID if needed
+        for c in current_pt_list:
+            if pt_first == current_pt_list[0] and pt_last == current_pt_list[1] and pt_dob == current_pt_list[2]:
+                # patient is most likely a repeat order
+                # set variable to be the UID (pt_UID = current_pt_list[3])
+                # set variable that can be used to track repeat order ()
+                pt_UID = current_pt_list[3]
+                return pt_UID
+            else:
+                pt_UID = "new_patient"
 
     def make_clinical_sample(self, usn):
         # assign serial number for sample
