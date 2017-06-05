@@ -18,8 +18,8 @@ from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 
 class IClinicalSample(model.Schema):
-    """Sample that will contain all the billing info and high levle information
-        that is applicalbe to all aliqouts made from this material, location of
+    """Sample that will contain all the billing info and high level information
+        that is applicable to all aliquots made from this material, location of
         tests ordered on sample
     """
     title = schema.TextLine(
@@ -40,7 +40,7 @@ class IClinicalSample(model.Schema):
         title = _(u"Status of Testing"),
         description = _(u"Status of Testing"),
         required = True,
-        values=[_(u"Recived"),
+        values=[_(u"Received"),
                 _(u"All Tests Closed"),],
     )
     # list or tuple? JP 3-14-17, let this be blank for remote order
@@ -52,7 +52,7 @@ class IClinicalSample(model.Schema):
         title = _(u"Front End QA Status"),
         description = _(u"Front End QA Status"),
         required = True,
-        values=[_(u"Inital"),
+        values=[_(u"Initial"),
                 _(u"Review Pass"),
                 _(u"Held"),],
     )
