@@ -104,3 +104,13 @@ class AddInsuranceView(BrowserView):
             payment_signed = payment_signed, #schema.Bool
             authorization_signature_date = authorization_signature_date, #schema.Date
             )
+    def active_usn(self):
+        """Generate a list of all active unique sample numbers to allow for ease
+         of data entry by end user
+        """
+        # "All Tests Closed" not like
+        pass
+    def repeat_patient(self):
+        """If sample is a repeat sample pull previous data?
+        """
+        pass
