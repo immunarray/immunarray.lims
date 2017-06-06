@@ -59,7 +59,8 @@ class AddRecView(BrowserView):
             import pdb;pdb.set_trace()
             # Do things
         # Patient Info
-        repeat_order = request.get("repeat_order")
+        # repeat_order = request.get("repeat_order")
+        # Prevent user input on this
         first = request.get("patient_first_name")
         last = request.get("patient_last_name")
         ssn = request.get("ssn")
