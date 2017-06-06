@@ -25,16 +25,20 @@ require([
                         'usn': uniqueSampleNumber,
                         'site_id': site,
                         '_authenticator': authenticator},
-                    success: function(responseText, statusText, xhr, $form){
-                        if(responseText.success) {
-                            window.location.href = responseText.url;
+                    success: function(responseText, statusText, statusCode, xhr, $form){
+                        //alert("statusCode" +" : "+ statusCode.status);
+                        if (statusCode.status === 207){
+                            alert("Non Unique Sample Number!!!")
                         }
                     }
                 });
             })
         });
 
-        $(function checkNameAndDOB(ptFirstName, ptLastName, ptdob) {
+        function alertUser() {
+            alert("From BrowserView/Python feedback!")
+        }
+        function checkNameAndDOB() {
                             var ptFirstName = $(patient_first_name).val();
                             var ptLastName= $(patient_last_name).val();
                             var ptdob = $(dob).val();
@@ -57,32 +61,39 @@ require([
                                 }
                             });
                         }
-                    })
+            }
 
 
-        $('#patient_first_name').on("change", function(){
+        //$('#patient_first_name').on("change", function(){
             // get patient first name on change of field
-            var ptFirstName = $(patient_first_name).val();
-            alert("Pt First Name: " + ptFirstName);
-            return ptFirstName;
-            checkNameAndDOB(ptFirstName, ptLastName, ptdob);
-        });
+        //    var ptFirstName = $(patient_first_name).val();
+        //    alert("Pt First Name: " + ptFirstName);
+        //    return ptFirstName;
+        //    checkNameAndDOB(ptFirstName, ptLastName, ptdob);
+        //});
 
-        $('#patient_last_name').on("change", function(){
-            var ptLastName= $(patient_last_name).val(); //YYYY-MM-DD
-            alert("Pt Last Name: " + ptLastName);
-            return ptLastName;
-            checkNameAndDOB(ptFirstName, ptLastName, ptdob);
-        });
+        //$('#patient_last_name').on("change", function(){
+        //    var ptLastName= $(patient_last_name).val(); //YYYY-MM-DD
+        //    alert("Pt Last Name: " + ptLastName);
+        //    return ptLastName;
+        //    checkNameAndDOB(ptFirstName, ptLastName, ptdob);
+        //});
 
         $('#dob').on("focusout", function(){
             var ptdob = $(dob).val();
-            alert("Pt DOB: " + ptdob);
-            return ptdob;
-            checkNameAndDOB(ptFirstName, ptLastName, ptdob);
+            //alert("Pt DOB: " + ptdob);
+            //return ptdob;
+            checkNameAndDOB();
         });
 
-
+        // SSN validate, allow for XXX-XX-XXXX or XXXX
+        function ssn_validate(){
+            var ssn = '#ssn';
+            var regExp1 = "^\d{3}\-\d{2}\-\d{4}$";
+            var regExp2 = "^\d{4}$";
+            //logic to check input
+            alert("SSN format can be either '###-##-####' or '####' Please Correct")
+        }
 
         // is patient a repeat that first name, last name, and dob match existing
         // patient?
