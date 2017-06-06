@@ -317,6 +317,12 @@
                 <input type="radio" name="ana_testing" id="ana_testing_negative" value="Negative"/>Negative
                 <input type="radio" name="ana_testing" id="ana_testing_not_preformed" value="Not performed"/>Not performed
               </p>
+              <p>
+                Clinical Impression: SLE?
+                <input type="radio" name="clinical_impression" id="sle_positive" value="Yes"/>Yes
+                <input type="radio" name="clinical_impression" id="sle_negative" value="No"/>No
+                <input type="radio" name="clinical_impression" id="sle_uncertain" value="Uncertain"/>Uncertain
+              </p>
             </td>
             <td>
               <p>Other Tests Ordered:
