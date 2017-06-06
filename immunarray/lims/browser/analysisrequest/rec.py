@@ -8,8 +8,10 @@ from immunarray.lims.permissions import AddClinicalSample
 from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
+from Products.statusmessages.interfaces import IStatusMessage
 import plone.protect
 import json
+import datetime
 
 
 
@@ -38,31 +40,39 @@ class AddRecView(BrowserView):
                 # what does it do?
             except:
                 import pdb;pdb.set_trace()
+            # define request.form.get's
             usn = request.form.get('usn')
-            site = request.form.get('site_id')
+            site_id = request.form.get('site_id')
             # Do things
             self.check_unique_sample_id(usn)
-            self.site_lookup(site)
-            # update kits on site
-            import pdb;pdb.set_trace()
+            self.site_lookup(site_id)
+            # import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
             authenticator = request.form.get('_authenticator')
             try:
                 plone.protect.CheckAuthenticator(authenticator)
-                #is this working?  the except is not kicking off
-                # what does it do?
             except:
                 import pdb;pdb.set_trace()
-
-        if "submitted" in request:
+            # define request.form.get's
+            dob_string = request.form.get('dob')
+            dob = datetime.strptime(dob_string,"%Y-%m-%d").date()
+            patient_first_name = request.form.get('patient_first_name')
+            patient_last_name = request.form.get('patient_last_name')
             import pdb;pdb.set_trace()
+            # Do things
+            self.repeat_order_check(dob, patient_first_name,patient_last_name)
+
+
+        #if "submitted" in request.form:
+        #    import pdb;pdb.set_trace()
             # Do things
         # Patient Info
         # repeat_order = request.get("repeat_order")
         # Prevent user input on this
-        first = request.get("patient_first_name")
-        last = request.get("patient_last_name")
+        # values comeing in via ajax
+        # first = request.get("patient_first_name")
+        # last = request.get("patient_last_name")
         ssn = request.get("ssn")
         mrn = request.get("mrn")
         dob = request.get("dob")
@@ -120,6 +130,7 @@ class AddRecView(BrowserView):
             "collection_date": request.get("collection_date"),
             "shipment_date": request.get("shipment_date"),
         }
+        #self.update_kit_count(site_id)
         return self.template()
         # import pdb;pdb.set_trace()
         # pop up to select assays that are active in system!
@@ -133,49 +144,42 @@ class AddRecView(BrowserView):
         ''' Site ID to get practice names, and make list of provider NIP's at that
             practice
         '''
-        # git Site objects
-        # import pdb;pdb.set_trace()
         site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
-        # import pdb;pdb.set_trace()
         # make a list of site_objects.Title
         # loop over site objects to find site_objects.title == site_id
         for i in site_objects:
             if i.Title == site_id:
                 uid = i.UID
                 site = api.content.get(UID=uid)
-                site_name = site.name
-                import pdb;pdb.set_trace()
-                return site_name
+                site_name = site.site_name
+                # import pdb;pdb.set_trace()
+                # return site_name
 
-        # get UID for object that site_objects.title = site_id
-        # get "name" after opening that object!
+            # get UID for object that site_objects.title = site_id
+            # get "name" after opening that object!
 
-        provider_objects = api.content.find(context=api.portal.get(), portal_type='Provider')
-        provider_uids = [v.UID for v in provider_objects]
-        # build list of provider last name and npi's
-        providers_at_site= []
-        for i in provider_uids:
-            provider_object = api.content.get(UID=i)
-            if site_id == provider_object.site_id:
-                element = provider_object.last_name + "-"+provider_object.npi
-                providers_at_site.append(element)
-            return providers_at_site
-
-
+            provider_objects = api.content.find(context=api.portal.get(), portal_type='Provider')
+            provider_uids = [v.UID for v in provider_objects]
+            # build list of provider last name and npi's
+            providers_at_site= []
+            for i in provider_uids:
+                provider_object = api.content.get(UID=i)
+                if site_id == provider_object.site_id:
+                    element = provider_object.last_name + "-"+provider_object.npi
+                    providers_at_site.append(element)
+                    import pdb;pdb.set_trace()
+            # return providers_at_site
 
     def check_unique_sample_id(self, usn):
         """Check to see if USN is unique, alert use if not
         """
-        # Get all usn (titles) of ClinicalSamples in LIMS
         values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
         usns = [v.Title for v in values]
-
         if usn in usns:
-            # Want to git a feedback to tell end user ID is not unique!
-            self.context.plone_utils.addPortalMessage(u"USN Not Unique!!!",'info')
-            # import pdb;pdb.set_trace()
+            self.request.response.setHeader('Content-Type', "application/json")
+            self.request.response.setStatus(207, "USN Non Unique")
 
-    def repeat_order_check(self, pt_first, pt_last, pt_dob):
+    def repeat_order_check(self, pdob, patient_first_name,patient_last_name):
         """Check for repeat patient
         """
         # need to format inputs to work for the search? date field is the most troubling one
@@ -191,13 +195,15 @@ class AddRecView(BrowserView):
             # make entry
             current_pt_list.append(pt_first_name + "," + pt_last_name + "," +
                                    pt_dob2 + ","+ i)
+            import pdb;pdb.set_trace()
         # for loop to look at two lists and pull the UID if needed
         for c in current_pt_list:
-            if pt_first == current_pt_list[0] and pt_last == current_pt_list[1] and pt_dob == current_pt_list[2]:
+            if patient_first_name == current_pt_list[0] and patient_last_name == current_pt_list[1] and pdob == current_pt_list[2]:
                 # patient is most likely a repeat order
                 # set variable to be the UID (pt_UID = current_pt_list[3])
                 # set variable that can be used to track repeat order ()
                 pt_UID = current_pt_list[3]
+                import pdb;pdb.set_trace()
                 return pt_UID
             else:
                 pt_UID = "new_patient"
@@ -232,12 +238,7 @@ class AddRecView(BrowserView):
                                             )
         #import pdb;pdb.set_trace()
 
-    def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
-                     ethnicity_other, marital_status, patient_address,
-                     patient_city, patient_state, patient_zip_code,
-                     patient_phone, usn, site_from_usn, usn_from_form,
-                     consent_acquired):
-
+    def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity, ethnicity_other, marital_status, patient_address, patient_city, patient_state, patient_zip_code, patient_phone, usn, site_from_usn, usn_from_form, consent_acquired):
         """determine if ethnicity or ethnicity_other is filled
          determine if patient has been tested before
          set permission for new patient
@@ -266,7 +267,16 @@ class AddRecView(BrowserView):
                                              )
         # import pdb;pdb.set_trace()
 
-
+    def update_kit_count(self, site_id):
+        """Update site kits on hand count to be reduced by 1
+        """
+        site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
+        for i in site_objects:
+            if i.Title == site_id:
+                uid = i.UID
+                site = api.content.get(UID=uid)
+                site.kits_on_site -= 1
+                # make alert if kits_on_site value is at or below desired level?
     """
     cut from __call__()
         else:
