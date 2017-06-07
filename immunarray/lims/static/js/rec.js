@@ -55,8 +55,8 @@ require([
                                     'patient_last_name': ptLastName,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
-                                    if(responseText.success) {
-                                        window.location.href = responseText.url;
+                                    if(statusCode.status === 208) {
+                                        window.confirm ("Patient is Repeat");
                                     }
                                 }
                             });
