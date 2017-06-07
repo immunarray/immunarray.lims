@@ -27,6 +27,7 @@ class AddRecView(BrowserView):
     def __call__(self):
         add_resource_on_request(self.request, "static.js.rec")
         request = self.request
+        pt_UID = "new_patient"
 
         #if "submitted" in request:
             # submit button pushed
@@ -46,6 +47,7 @@ class AddRecView(BrowserView):
             # Do things
             self.check_unique_sample_id(usn)
             self.site_lookup(site_id)
+            self.providers_at_site(site_id)
             # import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
@@ -55,13 +57,15 @@ class AddRecView(BrowserView):
             except:
                 import pdb;pdb.set_trace()
             # define request.form.get's
-            dob_string = request.form.get('dob')
-            dob = datetime.strptime(dob_string,"%Y-%m-%d").date()
+            dob_string = request.form.get('dob') # string value '%Y-%m-%d'
+            # dob = datetime.datetime.strptime(dob_string,"%Y-%m-%d").date()
             patient_first_name = request.form.get('patient_first_name')
             patient_last_name = request.form.get('patient_last_name')
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             # Do things
-            self.repeat_order_check(dob, patient_first_name,patient_last_name)
+            # orders can be repeat with only first name or medical record number
+            # and dob! Think of it as a de-identified sample
+            self.repeat_order_check(dob_string, patient_first_name,patient_last_name, pt_UID)
 
 
         #if "submitted" in request.form:
@@ -73,6 +77,7 @@ class AddRecView(BrowserView):
         # values comeing in via ajax
         # first = request.get("patient_first_name")
         # last = request.get("patient_last_name")
+
         ssn = request.get("ssn")
         mrn = request.get("mrn")
         dob = request.get("dob")
@@ -140,35 +145,37 @@ class AddRecView(BrowserView):
         # self.make_clinical_sample(usn)
 
         # clear rec form and reset for next sample entry
+
     def site_lookup(self, site_id):
         ''' Site ID to get practice names, and make list of provider NIP's at that
             practice
         '''
         site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
-        # make a list of site_objects.Title
-        # loop over site objects to find site_objects.title == site_id
-        for i in site_objects:
-            if i.Title == site_id:
-                uid = i.UID
-                site = api.content.get(UID=uid)
+        site_uids = [i.UID for i in site_objects]
+        for j in site_uids:
+            site = api.content.get(UID=j)
+            if site_id == site.title:
                 site_name = site.site_name
-                # import pdb;pdb.set_trace()
-                # return site_name
+                print "Site Name Found : " + site.site_name
 
-            # get UID for object that site_objects.title = site_id
-            # get "name" after opening that object!
-
-            provider_objects = api.content.find(context=api.portal.get(), portal_type='Provider')
-            provider_uids = [v.UID for v in provider_objects]
-            # build list of provider last name and npi's
-            providers_at_site= []
-            for i in provider_uids:
-                provider_object = api.content.get(UID=i)
-                if site_id == provider_object.site_id:
-                    element = provider_object.last_name + "-"+provider_object.npi
-                    providers_at_site.append(element)
-                    import pdb;pdb.set_trace()
-            # return providers_at_site
+    def providers_at_site(self, site_id):
+        """Create list of providers based on the site ID from the rec input
+        """
+        provider_objects = api.content.find(context=api.portal.get(),
+                                            portal_type='Provider')
+        provider_uids = [v.UID for v in provider_objects]
+        # build list of provider last name and npi's
+        providers_at_site= []
+        npis_at_site=[]
+        for i in provider_uids:
+            provider_object = api.content.get(UID=i)
+            if int(site_id) == provider_object.site_ID:
+                element = provider_object.last_name + "-"+ str(provider_object.npi)
+                print "Found Provider : " + provider_object.last_name + "-" + str(provider_object.npi)
+                element2 = str(provider_object.npi)
+                npis_at_site.append(element2)
+                providers_at_site.append(element)
+        # import pdb;pdb.set_trace()
 
     def check_unique_sample_id(self, usn):
         """Check to see if USN is unique, alert use if not
@@ -179,12 +186,10 @@ class AddRecView(BrowserView):
             self.request.response.setHeader('Content-Type', "application/json")
             self.request.response.setStatus(207, "USN Non Unique")
 
-    def repeat_order_check(self, pdob, patient_first_name,patient_last_name):
+    def repeat_order_check(self, dob_string, patient_first_name,patient_last_name, pt_UID):
         """Check for repeat patient
         """
-        # need to format inputs to work for the search? date field is the most troubling one
         values = api.content.find(context=api.portal.get(), portal_type='Patient')
-        # make list of uids
         uids = [u.UID for u in values]
         current_pt_list = []
         for i in uids:
@@ -192,22 +197,27 @@ class AddRecView(BrowserView):
             pt_first_name = record.first_name
             pt_last_name = record.last_name
             pt_dob2 = record.dob
-            # make entry
-            current_pt_list.append(pt_first_name + "," + pt_last_name + "," +
-                                   pt_dob2 + ","+ i)
-            import pdb;pdb.set_trace()
-        # for loop to look at two lists and pull the UID if needed
+            entry =[]
+            entry.append(pt_first_name)
+            entry.append(pt_last_name)
+            entry.append(pt_dob2.strftime('%Y-%m-%d'))
+            entry.append(i)
+            current_pt_list.append(entry)
         for c in current_pt_list:
-            if patient_first_name == current_pt_list[0] and patient_last_name == current_pt_list[1] and pdob == current_pt_list[2]:
+            if patient_first_name == c[0] and patient_last_name == c[1] and dob_string == c[2]:
                 # patient is most likely a repeat order
                 # set variable to be the UID (pt_UID = current_pt_list[3])
                 # set variable that can be used to track repeat order ()
-                pt_UID = current_pt_list[3]
-                import pdb;pdb.set_trace()
+                pt_UID = c[3]
+                # end the loop on FIRST pt that matches!
+                self.request.response.setHeader('Content-Type', "application/json")
+                self.request.response.setStatus(208, "Repeat Patient")
+                print "Match: " + c[0] + ", " + c[1] + ", " + c[2] + ", " + pt_UID
                 return pt_UID
+
+                # return alert for repeat patient!
             else:
-                pt_UID = "new_patient"
-                return pt_UID
+                pass
 
     def make_clinical_sample(self, usn):
         """Make a clinical sample via api, set serial number
