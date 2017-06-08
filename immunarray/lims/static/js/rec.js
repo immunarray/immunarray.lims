@@ -55,9 +55,10 @@ require([
                                     'patient_last_name': ptLastName,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
-                                    if(statusCode.status === 208) {
-                                        window.confirm ("Patient is Repeat");
-                                    }
+                                    alert("responseText" +" : "+ responseText);
+                                    //if(responseText) {
+                                    //    alert ("Patient is Repeat");
+                                    //}
                                 }
                             });
                         }
