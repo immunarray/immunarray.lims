@@ -27,7 +27,7 @@ class AddRecView(BrowserView):
     def __call__(self):
         add_resource_on_request(self.request, "static.js.rec")
         request = self.request
-        pt_UID = "new_patient"
+
 
         #if "submitted" in request:
             # submit button pushed
@@ -46,9 +46,12 @@ class AddRecView(BrowserView):
             site_id = request.form.get('site_id')
             # Do things
             self.check_unique_sample_id(usn)
-            self.site_lookup(site_id)
-            self.providers_at_site(site_id)
-            # import pdb;pdb.set_trace()
+            # Get Data Back
+            site_name = self.site_lookup(site_id)
+            docs_at_barcode_site = self.providers_at_site(site_id)
+            #import pdb;pdb.set_trace()
+            return json.dumps({"site_name":site_name, "docs_at_barcode_site":docs_at_barcode_site})
+            #import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
             authenticator = request.form.get('_authenticator')
@@ -57,15 +60,20 @@ class AddRecView(BrowserView):
             except:
                 import pdb;pdb.set_trace()
             # define request.form.get's
+            # import pdb;pdb.set_trace()
+            pt_UID = "new_patient"
             dob_string = request.form.get('dob') # string value '%Y-%m-%d'
-            # dob = datetime.datetime.strptime(dob_string,"%Y-%m-%d").date()
             patient_first_name = request.form.get('patient_first_name')
             patient_last_name = request.form.get('patient_last_name')
-            # import pdb;pdb.set_trace()
+            pt_UID = self.repeat_order_check(dob_string, patient_first_name,patient_last_name, pt_UID)
+            if pt_UID != "new_patient":
+                previous_data = self.pull_previous_patient_data(pt_UID)
+                # import pdb;pdb.set_trace()
+                return json.dumps({"repeat order":"true", "Pt Data from LIMS":previous_data})
+            import pdb;pdb.set_trace()
             # Do things
             # orders can be repeat with only first name or medical record number
             # and dob! Think of it as a de-identified sample
-            self.repeat_order_check(dob_string, patient_first_name,patient_last_name, pt_UID)
 
 
         #if "submitted" in request.form:
@@ -152,11 +160,12 @@ class AddRecView(BrowserView):
         '''
         site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
         site_uids = [i.UID for i in site_objects]
+        site_name= "null"
         for j in site_uids:
             site = api.content.get(UID=j)
-            if site_id == site.title:
+            if site_id == str(site.title):
                 site_name = site.site_name
-                print "Site Name Found : " + site.site_name
+        return site_name
 
     def providers_at_site(self, site_id):
         """Create list of providers based on the site ID from the rec input
@@ -175,7 +184,7 @@ class AddRecView(BrowserView):
                 element2 = str(provider_object.npi)
                 npis_at_site.append(element2)
                 providers_at_site.append(element)
-        # import pdb;pdb.set_trace()
+        return providers_at_site
 
     def check_unique_sample_id(self, usn):
         """Check to see if USN is unique, alert use if not
@@ -186,7 +195,8 @@ class AddRecView(BrowserView):
             self.request.response.setHeader('Content-Type', "application/json")
             self.request.response.setStatus(207, "USN Non Unique")
 
-    def repeat_order_check(self, dob_string, patient_first_name,patient_last_name, pt_UID):
+    def repeat_order_check(self, dob_string, patient_first_name,
+                           patient_last_name, pt_UID):
         """Check for repeat patient
         """
         values = api.content.find(context=api.portal.get(), portal_type='Patient')
@@ -210,14 +220,11 @@ class AddRecView(BrowserView):
                 # set variable that can be used to track repeat order ()
                 pt_UID = c[3]
                 # end the loop on FIRST pt that matches!
-                self.request.response.setHeader('Content-Type', "application/json")
-                self.request.response.setStatus(208, "Repeat Patient")
                 print "Match: " + c[0] + ", " + c[1] + ", " + c[2] + ", " + pt_UID
                 return pt_UID
 
                 # return alert for repeat patient!
-            else:
-                pass
+        return pt_UID
 
     def make_clinical_sample(self, usn):
         """Make a clinical sample via api, set serial number
@@ -248,7 +255,11 @@ class AddRecView(BrowserView):
                                             )
         #import pdb;pdb.set_trace()
 
-    def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity, ethnicity_other, marital_status, patient_address, patient_city, patient_state, patient_zip_code, patient_phone, usn, site_from_usn, usn_from_form, consent_acquired):
+    def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
+                     ethnicity_other, marital_status, patient_address,
+                     patient_city, patient_state, patient_zip_code,
+                     patient_phone, usn, site_from_usn, usn_from_form,
+                     consent_acquired):
         """determine if ethnicity or ethnicity_other is filled
          determine if patient has been tested before
          set permission for new patient
@@ -287,18 +298,28 @@ class AddRecView(BrowserView):
                 site = api.content.get(UID=uid)
                 site.kits_on_site -= 1
                 # make alert if kits_on_site value is at or below desired level?
-    """
-    cut from __call__()
-        else:
-            self.check_unique_sample_id(usn)
 
-        if self.errors:
-            # We must re-render the form, making sure to pass existing request
-            # values formatted so that the form can consume them and provide
-            # the alread-entered values to the user.
-            import pdb;pdb.set_trace()
-        else:
-            # make clinical sample
-            pass
-
-    """
+    def pull_previous_patient_data(self, pt_UID):
+        """Take pt_UID and package up information to send back to end user
+        """
+        pt_record = api.content.get(UID=pt_UID)
+        # fields in patient record
+        data = {"first_name": pt_record.first_name,
+        "last_name":pt_record.last_name,
+        "dob":pt_record.dob.strftime('%Y-%m-%d'),
+        "marital_status":pt_record.marital_status,
+        "gender":pt_record.gender,
+        "ssn":pt_record.ssn,
+        "medical_record_number":pt_record.medical_record_number,
+        "research_consent":pt_record.research_consent,
+        "ethnicity":pt_record.ethnicity,
+        "ethnicity_other":pt_record.ethnicity_other,
+        "tested_unique_sample_ids":pt_record.tested_unique_sample_ids,
+        "physical_address":pt_record.physical_address, # title=_("Physical address")
+        "physical_address_cont":pt_record.physical_address_cont,
+        "physical_address_city":pt_record.physical_address_city,
+        "physical_address_state":pt_record.physical_address_state,
+        "physical_address_zipcode":pt_record.physical_address_zipcode,
+        "physical_address_country":pt_record.physical_address_country}
+        # import pdb;pdb.set_trace()
+        return data
