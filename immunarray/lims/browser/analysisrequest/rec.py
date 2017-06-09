@@ -45,12 +45,13 @@ class AddRecView(BrowserView):
             usn = request.form.get('usn')
             site_id = request.form.get('site_id')
             # Do things
-            self.check_unique_sample_id(usn)
+            usn_check = self.check_unique_sample_id(usn)
             # Get Data Back
             site_name = self.site_lookup(site_id)
             docs_at_barcode_site = self.providers_at_site(site_id)
             #import pdb;pdb.set_trace()
-            return json.dumps({"site_name":site_name, "docs_at_barcode_site":docs_at_barcode_site})
+            if usn_check != "non unique usn":
+                return json.dumps({"site_name":site_name, "docs_at_barcode_site":docs_at_barcode_site})
             #import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
@@ -70,7 +71,9 @@ class AddRecView(BrowserView):
                 previous_data = self.pull_previous_patient_data(pt_UID)
                 # import pdb;pdb.set_trace()
                 return json.dumps({"repeat order":"true", "Pt Data from LIMS":previous_data})
-            import pdb;pdb.set_trace()
+            else:
+                return json.dumps({"repeat order": "false"})
+            # import pdb;pdb.set_trace()
             # Do things
             # orders can be repeat with only first name or medical record number
             # and dob! Think of it as a de-identified sample
@@ -194,6 +197,7 @@ class AddRecView(BrowserView):
         if usn in usns:
             self.request.response.setHeader('Content-Type', "application/json")
             self.request.response.setStatus(207, "USN Non Unique")
+            return "non unique usn"
 
     def repeat_order_check(self, dob_string, patient_first_name,
                            patient_last_name, pt_UID):
