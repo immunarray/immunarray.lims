@@ -465,7 +465,10 @@
             <td>
               <p>
                 NPI#
-                <input type="text" name="npi" id="npi"/>
+                <select id="provider_npis">
+                  <option>none</option>
+                </select>
+                <!--<input type="text" name="npi" id="npi"/> -->
               </p>
             </td>
           </tr>
