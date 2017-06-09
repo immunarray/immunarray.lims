@@ -75,10 +75,37 @@ require([
                                 success: function(responseText, statusText, xhr, $form){
                                     repeatPatientData = JSON.parse(responseText)
                                     if(repeatPatientData["repeat order"] === "true"){
-                                        //document.getElementById('repeat_order_no').checked = false;
                                         document.getElementById('repeat_order_yes').checked = true;
-                                        //alert ("we have a repeat patient")
-                                        //document.getElementById('practice_name').value = siteName;
+
+                                        mrn = repeatPatientData["Pt Data from LIMS"]["medical_record_number"]
+                                        document.getElementById('mrn').value = mrn;
+
+                                        maritalStatus = repeatPatientData["Pt Data from LIMS"]["marital_status"]
+                                        document.getElementById('ssn').value = maritalStatus;
+
+                                        ssn = repeatPatientData["Pt Data from LIMS"]["ssn"]
+                                        document.getElementById('ssn').value = ssn;
+
+                                        researchConsent = repeatPatientData["Pt Data from LIMS"]["research_consent"]
+                                        document.getElementById('practice_name').value = researchConsent;
+
+                                        ethnicity = repeatPatientData["Pt Data from LIMS"]["ethnicity"]
+                                        document.getElementById('practice_name').value = ethnicity;
+
+                                        ethnicity_other = repeatPatientData["Pt Data from LIMS"]["ethnicity_other"]
+                                        document.getElementById('practice_name').value = ethnicity_other;
+
+                                        physicalAddress = repeatPatientData["Pt Data from LIMS"]["physical_address"]
+                                        document.getElementById('practice_name').value = physicalAddress;
+
+                                        physicalAddressCounty = repeatPatientData["Pt Data from LIMS"]["physical_address_country"]
+                                        document.getElementById('practice_name').value = physicalAddressCounty;
+
+                                        physicalAddressState = repeatPatientData["Pt Data from LIMS"]["physical_address_state"]
+                                        document.getElementById('practice_name').value = physicalAddressState;
+
+                                        physicalAddressZipCode = repeatPatientData["Pt Data from LIMS"]["physical_address_zipcode"]
+                                        document.getElementById('practice_name').value = physicalAddressZipCode;
                                     }else{
                                         document.getElementById('repeat_order_no').checked = true;
                                         //document.getElementById('repeat_order_no').checked = true;
