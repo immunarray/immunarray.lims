@@ -6,6 +6,8 @@ require([
 ],
     (function($) {
         $(function() {
+            document.getElementById('repeat_order_yes').disabled = true;
+            document.getElementById('repeat_order_no').disabled = true;
             $('#usn').on("change", function() {
                 // split USN field into site and true usn
                 var usnParts = $(usn).val().split("-");
@@ -26,10 +28,26 @@ require([
                         'site_id': site,
                         '_authenticator': authenticator},
                     success: function(responseText, statusText, statusCode, xhr, $form){
-                        //alert("statusCode" +" : "+ statusCode.status);
                         if (statusCode.status === 207){
                             alert("Non Unique Sample Number!!!")
                         }
+                        var siteInfo = JSON.parse(responseText)
+                        var siteName = siteInfo["site_name"]
+                        document.getElementById('practice_name').value = siteName;
+                        providersAtSite = siteInfo["docs_at_barcode_site"]
+                        // clear list of previous values for n[1] and higher
+                        var currentNpiList = document.getElementById('provider_npis');
+                        var length = currentNpiList.options.length;
+                        for (i=1; i < length; i++){
+                            currentNpiList.options[i] = null;
+                        }
+                        for (n in providersAtSite) {
+                            var option = document.createElement('option');
+                            a = providersAtSite[n]
+                            option.text= a;
+                            currentNpiList.append(option);
+                        }
+                        //alert (providersAtSite[0])
                     }
                 });
             })
@@ -55,7 +73,18 @@ require([
                                     'patient_last_name': ptLastName,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
-                                    alert("responseText" +" : "+ responseText);
+                                    repeatPatientData = JSON.parse(responseText)
+                                    if(repeatPatientData["repeat order"] === "true"){
+                                        //document.getElementById('repeat_order_no').checked = false;
+                                        document.getElementById('repeat_order_yes').checked = true;
+                                        //alert ("we have a repeat patient")
+                                        //document.getElementById('practice_name').value = siteName;
+                                    }else{
+                                        document.getElementById('repeat_order_no').checked = true;
+                                        //document.getElementById('repeat_order_no').checked = true;
+                                    }
+                                        // set
+                                        //document.getElementById()
                                     //if(responseText) {
                                     //    alert ("Patient is Repeat");
                                     //}
