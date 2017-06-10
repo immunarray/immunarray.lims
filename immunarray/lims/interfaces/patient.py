@@ -68,3 +68,5 @@ class IPatient(IPerson):
         required=False,
         value_type=schema.TextLine()
     )
+
+    #  title = IPerson.first_name + " " + IPerson.last_name
