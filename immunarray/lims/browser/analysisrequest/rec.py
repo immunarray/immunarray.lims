@@ -214,6 +214,7 @@ class AddRecView(BrowserView):
             entry =[]
             entry.append(pt_first_name)
             entry.append(pt_last_name)
+            #need to exclued any patients that have null values for fields
             entry.append(pt_dob2.strftime('%Y-%m-%d'))
             entry.append(i)
             current_pt_list.append(entry)
