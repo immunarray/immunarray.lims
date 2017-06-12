@@ -165,6 +165,9 @@ require([
                             var diag_M35_9 = $(diag-M35_9).val();
                             var diag_L93_2 = $(diag-L93_2).val();
 
+                            // combine multip values to one list using a for loop over the entries
+
+
                             // the other diag value can be anything!
                             var diag_other = $(diag-other).val();
 
@@ -180,6 +183,10 @@ require([
                             var phlebotomist_name = $(phlebotomist_name).val();
                             var draw_signed = $(draw_signed).val(); //name
                             var collection_date = $(collection_date).val(); //name
+
+                            // what needes to be in place at min for making a sample?
+                            // clinicalsample is independent of patient
+                            // tests ordered will be addressed later
 
                             if (!!uniqueSampleNumber){
                             authenticator = $('input[name="_authenticator"]').val();
