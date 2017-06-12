@@ -48,10 +48,17 @@ class IClinicalSample(model.Schema):
     # use this to drive a setup handler that will make the lists of what should
     # be tested! (jp 4-11-17)
 
+    research_consent = schema.Choice(
+        title=_(u"Patient Consent to Research"),
+        description=_(u"Patient Gives consent to research use"),
+        values=[_(u'No'), _(u'Yes')],
+        required=True,
+    )
+
     front_end_qa = schema.Choice(
         title = _(u"Front End QA Status"),
         description = _(u"Front End QA Status"),
-        required = True,
+        required = False,
         values=[_(u"Initial"),
                 _(u"Review Pass"),
                 _(u"Held"),],
@@ -67,6 +74,124 @@ class IClinicalSample(model.Schema):
                                          _(u"Resulted"),
                                          _(u"Billing Message Sent"),
                                          _(u"Closed"), ], required=True)
+    )
+
+    sample_ordering_healthcare_provider = schema.Choice(
+        title=_(u"Ordering Healthcare Provider"),
+        description=_(u"Ordering Healthcare Provider"),
+        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
+        required=False,
+    )
+
+    sample_ordering_healthcare_provider_signature = schema.Bool(
+        title=_(u"Ordering Healthcare Provider Signature Provided"),
+        description=_(u"Ordering Healthcare Provider Signature Provided"),
+        required=False,
+    )
+
+    directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
+    primary_healthcare_provider = schema.Choice(
+        title=_(u"Primary Healthcare Provider"),
+        description=_(u"Primary Healthcare Provider"),
+        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
+        required=False,
+    )
+    """directives.widget(level=RadioFieldWidget)"""
+    ana_testing = schema.Choice(
+        title=_(u"ANA Testing Results"),
+        description=_(u"ANA Testing Results"),
+        required=True,
+        values=[_(u'No Response'),
+                _(u'Not Performed'),
+                _(u'Negative'),
+                _(u'Positive')],
+    )
+
+    clinical_impression = schema.Choice(
+        title=_(u"Clinical Impression"),
+        description=_(u"Clinical Impression"),
+        required=True,
+        values=[_(u'Not Specified'),
+                _(u'Uncertain'),
+                _(u'Yes'),
+                _(u'No')],
+    )
+
+    other_test_ordered = schema.List(
+        title=_(u"Other Test(s) Ordered"),
+        description =_(u"Other Test(s) Ordered Enter One Per Line"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    """working example of multi choice input jp 1-31-17"""
+    form.widget(symptoms_choice=CheckBoxFieldWidget)
+    symptoms_choice = schema.List(
+        title=_(u"Symptoms"),
+        description=_(u"Symptoms, Select All That Apply"),
+        required=False,
+        value_type=schema.Choice(
+            values=[_(u"Rash"),
+                    _(u"Mouth sores"),
+                    _(u"Joint Pain if yes, please specify"),
+                    _(u"Inflammation, if yes, please specify"),
+                    _(u"Seizures or psychosis"),
+                    _(u"Hair loss")]),
+    )
+
+    symptoms_text = schema.List(
+        title=_(u"Symptom(s)"),
+        description =_(u"Symptom(s) Enter One Per Line"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+    form.widget(diagnosis_code=CheckBoxFieldWidget)
+    diagnosis_code = schema.List(
+        title=_(u"Diagnosis & ICD-10 Codes"),
+        description=_(u"Diagnosis & ICD-10 Codes"),
+        required=True,
+        value_type=schema.Choice(
+            values=[_(u"D89.89"),
+                    _(u"D89.9"),
+                    _(u"L93.2"),
+                    _(u"M32.10"),
+                    _(u"M35.9"),
+                    _(u"Other, please specify")]),
+    )
+
+    diagnosis_code_other = schema.List(
+        title=_(u"Other Diagnosis Code(s)"),
+        description =_(u"Other Diagnosis Code(s) Enter one Per Line"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    phlebotomist_last_name = schema.TextLine(
+        title=_(u"Phlebotomist Last Name"),
+        description =_(u"Phlebotomist Last Name"),
+        required=False,
+    )
+
+    phlebotomist_signature_provided=schema.Bool(
+        title=_(u"Ordering Healthcare Provider Signature Provided"),
+        description=_(u"Ordering Healthcare Provider Signature Provided"),
+    )
+
+    collection_date = schema.Date(
+        title=_(u"Sample Collection Date"),
+        description =_(u"Sample Collection Date"),
+        required=False,
+        default=date.today(),
+    )
+
+    received_date = schema.Date(
+        title=_(u"Sample Received Date"),
+        description =_(u"Sample Received Date"),
+        required=False,
+        default=date.today(),
     )
 
     sample_primary_insurance_name = schema.TextLine(
@@ -243,123 +368,6 @@ class IClinicalSample(model.Schema):
         values=[_(u'Billable'),
                 _(u'No Charge'),
                 _(u'RUO')],
-    )
-
-    sample_ordering_healthcare_provider = schema.Choice(
-        title=_(u"Ordering Healthcare Provider"),
-        description=_(u"Ordering Healthcare Provider"),
-        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
-        required=False,
-    )
-    sample_ordering_healthcare_provider_signature = schema.Bool(
-        title=_(u"Ordering Healthcare Provider Signature Provided"),
-        description=_(u"Ordering Healthcare Provider Signature Provided"),
-        required=False,
-    )
-
-    directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
-    primary_healthcare_provider = schema.Choice(
-        title=_(u"Primary Healthcare Provider"),
-        description=_(u"Primary Healthcare Provider"),
-        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
-        required=False,
-    )
-    """directives.widget(level=RadioFieldWidget)"""
-    ana_teesting = schema.Choice(
-        title=_(u"ANA Testing Results"),
-        description=_(u"ANA Testing Results"),
-        required=True,
-        values=[_(u'No Response'),
-                _(u'Not Performed'),
-                _(u'Negative'),
-                _(u'Positive')],
-    )
-
-    clinical_impression = schema.Choice(
-        title=_(u"Clinical Impression"),
-        description=_(u"Clinical Impression"),
-        required=True,
-        values=[_(u'Not Specified'),
-                _(u'Uncertain'),
-                _(u'Yes'),
-                _(u'No')],
-    )
-
-    other_test_ordered = schema.List(
-        title=_(u"Other Test(s) Ordered"),
-        description =_(u"Other Test(s) Ordered Enter One Per Line"),
-        missing_value=None,
-        required=False,
-        value_type=schema.TextLine()
-    )
-
-    """working example of multi choice input jp 1-31-17"""
-    form.widget(symptoms_choice=CheckBoxFieldWidget)
-    symptoms_choice = schema.List(
-        title=_(u"Symptoms"),
-        description=_(u"Symptoms, Select All That Apply"),
-        required=False,
-        value_type=schema.Choice(
-            values=[_(u"Rash"),
-                _(u"Mouth sores"),
-                _(u"Joint Pain if yes, please specify"),
-                _(u"Inflammation, if yes, please specify"),
-                _(u"Seizures or psychosis"),
-                _(u"Hair loss")]),
-    )
-
-    symptoms_text = schema.List(
-        title=_(u"Symptom(s)"),
-        description =_(u"Symptom(s) Enter One Per Line"),
-        missing_value=None,
-        required=False,
-        value_type=schema.TextLine()
-    )
-    form.widget(diagnosis_code=CheckBoxFieldWidget)
-    diagnosis_code = schema.List(
-        title=_(u"Diagnosis & ICD-10 Codes"),
-        description=_(u"Diagnosis & ICD-10 Codes"),
-        required=True,
-        value_type=schema.Choice(
-            values=[_(u"D89.89"),
-                _(u"D89.9"),
-                _(u"L93.2"),
-                _(u"M32.10"),
-                _(u"M35.9"),
-                _(u"Other, please specify")]),
-    )
-
-    diagnosis_code_other = schema.List(
-        title=_(u"Other Diagnosis Code(s)"),
-        description =_(u"Other Diagnosis Code(s) Enter one Per Line"),
-        missing_value=None,
-        required=False,
-        value_type=schema.TextLine()
-    )
-
-    phlebotomist_last_name = schema.TextLine(
-        title=_(u"Phlebotomist Last Name"),
-        description =_(u"Phlebotomist Last Name"),
-        required=False,
-    )
-
-    phlebotomist_signature_provided=schema.Bool(
-        title=_(u"Ordering Healthcare Provider Signature Provided"),
-        description=_(u"Ordering Healthcare Provider Signature Provided"),
-    )
-
-    collection_date = schema.Date(
-        title=_(u"Sample Collection Date"),
-        description =_(u"Sample Collection Date"),
-        required=False,
-        default=date.today(),
-    )
-
-    received_date = schema.Date(
-        title=_(u"Sample Received Date"),
-        description =_(u"Sample Received Date"),
-        required=False,
-        default=date.today(),
     )
 
     assignment_of_benefits_patient_name = schema.TextLine(
