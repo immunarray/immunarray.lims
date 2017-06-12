@@ -273,7 +273,7 @@
               <p>
                 <input type="radio" name="consent_acquired" id="consent_acquired_yes" value="Yes"/>Yes
                 &nbsp;
-                <input type="radio" name="consent_acquired" id="consent_acquired_no" value="No"/>No
+                <input type="radio" name="consent_acquired" id="consent_acquired_no" value="No" checked="checked"/>No
               </p>
             </td>
           </tr>
@@ -399,13 +399,13 @@
           <tr>
             <td>
               <p>
-                <input type="checkbox" name="diag-D89.89" id="diag-D89.89"/>
+                <input type="checkbox" name="diag-D89_89" id="diag-D89_89" value="D89.89"/>
                 <u>D89.89</u>-Other specified disorders involving the immune mechanism, not elsewhere classified
               </p>
             </td>
             <td>
               <p>
-                <input type="checkbox" name="diag-M32.10" id="diag-M32.10"/>
+                <input type="checkbox" name="diag-M32_10" id="diag-M32_10" value="M32.10"/>
                 <u>M32.10</u>-Systemic lupus erythematosus, organ or system involvement unspecified
               </p>
             </td>
@@ -413,13 +413,13 @@
           <tr>
             <td>
               <p>
-                <input type="checkbox" name="diag-D89.9" id="diag-D89.9"/>
+                <input type="checkbox" name="diag-D89_9" id="diag-D89_9" value="D89.9"/>
                 <u>D89.9</u>-Disorder involving the immune mechanism, unspecified
               </p>
             </td>
             <td>
               <p>
-                <input type="checkbox" name="diag-M35.9" id="diag-M35.9"/>
+                <input type="checkbox" name="diag-M35_9" id="diag-M35_9" value="M35.9"/>
                 <u>M35.9</u>-Systemic involvement of connective tissue, unspecified
               </p>
             </td>
@@ -427,13 +427,13 @@
           <tr>
             <td>
               <p>
-                <input type="checkbox" name="diag-L93.2" id="diag-L93.2"/>
+                <input type="checkbox" name="diag-L93_2" id="diag-L93_2" value="L93.2">
                 <u>L93.2</u>-Other local lupus erythematosus
               </p>
             </td>
             <td>
               <p>
-                <input type="checkbox" name="diag-other" id="diag-other"/>Other, please specify
+                <input type="checkbox" name="diag-other" id="diag-other" value="Other, please specify"/>Other, please specify
                 <input type="text" name="diag-other-specify" id="diag-other-specify"/>
               </p>
             </td>
@@ -481,8 +481,8 @@
             </td>
             <td>
               <p>Signed:
-              <input type="radio" name="signed" id="signed_yes"/>Yes
-              <input type="radio" name="signed" id="signed_no"/>No
+              <input type="radio" name="provider_signed" id="provider_signed_yes"/>Yes
+              <input type="radio" name="provider_signed" id="provider_signed_no"/>No
               </p>
             </td>
             <td>
@@ -553,7 +553,7 @@
             </td>
           </tr>
         </table>
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit" id="fullSubmit"/>
       </form>
       <script src= "++resource++immunarray.lims/js/rec.js"></script>
     </metal:main>
