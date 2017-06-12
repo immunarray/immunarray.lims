@@ -40,13 +40,6 @@ class IPatient(IPerson):
         required=False,
     )
 
-    research_consent = schema.Choice(
-        title=_(u"Patient Consent to Research"),
-        description=_(u"Patient Gives consisent to research use"),
-        values=[_(u'No'), _(u'Yes')],
-        required=True,
-    )
-
     ethnicity = schema.Choice(
         title=_(u"Patient Race"),
         description=_(u"Patient Race"),
