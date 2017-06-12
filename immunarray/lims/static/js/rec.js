@@ -9,15 +9,10 @@ require([
             document.getElementById('repeat_order_yes').disabled = true;
             document.getElementById('repeat_order_no').disabled = true;
             $('#usn').on("change", function() {
-                // split USN field into site and true usn
                 var usnParts = $(usn).val().split("-");
                 var site = usnParts[0];
                 var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
-                // alert("site: " + site);
-                // alert("Unique Sample Number: " + uniqueSampleNumber);
-                // is usn unique?
                 authenticator = $('input[name="_authenticator"]').val();
-                // alert(authenticator);
                 var url = window.location.href;
                 $.ajax({
                     url: 'rec',
@@ -121,74 +116,86 @@ require([
 
 
         function sendAllDataToLims() {
-                            alert("sendAllDataToLims Started")
-                            var usnParts = $(usn).val().split("-");
+                            //alert("sendAllDataToLims Started")
+                            var usnParts = $("input[id='usn']").val().split("-");
                             var site = usnParts[0];
                             var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
-                            var ptFirstName = $(patient_first_name).val();
-                            var ptLastName= $(patient_last_name).val();
-                            var ptdob = $(dob).val();
-                            var mrn = $(mrn).val();
-                            var ssn = $(ssn).val();
-                            var gender = $(gender).val(); //name
-                            var ethnicity = $(ethnicity).val(); //name
-                            var ethnicity_specify = $(ethnicity_specify).val(); //name
-                            var p_add_street = $(p_add_street).val();
-                            var marital_status = $(marital_status).val(); //name
-                            var p_add_city = $(p_add_city).val();
-                            var p_state = $(p_add_state).val();
-                            var p_add_zip = $(p_add_zip).val();
-                            var patient_phone = $(patient_phone).val();
-                            var consent_acquired = $(consent_acquired).val(); //name
-                            var consent_signed = $(consent_signed).val(); //name
-                            var consent_date = $(consent_date).val();
-                            var ana_testing = $(ana_testing).val(); //name
-                            var clinical_impression = $(clinical_impression).val(); //name
-                            var test_xray = $(test-xray).val();
-                            var test_other = $(test-other).val();
-                            var test_other_specify = $(test-other-specify).val();
-                            var clin_rash = $(clin-rash).val();
-                            var clin_seiz_psych = $(clin-seiz-psych).val();
-                            var clin_mouth_sores = $(clin-mouth-sores).val();
-                            var clin_hair_loss = $(clin-hair-loss).val();
-                            var clin_joint_pain = $(clin-joint-pain).val();
-                            var clin_joint_pain_specify = $(clin-joint-pain-specify).val();
-                            var clin_inflam = $(clin-inflam).val();
-                            var clin_inflam_specify = $(clin-inflam-specify).val();
-                            var clin_other = $(clin-other).val();
-                            var clin_other_specify = $(clin-other-specify).val();
-
+                            var ptFirstName = $("input[id='patient_first_name']").val();
+                            var ptLastName= $("input[id='patient_last_name']").val();
+                            //alert("last name: " + ptLastName)
+                            var ptdob = $("input[id='dob']").val();
+                            var mrn = $("input[id='mrn']").val();
+                            var ssn = $("input[id='ssn']").val();
+                            var gender = $("input[name='gender']:checked").val(); //name
+                            var ethnicity = $("input[name='ethnicity']:checked").val(); //name
+                            var ethnicity_specify = $("input[name='ethnicity_specify']").val(); //name
+                            var p_add_street = $("input[id='p_add_street']").val();
+                            var marital_status = $("input[name='marital_status']:checked").val(); //name
+                            var p_add_city = $("input[id='p_add_city']").val();
+                            var p_state = $("#p_add_state option:selected").val();
+                            var p_add_zip = $("input[id='p_add_zip']").val();
+                            var patient_phone = $("input[id='patient_phone']").val();
+                            var consent_acquired = $("input[name='consent_acquired']:checked").val(); //name
+                            var consent_signed = $("input[name='consent_signed']:checked").val(); //name
+                            var consent_date = $("input[id='consent_date']").val();
+                            var ana_testing = $("input[name='ana_testing']:checked").val(); //name
+                            var clinical_impression = $("input[name='clinical_impression']:checked").val(); //name
+                            var test_xray = $("input[id='test-xray']:checked").val();
+                            var test_other = $("input[id='test-other']:checked").val();
+                            var test_other_specify = $("input[id='test-other-specify']").val();
+                            var clin_rash = $("input[id='clin-rash']:checked").val();
+                            var clin_seiz_psych = $("input[id='clin-seiz-psych']:checked").val();
+                            var clin_mouth_sores = $("input[id='clin-mouth-sores']:checked").val();
+                            var clin_hair_loss = $("input[id='clin-hair-loss']:checked").val();
+                            var clin_joint_pain = $("input[id='clin-joint-pain']:checked").val();
+                            var clin_joint_pain_specify = $("input[id='clin-joint-pain-specify']").val();
+                            var clin_inflam = $("input[id='clin-inflam']:checked").val();
+                            var clin_inflam_specify = $("input[id='clin-inflam-specify']").val();
+                            var clin_other = $("input[id='clin-other']:checked").val();
+                            var clin_other_specify = $("input[id='clin-other-specify']").val();
                             // need to allow for all the entires to be entered but must match the LIMS Values...
-                            var diag_D89_89 = $(diag-D89_89).val();
-                            var diag_M32_10 = $(diag-M32_10).val();
-                            var diag_D89_9 = $(diag-D89_9).val();
-                            var diag_M35_9 = $(diag-M35_9).val();
-                            var diag_L93_2 = $(diag-L93_2).val();
-
-                            // combine multip values to one list using a for loop over the entries
-
-
+                            var diag = [];
+                            var diag_D89_89 = $("input[id='diag-D89_89']:checked").val();
+                            if (!!diag_D89_89){
+                                diag.push(diag_D89_89);
+                            }
+                            var diag_M32_10 = $("input[id='diag-M32_10']:checked").val();
+                            if (!!diag_M32_10){
+                                diag.push(diag_M32_10);
+                            }
+                            var diag_D89_9 = $("input[id='diag-D89_9']:checked").val();
+                            if(!!diag_D89_9){
+                                diag.push(diag_D89_9);
+                            }
+                            var diag_M35_9 = $("input[id='diag-M35_9']:checked").val();
+                            if(!!diag_M35_9){
+                                diag.push(diag_M35_9);
+                            }
+                            var diag_L93_2 = $("input[id='diag-L93_2']:checked").val();
+                            if (!!diag_L93_2){
+                                diag.push(diag_L93_2);
+                            }
                             // the other diag value can be anything!
-                            var diag_other = $(diag-other).val();
+                            var diag_other = $("input[id='diag-other']:checked").val();
+                            if (!!diag_other){
+                                diag.push(diag_other);
+                            }
+                            var diag_other_specify = $("input[id='diag-other-specify']").val();
 
-                            var practice_name = $(practice_name).val();
+                            // do not need practice_name
+                            //var practice_name = $("input[id='practice_name']").val();
                             // clean up provider npi to only been the needed value
-                            var provider_npis_raw = $(provider_npis).val().split("-");
+                            var provider_npis_raw = $("#provider_npis").val().split("-");
                             var provider_nip_clean = provider_npis_raw[1];
 
-                            var provider_signed = $(provider_signed).val(); //name
-                            var signed_date = $(signed_date).val();
-                            var draw_location = $(draw_location).val();
-                            var draw_tel = $(draw_tel).val();
-                            var phlebotomist_name = $(phlebotomist_name).val();
-                            var draw_signed = $(draw_signed).val(); //name
-                            var collection_date = $(collection_date).val(); //name
+                            var provider_signed = $("input[id='provider_signed']:checked").val(); //name
+                            var signed_date = $("input[id='signed_date']").val();
+                            var draw_location = $("input[id='draw_location']").val();
+                            var draw_tel = $("input[id='draw_tel']").val();
+                            var phlebotomist_name = $("input[id='phlebotomist_name']").val();
+                            var draw_signed = $("input[id='draw_signed']:checked").val(); //name
+                            var collection_date = $("input[id='collection_date']").val(); //name
 
-                            // what needes to be in place at min for making a sample?
-                            // clinicalsample is independent of patient
-                            // tests ordered will be addressed later
-
-                            if (!!uniqueSampleNumber){
                             authenticator = $('input[name="_authenticator"]').val();
                             var url = window.location.href;
                             $.ajax({
@@ -227,12 +234,15 @@ require([
                                     'clin_inflam':clin_inflam,
                                     'clin_other':clin_other,
                                     'clin_other_specify':clin_other_specify,
+                                    'diagnosis_code':diag,
+                                    'diag_other_specify':diag_other_specify,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
                                 }
                             });
-                        }
+
             }
+
         document.getElementById("fullSubmit").onclick = sendAllDataToLims;
 
 
