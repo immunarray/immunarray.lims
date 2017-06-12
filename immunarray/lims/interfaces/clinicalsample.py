@@ -321,11 +321,11 @@ class IClinicalSample(model.Schema):
         description=_(u"Diagnosis & ICD-10 Codes"),
         required=True,
         value_type=schema.Choice(
-            values=[_(u"D89.89-Other specified disorders involving the immune mechanism, not elsewhere classified"),
-                _(u"D89.9-Disorder involving the immune mechanism, unspecified"),
-                _(u"L93.2-Other local lupus erythematosus"),
-                _(u"M32.10-Systemic lupus erythematosus, organ or system involvement unspecified"),
-                _(u"M35.9-Systemic involvement of connective tissue, unspecified"),
+            values=[_(u"D89.89"),
+                _(u"D89.9"),
+                _(u"L93.2"),
+                _(u"M32.10"),
+                _(u"M35.9"),
                 _(u"Other, please specify")]),
     )
 
