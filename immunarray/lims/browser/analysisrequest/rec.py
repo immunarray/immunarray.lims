@@ -28,11 +28,6 @@ class AddRecView(BrowserView):
         add_resource_on_request(self.request, "static.js.rec")
         request = self.request
 
-
-        #if "submitted" in request:
-            # submit button pushed
-            # return self.template()
-
         if "usn_update" in request.form:
             authenticator = request.form.get('_authenticator')
             try:
@@ -46,13 +41,10 @@ class AddRecView(BrowserView):
             site_id = request.form.get('site_id')
             # Do things
             usn_check = self.check_unique_sample_id(usn)
-            # Get Data Back
             site_name = self.site_lookup(site_id)
             docs_at_barcode_site = self.providers_at_site(site_id)
-            #import pdb;pdb.set_trace()
             if usn_check != "non unique usn":
                 return json.dumps({"site_name":site_name, "docs_at_barcode_site":docs_at_barcode_site})
-            #import pdb;pdb.set_trace()
 
         if "check_name_and_dob" in request.form:
             authenticator = request.form.get('_authenticator')
@@ -73,11 +65,53 @@ class AddRecView(BrowserView):
                 return json.dumps({"repeat order":"true", "Pt Data from LIMS":previous_data})
             else:
                 return json.dumps({"repeat order": "false"})
-            # import pdb;pdb.set_trace()
             # Do things
             # orders can be repeat with only first name or medical record number
             # and dob! Think of it as a de-identified sample
 
+
+        if "all_data" in request.form:
+            authenticator = request.form.get('_authenticator')
+            import pdb;pdb.set_trace()
+            try:
+                plone.protect.CheckAuthenticator(authenticator)
+            except:
+                import pdb;pdb.set_trace()
+
+            usn_from_form = request.form.get('usn_from_from')
+            dob = request.form.get('dob')
+            first = request.form.get('patient_first_name')
+            last = request.form.get('patient_last_name')
+            mrn= request.form.get('mrn')
+            ssn = request.form.get('ssn')
+            gender = request.form.get('gender')
+            marital_status = request.form.get('marital_status')
+            ethnicity = request.form.get('ethnicity')
+            ethnicity_other = request.form.get('ethnicity_specify')
+            patient_address = request.form.get('p_add_street')
+            patient_city = request.form.get('p_add_city')
+            patient_state = ('p_state')
+            patient_zip_code = request.form.get('p_add_zip')
+            patient_phone = request.form.get('patient_phone')
+            consent_acquired = request.form.get('consent_acquired')
+            request.form.get('consent_signed')
+            request.form.get('consent_date')
+            request.form.get('ana_testing')
+            request.form.get('clinical_impression')
+            request.form.get('test_xray')
+            request.form.get('test_other')
+            request.form.get('test_other_specify')
+            request.form.get('clin_rash')
+            request.form.get('clin_seiz_psych')
+            request.form.get('clin_mouth_sores')
+            request.form.get('clin_hair_loss')
+            request.form.get('clin_joint_pain')
+            request.form.get('clin_inflam')
+            request.form.get('clin_other')
+            request.form.get('clin_other_specify')
+            import pdb;pdb.set_trace()
+            return json.dumps({"feedback":"got it"})
+        # import pdb;pdb.set_trace()
 
         #if "submitted" in request.form:
         #    import pdb;pdb.set_trace()
@@ -85,7 +119,7 @@ class AddRecView(BrowserView):
         # Patient Info
         # repeat_order = request.get("repeat_order")
         # Prevent user input on this
-        # values comeing in via ajax
+        # values coming in via ajax
         # first = request.get("patient_first_name")
         # last = request.get("patient_last_name")
 
@@ -148,7 +182,6 @@ class AddRecView(BrowserView):
         }
         #self.update_kit_count(site_id)
         return self.template()
-        # import pdb;pdb.set_trace()
         # pop up to select assays that are active in system!
         # tests at the top
         # self.check_unique_sample_id(usn)
@@ -263,7 +296,7 @@ class AddRecView(BrowserView):
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
                      ethnicity_other, marital_status, patient_address,
                      patient_city, patient_state, patient_zip_code,
-                     patient_phone, usn, site_from_usn, usn_from_form,
+                     patient_phone, usn, usn_from_form,
                      consent_acquired):
         """determine if ethnicity or ethnicity_other is filled
          determine if patient has been tested before
