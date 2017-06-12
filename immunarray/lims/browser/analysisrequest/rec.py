@@ -90,25 +90,37 @@ class AddRecView(BrowserView):
             ethnicity_other = request.form.get('ethnicity_specify')
             patient_address = request.form.get('p_add_street')
             patient_city = request.form.get('p_add_city')
-            patient_state = ('p_state')
+            patient_state = request.form.get('p_state')
             patient_zip_code = request.form.get('p_add_zip')
             patient_phone = request.form.get('patient_phone')
             consent_acquired = request.form.get('consent_acquired')
-            request.form.get('consent_signed')
-            request.form.get('consent_date')
-            request.form.get('ana_testing')
-            request.form.get('clinical_impression')
-            request.form.get('test_xray')
-            request.form.get('test_other')
-            request.form.get('test_other_specify')
-            request.form.get('clin_rash')
-            request.form.get('clin_seiz_psych')
-            request.form.get('clin_mouth_sores')
-            request.form.get('clin_hair_loss')
-            request.form.get('clin_joint_pain')
-            request.form.get('clin_inflam')
-            request.form.get('clin_other')
-            request.form.get('clin_other_specify')
+            consent_signed = request.form.get('consent_signed')
+            consent_date = request.form.get('consent_date')
+            ana_testing = request.form.get('ana_testing')
+            clinical_impression = request.form.get('clinical_impression')
+            test_xray = request.form.get('test_xray')
+            test_other = request.form.get('test_other')
+            test_other_specify = request.form.get('test_other_specify')
+            clin_rash = request.form.get('clin_rash')
+            clin_seiz_psych = request.form.get('clin_seiz_psych')
+            clin_mouth_sores = request.form.get('clin_mouth_sores')
+            clin_hair_loss = request.form.get('clin_hair_loss')
+            clin_joint_pain = request.form.get('clin_joint_pain')
+            clin_inflam = request.form.get('clin_inflam')
+            clin_other = request.form.get('clin_other')
+            clin_other_specify = request.form.get('clin_other_specify')
+            diagnosis_code = request.form.get('diagnosis_code')
+            diag_other_specify = request.form.get('diag_other_specify')
+
+            #if pt_UID == "new_patient":
+            #    print "Make a new patient record"
+            self.make_patient(first, last, ssn, mrn, dob, gender, ethnicity,
+                                  ethnicity_other, marital_status, patient_address,
+                                  patient_city, patient_state, patient_zip_code,
+                                  patient_phone, usn_from_form)
+
+            self.make_clinical_sample(usn_from_form, consent_acquired)
+
             import pdb;pdb.set_trace()
             return json.dumps({"feedback":"got it"})
         # import pdb;pdb.set_trace()
@@ -123,6 +135,7 @@ class AddRecView(BrowserView):
         # first = request.get("patient_first_name")
         # last = request.get("patient_last_name")
 
+        """
         ssn = request.get("ssn")
         mrn = request.get("mrn")
         dob = request.get("dob")
@@ -180,6 +193,7 @@ class AddRecView(BrowserView):
             "collection_date": request.get("collection_date"),
             "shipment_date": request.get("shipment_date"),
         }
+        """
         #self.update_kit_count(site_id)
         return self.template()
         # pop up to select assays that are active in system!
@@ -216,7 +230,6 @@ class AddRecView(BrowserView):
             provider_object = api.content.get(UID=i)
             if int(site_id) == provider_object.site_ID:
                 element = provider_object.last_name + "-"+ str(provider_object.npi)
-                print "Found Provider : " + provider_object.last_name + "-" + str(provider_object.npi)
                 element2 = str(provider_object.npi)
                 npis_at_site.append(element2)
                 providers_at_site.append(element)
@@ -264,7 +277,7 @@ class AddRecView(BrowserView):
                 # return alert for repeat patient!
         return pt_UID
 
-    def make_clinical_sample(self, usn):
+    def make_clinical_sample(self, usn_from_form, consent_acquired):
         """Make a clinical sample via api, set serial number
         """
         # assign serial number for sample
@@ -277,7 +290,7 @@ class AddRecView(BrowserView):
             value = api.content.get(UID=i)
             all_sn.append(value.sample_serial_number)
         serial_number = max(all_sn) + 1
-        #import pdb;pdb.set_trace()
+        import pdb;pdb.set_trace()
 
         # set permission for clinical sample
         cs = api.portal.get()
@@ -288,23 +301,36 @@ class AddRecView(BrowserView):
         clinical_sample = api.content.create(container=sample,
                                              type='ClinicalSample',
                                              id=usn_from_form,
+                                             title=usn_from_form,
                                              safe_id=True,
                                              sample_serial_number=serial_number,
+                                             research_consent=consent_acquired,
+                                             sample_status = "Recived",
+                                             test_ordered_status ={"SLEkey RO v2.0-Commercial":"Recived"},
+                                             sample_ordering_healthcare_provider=,
+                                             sample_ordering_healthcare_provider_signature=,
+                                             primary_healthcare_provider=,
+
                                             )
         #import pdb;pdb.set_trace()
 
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
                      ethnicity_other, marital_status, patient_address,
                      patient_city, patient_state, patient_zip_code,
-                     patient_phone, usn, usn_from_form,
-                     consent_acquired):
+                     patient_phone, usn_from_form,
+                     ):
         """determine if ethnicity or ethnicity_other is filled
          determine if patient has been tested before
          set permission for new patient
         """
-
-        title = first + " " + last
+        usn=[]
+        usn.append(usn_from_form)
+        pt_phone=[]
+        pt_phone.append(patient_phone)
         import pdb;pdb.set_trace()
+        py_date = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
+        title = first + " " + last
+        #import pdb;pdb.set_trace()
         pt = api.portal.get()
         patient = pt['lims']['patients']
         patient.manage_permission(
@@ -312,17 +338,23 @@ class AddRecView(BrowserView):
         disallow_default_contenttypes(patient)
         clinical_sample = api.content.create(container=patient,
                                              type = 'Patient',
-                                             id = first +" "+ last,
+                                             title = title,
+                                             first_name = first,
+                                             last_name = last,
                                              safe_id = True,
-                                             dob = dob,
+                                             dob = py_date,
                                              marital_status = marital_status,
                                              gender= gender,
                                              ssn = ssn,
                                              medical_record_number = mrn,
-                                             research_consent = consent_acquired,
                                              ethnicity = ethnicity,
                                              ethnicity_other = ethnicity_other,
-                                             tested_unique_sample_ids = usn_from_form,
+                                             physical_address = patient_address,
+                                             physical_address_city = patient_city,
+                                             physical_address_state = patient_state,
+                                             physical_address_zipcode = patient_zip_code,
+                                             phone_numbers = pt_phone,
+                                             tested_unique_sample_ids = usn,
                                              )
         # import pdb;pdb.set_trace()
 
