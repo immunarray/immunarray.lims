@@ -53,9 +53,7 @@ require([
             })
         });
 
-        function alertUser() {
-            alert("From BrowserView/Python feedback!")
-        }
+
         function checkNameAndDOB() {
                             var ptFirstName = $(patient_first_name).val();
                             var ptLastName= $(patient_last_name).val();
@@ -119,6 +117,116 @@ require([
                             });
                         }
             }
+
+
+
+        function sendAllDataToLims() {
+                            alert("sendAllDataToLims Started")
+                            var usnParts = $(usn).val().split("-");
+                            var site = usnParts[0];
+                            var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
+                            var ptFirstName = $(patient_first_name).val();
+                            var ptLastName= $(patient_last_name).val();
+                            var ptdob = $(dob).val();
+                            var mrn = $(mrn).val();
+                            var ssn = $(ssn).val();
+                            var gender = $(gender).val(); //name
+                            var ethnicity = $(ethnicity).val(); //name
+                            var ethnicity_specify = $(ethnicity_specify).val(); //name
+                            var p_add_street = $(p_add_street).val();
+                            var marital_status = $(marital_status).val(); //name
+                            var p_add_city = $(p_add_city).val();
+                            var p_state = $(p_add_state).val();
+                            var p_add_zip = $(p_add_zip).val();
+                            var patient_phone = $(patient_phone).val();
+                            var consent_acquired = $(consent_acquired).val(); //name
+                            var consent_signed = $(consent_signed).val(); //name
+                            var consent_date = $(consent_date).val();
+                            var ana_testing = $(ana_testing).val(); //name
+                            var clinical_impression = $(clinical_impression).val(); //name
+                            var test_xray = $(test-xray).val();
+                            var test_other = $(test-other).val();
+                            var test_other_specify = $(test-other-specify).val();
+                            var clin_rash = $(clin-rash).val();
+                            var clin_seiz_psych = $(clin-seiz-psych).val();
+                            var clin_mouth_sores = $(clin-mouth-sores).val();
+                            var clin_hair_loss = $(clin-hair-loss).val();
+                            var clin_joint_pain = $(clin-joint-pain).val();
+                            var clin_joint_pain_specify = $(clin-joint-pain-specify).val();
+                            var clin_inflam = $(clin-inflam).val();
+                            var clin_inflam_specify = $(clin-inflam-specify).val();
+                            var clin_other = $(clin-other).val();
+                            var clin_other_specify = $(clin-other-specify).val();
+
+                            // need to allow for all the entires to be entered but must match the LIMS Values...
+                            var diag_D89_89 = $(diag-D89_89).val();
+                            var diag_M32_10 = $(diag-M32_10).val();
+                            var diag_D89_9 = $(diag-D89_9).val();
+                            var diag_M35_9 = $(diag-M35_9).val();
+                            var diag_L93_2 = $(diag-L93_2).val();
+
+                            // the other diag value can be anything!
+                            var diag_other = $(diag-other).val();
+
+                            var practice_name = $(practice_name).val();
+                            // clean up provider npi to only been the needed value
+                            var provider_npis_raw = $(provider_npis).val().split("-");
+                            var provider_nip_clean = provider_npis_raw[1];
+
+                            var provider_signed = $(provider_signed).val(); //name
+                            var signed_date = $(signed_date).val();
+                            var draw_location = $(draw_location).val();
+                            var draw_tel = $(draw_tel).val();
+                            var phlebotomist_name = $(phlebotomist_name).val();
+                            var draw_signed = $(draw_signed).val(); //name
+                            var collection_date = $(collection_date).val(); //name
+
+                            if (!!uniqueSampleNumber){
+                            authenticator = $('input[name="_authenticator"]').val();
+                            var url = window.location.href;
+                            $.ajax({
+                                url: 'rec',
+                                type: 'POST',
+                                data: {
+                                    'all_data': 1,
+                                    'usn_from_from':uniqueSampleNumber,
+                                    'dob':ptdob,
+                                    'patient_first_name': ptFirstName,
+                                    'patient_last_name': ptLastName,
+                                    'mrn':mrn,
+                                    'ssn':ssn,
+                                    'gender':gender,
+                                    'marital_status':marital_status,
+                                    'ethnicity':ethnicity,
+                                    'ethnicity_specify':ethnicity_specify,
+                                    'p_add_street':p_add_street,
+                                    'p_add_city':p_add_city,
+                                    'p_state':p_state,
+                                    'p_add_zip':p_add_zip,
+                                    'patient_phone':patient_phone,
+                                    'consent_acquired':consent_acquired,
+                                    'consent_signed':consent_signed,
+                                    'consent_date':consent_date,
+                                    'ana_testing':ana_testing,
+                                    'clinical_impression':clinical_impression,
+                                    'test_xray':test_xray,
+                                    'test_other':test_other,
+                                    'test_other_specify':test_other_specify,
+                                    'clin_rash':clin_rash,
+                                    'clin_seiz_psych':clin_seiz_psych,
+                                    'clin_mouth_sores':clin_mouth_sores,
+                                    'clin_hair_loss':clin_hair_loss,
+                                    'clin_joint_pain':clin_joint_pain,
+                                    'clin_inflam':clin_inflam,
+                                    'clin_other':clin_other,
+                                    'clin_other_specify':clin_other_specify,
+                                    '_authenticator': authenticator},
+                                success: function(responseText, statusText, xhr, $form){
+                                }
+                            });
+                        }
+            }
+        document.getElementById("fullSubmit").onclick = sendAllDataToLims;
 
 
         //$('#patient_first_name').on("change", function(){
