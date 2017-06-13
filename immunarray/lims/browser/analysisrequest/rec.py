@@ -122,13 +122,22 @@ class AddRecView(BrowserView):
             collection_date = request.form.get('collection_date')
             shipment_date = request.form.get('shipment_date')
             ordering_provider_name = request.form.get('ordering_provider_name')
+            pt_UID = "new_patient"
+            import pdb;pdb.set_trace()
+            pt_UID = self.repeat_order_check(dob, first, last, pt_UID)
 
-            #if pt_UID == "new_patient":
-            #    print "Make a new patient record"
-            self.make_patient(first, last, ssn, mrn, dob, gender, ethnicity,
+            if pt_UID != "new_patient":
+                print ("PT UID: " + pt_UID + " USN from Form : "+ usn_from_form)
+                self.append_usn(usn_from_form, pt_UID)
+
+            else:
+                print "Make a new patient record"
+                self.make_patient(first, last, ssn, mrn, dob, gender, ethnicity,
                                   ethnicity_other, marital_status, patient_address,
                                   patient_city, patient_state, patient_zip_code,
                                   patient_phone, usn_from_form)
+
+
 
             self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
                                       clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
@@ -137,7 +146,7 @@ class AddRecView(BrowserView):
                                       draw_signed, collection_date, shipment_date, test_other_specify,
                                       clinical_impression, ordering_provider_name, site_id)
 
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             return json.dumps({"feedback":"got it"})
 
         #self.update_kit_count(site_id)
@@ -340,6 +349,14 @@ class AddRecView(BrowserView):
                                              )
         # import pdb;pdb.set_trace()
 
+    def append_usn(self, usn_from_form, pt_UID):
+        """If patient exist this will be used to "update" pt object and append usn
+           to object.
+        """
+        #
+        pt_record = api.content.get(UID=pt_UID)
+        pt_record.tested_unique_sample_ids.append(usn_from_form)
+        pass
     def update_kit_count(self, site_id):
         """Update site kits on hand count to be reduced by 1
         """
