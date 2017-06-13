@@ -77,8 +77,9 @@ class AddRecView(BrowserView):
                 plone.protect.CheckAuthenticator(authenticator)
             except:
                 import pdb;pdb.set_trace()
-
+            # Patient Data Elemetns
             usn_from_form = request.form.get('usn_from_from')
+            site_id = request.form.get('site_id')
             dob = request.form.get('dob')
             first = request.form.get('patient_first_name')
             last = request.form.get('patient_last_name')
@@ -93,6 +94,7 @@ class AddRecView(BrowserView):
             patient_state = request.form.get('p_state')
             patient_zip_code = request.form.get('p_add_zip')
             patient_phone = request.form.get('patient_phone')
+            # Clinical Sample Data
             consent_acquired = request.form.get('consent_acquired')
             consent_signed = request.form.get('consent_signed')
             consent_date = request.form.get('consent_date')
@@ -111,6 +113,15 @@ class AddRecView(BrowserView):
             clin_other_specify = request.form.get('clin_other_specify')
             diagnosis_code = request.form.get('diagnosis_code')
             diag_other_specify = request.form.get('diag_other_specify')
+            provider_nip_clean = request.form.get('provider_nip_clean')
+            provider_signed = request.form.get('provider_signed')
+            draw_location = request.form.get('draw_location')
+            draw_tel = request.form.get('draw_tel')
+            phlebotomist_name = request.form.get('phlebotomist_name')
+            draw_signed = request.form.get('draw_signed')
+            collection_date = request.form.get('collection_date')
+            shipment_date = request.form.get('shipment_date')
+            ordering_provider_name = request.form.get('ordering_provider_name')
 
             #if pt_UID == "new_patient":
             #    print "Make a new patient record"
@@ -119,89 +130,19 @@ class AddRecView(BrowserView):
                                   patient_city, patient_state, patient_zip_code,
                                   patient_phone, usn_from_form)
 
-            self.make_clinical_sample(usn_from_form, consent_acquired)
+            self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
+                                      clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
+                                      clin_inflam, clin_other, clin_other_specify, diagnosis_code, diag_other_specify,
+                                      provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
+                                      draw_signed, collection_date, shipment_date, test_other_specify,
+                                      clinical_impression, ordering_provider_name, site_id)
 
             import pdb;pdb.set_trace()
             return json.dumps({"feedback":"got it"})
-        # import pdb;pdb.set_trace()
 
-        #if "submitted" in request.form:
-        #    import pdb;pdb.set_trace()
-            # Do things
-        # Patient Info
-        # repeat_order = request.get("repeat_order")
-        # Prevent user input on this
-        # values coming in via ajax
-        # first = request.get("patient_first_name")
-        # last = request.get("patient_last_name")
-
-        """
-        ssn = request.get("ssn")
-        mrn = request.get("mrn")
-        dob = request.get("dob")
-        gender = request.get("gender")
-        ethnicity = request.get("ethnicity")
-        ethnicity_other = request.get("ethnicity_specify")
-        marital_status = request.get("marital_status")
-        patient_address = request.get("p_add_street")
-        patient_city = request.get("p_add_city")
-        patient_state = request.get("p_add_state")
-        patient_zip_code = request.get("p_add_zip")
-        patient_phone = request.get("patient_phone")
-
-        # Consent
-        consent_acquired = request.get("consent_acquired")
-        consent_signed = request.get("consent_signed")
-        consent_name = request.get("consent_name")
-        consent_date = request.get("consent_date")
-
-        # Tests
-        # other_test_ordered = schema.List() need to make this into a list of data!
-        ana_testing = request.get("ana_testing")
-        test_xray = request.get("test-xray")
-        test_other = request.get("test-other")
-        test_other_specify = request.get("test-other-specify")
-
-        # Clinical info
-        clins = {}
-        for key in request.keys():
-            if key.startswith("clin-"):
-                code = key.split("clin-")[-1]
-                clins[code] = request[key]
-
-        # Diagnosis
-        diags = {}
-        for key in request.keys():
-            if key.startswith("diag-"):
-                code = key.split("diag-")[-1]
-                diags[code] = request[key]
-
-        # Should exist in the system before the sample arrives
-        # make practice_name and npi lookup from existing providers (dropdowns)
-        provider = {
-            "practice_name": request.get("practice_name"),
-            "npi": request.get("npi"),
-            "provider_printed_name": request.get("provider_printed_name"),
-            "signed": request.get("signed"),
-            "signed_date": request.get("signed_date")
-        }
-
-        specimen = {
-            "draw_location": request.get("draw_location"),
-            "draw_tel": request.get("draw_tel"),
-            "draw_signed": request.get("draw_signed"),
-            "collection_date": request.get("collection_date"),
-            "shipment_date": request.get("shipment_date"),
-        }
-        """
         #self.update_kit_count(site_id)
         return self.template()
         # pop up to select assays that are active in system!
-        # tests at the top
-        # self.check_unique_sample_id(usn)
-        # check if patient is unique
-        # self.make_clinical_sample(usn)
-
         # clear rec form and reset for next sample entry
 
     def site_lookup(self, site_id):
@@ -229,7 +170,7 @@ class AddRecView(BrowserView):
         for i in provider_uids:
             provider_object = api.content.get(UID=i)
             if int(site_id) == provider_object.site_ID:
-                element = provider_object.last_name + "-"+ str(provider_object.npi)
+                element = provider_object.first_name + " " + provider_object.last_name + "-"+ str(provider_object.npi)
                 element2 = str(provider_object.npi)
                 npis_at_site.append(element2)
                 providers_at_site.append(element)
@@ -277,9 +218,17 @@ class AddRecView(BrowserView):
                 # return alert for repeat patient!
         return pt_UID
 
-    def make_clinical_sample(self, usn_from_form, consent_acquired):
+    def make_clinical_sample(self, usn_from_form, consent_acquired, ana_testing, clin_rash,
+                             clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
+                             clin_inflam, clin_other, clin_other_specify, diagnosis_code, diag_other_specify,
+                             provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
+                             draw_signed, collection_date, shipment_date, test_other_specify,
+                             clinical_impression, ordering_provider_name, site_id):
         """Make a clinical sample via api, set serial number
+            Need to add option for assay choice at a later date
         """
+        default_test_order = {u"SLEkey RO v2.0-Commercial": u"Received"}
+        default_sample_status = u"Received"
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -290,8 +239,29 @@ class AddRecView(BrowserView):
             value = api.content.get(UID=i)
             all_sn.append(value.sample_serial_number)
         serial_number = max(all_sn) + 1
-        import pdb;pdb.set_trace()
 
+        symptoms_choice=[]
+        if clin_rash != "": symptoms_choice.append(clin_rash)
+        if clin_seiz_psych != "": symptoms_choice.append(clin_seiz_psych)
+        if clin_mouth_sores != "": symptoms_choice.append(clin_mouth_sores)
+        if clin_hair_loss != "": symptoms_choice.append(clin_hair_loss)
+        if clin_joint_pain != "": symptoms_choice.append(clin_joint_pain)
+        if clin_inflam != "": symptoms_choice.append(clin_inflam)
+        if clin_other != "": symptoms_choice.append(clin_other)
+        # datetime.datetime.strptime
+        py_collection_date = datetime.datetime.strptime(collection_date, "%Y-%m-%d").date()
+        py_shipment_date = datetime.datetime.strptime(shipment_date, "%Y-%m-%d").date()
+        # clin_other_specify
+
+        # Get primary health care provider from site!
+        site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
+        site_uids = [i.UID for i in site_objects]
+        primary_provider= "null"
+        for j in site_uids:
+            site = api.content.get(UID=j)
+            if site_id == str(site.title):
+                primary_provider = site.primary_provider
+        import pdb;pdb.set_trace()
         # set permission for clinical sample
         cs = api.portal.get()
         sample = cs['lims']['samples']
@@ -305,13 +275,25 @@ class AddRecView(BrowserView):
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                              research_consent=consent_acquired,
-                                             sample_status = "Recived",
-                                             test_ordered_status ={"SLEkey RO v2.0-Commercial":"Recived"},
-                                             sample_ordering_healthcare_provider=,
-                                             sample_ordering_healthcare_provider_signature=,
-                                             primary_healthcare_provider=,
-
+                                             sample_status = default_sample_status,
+                                             test_ordered_status =default_test_order,
+                                             sample_ordering_healthcare_provider=ordering_provider_name,
+                                             sample_ordering_healthcare_provider_signature=provider_signed,
+                                             primary_healthcare_provider=primary_provider,
+                                             ana_testing = ana_testing,
+                                             clinical_impression=clinical_impression,
+                                             other_test_ordered=test_other_specify,
+                                             symptoms_choice=symptoms_choice,
+                                             symptoms_text=clin_other_specify,
+                                             diagnosis_code=diagnosis_code,
+                                             diagnosis_code_other=diag_other_specify,
+                                             phlebotomist_name=phlebotomist_name,
+                                             phlebotomist_signature_provided=draw_signed,
+                                             collection_date=py_collection_date,
+                                             received_date=py_shipment_date,
                                             )
+        print ("Clinical Sample Made with id of " + usn_from_form)
+        # make aliquots for testing
         #import pdb;pdb.set_trace()
 
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
@@ -381,7 +363,6 @@ class AddRecView(BrowserView):
         "gender":pt_record.gender,
         "ssn":pt_record.ssn,
         "medical_record_number":pt_record.medical_record_number,
-        "research_consent":pt_record.research_consent,
         "ethnicity":pt_record.ethnicity,
         "ethnicity_other":pt_record.ethnicity_other,
         "tested_unique_sample_ids":pt_record.tested_unique_sample_ids,
