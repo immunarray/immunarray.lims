@@ -227,7 +227,7 @@ class AddRecView(BrowserView):
         """Make a clinical sample via api, set serial number
             Need to add option for assay choice at a later date
         """
-        default_test_order = {u"SLEkey RO v2.0-Commercial": u"Received"}
+        default_test_order = {u"SLEKEY-RO-V2-0-COMMERCIAL": u"Received"}
         default_sample_status = u"Received"
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
