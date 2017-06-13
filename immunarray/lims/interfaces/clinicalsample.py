@@ -66,7 +66,7 @@ class IClinicalSample(model.Schema):
     # dictonary with value stauts and key test ordered
     test_ordered_status = schema.Dict(
         key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
-        value_type=schema.Choice(values=[_(u"Recived"),
+        value_type=schema.Choice(values=[_(u"Received"),
                                          _(u"To Be Tested"),
                                          _(u"In Que"),
                                          _(u"Testing"),
@@ -76,10 +76,9 @@ class IClinicalSample(model.Schema):
                                          _(u"Closed"), ], required=True)
     )
 
-    sample_ordering_healthcare_provider = schema.Choice(
+    sample_ordering_healthcare_provider = schema.TextLine(
         title=_(u"Ordering Healthcare Provider"),
         description=_(u"Ordering Healthcare Provider"),
-        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
         required=False,
     )
 
@@ -89,11 +88,10 @@ class IClinicalSample(model.Schema):
         required=False,
     )
 
-    directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
-    primary_healthcare_provider = schema.Choice(
+    #directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
+    primary_healthcare_provider = schema.TextLine(
         title=_(u"Primary Healthcare Provider"),
         description=_(u"Primary Healthcare Provider"),
-        vocabulary=u"immunarray.lims.vocabularies.provider.ProvidersVocabulary",
         required=False,
     )
     """directives.widget(level=RadioFieldWidget)"""
@@ -147,6 +145,7 @@ class IClinicalSample(model.Schema):
         required=False,
         value_type=schema.TextLine()
     )
+
     form.widget(diagnosis_code=CheckBoxFieldWidget)
     diagnosis_code = schema.List(
         title=_(u"Diagnosis & ICD-10 Codes"),
@@ -169,9 +168,9 @@ class IClinicalSample(model.Schema):
         value_type=schema.TextLine()
     )
 
-    phlebotomist_last_name = schema.TextLine(
-        title=_(u"Phlebotomist Last Name"),
-        description =_(u"Phlebotomist Last Name"),
+    phlebotomist_name = schema.TextLine(
+        title=_(u"Phlebotomist Name"),
+        description =_(u"Phlebotomist Name"),
         required=False,
     )
 
