@@ -118,11 +118,10 @@ require([
         function sendAllDataToLims() {
                             //alert("sendAllDataToLims Started")
                             var usnParts = $("input[id='usn']").val().split("-");
-                            var site = usnParts[0];
+                            var siteId = usnParts[0];
                             var uniqueSampleNumber = usnParts[1] + "-" + usnParts[2];
                             var ptFirstName = $("input[id='patient_first_name']").val();
                             var ptLastName= $("input[id='patient_last_name']").val();
-                            //alert("last name: " + ptLastName)
                             var ptdob = $("input[id='dob']").val();
                             var mrn = $("input[id='mrn']").val();
                             var ssn = $("input[id='ssn']").val();
@@ -186,16 +185,16 @@ require([
                             //var practice_name = $("input[id='practice_name']").val();
                             // clean up provider npi to only been the needed value
                             var provider_npis_raw = $("#provider_npis").val().split("-");
+                            var ordering_provider_name = provider_npis_raw[0];
                             var provider_nip_clean = provider_npis_raw[1];
-
-                            var provider_signed = $("input[id='provider_signed']:checked").val(); //name
+                            var provider_signed = $("input[name='provider_signed']:checked").val(); //name
                             var signed_date = $("input[id='signed_date']").val();
                             var draw_location = $("input[id='draw_location']").val();
                             var draw_tel = $("input[id='draw_tel']").val();
                             var phlebotomist_name = $("input[id='phlebotomist_name']").val();
-                            var draw_signed = $("input[id='draw_signed']:checked").val(); //name
-                            var collection_date = $("input[id='collection_date']").val(); //name
-
+                            var draw_signed = $("input[name='draw_signed']:checked").val(); //name
+                            var collection_date = $("input[name='collection_date']").val(); //name
+                            var shipment_date = $("input[name='shipment_date']").val()
                             authenticator = $('input[name="_authenticator"]').val();
                             var url = window.location.href;
                             $.ajax({
@@ -204,6 +203,7 @@ require([
                                 data: {
                                     'all_data': 1,
                                     'usn_from_from':uniqueSampleNumber,
+                                    'site_id':siteId,
                                     'dob':ptdob,
                                     'patient_first_name': ptFirstName,
                                     'patient_last_name': ptLastName,
@@ -236,11 +236,19 @@ require([
                                     'clin_other_specify':clin_other_specify,
                                     'diagnosis_code':diag,
                                     'diag_other_specify':diag_other_specify,
+                                    'provider_nip_clean':provider_nip_clean,
+                                    'provider_signed':provider_signed,
+                                    'draw_location':draw_location,
+                                    'draw_tel':draw_tel,
+                                    'phlebotomist_name':phlebotomist_name,
+                                    'draw_signed':draw_signed,
+                                    'collection_date':collection_date,
+                                    'shipment_date':shipment_date,
+                                    'ordering_provider_name':ordering_provider_name,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
                                 }
                             });
-
             }
 
         document.getElementById("fullSubmit").onclick = sendAllDataToLims;
