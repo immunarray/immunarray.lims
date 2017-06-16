@@ -106,8 +106,8 @@ class IClinicalSample(model.Schema):
     )
 
     clinical_impression = schema.Choice(
-        title=_(u"Clinical Impression"),
-        description=_(u"Clinical Impression"),
+        title=_(u"Clinical Impression of SLE"),
+        description=_(u"Clinical Impression of SLE"),
         required=True,
         values=[_(u'Not Specified'),
                 _(u'Uncertain'),
@@ -115,6 +115,10 @@ class IClinicalSample(model.Schema):
                 _(u'No')],
     )
 
+    xray_ordered = schema.Bool(
+        title=_(u"Other Test(s) Ordered"),
+        description =_(u"Other Test(s) Ordered Enter One Per Line"),
+    )
     other_test_ordered = schema.List(
         title=_(u"Other Test(s) Ordered"),
         description =_(u"Other Test(s) Ordered Enter One Per Line"),
@@ -138,9 +142,25 @@ class IClinicalSample(model.Schema):
                     _(u"Hair loss")]),
     )
 
-    symptoms_text = schema.List(
-        title=_(u"Symptom(s)"),
-        description =_(u"Symptom(s) Enter One Per Line"),
+    joint_pain_text = schema.List(
+        title=_(u"Joint Pain Specifics"),
+        description =_(u"Joint Pain Specifics (Enter One Per Line)"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    inflammation_text = schema.List(
+        title=_(u"Inflammation Specifics"),
+        description =_(u"Inflammation Specifics (Enter One Per Line)"),
+        missing_value=None,
+        required=False,
+        value_type=schema.TextLine()
+    )
+
+    other_symptoms_text = schema.List(
+        title=_(u"Other Symptom(s)"),
+        description =_(u"Other Symptom(s) Enter One Per Line"),
         missing_value=None,
         required=False,
         value_type=schema.TextLine()
