@@ -72,7 +72,7 @@ class AddRecView(BrowserView):
 
         if "all_data" in request.form:
             authenticator = request.form.get('_authenticator')
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             try:
                 plone.protect.CheckAuthenticator(authenticator)
             except:
@@ -123,7 +123,8 @@ class AddRecView(BrowserView):
             shipment_date = request.form.get('shipment_date')
             ordering_provider_name = request.form.get('ordering_provider_name')
             pt_UID = "new_patient"
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
+            # See if we have an existing pt
             pt_UID = self.repeat_order_check(dob, first, last, pt_UID)
 
             if pt_UID != "new_patient":
@@ -258,8 +259,14 @@ class AddRecView(BrowserView):
         if clin_inflam != "": symptoms_choice.append(clin_inflam)
         if clin_other != "": symptoms_choice.append(clin_other)
         # datetime.datetime.strptime
-        py_collection_date = datetime.datetime.strptime(collection_date, "%Y-%m-%d").date()
-        py_shipment_date = datetime.datetime.strptime(shipment_date, "%Y-%m-%d").date()
+        try:
+            py_collection_date = datetime.datetime.strptime(collection_date, "%Y-%m-%d").date()
+        except:
+            py_collection_date = None
+        try:
+            py_shipment_date = datetime.datetime.strptime(shipment_date, "%Y-%m-%d").date()
+        except:
+            py_shipment_date = None
         # clin_other_specify
 
         # Get primary health care provider from site!
@@ -270,7 +277,7 @@ class AddRecView(BrowserView):
             site = api.content.get(UID=j)
             if site_id == str(site.title):
                 primary_provider = site.primary_provider
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         # set permission for clinical sample
         cs = api.portal.get()
         sample = cs['lims']['samples']
@@ -318,8 +325,11 @@ class AddRecView(BrowserView):
         usn.append(usn_from_form)
         pt_phone=[]
         pt_phone.append(patient_phone)
-        import pdb;pdb.set_trace()
-        py_date = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
+        #import pdb;pdb.set_trace()
+        try:
+            py_date = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
+        except:
+            py_date = None
         title = first + " " + last
         #import pdb;pdb.set_trace()
         pt = api.portal.get()
@@ -391,3 +401,12 @@ class AddRecView(BrowserView):
         "physical_address_country":pt_record.physical_address_country}
         # import pdb;pdb.set_trace()
         return data
+
+    def make_bulk_aliquots(self, usn_from_form):
+        """Make aliquots based on USN
+            2 bulk
+            3 working
+        """
+        tubes_in_kit = 2
+        # YY - USN - A01 vol = 1900 uL
+        # YY - USN - B01 vol = 2000 uL
