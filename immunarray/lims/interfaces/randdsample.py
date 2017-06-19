@@ -75,24 +75,9 @@ class IRandDSample(model.Schema):
         required=False,
     )
 
-    volume = schema.Float(
+    volume_received = schema.Float(
         title=_(u"Volume of R&D Sample in micro liters (uL)"),
         description=_(u"Volume of R&D Sample in micro liters (uL)"),
-        required=False,
-    )
-    rand_sample_type = schema.Choice(
-        title=_(u"R&D Sample Type (Bulk or Working)"),
-        description=_(u"R&D Sample Type (Bulk or Working)"),
-        values=[_(u"Working"), _(u"Bulk")],
-        required=False,
-    )
-    status = schema.Choice(
-        title=_(
-            u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
-        description=_(
-            u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
-        values=[_(u"Available"), _(u"In Process"), _(u"Retained"),
-                _(u"Quarantined"), _(u"Consumed")],
         required=False,
     )
 
@@ -109,14 +94,29 @@ class IRandDSample(model.Schema):
         required=True,
     )
 
-    date_disposed = schema.Date(
-        title=_(u"Date R&D Sample was Disposed"),
-        description=_(u"Date R&D Sample was Disposed"),
-        required=False,
-    )
-
     comment = schema.Text(
         title=_(u"Any Notes or Comments About the R&D Sample"),
         description=_(u"Any Notes or Comments About the R&D Sample"),
         required=False,
     )
+
+    #Should be on the aliquot object not the sample
+    """
+    status = schema.Choice(
+        title=_(
+            u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
+        description=_(
+            u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
+        values=[_(u"Available"), _(u"In Process"), _(u"Retained"),
+                _(u"Quarantined"), _(u"Consumed")],
+        required=False,
+    )
+    """
+    #Should be on the aliquot object not the sample
+    """
+    date_disposed = schema.Date(
+        title=_(u"Date R&D Sample was Disposed"),
+        description=_(u"Date R&D Sample was Disposed"),
+        required=False,
+    )
+    """
