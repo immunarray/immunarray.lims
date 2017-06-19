@@ -367,6 +367,7 @@ class AddRecView(BrowserView):
         pt_record = api.content.get(UID=pt_UID)
         pt_record.tested_unique_sample_ids.append(usn_from_form)
         pass
+
     def update_kit_count(self, site_id):
         """Update site kits on hand count to be reduced by 1
         """
