@@ -17,6 +17,7 @@
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
     <object name="ClinicalAliqout" meta_type="Dexterity FTI"/>
     <object name="RandDSample" meta_type="Dexterity FTI"/>
+    <object name="QCSample" meta_type="Dexterity FTI"/>
     <object name="iChipAssay" meta_type="Dexterity FTI"/>
     <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
     <object name="Freezer" meta_type="Dexterity FTI"/>
