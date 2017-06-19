@@ -16,7 +16,7 @@ def currentDate():
 
 
 class IRandDSample(model.Schema):
-    """R and D aliquot!
+    """R and D sample!
     """
 
     source_id_one = schema.TextLine(
