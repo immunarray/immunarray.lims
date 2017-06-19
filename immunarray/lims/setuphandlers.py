@@ -41,6 +41,7 @@ def setupVarious(context):
     mp(AddiChipAssay, [], 0)
     mp(AddCustomerServiceCall, [], 0)
     mp(AddRandDSample, [], 0)
+    mp(AddQCSample, [], 0)
     mp(AddFreezer, [], 0)
     mp(AddShelf, [], 0)
     mp(AddRack, [], 0)
