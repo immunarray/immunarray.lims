@@ -4,6 +4,7 @@ from immunarray.lims import messageFactory as _
 from plone.supermodel import model
 from zope import schema
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone.namedfile.field import *
 
 class IClinicalAliquot(model.Schema):
 
@@ -23,3 +24,18 @@ class IClinicalAliquot(model.Schema):
         description=_(u"Parent ID"),
         required=False,
     )
+
+    images = schema.Dict(
+        key_type=schema.TextLine(
+            title=_(u"Image Name"),
+            description=_(u"Image Name"),
+            required=False,
+        ),
+        value_type=NamedBlobImage(
+            title=_(u"Image File"),
+            description=_(u"Image File"),
+            required=False,
+        ),
+    )
+
+
