@@ -5,6 +5,7 @@ from plone.dexterity.utils import createContentInContainer
 from plone import api
 from bika.lims.permissions import disallow_default_contenttypes
 from immunarray.lims.permissions import AddClinicalSample
+from immunarray.lims.permissions import AddClinicalAliquot
 from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
@@ -212,7 +213,7 @@ class AddRecView(BrowserView):
             entry.append(pt_first_name)
             entry.append(pt_last_name)
             #need to exclued any patients that have null values for fields
-            entry.append(pt_dob2.strftime('%Y-%m-%d'))
+            entry.append(datetime.datetime.strftime(pt_dob2, '%Y-%m-%d'))
             entry.append(i)
             current_pt_list.append(entry)
         for c in current_pt_list:
@@ -283,6 +284,8 @@ class AddRecView(BrowserView):
         sample = cs['lims']['samples']
         sample.manage_permission(
             AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        sample.manage_permission(
+            AddClinicalAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
         disallow_default_contenttypes(sample)
         clinical_sample = api.content.create(container=sample,
                                              type='ClinicalSample',
