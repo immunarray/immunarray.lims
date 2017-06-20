@@ -2,6 +2,7 @@ import datetime
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
+from immunarray.lims.interfaces.qcsample import assignVeracisId
 
 
 def currentTime():
@@ -37,6 +38,7 @@ class IRandDSample(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
         description=_(u"R&D Veracis Sample ID"),
+        default=assignVeracisId(),
         required=True,
     )
 
