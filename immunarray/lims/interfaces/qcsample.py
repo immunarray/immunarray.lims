@@ -5,6 +5,7 @@ import datetime
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
+from plone import api
 
 
 def currentTime():
@@ -14,6 +15,44 @@ def currentTime():
 def currentDate():
     return datetime.datetime.now().date()
 
+def assignVeracisId():
+    """Pull all Veracis IDs for R&D and QC samples and get the next one.
+    """
+    allVeracisIds = []
+    try:
+        qcsamples = api.content.find(context=api.portal.get(), portal_type='QCSample')
+    except:
+        print "No QC samples found"
+    if len(qcsamples) != 0:
+        qc_sampel_uids = [u.UID for u in qcsamples]
+        for i in qc_sampel_uids:
+            record = api.content.get(UID=i)
+            try:
+                allVeracisIds.append(int(record.veracis_id))
+            except:
+                print "QC Veracis ID can't be converted to Int"
+    # Get R&D Veracis ID's, append to allVeracisIds array
+    try:
+        randdsamples = api.content.find(context=api.portal.get(), portal_type='RandDSample')
+    except:
+        print "No R&D samples found"
+    if len(randdsamples) != 0:
+        randd_sampel_uids = [u.UID for u in randdsamples]
+        for i in randd_sampel_uids:
+            record = api.content.get(UID=i)
+            try:
+                allVeracisIds.append(int(record.veracis_id))
+            except:
+                print "R&D Veracis ID can't be converted to Int"
+    # Now have a list of ints that are the veracis IDs of QC and R&D samples
+    if len(allVeracisIds) !=0:
+        next_veracis_id_int = max(allVeracisIds) + 1
+        # Need to make the int into a unicode string
+        next_veracis_id = str(next_veracis_id_int).encode("utf-8").decode("utf-8")
+        return next_veracis_id
+    else:
+        next_veracis_id = "1000"
+        return next_veracis_id
 
 class IQCSample(model.Schema):
     """QC Sample!
@@ -40,6 +79,7 @@ class IQCSample(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"QC Veracis Sample ID"),
         description=_(u"QC Veracis Sample ID"),
+        default=assignVeracisId(),
         required=True,
     )
 
