@@ -153,34 +153,14 @@ require([
                             var clin_other = $("input[id='clin-other']:checked").val();
                             var clin_other_specify = $("input[id='clin-other-specify']").val();
                             // need to allow for all the entires to be entered but must match the LIMS Values...
-                            var diag = [];
                             var diag_D89_89 = $("input[id='diag-D89_89']:checked").val();
-                            if (!!diag_D89_89){
-                                diag.push(diag_D89_89);
-                            }
                             var diag_M32_10 = $("input[id='diag-M32_10']:checked").val();
-                            if (!!diag_M32_10){
-                                diag.push(diag_M32_10);
-                            }
                             var diag_D89_9 = $("input[id='diag-D89_9']:checked").val();
-                            if(!!diag_D89_9){
-                                diag.push(diag_D89_9);
-                            }
                             var diag_M35_9 = $("input[id='diag-M35_9']:checked").val();
-                            if(!!diag_M35_9){
-                                diag.push(diag_M35_9);
-                            }
                             var diag_L93_2 = $("input[id='diag-L93_2']:checked").val();
-                            if (!!diag_L93_2){
-                                diag.push(diag_L93_2);
-                            }
-                            // the other diag value can be anything!
                             var diag_other = $("input[id='diag-other']:checked").val();
-                            if (!!diag_other){
-                                diag.push(diag_other);
-                            }
-                            var diag_other_specify = $("input[id='diag-other-specify']").val();
-
+                            // the other diag value can be anything!
+                            var diag_other_specify = $("input[id='diag-other-specify']").val().split(", ");
                             // do not need practice_name
                             //var practice_name = $("input[id='practice_name']").val();
                             // clean up provider npi to only been the needed value
@@ -234,7 +214,12 @@ require([
                                     'clin_inflam':clin_inflam,
                                     'clin_other':clin_other,
                                     'clin_other_specify':clin_other_specify,
-                                    'diagnosis_code':diag,
+                                    'diag_D89_89':diag_D89_89,
+                                    'diag_M32_10':diag_M32_10,
+                                    'diag_D89_9':diag_D89_9,
+                                    'diag_M35_9':diag_M35_9,
+                                    'diag_L93_2':diag_L93_2,
+                                    'diag_other':diag_other,
                                     'diag_other_specify':diag_other_specify,
                                     'provider_nip_clean':provider_nip_clean,
                                     'provider_signed':provider_signed,
