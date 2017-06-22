@@ -135,11 +135,11 @@ class IClinicalSample(model.Schema):
         required=False,
         value_type=schema.Choice(
             values=[_(u"Rash"),
-                    _(u"Mouth sores"),
-                    _(u"Joint Pain if yes, please specify"),
-                    _(u"Inflammation, if yes, please specify"),
-                    _(u"Seizures or psychosis"),
-                    _(u"Hair loss")]),
+                    _(u"Mouth Sores"),
+                    _(u"Joint Pain"),
+                    _(u"Inflammation"),
+                    _(u"Seizures or Psychosis"),
+                    _(u"Hair Loss")]),
     )
 
     joint_pain_text = schema.List(
