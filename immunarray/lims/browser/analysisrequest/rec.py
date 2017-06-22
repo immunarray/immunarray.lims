@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
@@ -102,7 +103,9 @@ class AddRecView(BrowserView):
             ana_testing = request.form.get('ana_testing')
             clinical_impression = request.form.get('clinical_impression')
             test_xray = request.form.get('test_xray')
-            test_other = request.form.get('test_other')
+            raw_test_other = request.form.get('test_other')
+            test_other=[]
+            test_other.append(raw_test_other)
             test_other_specify = request.form.get('test_other_specify')
             clin_rash = request.form.get('clin_rash')
             clin_seiz_psych = request.form.get('clin_seiz_psych')
@@ -112,7 +115,12 @@ class AddRecView(BrowserView):
             clin_inflam = request.form.get('clin_inflam')
             clin_other = request.form.get('clin_other')
             clin_other_specify = request.form.get('clin_other_specify')
-            diagnosis_code = request.form.get('diagnosis_code')
+            diag_D89_89 = request.form.get('diag_D89_89')
+            diag_M32_10 = request.form.get('diag_M32_10')
+            diag_D89_9 = request.form.get('diag_D89_9')
+            diag_M35_9 = request.form.get('diag_M35_9')
+            diag_L93_2 = request.form.get('diag_L93_2')
+            diag_other = request.form.get('diag_other')
             diag_other_specify = request.form.get('diag_other_specify')
             provider_nip_clean = request.form.get('provider_nip_clean')
             provider_signed = request.form.get('provider_signed')
@@ -123,8 +131,8 @@ class AddRecView(BrowserView):
             collection_date = request.form.get('collection_date')
             shipment_date = request.form.get('shipment_date')
             ordering_provider_name = request.form.get('ordering_provider_name')
+            import pdb;pdb.set_trace()
             pt_UID = "new_patient"
-            # import pdb;pdb.set_trace()
             # See if we have an existing pt
             pt_UID = self.repeat_order_check(dob, first, last, pt_UID)
 
@@ -143,7 +151,8 @@ class AddRecView(BrowserView):
 
             self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
                                       clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
-                                      clin_inflam, clin_other, clin_other_specify, diagnosis_code, diag_other_specify,
+                                      clin_inflam, clin_other, clin_other_specify, diag_D89_89, diag_M32_10, diag_D89_9,
+                                      diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                                       provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                                       draw_signed, collection_date, shipment_date, test_other_specify,
                                       clinical_impression, ordering_provider_name, site_id)
@@ -231,7 +240,8 @@ class AddRecView(BrowserView):
 
     def make_clinical_sample(self, usn_from_form, consent_acquired, ana_testing, clin_rash,
                              clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
-                             clin_inflam, clin_other, clin_other_specify, diagnosis_code, diag_other_specify,
+                             clin_inflam, clin_other, clin_other_specify, diag_D89_89, diag_M32_10, diag_D89_9,
+                             diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                              provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                              draw_signed, collection_date, shipment_date, test_other_specify,
                              clinical_impression, ordering_provider_name, site_id):
@@ -252,14 +262,23 @@ class AddRecView(BrowserView):
         serial_number = max(all_sn) + 1
 
         symptoms_choice=[]
-        if clin_rash != "": symptoms_choice.append(clin_rash)
-        if clin_seiz_psych != "": symptoms_choice.append(clin_seiz_psych)
-        if clin_mouth_sores != "": symptoms_choice.append(clin_mouth_sores)
-        if clin_hair_loss != "": symptoms_choice.append(clin_hair_loss)
-        if clin_joint_pain != "": symptoms_choice.append(clin_joint_pain)
-        if clin_inflam != "": symptoms_choice.append(clin_inflam)
-        if clin_other != "": symptoms_choice.append(clin_other)
+        if clin_rash != None: symptoms_choice.append(unicode(clin_rash, "utf-8"))
+        if clin_seiz_psych != None: symptoms_choice.append(unicode(clin_seiz_psych, "utf-8"))
+        if clin_mouth_sores != None: symptoms_choice.append(unicode(clin_mouth_sores, "utf-8"))
+        if clin_hair_loss != None: symptoms_choice.append(unicode(clin_hair_loss, "utf-8"))
+        if clin_joint_pain != None: symptoms_choice.append(unicode(clin_joint_pain, "utf-8"))
+        if clin_inflam != None: symptoms_choice.append(unicode(clin_inflam, "utf-8"))
+        if clin_other != None: symptoms_choice.append(unicode(clin_other, "utf-8"))
         # datetime.datetime.strptime
+
+        diagnosis_code=[]
+        if diag_D89_89 != None: diagnosis_code.append(unicode(diag_D89_89, "utf-8"))
+        if diag_M32_10 != None: diagnosis_code.append(unicode(diag_M32_10, "utf-8"))
+        if diag_D89_9 != None: diagnosis_code.append(unicode(diag_D89_9, "utf-8"))
+        if diag_M35_9 != None: diagnosis_code.append(unicode(diag_M35_9, "utf-8"))
+        if diag_L93_2 != None: diagnosis_code.append(unicode(diag_L93_2, "utf-8"))
+        if diag_other != None: diagnosis_code.append(unicode(diag_other, "utf-8"))
+
         try:
             py_collection_date = datetime.datetime.strptime(collection_date, "%Y-%m-%d").date()
         except:
@@ -268,7 +287,8 @@ class AddRecView(BrowserView):
             py_shipment_date = datetime.datetime.strptime(shipment_date, "%Y-%m-%d").date()
         except:
             py_shipment_date = None
-        # clin_other_specify
+        # need to split clin_other_specify on ', '
+        # if clin_other_specify != "":
 
         # Get primary health care provider from site!
         site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
