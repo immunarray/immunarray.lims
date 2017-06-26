@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from collective.z3cform.datagridfield import DictRow
 from plone.directives import form
 from zope import schema
