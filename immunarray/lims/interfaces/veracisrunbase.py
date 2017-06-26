@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import date
 from plone.app.textfield import RichText
 from zope import schema
