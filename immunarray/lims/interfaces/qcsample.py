@@ -17,6 +17,8 @@ def assignVeracisId():
     """Pull all Veracis IDs for R&D and QC samples and get the next one.
     """
     allVeracisIds = []
+    qcsamples=[]
+    randdsamples = []
     try:
         qcsamples = api.content.find(context=api.portal.get(), portal_type='QCSample')
     except:
