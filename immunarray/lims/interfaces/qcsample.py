@@ -49,7 +49,7 @@ def assignVeracisId():
         next_veracis_id = str(next_veracis_id_int).encode("utf-8").decode("utf-8")
         return next_veracis_id
     else:
-        next_veracis_id = "1000"
+        next_veracis_id = str("1000").encode("utf-8").decode("utf-8")
         return next_veracis_id
 
 class IQCSample(model.Schema):
