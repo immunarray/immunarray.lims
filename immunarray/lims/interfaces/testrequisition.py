@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope import schema
 from plone.supermodel import model
 from zope.interface import Interface
