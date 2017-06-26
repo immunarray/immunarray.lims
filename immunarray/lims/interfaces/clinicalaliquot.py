@@ -17,7 +17,11 @@ class IClinicalAliquot(model.Schema):
 
     result = schema.Dict(
         key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
-        value_type=schema.TextLine,
+        value_type=schema.TextLine(
+            title=_(u"Result Value"),
+            description=_(u"Result Value"),
+            required=False,
+        )
     )
 
     sample_id = schema.TextLine(
@@ -26,7 +30,7 @@ class IClinicalAliquot(model.Schema):
         required=False,
     )
 
-    """images = schema.Dict(
+    images = schema.Dict(
         key_type=schema.TextLine(
             title=_(u"Image Name"),
             description=_(u"Image Name"),
@@ -38,5 +42,4 @@ class IClinicalAliquot(model.Schema):
             required=False,
         ),
     )
-    """
 
