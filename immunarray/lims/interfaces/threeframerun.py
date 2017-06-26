@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import date
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims import messageFactory as _
