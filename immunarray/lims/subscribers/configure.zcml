@@ -36,5 +36,10 @@
            zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.storage.RandDBoxAdded"
   />
+  <subscriber
+      for="immunarray.lims.interfaces.clinicalsample.IClinicalSample
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.clinicalsample.ClinicalSampleAdded"
+  />
 
 </configure>
