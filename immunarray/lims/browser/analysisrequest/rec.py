@@ -131,7 +131,6 @@ class AddRecView(BrowserView):
             collection_date = request.form.get('collection_date')
             shipment_date = request.form.get('shipment_date')
             ordering_provider_name = request.form.get('ordering_provider_name')
-            import pdb;pdb.set_trace()
             pt_UID = "new_patient"
             # See if we have an existing pt
             pt_UID = self.repeat_order_check(dob, first, last, pt_UID)
