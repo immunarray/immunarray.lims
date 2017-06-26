@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from plone.app.textfield import RichText
 from plone.supermodel import model
