@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 
 from immunarray.lims import messageFactory as _
