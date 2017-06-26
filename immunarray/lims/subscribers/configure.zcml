@@ -42,7 +42,19 @@
   <subscriber
       for="immunarray.lims.interfaces.clinicalsample.IClinicalSample
            zope.lifecycleevent.IObjectAddedEvent"
-      handler="immunarray.lims.subscribers.clinicalsample.ClinicalSampleAdded"
+      handler="immunarray.lims.subscribers.sample.ClinicalSampleAdded"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.randdsample.IRandDSample
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.sample.RandDSampleAdded"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.qcsample.IQCSample
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.sample.QCSampleAdded"
   />
 
 </configure>
