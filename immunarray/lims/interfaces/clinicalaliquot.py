@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from bika.lims.interfaces.aliquot import IAliquot
 from datetime import datetime
 from immunarray.lims import messageFactory as _
@@ -25,7 +26,7 @@ class IClinicalAliquot(model.Schema):
         required=False,
     )
 
-    images = schema.Dict(
+    """images = schema.Dict(
         key_type=schema.TextLine(
             title=_(u"Image Name"),
             description=_(u"Image Name"),
@@ -37,5 +38,5 @@ class IClinicalAliquot(model.Schema):
             required=False,
         ),
     )
-
+    """
 
