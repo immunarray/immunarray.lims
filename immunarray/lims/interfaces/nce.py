@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """To add custome slide content to immunarray.lims
 """
 import datetime
