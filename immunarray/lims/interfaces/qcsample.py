@@ -1,6 +1,4 @@
-"""To add custome slide content to immunarray.lims 
-    (needs to be randd_aliquot, we don't have randd_samples)
-"""
+# -*- coding: utf-8 -*-
 import datetime
 
 from immunarray.lims import messageFactory as _
