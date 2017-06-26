@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from bika.lims.interfaces.organisation import IOrganisation
 from immunarray.lims import messageFactory as _
 from zope import schema
