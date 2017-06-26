@@ -7,7 +7,7 @@ from bika.lims import messagefactory as _
 from bika.lims.interfaces.aliquot import IAliquot
 
 
-class IRandDAliquot(IAliquot):
+class IRandDAliquot(model.Schema):
     pass
     """
     date_created = schema.Datetime(
