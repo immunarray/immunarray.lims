@@ -5,6 +5,7 @@ from plone.dexterity.fti import DexterityFTI
 from zope.component.hooks import getSite
 from Products.CMFCore.permissions import ModifyPortalContent
 from plone.app.contenttypes import permissions
+from Products.CMFCore.permissions import View, ListFolderContents, AccessContentsInformation, ModifyPortalContent
 
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
@@ -54,31 +55,85 @@ def create_structure(lims):
         lims.moveObjectsToBottom(['configuration'])
 
 def structure_permissions(lims):
+    # Custom Add Permission
     lims.materials.manage_permission(AddMaterial, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
-    lims.materials.manage_permission(permissions.AddFolder, [], 0)
     lims.solutions.manage_permission(AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.solutions.manage_permission(permissions.AddFolder, [], 0)
     lims.ichiplots.manage_permission(AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
     lims.plates.manage_permission(AddPlate, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.plates.manage_permission(permissions.AddFolder, [], 0)
     lims.nce.manage_permission(AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.nce.manage_permission(permissions.AddFolder, [], 0)
     lims.patients.manage_permission(AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.patients.manage_permission(permissions.AddFolder, [], 0)
     lims.ichipassay.manage_permission(AddiChipAssay, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
     lims.providers.manage_permission(AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.providers.manage_permission(permissions.AddFolder, [], 0)
     lims.customerservicecall.manage_permission(AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
-    lims.inventory.manage_permission(AddRack, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.inventory.manage_permission(permissions.AddFolder, [], 0)
     lims.testruns.manage_permission(AddTestRun, ['Manager', 'LabManager', 'Owner'], 0)
     lims.testruns.manage_permission(AddNoFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
     lims.testruns.manage_permission(AddEightFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.inventory.manage_permission(AddRack, ['Manager', 'LabManager', 'Owner'], 0)
+
+    # Remove option to add folder to structure locations
+    lims.materials.manage_permission(permissions.AddFolder, [], 0)
+    lims.solutions.manage_permission(permissions.AddFolder, [], 0)
+    lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
+    lims.plates.manage_permission(permissions.AddFolder, [], 0)
+    lims.nce.manage_permission(permissions.AddFolder, [], 0)
+    lims.patients.manage_permission(permissions.AddFolder, [], 0)
+    lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
+    lims.providers.manage_permission(permissions.AddFolder, [], 0)
+    lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
+    lims.inventory.manage_permission(permissions.AddFolder, [], 0)
     lims.testruns.manage_permission(permissions.AddFolder, [], 0)
+
+    pm_options = ['ListFolderContents', 'View', 'AccessContentsInformation']
+    # View permission
+    lims.materials.manage_permission(View, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.solutions.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.plates.manage_permission(View, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.nce.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichipassay.manage_permission(View, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.providers.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.inventory.manage_permission(View, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(View, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+    # Access Contents Information
+    lims.materials.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.solutions.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.plates.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.nce.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichipassay.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.providers.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.inventory.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(AccessContentsInformation, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+
+    lims.materials.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.solutions.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.plates.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.nce.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichipassay.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.providers.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.inventory.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(ListFolderContents, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+
+    lims.materials.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
+    lims.solutions.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichiplots.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.plates.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.nce.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.patients.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.ichipassay.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.providers.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    lims.inventory.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'Owner'], 0)
+    lims.testruns.manage_permission(ModifyPortalContent, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+
 
 
 def create_material_types(portal):
