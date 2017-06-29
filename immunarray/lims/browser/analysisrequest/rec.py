@@ -148,13 +148,36 @@ class AddRecView(BrowserView):
 
 
 
-            self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
+            sample_UID = self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
                                       clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
                                       clin_inflam, clin_other, clin_other_specify, diag_D89_89, diag_M32_10, diag_D89_9,
                                       diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                                       provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                                       draw_signed, collection_date, shipment_date, test_other_specify,
                                       clinical_impression, ordering_provider_name, site_id)
+
+            # make bulk aliquots
+            # fancy way to have multiple tubes in the system, update letter list as more tubes are added
+            # easy way
+            draw_tubes = ['A','B']
+            bulk_aliquotA = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[0])
+            print bulk_aliquotA
+            bulk_aliquotB = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[1])
+            print  bulk_aliquotB
+
+            # make working aliquots
+            working_tubes = ['02','03','04']
+            working_aliquotA02 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[0])
+            print working_aliquotA02
+            working_aliquotA03 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[1])
+            print working_aliquotA03
+            working_aliquotA04 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[2])
+            print working_aliquotA04
+
+            #for t in tubes:
+            #    exec ("bulk_aliquot" %t) = self.make_bulk_aliquots(sample_UID, usn_from_form, t)
+            #    print"bulk_aliquot" % (t)
+            # make working aliquots
 
             # import pdb;pdb.set_trace()
             return json.dumps({"feedback":"got it"})
@@ -258,7 +281,9 @@ class AddRecView(BrowserView):
         for i in sn_uid:
             value = api.content.get(UID=i)
             all_sn.append(value.sample_serial_number)
-        serial_number = max(all_sn) + 1
+
+        if len(all_sn) == 0:serial_number = 10000
+        else:serial_number = max(all_sn) + 1
 
         symptoms_choice=[]
         if clin_rash != None: symptoms_choice.append(unicode(clin_rash, "utf-8"))
@@ -301,10 +326,6 @@ class AddRecView(BrowserView):
         # set permission for clinical sample
         cs = api.portal.get()
         sample = cs['lims']['samples']
-        sample.manage_permission(
-            AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-        sample.manage_permission(
-            AddClinicalAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
         disallow_default_contenttypes(sample)
         clinical_sample = api.content.create(container=sample,
                                              type='ClinicalSample',
@@ -331,8 +352,10 @@ class AddRecView(BrowserView):
                                              received_date=py_shipment_date,
                                             )
         print ("Clinical Sample Made with id of " + usn_from_form)
+        clinical_sample_uid = clinical_sample.UID()
+        return clinical_sample_uid
+        # pass UID to be the start point for making aliquots
         # make aliquots for testing
-        #import pdb;pdb.set_trace()
 
     def make_patient(self, first, last, ssn, mrn, dob, gender, ethnicity,
                      ethnicity_other, marital_status, patient_address,
@@ -356,9 +379,6 @@ class AddRecView(BrowserView):
         #import pdb;pdb.set_trace()
         pt = api.portal.get()
         patient = pt['lims']['patients']
-        patient.manage_permission(
-            AddClinicalSample, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-        disallow_default_contenttypes(patient)
         clinical_sample = api.content.create(container=patient,
                                              type = 'Patient',
                                              title = title,
@@ -425,11 +445,35 @@ class AddRecView(BrowserView):
         # import pdb;pdb.set_trace()
         return data
 
-    def make_bulk_aliquots(self, usn_from_form):
-        """Make aliquots based on USN
-            2 bulk
-            3 working
+    def make_bulk_aliquots(self,sample_UID, usn_from_form, letter_to_add):
+        """Make aliquot A based on USN and UID of the parent sample
         """
-        tubes_in_kit = 2
-        # YY - USN - A01 vol = 1900 uL
-        # YY - USN - B01 vol = 2000 uL
+        today = datetime.datetime.today().date()
+        target_clinical_sample = api.content.get(UID=sample_UID)
+        clinical_aliquot = api.content.create(container=target_clinical_sample,
+                                               type ='ClinicalAliquot',
+                                               title =usn_from_form + "-"+letter_to_add+"01",
+                                               sample_id = usn_from_form,
+                                               aliquot_type = 'Bulk',
+                                               volume = 2000,
+                                               pour_date = today
+                                              )
+        print "Clinical Bulk Aliquot with ID of "+clinical_aliquot.title +"made"
+        clinical_aliquot_UID = clinical_aliquot.UID()
+        return clinical_aliquot_UID
+
+
+    def make_working_aliquots(self, usn_from_form, bulk_aliquot_UID, tube_number):
+        today = datetime.datetime.today().date()
+        target_clinical_sample = api.content.get(UID=bulk_aliquot_UID)
+        clinical_aliquot = api.content.create(container=target_clinical_sample,
+                                              type ='ClinicalAliquot',
+                                              title =usn_from_form + "-A" + tube_number,
+                                              sample_id = usn_from_form,
+                                              aliquot_type = 'Working',
+                                              volume = 12,
+                                              pour_date = today
+                                              )
+        print "Clinical Working Aliquot with ID of "+clinical_aliquot.title +"made"
+        clinical_aliquot_UID = clinical_aliquot.UID()
+        return clinical_aliquot_UID
