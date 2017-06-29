@@ -469,11 +469,11 @@ class AddRecView(BrowserView):
         clinical_aliquot = api.content.create(container=target_clinical_sample,
                                               type ='ClinicalAliquot',
                                               title =usn_from_form + "-A" + tube_number,
-                                              sample_id = usn_from_form,
+                                              sample_id = target_clinical_sample.title,
                                               aliquot_type = 'Working',
                                               volume = 12,
                                               pour_date = today
                                               )
-        print "Clinical Working Aliquot with ID of "+clinical_aliquot.title +"made"
+        print "Clinical Working Aliquot with ID of " + clinical_aliquot.title + " made"
         clinical_aliquot_UID = clinical_aliquot.UID()
         return clinical_aliquot_UID
