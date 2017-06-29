@@ -4,6 +4,7 @@ import datetime
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
 from plone import api
+from immunarray.lims.interfaces.qcsample import assignVeracisId
 
 
 def currentTime():
