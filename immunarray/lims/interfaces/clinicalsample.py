@@ -73,7 +73,8 @@ class IClinicalSample(model.Schema):
                                          _(u"Rerun"),
                                          _(u"Resulted"),
                                          _(u"Billing Message Sent"),
-                                         _(u"Closed"), ], required=True)
+                                         _(u"Closed"), ], required=True),
+        required=False,
     )
 
     sample_ordering_healthcare_provider = schema.TextLine(
@@ -170,7 +171,7 @@ class IClinicalSample(model.Schema):
     diagnosis_code = schema.List(
         title=_(u"Diagnosis & ICD-10 Codes"),
         description=_(u"Diagnosis & ICD-10 Codes"),
-        required=True,
+        required=False,
         value_type=schema.Choice(
             values=[_(u"D89.89"),
                     _(u"D89.9"),
