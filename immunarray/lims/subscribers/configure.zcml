@@ -57,4 +57,23 @@
       handler="immunarray.lims.subscribers.sample.QCSampleAdded"
   />
 
+  <subscriber
+      for="immunarray.lims.interfaces.clinicalaliquot.IClinicalAliquot
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.aliquot.ClinicalAliquotAdded"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.randdaliquot.IRandDAliquot
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.aliquot.RandDAliquotAdded"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.qcaliquot.IQCAliquot
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.aliquot.QCAliquotAdded"
+  />
+
+
 </configure>
