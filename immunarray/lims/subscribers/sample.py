@@ -16,12 +16,20 @@ def ClinicalSampleAdded(clinicalsample, event):
 
 
 def RandDSampleAdded(randdsample, event):
-    randdsample.manage_permission(AddRandDAliquot, ['Manager', 'LabManager', 'RandDLabClerk', 'RandDLabManager', 'LabClerk', 'Owner'], 0)
+    randdsample.manage_permission(AddRandDAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner','RandDLabClerk', 'RandDLabManager'], 0)
+    # Don't allow samples to be nested in each other!
+    randdsample.manage_permission(AddClinicalSample, [], 0)
+    randdsample.manage_permission(AddClinicalAliquot, [], 0)
+    randdsample.manage_permission(AddQCAliquot, [], 0)
     disallow_default_contenttypes(randdsample)
 
 
 
 def QCSampleAdded(qcsample, event):
     qcsample.manage_permission(AddQCAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    # Don't allow samples to be nested in each other!
+    qcsample.manage_permission(AddClinicalSample, [], 0)
+    qcsample.manage_permission(AddRandDAliquot, [], 0)
+    qcsample.manage_permission(AddClinicalAliquot, [], 0)
     disallow_default_contenttypes(qcsample)
 
