@@ -17,6 +17,14 @@
   />
 
   <browser:page
+      name="ctest"
+      class="immunarray.lims.browser.analysisrequest.commercial_run.AddCommercialEightFrameTestRunView"
+      for="*"
+      template="templates/aliquot_testing/SLE-key_v_2_0_commercial.pt"
+      permission="zope2.View"
+  />
+
+  <browser:page
       name="insurance"
       for="*"
       template="templates/billing/insurance.pt"
