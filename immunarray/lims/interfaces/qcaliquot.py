@@ -70,6 +70,14 @@ class IQCAliquot(model.Schema):
         required=False,
     )
 
+    aliquot_type = schema.Choice(
+        title=_(u"Aliquot Type"),
+        description=_(u"Aliquot Type"),
+        required=True,
+        values=[_(u'Bulk'),
+                _(u'Working')],
+    )
+
     initial_volume = schema.Float(
         title=_(u"Volume of QC Sample in micro liters (uL)"),
         description=_(u"Volume of QC Sample in micro liters (uL)"),
