@@ -70,38 +70,106 @@ require([
                                     if(repeatPatientData["repeat order"] === "true"){
                                         document.getElementById('repeat_order_yes').checked = true;
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["medical_record_number"]!='null')
+                                        {
                                         mrn = repeatPatientData["Pt Data from LIMS"]["medical_record_number"]
                                         document.getElementById('mrn').value = mrn;
+                                        }
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["marital_status"]==='Single')
+                                        {
                                         maritalStatus = repeatPatientData["Pt Data from LIMS"]["marital_status"]
-                                        document.getElementById('ssn').value = maritalStatus;
+                                        document.getElementById('marital_status_single').checked = true;
+                                        }
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["marital_status"]==='Married')
+                                        {
+                                        maritalStatus = repeatPatientData["Pt Data from LIMS"]["marital_status"]
+                                        document.getElementById('marital_status_married').checked = true;
+                                        }
+
+                                        if(repeatPatientData["Pt Data from LIMS"]["marital_status"]==='Other')
+                                        {
+                                        maritalStatus = repeatPatientData["Pt Data from LIMS"]["marital_status"]
+                                        document.getElementById('marital_status_other').checked = true;
+                                        }
+
+                                        if(repeatPatientData["Pt Data from LIMS"]["gender"]==="Female")
+                                        {
+                                        gender = repeatPatientData["Pt Data from LIMS"]["gender"]
+                                        document.getElementById('gender_female').checked = true;
+                                        }
+
+                                        if(repeatPatientData["Pt Data from LIMS"]["gender"]==="Male")
+                                        {
+                                        gender = repeatPatientData["Pt Data from LIMS"]["gender"]
+                                        document.getElementById('gender_male').checked = true;
+                                        }
+
+                                        if(repeatPatientData["Pt Data from LIMS"]["ssn"]!='null')
+                                        {
                                         ssn = repeatPatientData["Pt Data from LIMS"]["ssn"]
                                         document.getElementById('ssn').value = ssn;
+                                        }
 
-                                        researchConsent = repeatPatientData["Pt Data from LIMS"]["research_consent"]
-                                        document.getElementById('practice_name').value = researchConsent;
-
+                                        if(repeatPatientData["Pt Data from LIMS"]["ethnicity"]==='African American or Black'){
                                         ethnicity = repeatPatientData["Pt Data from LIMS"]["ethnicity"]
-                                        document.getElementById('practice_name').value = ethnicity;
+                                        document.getElementById('ethnicity_african_american').checked = true;}
+                                        if(repeatPatientData["Pt Data from LIMS"]["ethnicity"]==='Asian, Indian, Middle Eastern'){
+                                        ethnicity = repeatPatientData["Pt Data from LIMS"]["ethnicity"]
+                                        document.getElementById('ethnicity_asian_indian').checked = true;}
+                                        if(repeatPatientData["Pt Data from LIMS"]["ethnicity"]==='Caucasian'){
+                                        ethnicity = repeatPatientData["Pt Data from LIMS"]["ethnicity"]
+                                        document.getElementById('ethnicity_caucasian').checked = true;}
+                                        if(repeatPatientData["Pt Data from LIMS"]["ethnicity"]==='Hispanic or Latino'){
+                                        ethnicity = repeatPatientData["Pt Data from LIMS"]["ethnicity"]
+                                        document.getElementById('ethnicity_hispanic_or_latino').checked = true;}
+                                        if(repeatPatientData["Pt Data from LIMS"]["ethnicity"]==='Other'){
+                                        ethnicity = repeatPatientData["Pt Data from LIMS"]["ethnicity"]
+                                        document.getElementById('ethnicity_other').checked = true;}
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["ethnicity_other"]!='null')
+                                        {
                                         ethnicity_other = repeatPatientData["Pt Data from LIMS"]["ethnicity_other"]
-                                        document.getElementById('practice_name').value = ethnicity_other;
+                                        document.getElementById('ethnicity_specify').value = ethnicity_other;
+                                        }
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["physical_address"]!='null')
+                                        {
                                         physicalAddress = repeatPatientData["Pt Data from LIMS"]["physical_address"]
-                                        document.getElementById('practice_name').value = physicalAddress;
+                                        document.getElementById('p_add_street').value = physicalAddress;
+                                        }
 
-                                        physicalAddressCounty = repeatPatientData["Pt Data from LIMS"]["physical_address_country"]
-                                        document.getElementById('practice_name').value = physicalAddressCounty;
+                                        //if(repeatPatientData["Pt Data from LIMS"]["physical_address_country"]!='null')
+                                        //{
+                                        //physicalAddressCounty = repeatPatientData["Pt Data from LIMS"]["physical_address_country"]
+                                        //document.getElementById('p_add_country').value = physicalAddressCounty;
+                                        //}
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["physical_address_state"]!='null')
+                                        {
                                         physicalAddressState = repeatPatientData["Pt Data from LIMS"]["physical_address_state"]
-                                        document.getElementById('practice_name').value = physicalAddressState;
+                                        document.getElementById('p_add_state').value = physicalAddressState;
+                                        }
 
+                                        if(repeatPatientData["Pt Data from LIMS"]["physical_address_state"]!='null')
+                                        {
+                                        physicalAddressCity = repeatPatientData["Pt Data from LIMS"]["physical_address_city"]
+                                        document.getElementById('p_add_city').value = physicalAddressCity;
+                                        }
+
+                                        if(repeatPatientData["Pt Data from LIMS"]["physical_address_zipcode"]!='null')
+                                        {
                                         physicalAddressZipCode = repeatPatientData["Pt Data from LIMS"]["physical_address_zipcode"]
-                                        document.getElementById('practice_name').value = physicalAddressZipCode;
+                                        document.getElementById('p_add_zip').value = physicalAddressZipCode;
+                                        }
+                                        if(repeatPatientData["Pt Data from LIMS"]["pt_phone_number"]!='null')
+                                        {
+                                        physicalAddressZipCode = repeatPatientData["Pt Data from LIMS"]["pt_phone_number"]
+                                        document.getElementById('patient_phone').value = physicalAddressZipCode[0];
+                                        }
                                     }else{
                                         document.getElementById('repeat_order_no').checked = true;
-                                        //document.getElementById('repeat_order_no').checked = true;
                                     }
                                         // set
                                         //document.getElementById()
@@ -232,6 +300,8 @@ require([
                                     'ordering_provider_name':ordering_provider_name,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
+                                alert("Sample Added to LIMS " + uniqueSampleNumber)
+                                location.reload()
                                 }
                             });
             }
