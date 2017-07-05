@@ -441,7 +441,8 @@ class AddRecView(BrowserView):
         "physical_address_city":pt_record.physical_address_city,
         "physical_address_state":pt_record.physical_address_state,
         "physical_address_zipcode":pt_record.physical_address_zipcode,
-        "physical_address_country":pt_record.physical_address_country}
+        "physical_address_country":pt_record.physical_address_country,
+        "pt_phone_number":pt_record.phone_numbers}
         # import pdb;pdb.set_trace()
         return data
 
