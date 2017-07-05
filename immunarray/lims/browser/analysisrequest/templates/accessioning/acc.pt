@@ -163,7 +163,7 @@
               <input type="radio" name="ethnicity" id="ethnicity_asian_indian" value="Asian, Indian, Middle Eastern"/>Asian, Indian, Middle Eastern
               <input type="radio" name="ethnicity" id="ethnicity_caucasian" value="Caucasian"/>Caucasian
               <input type="radio" name="ethnicity" id="ethnicity_hispanic_or_latino" value="Hispanic or Latino"/>Hispanic or Latino
-              <input type="radio" name="ethnicity" id="ethnicity_other" value="Other, please specify"/>Other, please specify:
+              <input type="radio" name="ethnicity" id="ethnicity_other" value="Other"/>Other, please specify:
               <input type="text" name="ethnicity_specify" id="ethnicity_specify"/>
               </p>
             </td>
