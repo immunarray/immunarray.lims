@@ -1,10 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       lang="en"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="immunarray.lims">
+      i18n:domain="sits">
 
-    <metal:slot fill-slot="css_slot">
-        <style media="all" type="text/css">
+<metal:slot fill-slot="css_slot">
+    <style media="all" type="text/css">
             @page{margin:0cm 0cm 0cm 0cm}
             #table1, #table2,#table3, #table4, #table5, #table6, #table8,
             #table9, #table10, #table11,#table12, #table13, #table14, #table15,
@@ -98,6 +98,9 @@
     <form action="buildtest" name="buildtest" method="post">
         <input type="hidden" name="submitted" value="1"/>
         <!-- Header PP-007.04-->
+        <input type="button" title="Build Clinical Run" id="buildclinicalrun" value="Build Clinical Run">
+        <input type="button" title="Build R&D Run" id="buildranddrun" value="Build R&D Run">
+        <input type="button" title="Save Run" id="saverun" value="Save Run">
         <table id="table1" class="alpha">
             <tr>
                 <td style="width:10%" rowspan="5">
@@ -115,7 +118,7 @@
             </tr>
             <tr>
                 <td colspan="3">
-                    <p>Topic:&nbsp;&nbsp;Immunkey&reg Test Form 8 Framses -5 Plates X 8 Samples</p>
+                    <p>Topic:&nbsp;&nbsp;Immunkey &reg; Test Form 8 Frames -5 Plates X 8 Samples</p>
                 </td>
             </tr>
             <tr>
@@ -136,7 +139,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <p><strong>FILE NAME:</strong> SLE-key&reg v2.0 Test #### (Veracsi Test Run #####)</p>
+                    <p><strong>FILE NAME:</strong> SLE-key &reg; v2.0 Test <input id="veracistestcount"> (Veracis Test Run <input id=veracisrunnumber>)</p>
                 </td>
             </tr>
             <tr>
@@ -146,18 +149,20 @@
             </tr>
             <tr>
                 <td>
-                    <p><strong>Date:&nbsp;&nbsp;20/20/2016 </strong></p>
+                    <p><strong>Date:&nbsp;
+                    <input type="date" id="testingdate">
+                    </strong></p>
                 </td>
                 <td>
-                    <p><strong>PLANNED BY: Person Planning</strong></p>
+                    <p><strong>PLANNED BY: <input id="testplanner"></strong></p>
                 </td>
                 <td colspan="2">
-                    <p><strong>PERFORMED BY: Person Testing</strong></p>
+                    <p><strong>PERFORMED BY: <input id="testoperator"></strong></p>
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <p><strong>Sample Class: 1=Pos. QC 2=Neg. QC 3=Unknown 4=Unknown QC</strong></p>
+                    <p><strong>Sample Class: 3=Pos. QC 5=Neg. QC 1=Unknown</strong></p>
                 </td>
             </tr>
         </table>
@@ -199,16 +204,16 @@
                     <p>1</p>
                 </td>
                 <td colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well1"></p>
                 </td>
                 <td>
                     <p></p>
@@ -225,16 +230,16 @@
                     <p>2</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well2"></p>
                 </td>
                 <td>
                     <p></p>
@@ -251,16 +256,16 @@
                     <p>3</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well3"></p>
                 </td>
                 <td>
                     <p></p>
@@ -277,16 +282,16 @@
                     <p>4</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well4"></p>
                 </td>
                 <td>
                     <p></p>
@@ -303,16 +308,16 @@
                     <p>5</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well5"></p>
                 </td>
                 <td>
                     <p></p>
@@ -329,16 +334,16 @@
                     <p>6</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well6"></p>
                 </td>
                 <td>
                     <p></p>
@@ -355,16 +360,16 @@
                     <p>7</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well7"></p>
                 </td>
                 <td>
                     <p></p>
@@ -381,16 +386,16 @@
                     <p>8</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip1-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip2-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip3-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate1-chip4-well8"></p>
                 </td>
                 <td>
                     <p></p>
@@ -410,28 +415,28 @@
                     <p>iChip 1 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate1-ichip1"></p>
                 </td>
                 <td>
                     <p>iChip 2 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate1-ichip2"></p>
                 </td>
                 <td>
                     <p>iChip 3 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate1-ichip3"></p>
                 </td>
                 <td>
                     <p>iChip 4 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate1-ichip4"></p>
                 </td>
                 <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments:<br><br><br>
+                    <p style="text-align:left;">Comments: <input id="plate1-comments"><br><br><br>
                     </p>
                 </td>
             </tr>
@@ -440,39 +445,39 @@
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate1-ichip1-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate1-ichip2-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate1-ichip3-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate1-ichip4-scan_slot"></p>
                 </td>
             </tr>
             <tr>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate1-ichip1-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate1-ichip2-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate1-ichip3-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate1-ichip4-comments"></p>
                 </td>
             </tr>
         </table>
@@ -514,16 +519,16 @@
                     <p>1</p>
                 </td>
                 <td colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well1"></p>
                 </td>
                 <td>
                     <p></p>
@@ -540,16 +545,16 @@
                     <p>2</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well2"></p>
                 </td>
                 <td>
                     <p></p>
@@ -566,16 +571,16 @@
                     <p>3</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well3"></p>
                 </td>
                 <td>
                     <p></p>
@@ -592,16 +597,16 @@
                     <p>4</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well4"></p>
                 </td>
                 <td>
                     <p></p>
@@ -618,16 +623,16 @@
                     <p>5</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well5"></p>
                 </td>
                 <td>
                     <p></p>
@@ -644,16 +649,16 @@
                     <p>6</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well6"></p>
                 </td>
                 <td>
                     <p></p>
@@ -670,16 +675,16 @@
                     <p>7</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well7"></p>
                 </td>
                 <td>
                     <p></p>
@@ -696,16 +701,16 @@
                     <p>8</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip1-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip2-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip3-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate2-chip4-well8"></p>
                 </td>
                 <td>
                     <p></p>
@@ -725,28 +730,28 @@
                     <p>iChip 1 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate2-ichip1"></p>
                 </td>
                 <td>
                     <p>iChip 2 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate2-ichip2"></p>
                 </td>
                 <td>
                     <p>iChip 3 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate2-ichip3"></p>
                 </td>
                 <td>
                     <p>iChip 4 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate2-ichip4"></p>
                 </td>
                 <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments:<br><br><br>
+                    <p style="text-align:left;">Comments: <input id="plate2-comments"><br><br><br>
                     </p>
                 </td>
             </tr>
@@ -755,39 +760,39 @@
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate2-ichip1-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate2-ichip2-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate2-ichip3-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate2-ichip4-scan_slot"></p>
                 </td>
             </tr>
             <tr>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate2-ichip1-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate2-ichip2-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate2-ichip3-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate2-ichip4-comments"></p>
                 </td>
             </tr>
         </table>
@@ -829,16 +834,16 @@
                     <p>1</p>
                 </td>
                 <td colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well1"></p>
                 </td>
                 <td>
                     <p></p>
@@ -855,16 +860,16 @@
                     <p>2</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well2"></p>
                 </td>
                 <td>
                     <p></p>
@@ -881,16 +886,16 @@
                     <p>3</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well3"></p>
                 </td>
                 <td>
                     <p></p>
@@ -907,16 +912,16 @@
                     <p>4</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well4"></p>
                 </td>
                 <td>
                     <p></p>
@@ -933,16 +938,16 @@
                     <p>5</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well5"></p>
                 </td>
                 <td>
                     <p></p>
@@ -959,16 +964,16 @@
                     <p>6</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well6"></p>
                 </td>
                 <td>
                     <p></p>
@@ -985,16 +990,16 @@
                     <p>7</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well7"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1011,16 +1016,16 @@
                     <p>8</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip1-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip2-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip3-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate3-chip4-well8"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1040,28 +1045,28 @@
                     <p>iChip 1 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate3-ichip1"></p>
                 </td>
                 <td>
                     <p>iChip 2 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate3-ichip2"></p>
                 </td>
                 <td>
                     <p>iChip 3 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate3-ichip3"></p>
                 </td>
                 <td>
                     <p>iChip 4 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate3-ichip4"></p>
                 </td>
                 <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments:<br><br><br>
+                    <p style="text-align:left;">Comments: <input id="plate3-comments"><br><br><br>
                     </p>
                 </td>
             </tr>
@@ -1070,39 +1075,39 @@
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate3-ichip1-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate3-ichip2-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate3-ichip3-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate3-ichip4-scan_slot"></p>
                 </td>
             </tr>
             <tr>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate3-ichip1-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate3-ichip2-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate3-ichip3-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate3-ichip4-comments"></p>
                 </td>
             </tr>
         </table>
@@ -1145,16 +1150,16 @@
                     <p>1</p>
                 </td>
                 <td colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well1"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1171,16 +1176,16 @@
                     <p>2</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well2"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1197,16 +1202,16 @@
                     <p>3</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well3"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1223,16 +1228,16 @@
                     <p>4</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well4"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1249,16 +1254,16 @@
                     <p>5</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well5"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1275,16 +1280,16 @@
                     <p>6</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well6"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1301,16 +1306,16 @@
                     <p>7</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well7"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1327,16 +1332,16 @@
                     <p>8</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip1-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip2-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip3-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate4-chip4-well8"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1356,28 +1361,28 @@
                     <p>iChip 1 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate4-ichip1"></p>
                 </td>
                 <td>
                     <p>iChip 2 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate4-ichip2"></p>
                 </td>
                 <td>
                     <p>iChip 3 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate4-ichip3"></p>
                 </td>
                 <td>
                     <p>iChip 4 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate4-ichip4"></p>
                 </td>
                 <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments:<br><br><br>
+                    <p style="text-align:left;">Comments: <input id="plate4-comments"><br><br><br>
                     </p>
                 </td>
             </tr>
@@ -1386,44 +1391,44 @@
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate4-ichip1-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate4-ichip2-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate4-ichip3-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate4-ichip4-scan_slot"></p>
                 </td>
             </tr>
             <tr>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate4-ichip1-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate4-ichip2-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate4-ichip3-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate4-ichip4-comments"></p>
                 </td>
             </tr>
         </table>
         <!-- Plate 5-->
-        <table id="table6" class="beta">
+        <table id="table3" class="beta">
             <tr>
                 <td colspan="12" style="text-align: center;background-color:lightgrey;">
                     <p style="font-size:11pt;"><strong>PLATE 5</strong></p>
@@ -1460,16 +1465,16 @@
                     <p>1</p>
                 </td>
                 <td colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well1"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well1"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1486,16 +1491,16 @@
                     <p>2</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well2"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well2"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1512,16 +1517,16 @@
                     <p>3</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well3"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well3"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1538,16 +1543,16 @@
                     <p>4</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well4"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well4"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1564,16 +1569,16 @@
                     <p>5</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well5"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well5"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1590,16 +1595,16 @@
                     <p>6</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well6"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well6"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1616,16 +1621,16 @@
                     <p>7</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well7"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well7"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1642,16 +1647,16 @@
                     <p>8</p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip1-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip2-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip3-well8"></p>
                 </td>
                 <td  colspan="2">
-                    <p>Sample ID-Aliquot</p>
+                    <p><input id="aliquot-plate5-chip4-well8"></p>
                 </td>
                 <td>
                     <p></p>
@@ -1671,28 +1676,28 @@
                     <p>iChip 1 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate5-ichip1"></p>
                 </td>
                 <td>
                     <p>iChip 2 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate5-ichip2"></p>
                 </td>
                 <td>
                     <p>iChip 3 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate5-ichip3"></p>
                 </td>
                 <td>
                     <p>iChip 4 ID</p>
                 </td>
                 <td>
-                    <p>R88.22_23</p>
+                    <p><input id="plate5-ichip4"></p>
                 </td>
                 <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments:<br><br><br>
+                    <p style="text-align:left;">Comments: <input id="plate5-comments"><br><br><br>
                     </p>
                 </td>
             </tr>
@@ -1701,39 +1706,39 @@
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate5-ichip1-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate5-ichip2-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate5-ichip3-scan_slot"></p>
                 </td>
                 <td>
                     <p>Scan Slot</p>
                 </td>
                 <td>
-                    <p>##</p>
+                    <p><input id="plate5-ichip4-scan_slot"></p>
                 </td>
             </tr>
             <tr>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate5-ichip1-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate5-ichip2-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate5-ichip3-comments"></p>
                 </td>
                 <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:</p>
+                    <p style="text-align:left;">Comments:<input id="plate5-ichip4-comments"></p>
                 </td>
             </tr>
         </table>
@@ -1741,7 +1746,7 @@
         <table id="table7" class="gama" align="center">
             <tr>
                 <td style="width:10%" rowspan="5">
-                    <div id="SLE-key_image"><img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/report_right_image.jpg" style="width:1.0in;height:0.6in"></div>
+                    <div id="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
                     <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
                 </td>
                 <td colspan="3" style="text-align: center;">
@@ -3331,3 +3336,4 @@
     <script src= "++resource++immunarray.lims/js/commercial_run.js"></script>
 </metal:main>
 </body>
+</html>
