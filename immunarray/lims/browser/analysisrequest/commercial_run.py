@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from plone.dexterity.utils import createContentInContainer
 from plone import api
 from bika.lims.permissions import disallow_default_contenttypes
-from immunarray.lims.permissions import AddClinicalSample
-from immunarray.lims.permissions import AddClinicalAliquot
-from immunarray.lims.permissions import AddPatient
 from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
 from Products.statusmessages.interfaces import IStatusMessage
@@ -68,8 +64,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # Get iChipLots that passed QC process
         # iChipAcceptanceStatus =='Passed'
         # Have to open up the iChipLots, then walk them!
-        values = api.content.find(context=api.portal.get(), portal_type='iChipLot')
-        ichip_uids = [u.UID for u in values]
-        for i in ichip_uids:
+        #values = api.content.find(context=api.portal.get(), portal_type='iChipLot')
+        #ichip_uids = [u.UID for u in values]
+        #for i in ichip_uids:
 
 
