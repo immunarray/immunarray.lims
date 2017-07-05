@@ -137,6 +137,9 @@ class AddRecView(BrowserView):
 
             if pt_UID != "new_patient":
                 print ("PT UID: " + pt_UID + " USN from Form : "+ usn_from_form)
+                # update existing record
+                self.update_existing_patient_data(pt_UID,dob, first, last, mrn, ssn, gender, marital_status, ethnicity, ethnicity_other,
+                                                  patient_address, patient_city, patient_state, patient_zip_code, patient_phone)
                 self.append_usn(usn_from_form, pt_UID)
 
             else:
@@ -185,7 +188,7 @@ class AddRecView(BrowserView):
         #self.update_kit_count(site_id)
         return self.template()
         # pop up to select assays that are active in system!
-        # clear rec form and reset for next sample entry
+        # clear rec form and reset for next sample entry, using javascrip to do that on success!
 
     def site_lookup(self, site_id):
         ''' Site ID to get practice names, and make list of provider NIP's at that
@@ -408,7 +411,6 @@ class AddRecView(BrowserView):
         #
         pt_record = api.content.get(UID=pt_UID)
         pt_record.tested_unique_sample_ids.append(usn_from_form)
-        pass
 
     def update_kit_count(self, site_id):
         """Update site kits on hand count to be reduced by 1
@@ -445,6 +447,26 @@ class AddRecView(BrowserView):
         "pt_phone_number":pt_record.phone_numbers}
         # import pdb;pdb.set_trace()
         return data
+
+    def update_existing_patient_data(self, pt_UID,dob, first, last, mrn, ssn, gender, marital_status, ethnicity, ethnicity_other,
+    patient_address, patient_city, patient_state, patient_zip_code, patient_phone):
+        """Update existing patient with the data that was entered by user
+        """
+        # fields in patient record, not able to update first, last, or dob by definition
+        # not working as expected this redefines the form data to existing data
+        # phone number update is not simple! need to think about best practice
+        pt_record = api.content.get(UID=pt_UID)
+        pt_record.medical_record_number = mrn
+        pt_record.ssn = ssn
+        pt_record.gender = gender
+        pt_record.marital_status = marital_status
+        pt_record.ethnicity = ethnicity
+        pt_record.ethnicity_other = ethnicity_other
+        pt_record.physical_address = patient_address
+        pt_record.physical_address_city = patient_city
+        pt_record.physical_address_state = patient_state
+        pt_record.physical_address_zipcode = patient_zip_code
+        print "Patient Record Updated UID: " + pt_UID
 
     def make_bulk_aliquots(self,sample_UID, usn_from_form, letter_to_add):
         """Make aliquot A based on USN and UID of the parent sample
