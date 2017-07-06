@@ -489,13 +489,15 @@ class AddRecView(BrowserView):
     def make_working_aliquots(self, usn_from_form, bulk_aliquot_UID, tube_number):
         today = datetime.datetime.today().date()
         target_clinical_sample = api.content.get(UID=bulk_aliquot_UID)
+        #adjust volume for child aliquot
+        target_clinical_sample.volume -= 12
         clinical_aliquot = api.content.create(container=target_clinical_sample,
-                                              type ='ClinicalAliquot',
-                                              title =usn_from_form + "-A" + tube_number,
-                                              sample_id = target_clinical_sample.title,
-                                              aliquot_type = 'Working',
-                                              volume = 12,
-                                              pour_date = today
+                                              type='ClinicalAliquot',
+                                              title=usn_from_form + "-A" + tube_number,
+                                              sample_id=target_clinical_sample.title,
+                                              aliquot_type='Working',
+                                              volume=12,
+                                              pour_date=today
                                               )
         print "Clinical Working Aliquot with ID of " + clinical_aliquot.title + " made"
         clinical_aliquot_UID = clinical_aliquot.UID()
