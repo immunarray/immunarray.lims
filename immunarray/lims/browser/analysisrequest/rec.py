@@ -184,6 +184,7 @@ class AddRecView(BrowserView):
 
             # import pdb;pdb.set_trace()
             self.update_kit_count(site_id)
+            # add aliquots to box for storage!
             return json.dumps({"feedback":"got it"})
 
 
