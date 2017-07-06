@@ -183,9 +183,10 @@ class AddRecView(BrowserView):
             # make working aliquots
 
             # import pdb;pdb.set_trace()
+            self.update_kit_count(site_id)
             return json.dumps({"feedback":"got it"})
 
-        #self.update_kit_count(site_id)
+
         return self.template()
         # pop up to select assays that are active in system!
         # clear rec form and reset for next sample entry, using javascrip to do that on success!
