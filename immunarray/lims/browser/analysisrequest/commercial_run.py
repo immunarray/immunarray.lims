@@ -21,7 +21,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile("templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
 
     def __init__(self, context, request):
-        ichip_assays_terms = IChipAssayListVocabulary.__call__(self).by_value.keys()
         self.context = context
         self.request = request
         self.errors = []
@@ -29,6 +28,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
     def __call__(self):
         add_resource_on_request(self.request, "static.js.commercial_run.js")
+        iChipAssayList = self.get_vocab_keys(IChipAssayListVocabulary)
         # import pdb;pdb.set_trace()
         # request = self.request
         #assay = self.request('testtorun')
@@ -101,7 +101,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         pass
 
-    def get_ichip_assays(self):
-        ichip_assays_terms = IChipAssayListVocabulary.__call__(self).by_value.keys()
+    def ichipassaylist(self):
+        vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
+        return vocab_keys
 
-
+    def get_vocab_keys(self, vocab):
+        vocab_keys = vocab.__call__(self).by_value.keys()
+        return vocab_keys
