@@ -97,13 +97,15 @@
 <metal:main fill-slot="main">
     <form action="buildtest" name="buildtest" method="post">
         <input type="hidden" name="submitted" value="1"/>
-        <select>
-            <option value='None'>None</option>
-            <option tal:content="python: ichip_assays_terms"></option>>
+        <select id="assay_selection">
+            <option name="None">None</option>>
+                <tal:block repeat="assay object/@@ctest/ichipassaylist">
+                    <option tal:content ="assay"></option>
+                </tal:block>
+            <option name="Custom">Custom</option>>
         </select>
         <!-- Header PP-007.04-->
-        <input type="button" title="Build Clinical Run" id="buildclinicalrun" value="Build Clinical Run">
-        <input type="button" title="Build R&D Run" id="buildranddrun" value="Build R&D Run">
+        <input type="button" title="Build Selected Run" id="buildselectedrun" value="Build Selected Run">
         <input type="button" title="Save Run" id="saverun" value="Save Run">
         <input type="button" title="Print Run" id="printrun" value="Print Run">
         <table id="table1" class="alpha">
