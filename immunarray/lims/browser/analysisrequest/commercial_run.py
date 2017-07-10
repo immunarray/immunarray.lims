@@ -27,7 +27,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
 
     def __call__(self):
-        add_resource_on_request(self.request, "static.js.commercial_run.js")
+        add_resource_on_request(self.request, "static.js.test_run.js")
         iChipAssayList = self.get_vocab_keys(IChipAssayListVocabulary)
         # import pdb;pdb.set_trace()
         # request = self.request
