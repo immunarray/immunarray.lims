@@ -31,6 +31,12 @@ class AddRecView(BrowserView):
         request = self.request
 
         if "usn_update" in request.form:
+            # need to know if the site has free kits, requires siteID, and to get free_kits_left
+            # need to pass billing status to make sample def, default will be billable_code will be "Billable"
+            # with no billable_code_designation
+            # need to alert user if the kit site is a sales person so the value
+            # can be updated, sales person needs to add the kits to the site for this to work
+
             authenticator = request.form.get('_authenticator')
             try:
                 plone.protect.CheckAuthenticator(authenticator)
@@ -44,8 +50,11 @@ class AddRecView(BrowserView):
             # Do things
             usn_check = self.check_unique_sample_id(usn)
             site_name = self.site_lookup(site_id)
+            check_if_site_is_sales_rep = self.check_if_site_is_sales_rep(site_id)
             docs_at_barcode_site = self.providers_at_site(site_id)
-            if usn_check != "non unique usn":
+            if check_if_site_is_sales_rep is True:
+                return json.dumps({"site_name":site_name, "docs_at_barcode_site":docs_at_barcode_site, "sales_rep_kit":check_if_site_is_sales_rep})
+            elif usn_check != "non unique usn":
                 return json.dumps({"site_name":site_name, "docs_at_barcode_site":docs_at_barcode_site})
 
         if "check_name_and_dob" in request.form:
@@ -149,8 +158,6 @@ class AddRecView(BrowserView):
                                   patient_city, patient_state, patient_zip_code,
                                   patient_phone, usn_from_form)
 
-
-
             sample_UID = self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
                                       clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
                                       clin_inflam, clin_other, clin_other_specify, diag_D89_89, diag_M32_10, diag_D89_9,
@@ -183,14 +190,17 @@ class AddRecView(BrowserView):
             # make working aliquots
 
             # import pdb;pdb.set_trace()
-            self.update_kit_count(site_id)
+            try:
+                self.update_kit_count(site_id)
+            except:
+                print "Kit Count for Site " + site_id + " Failed to Update"
             # add aliquots to box for storage!
             return json.dumps({"feedback":"got it"})
 
 
         return self.template()
         # pop up to select assays that are active in system!
-        # clear rec form and reset for next sample entry, using javascrip to do that on success!
+        # clear rec form and reset for next sample entry, using javascript to do that on success!
 
     def site_lookup(self, site_id):
         ''' Site ID to get practice names, and make list of provider NIP's at that
@@ -504,3 +514,15 @@ class AddRecView(BrowserView):
         print "Clinical Working Aliquot with ID of " + clinical_aliquot.title + " made"
         clinical_aliquot_UID = clinical_aliquot.UID()
         return clinical_aliquot_UID
+
+    def check_if_site_is_sales_rep(self,site_id):
+        """See if kit came from a sales rep site
+        """
+        site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
+        site_uids = [i.UID for i in site_objects]
+        site_is_sales_rep=False
+        for j in site_uids:
+            site = api.content.get(UID=j)
+            if site_id == str(site.title):
+                site_is_sales_rep=site.sales_rep
+        return site_is_sales_rep
