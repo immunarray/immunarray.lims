@@ -142,7 +142,7 @@
             </td>
             <td colspan="2">
               <p>
-                Social Security Number:<input pattern="\d{3}[\-]\d{2}[\-]\d{4}" style="background-color:yellow" type="text" name="ssn" id="ssn"/>
+                Social Security Number:<input pattern="\d{3}[\-]\d{2}[\-]\d{4}" type="text" name="ssn" id="ssn"/>
               </p>
             </td>
           </tr>
