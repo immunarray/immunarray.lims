@@ -303,11 +303,14 @@ require([
                                     'ordering_provider_name':ordering_provider_name,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
-                                alert("Sample Added to LIMS " + uniqueSampleNumber)
-                                location.reload()
+                                fullSubmitFeedback = JSON.parse(responseText)
+                                if (fullSubmitFeedback['feedback'] === "Missing Key Data Elements"){alert("Missing Key Data Elements, Please update to include Unique Sample Number, First Name, Date of Birth, and Collection Date")}
+                                if (fullSubmitFeedback['feedback'] === "Successful Sample"){
+                                    alert("Sample Added to LIMS " + uniqueSampleNumber)
+                                    location.reload()
                                 }
-                            });
-            }
+                            }
+            })}
 
         document.getElementById("fullSubmit").onclick = sendAllDataToLims;
 
