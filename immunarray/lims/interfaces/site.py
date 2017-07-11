@@ -20,10 +20,11 @@ class ISite(IOrganisation):
         required=False,
     )
 
-    sales_rep = schema.TextLine(
+    sales_rep = schema.Bool(
         title=_(u"Sales Representative"),
-        description=_(u"Sales Representative"),
-        required=False,
+        description=_(u"Site is a Sales Representative"),
+        default=False,
+        required=True,
     )
 
     setup_by = schema.TextLine(
@@ -67,6 +68,12 @@ class ISite(IOrganisation):
     kits_on_site = schema.Int(
         title=_(u"Kits on Site"),
         description=_(u"Kits on Site"),
+        required=False,
+    )
+
+    free_kits_left = schema.Int(
+        title=_(u"Free Kits Left"),
+        description=_(u"Free Kits Left"),
         required=False,
     )
 
