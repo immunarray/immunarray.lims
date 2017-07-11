@@ -42,6 +42,9 @@ require([
                             option.text= a;
                             currentNpiList.append(option);
                         }
+                        var salesRepKit = siteInfo["sales_rep_kit"]
+                        if (salesRepKit===true){
+                            alert("Kit Site is a Sales Rep, Please Update Site ID")}
                         //alert (providersAtSite[0])
                     }
                 });
