@@ -142,62 +142,64 @@ class AddRecView(BrowserView):
             ordering_provider_name = request.form.get('ordering_provider_name')
             pt_UID = "new_patient"
             # See if we have an existing pt
-            pt_UID = self.repeat_order_check(dob, first, last, pt_UID)
-
-            if pt_UID != "new_patient":
-                print ("PT UID: " + pt_UID + " USN from Form : "+ usn_from_form)
-                # update existing record
-                self.update_existing_patient_data(pt_UID,dob, first, last, mrn, ssn, gender, marital_status, ethnicity, ethnicity_other,
-                                                  patient_address, patient_city, patient_state, patient_zip_code, patient_phone)
-                self.append_usn(usn_from_form, pt_UID)
-
+            missing_date_feedback =  json.dumps({"feedback":"Missing Key Data Elements"})
+            # protection for making samples and new patient records, usn must be unique, first name not null, dob not null, collection date not null
+            if usn_from_form == 'undefined-undefined':
+                return missing_date_feedback
+            elif first == '':
+                return missing_date_feedback
+            elif dob == '':
+                return missing_date_feedback
+            elif collection_date == '':
+                return missing_date_feedback
             else:
-                print "Make a new patient record"
-                self.make_patient(first, last, ssn, mrn, dob, gender, ethnicity,
-                                  ethnicity_other, marital_status, patient_address,
-                                  patient_city, patient_state, patient_zip_code,
-                                  patient_phone, usn_from_form)
-
-            sample_UID = self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
-                                      clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
-                                      clin_inflam, clin_other, clin_other_specify, diag_D89_89, diag_M32_10, diag_D89_9,
-                                      diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
-                                      provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
-                                      draw_signed, collection_date, shipment_date, test_other_specify,
-                                      clinical_impression, ordering_provider_name, site_id)
-
-            # make bulk aliquots
-            # fancy way to have multiple tubes in the system, update letter list as more tubes are added
-            # easy way
-            draw_tubes = ['A','B']
-            bulk_aliquotA = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[0])
-            print bulk_aliquotA
-            bulk_aliquotB = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[1])
-            print  bulk_aliquotB
-
-            # make working aliquots
-            working_tubes = ['02','03','04']
-            working_aliquotA02 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[0])
-            print working_aliquotA02
-            working_aliquotA03 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[1])
-            print working_aliquotA03
-            working_aliquotA04 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[2])
-            print working_aliquotA04
-
-            #for t in tubes:
-            #    exec ("bulk_aliquot" %t) = self.make_bulk_aliquots(sample_UID, usn_from_form, t)
-            #    print"bulk_aliquot" % (t)
-            # make working aliquots
-
-            # import pdb;pdb.set_trace()
-            try:
-                self.update_kit_count(site_id)
-            except:
-                print "Kit Count for Site " + site_id + " Failed to Update"
-            # add aliquots to box for storage!
-            return json.dumps({"feedback":"got it"})
-
-
+                pt_UID = self.repeat_order_check(dob, first, last, pt_UID)
+                if pt_UID != "new_patient":
+                    print ("PT UID: " + pt_UID + " USN from Form : "+ usn_from_form)
+                 # update existing record
+                    self.update_existing_patient_data(pt_UID,dob, first, last, mrn, ssn, gender, marital_status, ethnicity, ethnicity_other,
+                                                      patient_address, patient_city, patient_state, patient_zip_code, patient_phone)
+                    self.append_usn(usn_from_form, pt_UID)
+                else:
+                    print "Make a new patient record"
+                    self.make_patient(first, last, ssn, mrn, dob, gender, ethnicity,
+                                      ethnicity_other, marital_status, patient_address,
+                                      patient_city, patient_state, patient_zip_code,
+                                      patient_phone, usn_from_form)
+                sample_UID = self.make_clinical_sample(usn_from_form, consent_acquired, ana_testing, clin_rash,
+                                          clin_seiz_psych, clin_mouth_sores, clin_hair_loss, clin_joint_pain,
+                                          clin_inflam, clin_other, clin_other_specify, diag_D89_89, diag_M32_10, diag_D89_9,
+                                          diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
+                                          provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
+                                          draw_signed, collection_date, shipment_date, test_other_specify,
+                                          clinical_impression, ordering_provider_name, site_id)
+                # make bulk aliquots
+                # fancy way to have multiple tubes in the system, update letter list as more tubes are added
+                # easy way
+                draw_tubes = ['A','B']
+                bulk_aliquotA = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[0])
+                print bulk_aliquotA
+                bulk_aliquotB = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[1])
+                print  bulk_aliquotB
+                # make working aliquots
+                working_tubes = ['02','03','04']
+                working_aliquotA02 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[0])
+                print working_aliquotA02
+                working_aliquotA03 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[1])
+                print working_aliquotA03
+                working_aliquotA04 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[2])
+                print working_aliquotA04
+                #for t in tubes:
+                #    exec ("bulk_aliquot" %t) = self.make_bulk_aliquots(sample_UID, usn_from_form, t)
+                #    print"bulk_aliquot" % (t)
+                # make working aliquots
+                # import pdb;pdb.set_trace()
+                try:
+                    self.update_kit_count(site_id)
+                except:
+                    print "Kit Count for Site " + site_id + " Failed to Update"
+                # add aliquots to box for storage!
+                return json.dumps({"feedback":"Successful Sample"})
         return self.template()
         # pop up to select assays that are active in system!
         # clear rec form and reset for next sample entry, using javascript to do that on success!
