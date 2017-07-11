@@ -51,6 +51,9 @@
       #table14{
       width:100%;
       }
+      #table15{
+      width:100%;
+      }
       p{
       font-family:Helvetica;
       font-size:10pt;
@@ -540,6 +543,20 @@
               <p>
                 Date of Shipment:
                 <input type="date" name="shipment_date" id="shipment_date"/>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Billable:
+                <input name="billable_code" id="billable_code"/>
+              </p>
+            </td>
+            <td>
+              <p>
+                Designation:
+                <input name="billable_code_designation" id="billable_code_designation"/>
               </p>
             </td>
           </tr>
