@@ -102,12 +102,12 @@
                 <tal:block repeat="assay object/@@ctest/ichipassaylist">
                     <option tal:content ="assay"></option>
                 </tal:block>
-            <option name="Custom">Custom</option>>
+            <option name="Custom">Custom</option>
         </select>
         <!-- Header PP-007.04-->
-        <input type="button" title="Build Selected Run" id="buildselectedrun" value="Build Selected Run">
-        <input type="button" title="Save Run" id="saverun" value="Save Run">
-        <input type="button" title="Print Run" id="printrun" value="Print Run">
+        <input type="button" id="buildselectedrun" value="Build Selected Run"/>
+        <input type="button" id="saverun" value="Save Run"/>
+        <input type="button" id="printrun" value="Print Run"/>
         <table id="table1" class="alpha">
             <tr>
                 <td style="width:10%" rowspan="5">
@@ -3340,7 +3340,7 @@
             </tr>
         </table>
     </form>
-    <script src= "++resource++immunarray.lims/js/commercial_run.js"></script>
+    <script src= "++resource++immunarray.lims/js/test_run.js"></script>
 </metal:main>
 </body>
 </html>
