@@ -382,12 +382,18 @@ class IClinicalSample(model.Schema):
 
     """directives.widget(level=RadioFieldWidget)"""
     billable_code = schema.Choice(
-        title=_(u"Commercail Status"),
+        title=_(u"Commercial Status"),
         description=_(u"Commercial Status"),
         required=True,
         values=[_(u'Billable'),
-                _(u'No Charge'),
-                _(u'RUO')],
+                _(u'No Charge')],
+    )
+
+    # will allow for sub categorization of billing status ie, vulture, non ball bill ect
+    billable_code_designation = schema.TextLine(
+        title=_(u"Billing Designation of Sample"),
+        description=_(u"Billing Designation of Sample"),
+        required=False,
     )
 
     assignment_of_benefits_patient_name = schema.TextLine(
