@@ -2,6 +2,8 @@
 require(['jquery'],
 
 (function($) {
-    var testChoice = document.querySelector('#assay_selection').value;
-    document.getElementById("buildselectedrun").onclick = alert(testChoice);
-    }))
+    $('#assay_selection').change(function() {
+        var assaySelected = $(this).val()
+        alert (assaySelected)
+    })
+}))
