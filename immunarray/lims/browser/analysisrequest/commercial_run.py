@@ -12,6 +12,7 @@ import plone.protect
 import json
 import datetime
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.schema.interfaces import IVocabularyFactory
 
 
@@ -28,19 +29,31 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
     def __call__(self):
         add_resource_on_request(self.request, "static.js.test_run.js")
+        request = self.request
         iChipAssayList = self.get_vocab_keys(IChipAssayListVocabulary)
-        # import pdb;pdb.set_trace()
-        # request = self.request
-        #assay = self.request('testtorun')
-
-        #if "buildrun" in request.form:
-        #    authenticator = request.form.get('_authenticator')
-        #    try:
+        if "assaySeleced" in request.form:
+            authenticator = request.form.get('_authenticator')
+            # gives me the assay value from the ctest form
+            assay = request.form.get("assaySeleced")
+            # setup for "custom"
+            assay_parameters = self.getInfoAboutSelectedAssay(assay)
+            import pdb;pdb.set_trace()
 
         return self.template()
     def getInfoAboutSelectedAssay(self, assay):
         """Use end user selection to pull needed number of working aliqutots for assay
         """
+        # Code that makes the vocabulary for iChipAssay, use this to get the UID?
+        values = api.content.find(context=api.portal.get(), portal_type='iChipAssay')
+        ichipassay = {}
+        ichipassay_ids = [v.UID for v in values]
+        for i in ichipassay_ids:
+            value = api.content.get(UID=i)
+            ichipassay.update{"-".join([value.title, value.status]):v.UID}
+        normalizer = queryUtility(IIDNormalizer)
+        items = [(o, normalizer.normalize(o).upper()) for o in ichipassay]
+
+
         #from IiChipAssay
         #title
         #ichiptype
