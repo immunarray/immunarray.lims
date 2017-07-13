@@ -39,10 +39,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # setup for "custom"
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
             # get dictionary of all the samples that need to be tested for the selected assay
-            all_to_be_tested_sample_ids={}
-            import pdb;pdb.set_trace()
-
+            # logic on what samples to be tested
+            # can make decisions based on the assay_parameters status
+            if assay_parameters["status"] == 'Commercial':
+                # find commercial samples
+                commercial_samples={}
+                ichips_for_session={}
+                soluitons_for_session={}
+            if assay_parameters["status"] == 'Development':
+                # make a developmoent run
+                development_samples={}
+                ichips_for_session={}
+                soluitons_for_session={}
+            if assay == 'Custom':
+                all_samples_in_lims={}
+                ichips_for_session={}
+                soluitons_for_session={}
         return self.template()
+
+
     def getInfoAboutSelectedAssay(self, assay):
         """Use end user selection to pull needed number of working aliqutots for assay
         """
@@ -66,18 +81,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             return selected_assay_paramaters
         except:
             print "Assay Parameters Not Available"
-            # import pdb;pdb.set_trace()
 
         
-    def querySamples(self, assay):
+    def queryClinicalSamples(self, assay):
         """Get all the samples that have pending test and arrange them by
         collection date
         """
         values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
-        things_to_test = {}
+        all_to_test = {}
         #key = id, values = [uid,draw_date,test_status]
-        sample_ids_to_be_tested = []
-        sample_uids_to_be_tested = []
         # get ClinicalSamples where values.sample_status = 'Received'
         for u in values:
             if u.sample_status == 'Received':
