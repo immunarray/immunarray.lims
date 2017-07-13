@@ -68,12 +68,14 @@ class ISite(IOrganisation):
     kits_on_site = schema.Int(
         title=_(u"Kits on Site"),
         description=_(u"Kits on Site"),
+        default=0,
         required=False,
     )
 
     free_kits_left = schema.Int(
         title=_(u"Free Kits Left"),
         description=_(u"Free Kits Left"),
+        default=0,
         required=False,
     )
 
