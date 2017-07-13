@@ -13,6 +13,7 @@ import json
 import datetime
 from zope.component import getUtility
 from zope.component import queryUtility
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.schema.interfaces import IVocabularyFactory
 
 
@@ -37,6 +38,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             assay = request.form.get("assaySeleced")
             # setup for "custom"
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
+            # get dictionary of all the samples that need to be tested for the selected assay
+            all_to_be_tested_sample_ids={}
             import pdb;pdb.set_trace()
 
         return self.template()
@@ -45,26 +48,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         # Code that makes the vocabulary for iChipAssay, use this to get the UID?
         values = api.content.find(context=api.portal.get(), portal_type='iChipAssay')
-        ichipassay = {}
+        ichipassays = {}
+        selected_assay_paramaters={}
+        variables_to_get=['creation_date','creators','description','desired_working_aliquot_volume','ichiptype','id','max_number_of_plates_per_test_run','modification_date','number_of_high_value_controls','number_of_low_value_controls','number_of_same_lot_replication_needed_for_samples','number_of_unique_ichips_lots_needed','number_of_working_aliquots_needed','portal_type','sample_qc_dilution_factor','sample_qc_dilution_material','status','title']
         ichipassay_ids = [v.UID for v in values]
         for i in ichipassay_ids:
             value = api.content.get(UID=i)
-            ichipassay.update{"-".join([value.title, value.status]):v.UID}
-        normalizer = queryUtility(IIDNormalizer)
-        items = [(o, normalizer.normalize(o).upper()) for o in ichipassay]
-
-
-        #from IiChipAssay
-        #title
-        #ichiptype
-        #number_of_unique_ichips_lots_needed
-        #number_of_same_lot_replication_needed_for_samples
-        #number_of_high_value_controls
-        #number_of_low_value_controls
-        #max_number_of_plates_per_test_run
-        #number_of_working_aliquots_needed
-        #sample_qc_dilution_factor
-        #desired_working_aliquot_volume
+            assay_name_with_spaces = "-".join([value.title, value.status])
+            normalizer = queryUtility(IIDNormalizer)
+            assay_name_post_norml = normalizer.normalize(assay_name_with_spaces).upper()
+            ichipassays.update({assay_name_post_norml:i})
+        try:
+            ichipassay_uid = ichipassays[assay]
+            assay_object = api.content.get(UID=ichipassay_uid)
+            for t in variables_to_get:
+                selected_assay_paramaters.update({t:assay_object._get_request_var_or_attr(t, '')})
+            return selected_assay_paramaters
+        except:
+            print "Assay Parameters Not Available"
+            # import pdb;pdb.set_trace()
 
         
     def querySamples(self, assay):
