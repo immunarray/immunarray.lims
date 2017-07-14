@@ -561,6 +561,13 @@
             </td>
           </tr>
         </table>
+        <table>
+          <fieldset name="assay_choice_from_rec">
+            <tal:block repeat="assay object/@@ctest/ichipassaylist">
+              <input type='checkbox' tal:attributes="id assay;value assay" tal:content ="assay"></input><br>
+            </tal:block>
+          </fieldset>
+        </table>
         <input type="button" value="Order" id="fullSubmit"/>
       </form>
       <script src= "++resource++immunarray.lims/js/rec.js"></script>
