@@ -12,7 +12,7 @@ class IPatient(IPerson):
     dob = schema.Date(
         title=_(u"Date of Birth"),
         description=_(u"Date of Birth"),
-        required=False,
+        required=True,
     )
 
     marital_status = schema.Choice(
