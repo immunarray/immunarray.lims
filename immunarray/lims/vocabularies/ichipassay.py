@@ -8,7 +8,7 @@ from zope.schema.interfaces import IVocabularyFactory, IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
 class IChipAssayList(object):
-    """Produces full list of all iChips
+    """Produces full list of all Non Retired iChip Assays in LIMS
     """
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
@@ -17,7 +17,9 @@ class IChipAssayList(object):
         ichipassay_ids = [v.UID for v in values]
         for i in ichipassay_ids:
             value = api.content.get(UID=i)
-            ichipassay.append("-".join([value.title, value.status]))
+            #only get non retired assays
+            if value.status=="Commercial" or value.status=="Development":
+                ichipassay.append("-".join([value.title, value.status]))
         normalizer = queryUtility(IIDNormalizer)
         items = [(o, normalizer.normalize(o).upper()) for o in ichipassay]
         return SimpleVocabulary.fromItems(items)
