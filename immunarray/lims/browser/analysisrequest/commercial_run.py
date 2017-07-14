@@ -38,15 +38,21 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             assay = request.form.get("assaySeleced")
             # setup for "custom"
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
+            frames=assay_parameters['ichiptype']
             # get dictionary of all the samples that need to be tested for the selected assay
             # logic on what samples to be tested
             # can make decisions based on the assay_parameters status
-            if assay_parameters["status"] == 'Commercial':
-                # find commercial samples
+            status_from_test_choice = assay_parameters["status"]
+            if status_from_test_choice == 'Commercial':
+                samples_to_get = 'ClinicalSample'
+                full_set = self.queryClinicalSamples(assay,samples_to_get)
+                #Need to order full_set by collection_date oldest to newest, then test_ordered_status
+                import pdb;pdb.set_trace()
                 commercial_samples={}
                 ichips_for_session={}
                 soluitons_for_session={}
-            if assay_parameters["status"] == 'Development':
+            if status_from_test_choice == 'Development':
+                samples_to_get = 'RandDSample'
                 # make a developmoent run
                 development_samples={}
                 ichips_for_session={}
@@ -83,31 +89,42 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             print "Assay Parameters Not Available"
 
         
-    def queryClinicalSamples(self, assay):
+    def queryClinicalSamples(self, assay,samples_to_get):
         """Get all the samples that have pending test and arrange them by
         collection date
         """
-        values = api.content.find(context=api.portal.get(), portal_type='ClinicalSample')
+        values = api.content.find(context=api.portal.get(), portal_type=samples_to_get)
         all_to_test = {}
         #key = id, values = [uid,draw_date,test_status]
+        # fast search to limit the options
         # get ClinicalSamples where values.sample_status = 'Received'
         for u in values:
             if u.sample_status == 'Received':
-                uids = [u.UID for u in values]
-                # need to open the samples that have pending tests and get the SLE
-                # get a.test_ordered_status
-                # u'SLEKEY-RO-V2-0-COMMERCIAL': u'Received', only want to test the ones that are in "To Be Tested"
-                # append UIDs to list, that will be used to update all selected samples on save of test plan
-                # need to get all reruns first
-                # get all "To Be Tested" next
-        # get UIDs
+                open_clinical_sample_uids = [u.UID for u in values]
+                for ocs in open_clinical_sample_uids:
+                    #open object
+                    a=api.content.get(UID=ocs)
+                    # check for 'Rerun' or 'To Be Tested' or 'Received'
+                    if a.test_ordered_status[assay] == "Received" or a.test_ordered_status[assay] == "Rerun" or a.test_ordered_status[assay] == "To Be Tested":
+                        # add sample info to all_to_test dict, {UID:[title, collection_date, test_ordered_status]}
+                        all_to_test.update({ocs:[a.title, a.collection_date, a.test_ordered_status]})
+        return all_to_test
+
+    def queryWorkingAliqutos(self):
+        """Query to get working aliquots to test with
+        """
         pass
-
-
-
-    def getiChipsForTesting(self, assay, sample_count):
+        
+    def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
         """
+        values = api.content.find(context=api.portal.get(), portal_type='iChipLot')
+        ichiplot_uid =[u.UID for u in values]
+        lots_for_selected_assay=[]
+        for v in ichiplot_uid:
+            if v.intended_assay == assay and v.acceptance_status =='Passed' and v.frames==frame:
+                lots_for_selected_assay.append(v.title)
+
         pass
         # Get iChipLots that are not expired
         # ichip_lot_expiration_date
