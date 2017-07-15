@@ -124,6 +124,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         for v in ichiplot_uid:
             if v.intended_assay == assay and v.acceptance_status =='Passed' and v.frames==frame:
                 lots_for_selected_assay.append(v.title)
+                # give the ichip lot in a list
+                # need to get id of ichips in each lot that can be used for testing,
 
         pass
         # Get iChipLots that are not expired
