@@ -126,11 +126,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         for v in ichiplot_uid:
             # get the ichiplot object to get needed details
             ichiplot = api.content.get(UID=v)
-            import pdb;pdb.set_trace()
-            number_of_assays_on_lot = ichiplot.intended_assay.__len__()
-            if ichiplot.intended_assay == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
-                lots_for_selected_assay.append(ichiplot.title)
-                import pdb;pdb.set_trace()
+            for n in ichiplot.intended_assay:
+                if n == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
+                    lots_for_selected_assay.append(ichiplot.title)
+        import pdb;pdb.set_trace()
                 # give the ichip lot in a list
                 # need to get id of ichips in each lot that can be used for testing,
 
