@@ -124,27 +124,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         ichiplot_uid =[u.UID for u in values]
         lots_for_selected_assay=[]
         for v in ichiplot_uid:
-            # get the ichiplot object to get needed details
             ichiplot = api.content.get(UID=v)
             for n in ichiplot.intended_assay:
                 if n == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
                     lots_for_selected_assay.append(ichiplot.title)
         import pdb;pdb.set_trace()
                 # give the ichip lot in a list
-                # need to get id of ichips in each lot that can be used for testing,
-
-        # Get iChipLots that are not expired
-        # ichip_lot_expiration_date
-        # Get iChipLots that have the correct layout
-        # frames == '8 Frame iChips'
-        # Get iChipLots that are for the correct test
-        # intended_assay = 'SLEKEY-RO-V2-0-COMMERCIAL'
-        # Get iChipLots that passed QC process
-        # iChipAcceptanceStatus =='Passed'
-        # Have to open up the iChipLots, then walk them!
-        #values = api.content.find(context=api.portal.get(), portal_type='iChipLot')
-        #ichip_uids = [u.UID for u in values]
-        #for i in ichip_uids:
+                # need to get id of ichips in each lot that can be used for testing
 
     def makePullList(self):
         """Make a simple pull list of box location number and sample IDs to pull
