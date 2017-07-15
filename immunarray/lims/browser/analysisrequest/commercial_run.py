@@ -46,7 +46,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             if status_from_test_choice == 'Commercial':
                 samples_to_get = 'ClinicalSample'
                 full_set = self.queryClinicalSamples(assay,samples_to_get)
+                sample_count = full_set.__len__()
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
+                ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 import pdb;pdb.set_trace()
                 commercial_samples={}
                 ichips_for_session={}
@@ -122,12 +124,16 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         ichiplot_uid =[u.UID for u in values]
         lots_for_selected_assay=[]
         for v in ichiplot_uid:
-            if v.intended_assay == assay and v.acceptance_status =='Passed' and v.frames==frame:
-                lots_for_selected_assay.append(v.title)
+            # get the ichiplot object to get needed details
+            ichiplot = api.content.get(UID=v)
+            import pdb;pdb.set_trace()
+            number_of_assays_on_lot = ichiplot.intended_assay.__len__()
+            if ichiplot.intended_assay == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
+                lots_for_selected_assay.append(ichiplot.title)
+                import pdb;pdb.set_trace()
                 # give the ichip lot in a list
                 # need to get id of ichips in each lot that can be used for testing,
 
-        pass
         # Get iChipLots that are not expired
         # ichip_lot_expiration_date
         # Get iChipLots that have the correct layout
