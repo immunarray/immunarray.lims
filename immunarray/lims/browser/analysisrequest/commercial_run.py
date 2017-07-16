@@ -16,8 +16,6 @@ from zope.component import queryUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.schema.interfaces import IVocabularyFactory
 
-
-
 class AddCommercialEightFrameTestRunView(BrowserView):
 
     template = ViewPageTemplateFile("templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
@@ -26,7 +24,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         self.context = context
         self.request = request
         self.errors = []
-
 
     def __call__(self):
         add_resource_on_request(self.request, "static.js.test_run.js")
@@ -49,7 +46,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 sample_count = full_set.__len__()
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
-                import pdb;pdb.set_trace()
+                # import pdb;pdb.set_trace()
                 commercial_samples={}
                 ichips_for_session={}
                 soluitons_for_session={}
@@ -65,9 +62,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 soluitons_for_session={}
         return self.template()
 
-
     def getInfoAboutSelectedAssay(self, assay):
-        """Use end user selection to pull needed number of working aliqutots for assay
+        """Use end user selection to pull needed number of working aliquots for assay
         """
         # Code that makes the vocabulary for iChipAssay, use this to get the UID?
         values = api.content.find(context=api.portal.get(), portal_type='iChipAssay')
@@ -90,7 +86,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         except:
             print "Assay Parameters Not Available"
 
-        
     def queryClinicalSamples(self, assay,samples_to_get):
         """Get all the samples that have pending test and arrange them by
         collection date
@@ -116,7 +111,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """Query to get working aliquots to test with
         """
         pass
-        
+
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
         """
