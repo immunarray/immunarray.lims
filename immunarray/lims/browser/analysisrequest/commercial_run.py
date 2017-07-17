@@ -46,6 +46,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 sample_count = full_set.__len__()
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
+                import pdb;pdb.set_trace()
                 # import pdb;pdb.set_trace()
                 commercial_samples={}
                 ichips_for_session={}
@@ -125,13 +126,18 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             ichiplot = api.content.get(UID=v)
             for n in ichiplot.intended_assay:
                 if n == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
-                    ichips_in_lot=[]
-                    lots_for_selected_assay.append(ichiplot.title)
-                    current_ichips = ichiplot.contentItems()
-                    import pdb;pdb.set_trace()
-        import pdb;pdb.set_trace()
-                # give the ichip lot in a list
-                # need to get id of ichips in each lot that can be used for testing
+                    #commercial needs
+                    dict_key = ichiplot.title
+                    ichips_in_lot=ichiplot.contentIds()
+                    dict_values = []
+                    for ichip in ichips_in_lot:
+                        a = ichiplot.__getitem__(ichip)
+                        if a.ichip_status == 'Released':
+                            chip_uid = a.UID()
+                            dict_values.append(chip_uid)
+                        dict_ichips.update({dict_key:dict_values})
+        print dict_ichips
+        return dict_ichips
 
     def makePullList(self):
         """Make a simple pull list of box location number and sample IDs to pull
