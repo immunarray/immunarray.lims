@@ -49,6 +49,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # import pdb;pdb.set_trace()
                 commercial_samples={}
                 ichips_for_session={}
+                # How do we want to get solutions?
+                # Need to add it to iChip Assay?
                 soluitons_for_session={}
             if status_from_test_choice == 'Development':
                 samples_to_get = 'RandDSample'
@@ -118,11 +120,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         values = api.content.find(context=api.portal.get(), portal_type='iChipLot')
         ichiplot_uid =[u.UID for u in values]
         lots_for_selected_assay=[]
+        dict_ichips={}
         for v in ichiplot_uid:
             ichiplot = api.content.get(UID=v)
             for n in ichiplot.intended_assay:
                 if n == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
+                    ichips_in_lot=[]
                     lots_for_selected_assay.append(ichiplot.title)
+                    current_ichips = ichiplot.contentItems()
+                    import pdb;pdb.set_trace()
         import pdb;pdb.set_trace()
                 # give the ichip lot in a list
                 # need to get id of ichips in each lot that can be used for testing
