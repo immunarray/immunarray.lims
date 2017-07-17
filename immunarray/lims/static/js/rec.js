@@ -246,6 +246,10 @@ require([
                             var draw_signed = $("input[name='draw_signed']:checked").val(); //name
                             var collection_date = $("input[name='collection_date']").val(); //name
                             var shipment_date = $("input[name='shipment_date']").val()
+                            var billable_primary = $("input[id='billable_code']").val();
+                            var billable_secondary = $("input[id='billable_code_designation']").val();
+                            var assay_to_send=[]
+                            $('#assay_choice_from_rec').find('input:checkbox').each(function(){})
                             authenticator = $('input[name="_authenticator"]').val();
                             var url = window.location.href;
                             $.ajax({
@@ -301,6 +305,9 @@ require([
                                     'collection_date':collection_date,
                                     'shipment_date':shipment_date,
                                     'ordering_provider_name':ordering_provider_name,
+                                    'billing_primary':billable_primary,
+                                    'billing_secondary':billable_secondary,
+                                    'assay_choice':assay_selection,
                                     '_authenticator': authenticator},
                                 success: function(responseText, statusText, xhr, $form){
                                 fullSubmitFeedback = JSON.parse(responseText)
