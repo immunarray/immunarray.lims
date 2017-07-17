@@ -140,6 +140,10 @@ class AddRecView(BrowserView):
             collection_date = request.form.get('collection_date')
             shipment_date = request.form.get('shipment_date')
             ordering_provider_name = request.form.get('ordering_provider_name')
+            billable_primary = request.form.get('billing_primary')
+            billable_secondary = request.form.get('billing_secondary')
+            assay_selection = request.form.get('assay_choice')
+            import pdb;pdb.set_trace()
             pt_UID = "new_patient"
             # See if we have an existing pt
             missing_date_feedback =  json.dumps({"feedback":"Missing Key Data Elements"})
