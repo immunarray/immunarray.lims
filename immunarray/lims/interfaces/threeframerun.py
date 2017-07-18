@@ -29,11 +29,12 @@ from z3c.form import form, button
 
 class IThreeFrameRun(IVeracisRunBase):
 
-    aliquot_to_well = schema.Dict(
-        key_type=schema.TextLine(title=u"Aliquot ID", required=False),
-        value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
-    )
+    #aliquot_to_well = schema.Dict(
+    #    key_type=schema.TextLine(title=u"Aliquot ID", required=False),
+    #    value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
+    #)
 
+    # make solutions dict, just easier to grow
     ten_x_pbs = schema.TextLine(
         title=_(u"10X PBS Lot Used"),
         description=_(u"10X PBS Lot Used"),
