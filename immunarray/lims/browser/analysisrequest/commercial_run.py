@@ -46,8 +46,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 sample_count = full_set.__len__()
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
-                samples_to_test_in_order = self.sortClinicalSamples(full_set)
-                import pdb;pdb.set_trace()
+                samples_to_test_in_order = self.sortClinicalSamples(full_set,assay)
+                get_working_aliquots = self.queryWorkingAliqutos(samples_to_test_in_order, assay_parameters)
+                # import pdb;pdb.set_trace()
                 # clean up samples order to be sure the most critical get run first
                 # how many samples are in queue?
                 # how many plates will this test run be?
@@ -120,26 +121,42 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         sample_uids_in_testing_order = []
         samples_in_rerun=[]
         samples_in_received = []
-        for n in full_set:
-            if assay in full_set[n][2].keys() and "Rerun" in full_set[n][2].values():
-                samples_in_rerun.append(n)
-                full_set.__delitem__(n)
-                import pdb;pdb.set_trace()
-        for n in full_set:
-            if assay in full_set[n][1] and "Received" in full_set[n][2].values():
-                samples_in_received.append(n, full_set[n][1])
-                samples_in_received.sort()
-                samples_in_rerun.append(n)
-                full_set.__delitem__(n)
-                import pdb;pdb.set_trace()
-        samples_in_received_by_collection_date=[]
-        # get samples in rerun
-        # remove from full_set (just don't return it)
-        #
-    def queryWorkingAliqutos(self):
+        for n in full_set.items():
+            if assay in full_set[n[0]][2].keys() and "Rerun" in full_set[n[0]][2].values():
+                samples_in_rerun.append(n[0])
+                full_set.__delitem__(n[0])
+        a = sorted(full_set.items(),key=lambda p: p[1], reverse=False)
+        for n in a:
+            samples_in_received.append(n[0])
+        for m in samples_in_rerun:
+            sample_uids_in_testing_order.append(m)
+        for o in samples_in_received:
+            sample_uids_in_testing_order.append(o)
+        return sample_uids_in_testing_order
+
+    def queryWorkingAliqutos(self, sample_uids_in_testing_order, assay_parameters):
         """Query to get working aliquots to test with
         """
-        pass
+        aliquot_uids_for_testing=[]
+        for n in sample_uids_in_testing_order:
+            # open sample object
+            sample = api.content.get(UID=n)
+            # get contentIds (bulk aliquots)
+            # loop to find working aliquot
+            # build if condition for X.contentIds() not null, will express the end of the line...
+            sample_contents = sample.contentIds()
+            for n in sample_contents:
+                current_aliquot = sample.__getitem__(n)
+                if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
+                    aliquot_uids_for_testing.append(current_aliquot.UID)
+                    # go to any children objects
+                    child_aliquot_Ids = current_aliquot.contentIds()
+                    for o in child_aliquot_Ids:
+                        child_aliquot = current_aliquot.__getitem__(o)
+                        if child_aliquot.aliquot_type == "Working" and child_aliquot.consume_date is None and child_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
+                            aliquot_uids_for_testing.append(child_aliquot.UID)
+                        else:
+                            print "!!!!No working aliquot found!!!!"
 
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
