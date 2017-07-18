@@ -44,10 +44,14 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 samples_to_get = 'ClinicalSample'
                 full_set = self.queryClinicalSamples(assay,samples_to_get)
                 sample_count = full_set.__len__()
-                #Need to order full_set by collection_date oldest to newest, then test_ordered_status
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
+                #Need to order full_set by collection_date oldest to newest, then test_ordered_status
+                samples_to_test_in_order = self.sortClinicalSamples(full_set)
                 import pdb;pdb.set_trace()
-                # import pdb;pdb.set_trace()
+                # clean up samples order to be sure the most critical get run first
+                # how many samples are in queue?
+                # how many plates will this test run be?
+                # build test run object
                 commercial_samples={}
                 ichips_for_session={}
                 # How do we want to get solutions?
@@ -110,6 +114,28 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                         all_to_test.update({ocs:[a.title, a.collection_date, a.test_ordered_status]})
         return all_to_test
 
+    def sortClinicalSamples(self, full_set, assay):
+        """Sort the full set of samples by testing status and collection date
+        """
+        sample_uids_in_testing_order = []
+        samples_in_rerun=[]
+        samples_in_received = []
+        for n in full_set:
+            if assay in full_set[n][2].keys() and "Rerun" in full_set[n][2].values():
+                samples_in_rerun.append(n)
+                full_set.__delitem__(n)
+                import pdb;pdb.set_trace()
+        for n in full_set:
+            if assay in full_set[n][1] and "Received" in full_set[n][2].values():
+                samples_in_received.append(n, full_set[n][1])
+                samples_in_received.sort()
+                samples_in_rerun.append(n)
+                full_set.__delitem__(n)
+                import pdb;pdb.set_trace()
+        samples_in_received_by_collection_date=[]
+        # get samples in rerun
+        # remove from full_set (just don't return it)
+        #
     def queryWorkingAliqutos(self):
         """Query to get working aliquots to test with
         """
