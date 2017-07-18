@@ -20,17 +20,17 @@ class Form(EditForm):
 class IEightFrameRun(IVeracisRunBase):
     """Eight well iChip test run
     """
+    pass
     # aliquots go on iChip
     # iChips go into test run
     # test form is how the data will be interacted with!
-    pass
+
 
 """
 fields from base object
 class IVeracisRunBase(model.Schema):
-    """Object that will be the base of all veracis runs
-"""
-veracis_run_number = schema.Int(
+    
+    veracis_run_number = schema.Int(
     title=_(u"Veracis Run Number"),
     description=_(u"Veracis Run Number"),
     required=True,
