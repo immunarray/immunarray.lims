@@ -203,6 +203,8 @@ class AddRecView(BrowserView):
                 except:
                     print "Kit Count for Site " + site_id + " Failed to Update"
                 # add aliquots to box for storage!
+                # file bulk aliquots (update aliquot to have value)
+                # file working aliquots (update aliquots to have value)
                 return json.dumps({"feedback":"Successful Sample"})
         return self.template()
         # pop up to select assays that are active in system!
