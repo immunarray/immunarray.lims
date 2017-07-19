@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from operator import itemgetter
+
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.dexterity.utils import createContentInContainer
@@ -41,8 +43,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # can make decisions based on the assay_parameters status
             status_from_test_choice = assay_parameters["status"]
             if status_from_test_choice == 'Commercial':
-                samples_to_get = 'ClinicalSample'
-                full_set = self.queryClinicalSamples(assay,samples_to_get)
+                full_set = self.queryClinicalSamples(assay)
                 sample_count = full_set.__len__()
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
@@ -94,27 +95,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         except:
             print "Assay Parameters Not Available"
 
-    def queryClinicalSamples(self, assay,samples_to_get):
-        """Get all the samples that have pending test and arrange them by
-        collection date
+    def queryClinicalSamples(self, assay):
+        """Get all the samples that are 'received', order them by date, 
+        and filter them for those who's test_ordered_status is one of 
+        'Received', 'Rerun', or 'To Be Tested'.
         """
-        values = api.content.find(context=api.portal.get(), portal_type=samples_to_get)
-        all_to_test = {}
-        #key = id, values = [uid,draw_date,test_status]
-        # fast search to limit the options
-        # get ClinicalSamples where values.sample_status = 'Received'
-        for u in values:
-            if u.sample_status == 'Received':
-                open_clinical_sample_uids = [u.UID for u in values]
-                for ocs in open_clinical_sample_uids:
-                    #open object
-                    a=api.content.get(UID=ocs)
-                    # check for 'Rerun' or 'To Be Tested' or 'Received'
-                    if a.test_ordered_status[assay] == "Received" or a.test_ordered_status[assay] == "Rerun" or a.test_ordered_status[assay] == "To Be Tested":
-                        # add sample info to all_to_test dict, {UID:[title, collection_date, test_ordered_status]}
-                        all_to_test.update({ocs:[a.title, a.collection_date, a.test_ordered_status]})
-        return all_to_test
+        brains = api.content.find(
+            portal_type='ClinicalSample', review_state='received')
+        samples = []  # [{'uid':, 'draw_date':, 'test_status':}, ...]
+        for sample in (b.getObject() for b in brains):
+            # check for 'Rerun' or 'To Be Tested' or 'Received'
+            status = sample.test_ordered_status[assay]
+            if status in ('Received', 'Rerun', 'To Be Tested'):
+                samples.append({'uid': sample.UID,
+                                'draw_date': sample.collection_date,
+                                'test_status': sample.test_ordered_status})
+        sorted_samples = sorted(samples, cmp=itemgetter('draw_date'))
+        return sorted_samples
 
+<<<<<<< HEAD
     def sortClinicalSamples(self, full_set, assay):
         """Sort the full set of samples by testing status and collection date
         """
@@ -135,6 +134,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         return sample_uids_in_testing_order
 
     def queryWorkingAliqutos(self, sample_uids_in_testing_order, assay_parameters):
+=======
+    def queryWorkingAliqutos(self):
+>>>>>>> Update queryClinicalSamples
         """Query to get working aliquots to test with
         """
         aliquot_uids_for_testing=[]
