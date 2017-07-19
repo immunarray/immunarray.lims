@@ -1,21 +1,16 @@
 # -*- coding: utf-8 -*-
 from datetime import date
-from plone.app.textfield import RichText
-from zope import schema
-from plone.supermodel import model
+
 from immunarray.lims import messageFactory as _
-from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.utils import createContentInContainer
-from bika.lims.interfaces.sample import ISample
-from plone.autoform import directives
-from plone.autoform import directives as form
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from z3c.form.browser.radio import RadioFieldWidget
-from zope.interface import alsoProvides
-from immunarray.lims.vocabularies.provider import ProvidersVocabulary
-from plone.formwidget.autocomplete import AutocompleteFieldWidget
-from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone.api.content import transition
+from plone.autoform import directives as form
+from plone.autoform.interfaces import IFormFieldProvider
+from plone.supermodel import model
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from zope import schema
+from zope.interface import alsoProvides
+
 
 class IClinicalSample(model.Schema):
     """Sample that will contain all the billing info and high level information
@@ -36,13 +31,16 @@ class IClinicalSample(model.Schema):
     )
     """ Want to do an n+1 but allow be edited, should be unique"""
 
-    sample_status = schema.Choice(
-        title = _(u"Status of Testing"),
-        description = _(u"Status of Testing"),
-        required = True,
-        values=[_(u"Received"),
-                _(u"All Tests Closed"),],
-    )
+    # XXX I do not yet know how to add properties (getter/setter routines)
+    # to dexterity fields.
+    # sample_status = schema.Choice(
+    #     title = _(u"Status of Testing"),
+    #     description = _(u"Status of Testing"),
+    #     required = True,
+    #     values=[_(u"Received"),
+    #             _(u"All Tests Closed"),],
+    # )
+
     # list or tuple? JP 3-14-17, let this be blank for remote order
     # option at a later date, need test ordered and status!
     # use this to drive a setup handler that will make the lists of what should
