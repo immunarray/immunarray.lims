@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="clinicalsample_workflow"
+             title="DC Workflow Definition"
+             description=""
+             state_variable="review_state"
+             initial_state="received"
+             manager_bypass="False">
+
+  <state state_id="received" title="Received">
+    <description>Sample is active</description>
+    <exit-transition transition_id="close"/>
+  </state>
+
+  <state state_id="closed" title="Closed">
+    <description>Further analysis is not allowed</description>
+  </state>
+
+  <transition transition_id="close"
+              title="Close Sample"
+              new_state="closed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=close"
+            category="workflow"
+            icon="">Close Sample</action>
+    <guard/>
+  </transition>
+
+</dc-workflow>
