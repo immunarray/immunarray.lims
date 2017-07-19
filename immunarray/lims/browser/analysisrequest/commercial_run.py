@@ -47,8 +47,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 sample_count = full_set.__len__()
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
-                samples_to_test_in_order = self.sortClinicalSamples(full_set,assay)
-                get_working_aliquots = self.queryWorkingAliqutos(samples_to_test_in_order, assay_parameters)
+                get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
                 # import pdb;pdb.set_trace()
                 # clean up samples order to be sure the most critical get run first
                 # how many samples are in queue?
@@ -111,7 +110,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 tmp[status] = []
             tmp[status].append({'uid': sample.UID,
                                 'draw_date': sample.collection_date,
-                                'test_status': sample.test_ordered_status})
+                                'test_status': sample.test_ordered_status,
+                                'sample': sample})
         # now sort all the lists in tmp
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
@@ -126,19 +126,19 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                tmp.get('Rerun', []) + \
                tmp.get('To Be Tested', [])
 
-    def queryWorkingAliqutos(self, sample_uids_in_testing_order, assay_parameters):
+    def queryWorkingAliqutos(self, values, assay_parameters):
         """Query to get working aliquots to test with
         """
         aliquot_uids_for_testing=[]
-        for n in sample_uids_in_testing_order:
+        for sample_dict in values:
             # open sample object
-            sample = api.content.get(UID=n)
+            sample = sample_dict['sample']
             # get contentIds (bulk aliquots)
             # loop to find working aliquot
             # build if condition for X.contentIds() not null, will express the end of the line...
             sample_contents = sample.contentIds()
-            for n in sample_contents:
-                current_aliquot = sample.__getitem__(n)
+            for value in sample_contents:
+                current_aliquot = sample.__getitem__(value)
                 if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
                     aliquot_uids_for_testing.append(current_aliquot.UID)
                     # go to any children objects
