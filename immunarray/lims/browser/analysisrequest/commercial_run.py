@@ -112,19 +112,16 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             tmp[status].append({'uid': sample.UID,
                                 'draw_date': sample.collection_date,
                                 'test_status': sample.test_ordered_status})
-<<<<<<< HEAD
         # now sort all the lists in tmp
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
 
-=======
 
         # now sort all the lists in tmp by draw_date
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
 
         # then return the groups, in order.
->>>>>>> Update queryClinicalSamples
         return tmp.get('Received', []) + \
                tmp.get('Rerun', []) + \
                tmp.get('To Be Tested', [])
