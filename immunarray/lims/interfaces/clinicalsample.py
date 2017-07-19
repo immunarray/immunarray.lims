@@ -31,16 +31,6 @@ class IClinicalSample(model.Schema):
     )
     """ Want to do an n+1 but allow be edited, should be unique"""
 
-    # XXX I do not yet know how to add properties (getter/setter routines)
-    # to dexterity fields.
-    # sample_status = schema.Choice(
-    #     title = _(u"Status of Testing"),
-    #     description = _(u"Status of Testing"),
-    #     required = True,
-    #     values=[_(u"Received"),
-    #             _(u"All Tests Closed"),],
-    # )
-
     # list or tuple? JP 3-14-17, let this be blank for remote order
     # option at a later date, need test ordered and status!
     # use this to drive a setup handler that will make the lists of what should
