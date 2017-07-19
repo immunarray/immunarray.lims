@@ -556,7 +556,8 @@
             <td>
               <p>
                 Designation:
-                <input name="billable_code_designation" id="billable_code_designation"/>
+                <input id="billable_code_designation"
+                       name="billable_code_designation"/>
               </p>
             </td>
           </tr>
@@ -564,7 +565,10 @@
         <table>
           <fieldset id="assay_choice_from_rec" name="assay_choice_from_rec">
             <tal:block repeat="assay object/@@ctest/ichipassaylist">
-              <input type='checkbox' tal:attributes="id assay;value assay" tal:content ="assay"></input><br>
+              <input type='checkbox'
+                     tal:content ="assay"
+                     tal:attributes="id assay;value assay"/>
+              <br>
             </tal:block>
           </fieldset>
         </table>

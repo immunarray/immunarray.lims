@@ -294,7 +294,6 @@ class AddRecView(BrowserView):
             Need to add option for assay choice at a later date
         """
         default_test_order = {u"SLEKEY-RO-V2-0-COMMERCIAL": u"Received"}
-        default_sample_status = u"Received"
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -357,7 +356,6 @@ class AddRecView(BrowserView):
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                              research_consent=consent_acquired,
-                                             sample_status = default_sample_status,
                                              test_ordered_status =default_test_order,
                                              sample_ordering_healthcare_provider=ordering_provider_name,
                                              sample_ordering_healthcare_provider_signature=provider_signed,
