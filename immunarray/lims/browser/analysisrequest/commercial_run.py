@@ -102,41 +102,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         brains = api.content.find(
             portal_type='ClinicalSample', review_state='received')
-        samples = []  # [{'uid':, 'draw_date':, 'test_status':}, ...]
+
+        tmp = {}
         for sample in (b.getObject() for b in brains):
             # check for 'Rerun' or 'To Be Tested' or 'Received'
             status = sample.test_ordered_status[assay]
-            if status in ('Received', 'Rerun', 'To Be Tested'):
-                samples.append({'uid': sample.UID,
+            if status not in tmp:
+                tmp[status] = []
+            tmp[status].append({'uid': sample.UID,
                                 'draw_date': sample.collection_date,
                                 'test_status': sample.test_ordered_status})
-        sorted_samples = sorted(samples, cmp=itemgetter('draw_date'))
-        return sorted_samples
+        # now sort all the lists in tmp
+        for key in tmp.keys():
+            tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
 
-<<<<<<< HEAD
-    def sortClinicalSamples(self, full_set, assay):
-        """Sort the full set of samples by testing status and collection date
-        """
-        sample_uids_in_testing_order = []
-        samples_in_rerun=[]
-        samples_in_received = []
-        for n in full_set.items():
-            if assay in full_set[n[0]][2].keys() and "Rerun" in full_set[n[0]][2].values():
-                samples_in_rerun.append(n[0])
-                full_set.__delitem__(n[0])
-        a = sorted(full_set.items(),key=lambda p: p[1], reverse=False)
-        for n in a:
-            samples_in_received.append(n[0])
-        for m in samples_in_rerun:
-            sample_uids_in_testing_order.append(m)
-        for o in samples_in_received:
-            sample_uids_in_testing_order.append(o)
-        return sample_uids_in_testing_order
+        return tmp.get('Received', []) + \
+               tmp.get('Rerun', []) + \
+               tmp.get('To Be Tested', [])
 
     def queryWorkingAliqutos(self, sample_uids_in_testing_order, assay_parameters):
-=======
-    def queryWorkingAliqutos(self):
->>>>>>> Update queryClinicalSamples
         """Query to get working aliquots to test with
         """
         aliquot_uids_for_testing=[]
