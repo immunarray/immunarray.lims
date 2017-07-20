@@ -41,14 +41,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get dictionary of all the samples that need to be tested for the selected assay
             # logic on what samples to be tested
             # can make decisions based on the assay_parameters status
-            status_from_test_choice = assay_parameters["status"]
+            status_from_test_choice = assay_parameters['status']
             if status_from_test_choice == 'Commercial':
                 full_set = self.queryClinicalSamples(assay)
+                import pdb;pdb.set_trace()
                 sample_count = full_set.__len__()
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
                 get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
-                # import pdb;pdb.set_trace()
+
                 # clean up samples order to be sure the most critical get run first
                 # how many samples are in queue?
                 # how many plates will this test run be?
@@ -108,7 +109,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status = sample.test_ordered_status[assay]
             if status not in tmp:
                 tmp[status] = []
-            tmp[status].append({'uid': sample.UID,
+            tmp[status].append({'uid': sample.UID(),
                                 'draw_date': sample.collection_date,
                                 'test_status': sample.test_ordered_status,
                                 'sample': sample})
@@ -126,11 +127,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                tmp.get('Rerun', []) + \
                tmp.get('To Be Tested', [])
 
-    def queryWorkingAliqutos(self, values, assay_parameters):
+    def queryWorkingAliqutos(self, full_set, assay_parameters):
         """Query to get working aliquots to test with
         """
-        aliquot_uids_for_testing=[]
-        for sample_dict in values:
+        aliquot_uids_for_testing = []
+        need_to_make_aliquots = []
+        import pdb;pdb.set_trace()
+        for sample_dict in full_set:
             # open sample object
             sample = sample_dict['sample']
             # get contentIds (bulk aliquots)
@@ -188,3 +191,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
     def get_vocab_keys(self, vocab):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
+
+    def workingAliquotCheck(self,assay_parameters):
+        """Check if it is a working aliquot that meets the needs of the assay
+        """
+        pass
+        #current_aliquot=[]
+        #if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
