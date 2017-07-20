@@ -136,6 +136,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get contentIds (bulk aliquots)
             # loop to find working aliquot
             # build if condition for X.contentIds() not null, will express the end of the line...
+            # logic though parent =x --> x.contendID() > 0 -->
             sample_contents = sample.contentIds()
             for value in sample_contents:
                 current_aliquot = sample.__getitem__(value)
