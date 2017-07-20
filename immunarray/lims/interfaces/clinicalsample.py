@@ -56,7 +56,7 @@ class IClinicalSample(model.Schema):
         key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
         value_type=schema.Choice(values=[_(u"Received"),
                                          _(u"To Be Tested"),
-                                         _(u"In Que"),
+                                         _(u"In Queue"),
                                          _(u"Testing"),
                                          _(u"Rerun"),
                                          _(u"Resulted"),
