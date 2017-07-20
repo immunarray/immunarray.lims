@@ -109,10 +109,11 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status = sample.test_ordered_status[assay]
             if status not in tmp:
                 tmp[status] = []
+            import pdb;pdb.set_trace()
             tmp[status].append({'uid': sample.UID(),
                                 'draw_date': sample.collection_date,
                                 'test_status': sample.test_ordered_status,
-                                'sample': sample})
+                                'sample': sample()})
         # now sort all the lists in tmp
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
