@@ -142,8 +142,7 @@ class AddRecView(BrowserView):
             ordering_provider_name = request.form.get('ordering_provider_name')
             billable_primary = request.form.get('billing_primary')
             billable_secondary = request.form.get('billing_secondary')
-            assay_selection = request.form.get('assay_choice')
-            import pdb;pdb.set_trace()
+            assay_selection = request.form.get('assay_choice[]')
             pt_UID = "new_patient"
             # See if we have an existing pt
             missing_date_feedback =  json.dumps({"feedback":"Missing Key Data Elements"})
@@ -176,7 +175,7 @@ class AddRecView(BrowserView):
                                           diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                                           provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                                           draw_signed, collection_date, shipment_date, test_other_specify,
-                                          clinical_impression, ordering_provider_name, site_id)
+                                          clinical_impression, ordering_provider_name, site_id, assay_selection)
                 # make bulk aliquots
                 # fancy way to have multiple tubes in the system, update letter list as more tubes are added
                 # easy way
@@ -289,11 +288,14 @@ class AddRecView(BrowserView):
                              diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                              provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                              draw_signed, collection_date, shipment_date, test_other_specify,
-                             clinical_impression, ordering_provider_name, site_id):
+                             clinical_impression, ordering_provider_name, site_id, assay_selection):
         """Make a clinical sample via api, set serial number
             Need to add option for assay choice at a later date
         """
-        default_test_order = {u"SLEKEY-RO-V2-0-COMMERCIAL": u"Received"}
+        # logical test order passed via end user
+        test_order = {}
+        for a in assay_selection:
+            test_order.update({a:u"To Be Tested"})
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -356,7 +358,7 @@ class AddRecView(BrowserView):
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                              research_consent=consent_acquired,
-                                             test_ordered_status =default_test_order,
+                                             test_ordered_status =test_order,
                                              sample_ordering_healthcare_provider=ordering_provider_name,
                                              sample_ordering_healthcare_provider_signature=provider_signed,
                                              primary_healthcare_provider=primary_provider,
