@@ -133,24 +133,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         aliquot_uids_for_testing = []
         need_to_make_aliquots = []
         import pdb;pdb.set_trace()
+
         for sample_dict in full_set:
-            # open sample object
-            sample = sample_dict['sample']
-            # get contentIds (bulk aliquots)
-            # loop to find working aliquot
-            # build if condition for X.contentIds() not null, will express the end of the line...
-            # logic though parent =x --> x.contendID() > 0 -->
-            sample_contents = sample.contentIds()
+            parent = sample_dict['sample']
+            sample_contents = parent.contentIds()
+
             for value in sample_contents:
-                current_aliquot = sample.__getitem__(value)
+                current_aliquot = parent.__getitem__(value)
+
                 if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
                     aliquot_uids_for_testing.append(current_aliquot.UID)
                     # go to any children objects
                     child_aliquot_Ids = current_aliquot.contentIds()
+
                     for o in child_aliquot_Ids:
                         child_aliquot = current_aliquot.__getitem__(o)
+
                         if child_aliquot.aliquot_type == "Working" and child_aliquot.consume_date is None and child_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
                             aliquot_uids_for_testing.append(child_aliquot.UID)
+
                         else:
                             print "!!!!No working aliquot found!!!!"
 
