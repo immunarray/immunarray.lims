@@ -18,6 +18,7 @@ from zope.component import queryUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.schema.interfaces import IVocabularyFactory
 
+
 class AddCommercialEightFrameTestRunView(BrowserView):
 
     template = ViewPageTemplateFile("templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
@@ -138,23 +139,43 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
         for sample_dict in full_set: # loop over all the samples coming into search
             parent = sample_dict['sample']
-            sample_contents = parent.contentIds() # this is an array of object ids in the the current sample
 
-            # open each object to check if it meets the desired parameters
-            # first layer of aliquots in the tree
+            folder_path = '/'.join(parent.getPhysicalPath())
+            results = catalog(path={'query': folder_path, 'depth':3})
             import pdb;pdb.set_trace()
-            for aliquot in sample_contents:
-                # open aliquot object
-                current_aliquot = parent.__getitem__(aliquot)
-                # evaluate object for assay needs
-                if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
-                    aliquot_uids_for_testing.append(current_aliquot.UID)
-                else:
-                    print current_aliquot.title + " Does Not Meet Current Assay Needs"
-                    if current_aliquot.contentIds() >0:
-                        next_aliquot = current_aliquot.contentIds()
-                        #loopOverContents(next_aliquot) # rerun loop with content of child objects
-            print "!!!!No working aliquot found!!!!"
+            """
+            import pdb;pdb.set_trace()
+            goal = self.findWantedAliquot(parent,assay_parameters)
+            if goal is None:
+                print "Sample Has No Working Aliquots"
+                need_to_make_aliquots.append(parent)
+            else:
+                aliquot_uids_for_testing.append(goal)
+            """
+
+    def findWantedAliquot(self, UID, assay_parameters):
+        """Get to a desired aliquot from a start point UID, and assay_needs
+        """
+        #open object
+        a=api.content.get(UID=UID)
+        try:
+            if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= assay_parameters['desired_working_aliquot_volume']:
+                return a.UID
+            elif a.contentIds() > 0:
+                b = a.contentIds()
+                for c in b:
+                    d = a.__getitem__(c)
+                    return (self.findWantedAliquots(d.UID(), assay_parameters))
+            else:
+                return None
+        except:
+            if a.contentIds() > 0:
+                b = a.contentIds()
+                for c in b:
+                    d = a.__getitem__(c)
+                    return (self.findWantedAliquots(d.UID(), assay_parameters))
+            else:
+                return None
 
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
@@ -200,3 +221,4 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         pass
         #current_aliquot=[]
         #if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
+
