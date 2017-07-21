@@ -35,7 +35,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             authenticator = request.form.get('_authenticator')
             # gives me the assay value from the ctest form
             assay = request.form.get("assaySeleced")
-            # setup for "custom"
+            if assay == 'None':
+                return self.template()# setup for "custom"
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
             frames=assay_parameters['ichiptype']
             # get dictionary of all the samples that need to be tested for the selected assay
@@ -68,8 +69,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 all_samples_in_lims={}
                 ichips_for_session={}
                 soluitons_for_session={}
-            if assay == 'None':
-                return self.template()
+
         return self.template()
 
     def getInfoAboutSelectedAssay(self, assay):
@@ -116,12 +116,12 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                                 'sample': sample})
         # now sort all the lists in tmp
         for key in tmp.keys():
-            tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
+            tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
 
 
         # now sort all the lists in tmp by draw_date
         for key in tmp.keys():
-            tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
+            tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
 
         import pdb;pdb.set_trace()
         # then return the groups, in order.
