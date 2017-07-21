@@ -44,7 +44,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status_from_test_choice = assay_parameters['status']
             if status_from_test_choice == 'Commercial':
                 full_set = self.queryClinicalSamples(assay)
-                import pdb;pdb.set_trace()
                 sample_count = full_set.__len__()
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 #Need to order full_set by collection_date oldest to newest, then test_ordered_status
@@ -69,6 +68,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 all_samples_in_lims={}
                 ichips_for_session={}
                 soluitons_for_session={}
+            if assay == 'None':
+                return self.template()
         return self.template()
 
     def getInfoAboutSelectedAssay(self, assay):
@@ -109,11 +110,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status = sample.test_ordered_status[assay]
             if status not in tmp:
                 tmp[status] = []
-            import pdb;pdb.set_trace()
             tmp[status].append({'uid': sample.UID(),
                                 'draw_date': sample.collection_date,
                                 'test_status': sample.test_ordered_status,
-                                'sample': sample()})
+                                'sample': sample})
         # now sort all the lists in tmp
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
@@ -123,6 +123,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], cmp=itemgetter('draw_date'))
 
+        import pdb;pdb.set_trace()
         # then return the groups, in order.
         return tmp.get('Received', []) + \
                tmp.get('Rerun', []) + \
@@ -135,26 +136,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         need_to_make_aliquots = []
         import pdb;pdb.set_trace()
 
-        for sample_dict in full_set:
+        for sample_dict in full_set: # loop over all the samples coming into search
             parent = sample_dict['sample']
-            sample_contents = parent.contentIds()
+            sample_contents = parent.contentIds() # this is an array of object ids in the the current sample
 
-            for value in sample_contents:
-                current_aliquot = parent.__getitem__(value)
-
+            # open each object to check if it meets the desired parameters
+            # first layer of aliquots in the tree
+            import pdb;pdb.set_trace()
+            for aliquot in sample_contents:
+                # open aliquot object
+                current_aliquot = parent.__getitem__(aliquot)
+                # evaluate object for assay needs
                 if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
                     aliquot_uids_for_testing.append(current_aliquot.UID)
-                    # go to any children objects
-                    child_aliquot_Ids = current_aliquot.contentIds()
-
-                    for o in child_aliquot_Ids:
-                        child_aliquot = current_aliquot.__getitem__(o)
-
-                        if child_aliquot.aliquot_type == "Working" and child_aliquot.consume_date is None and child_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
-                            aliquot_uids_for_testing.append(child_aliquot.UID)
-
-                        else:
-                            print "!!!!No working aliquot found!!!!"
+                else:
+                    print current_aliquot.title + " Does Not Meet Current Assay Needs"
+                    if current_aliquot.contentIds() >0:
+                        next_aliquot = current_aliquot.contentIds()
+                        #loopOverContents(next_aliquot) # rerun loop with content of child objects
+            print "!!!!No working aliquot found!!!!"
 
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
