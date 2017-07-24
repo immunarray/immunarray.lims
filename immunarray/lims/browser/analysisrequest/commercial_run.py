@@ -124,7 +124,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
 
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         # then return the groups, in order.
         return tmp.get('Received', []) + \
                tmp.get('Rerun', []) + \
@@ -135,14 +135,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         aliquot_uids_for_testing = []
         need_to_make_aliquots = []
-        import pdb;pdb.set_trace()
-
-        for sample_dict in full_set: # loop over all the samples coming into search
+        # loop over all the samples coming into search
+        for sample_dict in full_set:
+            # object passed in from full_set
+            # import pdb;pdb.set_trace()
             parent = sample_dict['sample']
+            send = parent.contentIds() # make this .items() and send that!
+            aliquot = self.workingAliquotCheck(send,assay_parameters)
+            aliquot_uids_for_testing.append(aliquot)
 
-            folder_path = '/'.join(parent.getPhysicalPath())
-            results = catalog(path={'query': folder_path, 'depth':3})
-            import pdb;pdb.set_trace()
             """
             import pdb;pdb.set_trace()
             goal = self.findWantedAliquot(parent,assay_parameters)
@@ -215,9 +216,35 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-    def workingAliquotCheck(self,assay_parameters):
+    def workingAliquotCheck(self,parent_array,assay_parameters):
         """Check if it is a working aliquot that meets the needs of the assay
         """
+        # sending in contentIds, as an array, need to work on how to get the object from that
+        index = 0
+        parent = parent_array
+        child =[]
+        for n in parent_array:
+            #get all child objects and check against needs
+            a = api.content.get(UID=n)
+            if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= assay_parameters['desired_working_aliquot_volume']:
+                return a.UID
+        for n in parent_array:
+            if n.contentIds() is None: index +=1
+            else:
+                child = n.items()
+                index +=1
+                for o in child:
+                    p = n.__getitem__(o[0])
+                    if p.aliquot_type == "Working" and p.consume_date is None and p.volume >= assay_parameters['desired_working_aliquot_volume']:
+                return p.UID
+
+        if parent_array.len() == index:
+            # make new parent array to be
+            print "Down another level"
+            self.workingAliquotCheck(child,assay_parameters)
+
+            #child array becomes parent should be able to recall the fuciont at this point
+        # Highest level object in the tree (single point)
         pass
         #current_aliquot=[]
         #if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
