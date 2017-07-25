@@ -17,6 +17,7 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.schema.interfaces import IVocabularyFactory
+from Products.CMFCore.utils import getToolByName
 
 
 class AddCommercialEightFrameTestRunView(BrowserView):
@@ -138,27 +139,24 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # loop over all the samples coming into search
         for sample_dict in full_set:
             # object passed in from full_set
-            # import pdb;pdb.set_trace()
-            parent = sample_dict['sample']
-            send = parent.contentIds() # make this .items() and send that!
-            aliquot = self.workingAliquotCheck(send,assay_parameters)
-            aliquot_uids_for_testing.append(aliquot)
-
-            """
             import pdb;pdb.set_trace()
-            goal = self.findWantedAliquot(parent,assay_parameters)
-            if goal is None:
-                print "Sample Has No Working Aliquots"
-                need_to_make_aliquots.append(parent)
-            else:
-                aliquot_uids_for_testing.append(goal)
-            """
+            parent = sample_dict['sample'] # parent is sample object
+            # get child items
+            children = parent.items()
+            for c in children:
+                if c.aliquot_type == "Bulk":
+                    children_2 = c.items()
+                elif c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
+                    aliquot_uids_for_testing.append(c.UID)
+                else:
+                    print "no aliquot found for " + c.UID
 
     def findWantedAliquot(self, UID, assay_parameters):
         """Get to a desired aliquot from a start point UID, and assay_needs
         """
         #open object
         a=api.content.get(UID=UID)
+        import pdb;pdb.set_trace()
         try:
             if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= assay_parameters['desired_working_aliquot_volume']:
                 return a.UID
@@ -224,7 +222,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         parent = parent_array
         child =[]
         for n in parent_array:
-            #get all child objects and check against needs
+            #get all child objects and check against need, UID is not being send the ID is!
             a = api.content.get(UID=n)
             if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= assay_parameters['desired_working_aliquot_volume']:
                 return a.UID
@@ -236,7 +234,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 for o in child:
                     p = n.__getitem__(o[0])
                     if p.aliquot_type == "Working" and p.consume_date is None and p.volume >= assay_parameters['desired_working_aliquot_volume']:
-                return p.UID
+                        return p.UID
 
         if parent_array.len() == index:
             # make new parent array to be
