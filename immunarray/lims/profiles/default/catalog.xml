@@ -1,27 +1,31 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
-  <index name="sample_serial_number" meta_type="FieldIndex">
-  </index>
+  <!-- Veracis Sample Serail number that is used as a running count of samples
+  that have come into the lab, key lookup for samples pre LIMS-->
+  <index name="sample_serial_number" meta_type="FieldIndex"/>
   <column value="sample_serial_number"/>
-  <index name="ichip_lot_expiration_date" meta_type="FieldIndex">
-  </index>
+  <!-- Expiraiton data of iChipLot that is used as a fast look up for viability
+  of iChipLots for commercial use-->
+  <index name="ichip_lot_expiration_date" meta_type="FieldIndex"/>
   <column value="ichip_lot_expiration_date"/>
-  <index name="sample_status" meta_type="DateIndex">
-  </index>
+  <!-- Phase this out, moved to workflow! -->
+  <index name="sample_status" meta_type="DateIndex"/>
   <column value="sample_status"/>
-  <index name="veracis_run_number" meta_type="FieldIndex">
-  </index>
+  <!-- Running count of select run purpose sessions, want to have this on
+  surface of objects to allow for ease of assignment for new test runs-->
+  <index name="veracis_run_number" meta_type="FieldIndex"/>
   <column value="veracis_run_number"/>
-  <index name="veracis_run_purpose" meta_type="FieldIndex">
-  </index>
+  <!-- Categorize the different test run types of the lab-->
+  <index name="veracis_run_purpose" meta_type="FieldIndex"/>
   <column value="veracis_run_purpose"/>
-  <index name="veracis_run_serial_number" meta_type="FieldIndex">
-  </index>
+  <!-- Running count of all test sessions, want to have this on surface of
+  objects to allow for ease of assignment for new test runs-->
+  <index name="veracis_run_serial_number" meta_type="FieldIndex"/>
   <column value="veracis_run_serial_number"/>
-  <index name="billable_code" meta_type="FieldIndex">
-  </index>
+  <!-- Reworking this as billing is evolving -->
+  <index name="billable_code" meta_type="FieldIndex"/>
   <column value="billable_code"/>
-  <index name="ichip_status" meta_type="FieldIndex">
-  </index>
+  <!-- Allow for sorting of iChips without opening the object-->
+  <index name="ichip_status" meta_type="FieldIndex"/>
   <column value="ichip_status"/>
 </object>
