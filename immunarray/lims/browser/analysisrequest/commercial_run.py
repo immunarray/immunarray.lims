@@ -18,11 +18,12 @@ from zope.component import queryUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.utils import getToolByName
+import fnmatch
 
 
 class AddCommercialEightFrameTestRunView(BrowserView):
-
-    template = ViewPageTemplateFile("templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
+    template = ViewPageTemplateFile(
+        "templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
 
     def __init__(self, context, request):
         self.context = context
@@ -38,9 +39,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # gives me the assay value from the ctest form
             assay = request.form.get("assaySeleced")
             if assay == 'None':
-                return self.template()# setup for "custom"
+                return self.template()  # setup for "custom"
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
-            frames=assay_parameters['ichiptype']
+            frames = assay_parameters['ichiptype']
             # get dictionary of all the samples that need to be tested for the selected assay
             # logic on what samples to be tested
             # can make decisions based on the assay_parameters status
@@ -48,29 +49,31 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             if status_from_test_choice == 'Commercial':
                 full_set = self.queryClinicalSamples(assay)
                 sample_count = full_set.__len__()
-                ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
-                #Need to order full_set by collection_date oldest to newest, then test_ordered_status
-                get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
+                ichips_for_assay = self.getiChipsForTesting(assay, sample_count,
+                                                            frames)
+                # Need to order full_set by collection_date oldest to newest, then test_ordered_status
+                get_working_aliquots = self.queryWorkingAliqutos(full_set,
+                                                                 assay_parameters)
 
                 # clean up samples order to be sure the most critical get run first
                 # how many samples are in queue?
                 # how many plates will this test run be?
                 # build test run object
-                commercial_samples={}
-                ichips_for_session={}
+                commercial_samples = {}
+                ichips_for_session = {}
                 # How do we want to get solutions?
                 # Need to add it to iChip Assay?
-                soluitons_for_session={}
+                soluitons_for_session = {}
             if status_from_test_choice == 'Development':
                 samples_to_get = 'RandDSample'
                 # make a developmoent run
-                development_samples={}
-                ichips_for_session={}
-                soluitons_for_session={}
+                development_samples = {}
+                ichips_for_session = {}
+                soluitons_for_session = {}
             if assay == 'Custom':
-                all_samples_in_lims={}
-                ichips_for_session={}
-                soluitons_for_session={}
+                all_samples_in_lims = {}
+                ichips_for_session = {}
+                soluitons_for_session = {}
 
         return self.template()
 
@@ -78,22 +81,35 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """Use end user selection to pull needed number of working aliquots for assay
         """
         # Code that makes the vocabulary for iChipAssay, use this to get the UID?
-        values = api.content.find(context=api.portal.get(), portal_type='iChipAssay')
+        values = api.content.find(context=api.portal.get(),
+                                  portal_type='iChipAssay')
         ichipassays = {}
-        selected_assay_paramaters={}
-        variables_to_get=['creation_date','creators','description','desired_working_aliquot_volume','ichiptype','id','max_number_of_plates_per_test_run','modification_date','number_of_high_value_controls','number_of_low_value_controls','number_of_same_lot_replication_needed_for_samples','number_of_unique_ichips_lots_needed','number_of_working_aliquots_needed','portal_type','sample_qc_dilution_factor','sample_qc_dilution_material','status','title']
+        selected_assay_paramaters = {}
+        variables_to_get = ['creation_date', 'creators', 'description',
+                            'desired_working_aliquot_volume', 'ichiptype', 'id',
+                            'max_number_of_plates_per_test_run',
+                            'modification_date',
+                            'number_of_high_value_controls',
+                            'number_of_low_value_controls',
+                            'number_of_same_lot_replication_needed_for_samples',
+                            'number_of_unique_ichips_lots_needed',
+                            'number_of_working_aliquots_needed', 'portal_type',
+                            'sample_qc_dilution_factor',
+                            'sample_qc_dilution_material', 'status', 'title']
         ichipassay_ids = [v.UID for v in values]
         for i in ichipassay_ids:
             value = api.content.get(UID=i)
             assay_name_with_spaces = "-".join([value.title, value.status])
             normalizer = queryUtility(IIDNormalizer)
-            assay_name_post_norml = normalizer.normalize(assay_name_with_spaces).upper()
-            ichipassays.update({assay_name_post_norml:i})
+            assay_name_post_norml = normalizer.normalize(
+                assay_name_with_spaces).upper()
+            ichipassays.update({assay_name_post_norml: i})
         try:
             ichipassay_uid = ichipassays[assay]
             assay_object = api.content.get(UID=ichipassay_uid)
             for t in variables_to_get:
-                selected_assay_paramaters.update({t:assay_object._get_request_var_or_attr(t, '')})
+                selected_assay_paramaters.update(
+                    {t: assay_object._get_request_var_or_attr(t, '')})
             return selected_assay_paramaters
         except:
             print "Assay Parameters Not Available"
@@ -120,7 +136,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
 
-
         # now sort all the lists in tmp by draw_date
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
@@ -137,28 +152,31 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         aliquot_uids_for_testing = []
         need_to_make_aliquots = []
         # loop over all the samples coming into search
+        # use break to get out of the current search!
         for sample_dict in full_set:
             # object passed in from full_set
             import pdb;pdb.set_trace()
-            parent = sample_dict['sample'] # parent is sample object
+            parent = sample_dict['sample']  # parent is sample object
             # get child items
             children = parent.items()
-            for c in children:
-                if c.aliquot_type == "Bulk":
-                    children_2 = c.items()
-                elif c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
-                    aliquot_uids_for_testing.append(c.UID)
+            aliquots = self.collectAliquots(children)
+            import pdb;pdb.set_trace()
+            for c in aliquots:
+                if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
+                    aliquot_uids_for_testing.append(c)
                 else:
-                    print "no aliquot found for " + c.UID
+                    print "no aliquot found for at this level", c.id
 
     def findWantedAliquot(self, UID, assay_parameters):
         """Get to a desired aliquot from a start point UID, and assay_needs
         """
-        #open object
-        a=api.content.get(UID=UID)
-        import pdb;pdb.set_trace()
+        # open object
+        a = api.content.get(UID=UID)
+        import pdb;
+        pdb.set_trace()
         try:
-            if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= assay_parameters['desired_working_aliquot_volume']:
+            if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= \
+                    assay_parameters['desired_working_aliquot_volume']:
                 return a.UID
             elif a.contentIds() > 0:
                 b = a.contentIds()
@@ -179,24 +197,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
         """
-        values = api.content.find(context=api.portal.get(), portal_type='iChipLot')
-        ichiplot_uid =[u.UID for u in values]
-        lots_for_selected_assay=[]
-        dict_ichips={}
+        values = api.content.find(context=api.portal.get(),
+                                  portal_type='iChipLot')
+        ichiplot_uid = [u.UID for u in values]
+        lots_for_selected_assay = []
+        dict_ichips = {}
         for v in ichiplot_uid:
             ichiplot = api.content.get(UID=v)
             for n in ichiplot.intended_assay:
                 if n == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
-                    #commercial needs
+                    # commercial needs
                     dict_key = ichiplot.title
-                    ichips_in_lot=ichiplot.contentIds()
+                    ichips_in_lot = ichiplot.contentIds()
                     dict_values = []
                     for ichip in ichips_in_lot:
                         a = ichiplot.__getitem__(ichip)
                         if a.ichip_status == 'Released':
                             chip_uid = a.UID()
                             dict_values.append(chip_uid)
-                        dict_ichips.update({dict_key:dict_values})
+                        dict_ichips.update({dict_key: dict_values})
         print dict_ichips
         return dict_ichips
 
@@ -214,36 +233,19 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-    def workingAliquotCheck(self,parent_array,assay_parameters):
+    def collectAliquots(self, array_of_aliquots):
         """Check if it is a working aliquot that meets the needs of the assay
         """
-        # sending in contentIds, as an array, need to work on how to get the object from that
-        index = 0
-        parent = parent_array
-        child =[]
-        for n in parent_array:
-            #get all child objects and check against need, UID is not being send the ID is!
-            a = api.content.get(UID=n)
-            if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= assay_parameters['desired_working_aliquot_volume']:
-                return a.UID
-        for n in parent_array:
-            if n.contentIds() is None: index +=1
+        # get in array of objects
+        # loop over that append to master list of ojects and return that list
+        
+        all_child_objects = [] #array of objects
+        import pdb;pdb.set_trace()
+        for n in array_of_aliquots:
+            all_child_objects.append(n[1])
+        for n in array_of_aliquots:
+            if n[1].items() is None:
+                all_child_objects.append(n[1])
             else:
-                child = n.items()
-                index +=1
-                for o in child:
-                    p = n.__getitem__(o[0])
-                    if p.aliquot_type == "Working" and p.consume_date is None and p.volume >= assay_parameters['desired_working_aliquot_volume']:
-                        return p.UID
-
-        if parent_array.len() == index:
-            # make new parent array to be
-            print "Down another level"
-            self.workingAliquotCheck(child,assay_parameters)
-
-            #child array becomes parent should be able to recall the fuciont at this point
-        # Highest level object in the tree (single point)
-        pass
-        #current_aliquot=[]
-        #if current_aliquot.aliquot_type == "Working" and current_aliquot.consume_date is None and current_aliquot.volume >= assay_parameters['desired_working_aliquot_volume']:
-
+                self.collectAliquots(n[1].items())
+        return all_child_objects
