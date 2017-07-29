@@ -52,8 +52,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count,
                                                             frames)
                 # Need to order full_set by collection_date oldest to newest, then test_ordered_status
-                get_working_aliquots = self.queryWorkingAliqutos(full_set,
-                                                                 assay_parameters)
+                get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
 
                 # clean up samples order to be sure the most critical get run first
                 # how many samples are in queue?
@@ -152,20 +151,23 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         aliquot_uids_for_testing = []
         need_to_make_aliquots = []
         # loop over all the samples coming into search
-        # use break to get out of the current search!
         for sample_dict in full_set:
             # object passed in from full_set
-            import pdb;pdb.set_trace()
             parent = sample_dict['sample']  # parent is sample object
             # get child items
             children = parent.items()
             aliquots = self.collectAliquots(children)
+            # remove []'s
             import pdb;pdb.set_trace()
+            #for a in aliquots:
+            #    if a ==[]:
+            #        aliquots.remove(a)
             for c in aliquots:
                 if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
                     aliquot_uids_for_testing.append(c)
                 else:
                     print "no aliquot found for at this level", c.id
+        return aliquot_uids_for_testing
 
     def findWantedAliquot(self, UID, assay_parameters):
         """Get to a desired aliquot from a start point UID, and assay_needs
@@ -236,16 +238,20 @@ class AddCommercialEightFrameTestRunView(BrowserView):
     def collectAliquots(self, array_of_aliquots):
         """Check if it is a working aliquot that meets the needs of the assay
         """
-        # get in array of objects
-        # loop over that append to master list of ojects and return that list
-        
+        # get in array of objects to see if they are the last in the chain,
+        # return a list of objects back
+        # loop over that append to master list of objects and return that list
+        # making empty
         all_child_objects = [] #array of objects
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         for n in array_of_aliquots:
-            all_child_objects.append(n[1])
+            all_child_objects.append(n[1]) #adding all objects that came into the function to the running tab of objects
         for n in array_of_aliquots:
-            if n[1].items() is None:
+            if n[1].items() is None: # means it doesn't have a child object and is the end of the line
                 all_child_objects.append(n[1])
             else:
-                self.collectAliquots(n[1].items())
+                a = self.collectAliquots(n[1].items()) # pass object n[1] to collectAliquots
+                # return an array of child objects
+                for n in a:
+                    all_child_objects.append(n)
         return all_child_objects
