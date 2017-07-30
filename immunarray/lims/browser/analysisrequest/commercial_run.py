@@ -40,12 +40,14 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             assay = request.form.get("assaySeleced")
             if assay == 'None':
                 return self.template()  # setup for "custom"
+
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
             frames = assay_parameters['ichiptype']
             # get dictionary of all the samples that need to be tested for the selected assay
             # logic on what samples to be tested
             # can make decisions based on the assay_parameters status
             status_from_test_choice = assay_parameters['status']
+
             if status_from_test_choice == 'Commercial':
                 full_set = self.queryClinicalSamples(assay)
                 sample_count = full_set.__len__()
@@ -53,26 +55,35 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                                                             frames)
                 # Need to order full_set by collection_date oldest to newest, then test_ordered_status
                 get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
-
-                # clean up samples order to be sure the most critical get run first
                 # how many samples are in queue?
+                sample_queue_lenght = get_working_aliquots.len()
+                max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
                 # how many plates will this test run be?
                 # build test run object
-                commercial_samples = {}
-                ichips_for_session = {}
+                # list of cs and ichips selected for initial return to the test form
+
+                commercial_samples_inital = []
+                ichips_for_assay_initial = []
+
                 # How do we want to get solutions?
                 # Need to add it to iChip Assay?
                 soluitons_for_session = {}
+
             if status_from_test_choice == 'Development':
                 samples_to_get = 'RandDSample'
                 # make a developmoent run
                 development_samples = {}
                 ichips_for_session = {}
                 soluitons_for_session = {}
+
             if assay == 'Custom':
                 all_samples_in_lims = {}
                 ichips_for_session = {}
                 soluitons_for_session = {}
+
+            # button push
+            # commercial_samples_finial = []
+            # ichips_for_session_finial = []
 
         return self.template()
 
@@ -112,6 +123,21 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             return selected_assay_paramaters
         except:
             print "Assay Parameters Not Available"
+
+    def maxNumberOfSamplesToRun(self, assay_parameters):
+        """take the assay paramaters and determine the max number of samples
+        that can be tested in a single run
+        """
+        max_plates = assay_parameters['max_number_of_plates_per_test_run']
+        hqc = assay_parameters['number_of_high_value_controls']
+        lqc = assay_parameters['number_of_low_value_controls']
+        number_same_lot = assay_parameters['number_of_same_lot_replication_needed_for_samples']
+        number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
+        frame_type = assay_parameters['ichiptype'] # update type to be frame type (int)
+        wells_needed_per_sample = number_same_lot * number_unique_lot
+        max_wells = max_plates * frame_type
+        wells_for_hqc = wells_needed_per_sample * hqc
+        wells_for_lqc = wells_needed_per_sample * lqc
 
     def queryClinicalSamples(self, assay):
         """Get all the samples that are 'received', order them by date, 
@@ -157,51 +183,43 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get child items
             children = parent.items()
             aliquots = self.collectAliquots(children)
-            # remove []'s
             import pdb;pdb.set_trace()
-            #for a in aliquots:
-            #    if a ==[]:
-            #        aliquots.remove(a)
             for c in aliquots:
-                if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
-                    aliquot_uids_for_testing.append(c)
-                else:
-                    print "no aliquot found for at this level", c.id
+                #wrap a safety net on checking aliquots
+                try:
+                    if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
+                        aliquot_uids_for_testing.append(c)
+                        break # get out of the current loop!
+                    else:
+                        print "no aliquot found for at this level", c.id
+                except:
+                    print "object "+ c.id +" lacks the ability to be checked"
         return aliquot_uids_for_testing
 
-    def findWantedAliquot(self, UID, assay_parameters):
-        """Get to a desired aliquot from a start point UID, and assay_needs
+    def collectAliquots(self, array_of_aliquots):
+        """get in array of objects to see if they are the last in the chain and return a list of objects back
         """
-        # open object
-        a = api.content.get(UID=UID)
-        import pdb;
-        pdb.set_trace()
-        try:
-            if a.aliquot_type == "Working" and a.consume_date is None and a.volume >= \
-                    assay_parameters['desired_working_aliquot_volume']:
-                return a.UID
-            elif a.contentIds() > 0:
-                b = a.contentIds()
-                for c in b:
-                    d = a.__getitem__(c)
-                    return (self.findWantedAliquots(d.UID(), assay_parameters))
+        # get in array of objects to see if they are the last in the chain,
+        # return a list of objects back
+        all_child_objects = [] #array of objects
+        for n in array_of_aliquots:
+            all_child_objects.append(n[1]) #adding all objects that came into the function to the running tab of objects
+        for n in array_of_aliquots:
+            if n[1].items() is None: # means it doesn't have a child object and is the end of the line
+                all_child_objects.append(n[1])
             else:
-                return None
-        except:
-            if a.contentIds() > 0:
-                b = a.contentIds()
-                for c in b:
-                    d = a.__getitem__(c)
-                    return (self.findWantedAliquots(d.UID(), assay_parameters))
-            else:
-                return None
+                a = self.collectAliquots(n[1].items()) # pass object n[1] to collectAliquots
+                # return an array of child objects
+                for n in a: # trick is that only objects are in the returned array
+                    all_child_objects.append(n)
+        return all_child_objects
 
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get iChips needed for testing
         """
         values = api.content.find(context=api.portal.get(),
-                                  portal_type='iChipLot')
-        ichiplot_uid = [u.UID for u in values]
+                                  portal_type='iChipLot') # gets the catalog brains for the iChipLot objects
+        ichiplot_uid = [u.UID for u in values] # get the UID for each iChipLot in the LIMS
         lots_for_selected_assay = []
         dict_ichips = {}
         for v in ichiplot_uid:
@@ -235,23 +253,4 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-    def collectAliquots(self, array_of_aliquots):
-        """Check if it is a working aliquot that meets the needs of the assay
-        """
-        # get in array of objects to see if they are the last in the chain,
-        # return a list of objects back
-        # loop over that append to master list of objects and return that list
-        # making empty
-        all_child_objects = [] #array of objects
-        # import pdb;pdb.set_trace()
-        for n in array_of_aliquots:
-            all_child_objects.append(n[1]) #adding all objects that came into the function to the running tab of objects
-        for n in array_of_aliquots:
-            if n[1].items() is None: # means it doesn't have a child object and is the end of the line
-                all_child_objects.append(n[1])
-            else:
-                a = self.collectAliquots(n[1].items()) # pass object n[1] to collectAliquots
-                # return an array of child objects
-                for n in a:
-                    all_child_objects.append(n)
-        return all_child_objects
+
