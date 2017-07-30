@@ -51,9 +51,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             if status_from_test_choice == 'Commercial':
                 full_set = self.queryClinicalSamples(assay)
                 sample_count = full_set.__len__()
-                ichips_for_assay = self.getiChipsForTesting(assay, sample_count,
-                                                            frames)
-                # Need to order full_set by collection_date oldest to newest, then test_ordered_status
+                ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
+                # Need to order full_set by collection_date oldest to newest,
+                # then test_ordered_status
                 get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
                 # how many samples are in queue?
                 sample_queue_lenght = get_working_aliquots.len()
@@ -131,13 +131,19 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         max_plates = assay_parameters['max_number_of_plates_per_test_run']
         hqc = assay_parameters['number_of_high_value_controls']
         lqc = assay_parameters['number_of_low_value_controls']
-        number_same_lot = assay_parameters['number_of_same_lot_replication_needed_for_samples']
-        number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
-        frame_type = assay_parameters['ichiptype'] # update type to be frame type (int)
+        number_same_lot = assay_parameters[
+            'number_of_same_lot_replication_needed_for_samples']
+        number_unique_lot = assay_parameters[
+            'number_of_unique_ichips_lots_needed']
+        frame_type = assay_parameters['ichiptype']
+        # update type to be frame type (int)
         wells_needed_per_sample = number_same_lot * number_unique_lot
         max_wells = max_plates * frame_type
         wells_for_hqc = wells_needed_per_sample * hqc
         wells_for_lqc = wells_needed_per_sample * lqc
+        sample_wells = max_wells - (wells_for_hqc + wells_for_lqc)
+        max_samples_to_test = sample_wells / wells_needed_per_sample
+        return max_samples_to_test
 
     def queryClinicalSamples(self, assay):
         """Get all the samples that are 'received', order them by date, 
@@ -183,34 +189,38 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get child items
             children = parent.items()
             aliquots = self.collectAliquots(children)
-            import pdb;pdb.set_trace()
             for c in aliquots:
-                #wrap a safety net on checking aliquots
+                # wrap a safety net on checking aliquots
                 try:
-                    if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= assay_parameters['desired_working_aliquot_volume']:
+                    if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= \
+                            assay_parameters['desired_working_aliquot_volume']:
                         aliquot_uids_for_testing.append(c)
-                        break # get out of the current loop!
+                        break
+                        # get out of the current loop!
                     else:
                         print "no aliquot found for at this level", c.id
                 except:
-                    print "object "+ c.id +" lacks the ability to be checked"
+                    print "object " + c.id + " lacks the ability to be checked"
         return aliquot_uids_for_testing
 
     def collectAliquots(self, array_of_aliquots):
-        """get in array of objects to see if they are the last in the chain and return a list of objects back
+        """Get in array of objects to see if they are the last in the chain
+        and return a list of objects back
         """
-        # get in array of objects to see if they are the last in the chain,
-        # return a list of objects back
-        all_child_objects = [] #array of objects
+        all_child_objects = []
         for n in array_of_aliquots:
-            all_child_objects.append(n[1]) #adding all objects that came into the function to the running tab of objects
+            all_child_objects.append(n[1])
+            # adding all objects that came into the function to the running tab of objects
         for n in array_of_aliquots:
-            if n[1].items() is None: # means it doesn't have a child object and is the end of the line
+            if n[1].items() is None:
+                # means it doesn't have a child object and is the end of the line
                 all_child_objects.append(n[1])
             else:
-                a = self.collectAliquots(n[1].items()) # pass object n[1] to collectAliquots
+                a = self.collectAliquots(n[1].items())
+                # pass object n[1] to collectAliquots
                 # return an array of child objects
-                for n in a: # trick is that only objects are in the returned array
+                for n in a:
+                    # trick is that only objects are in the returned array
                     all_child_objects.append(n)
         return all_child_objects
 
@@ -218,8 +228,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """Get iChips needed for testing
         """
         values = api.content.find(context=api.portal.get(),
-                                  portal_type='iChipLot') # gets the catalog brains for the iChipLot objects
-        ichiplot_uid = [u.UID for u in values] # get the UID for each iChipLot in the LIMS
+                                  portal_type='iChipLot')
+        # gets the catalog brains for the iChipLot objects
+        ichiplot_uid = [u.UID for u in values]
+        # get the UID for each iChipLot in the LIMS
         lots_for_selected_assay = []
         dict_ichips = {}
         for v in ichiplot_uid:
