@@ -176,8 +176,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # looking or things we can't test in the run
         # import pdb;pdb.set_trace()
         # then return the groups, in order.
-        a = tmp.get('Received', []) + \
-            tmp.get('Rerun', []) + \
+        a = tmp.get('Rerun', []) + \
+            tmp.get('Received', []) + \
             tmp.get('To Be Tested', [])
         c = []
         # just send back a if it is smaller than max number of samples
