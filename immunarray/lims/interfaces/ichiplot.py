@@ -64,11 +64,11 @@ class IiChipLot(model.Schema):
     )
 
     frames = schema.Choice(
-        title=_(u"iChip Layout"),
-        description=_(u"iChip Layout"),
-        values=[_(u"No Frame iChips"),
-                _(u"3 Frame iChips"),
-                _(u"8 Frame iChips")],
+        title=_(u"iChip Frame Layout"),
+        description=_(u"iChip Frame Layout"),
+        values=[_(u"1"),
+                _(u"3"),
+                _(u"8")],
         required=True,
     )
     #Allow mutiple selections!
@@ -90,7 +90,7 @@ class IiChipLot(model.Schema):
     acceptance_status = schema.Choice(
         title=_(u"iChip Acceptance Status"),
         description=_(u"Acceptance Status of iChip Lot"),
-        values=[_(u"Quarantined"), _(u"Passed")],
+        values=[_(u"Quarantined"), _(u"Passed"),_(u"Consumed")],
         required=True,
     )
 
