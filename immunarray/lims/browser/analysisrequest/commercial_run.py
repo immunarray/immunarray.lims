@@ -49,9 +49,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status_from_test_choice = assay_parameters['status']
 
             if status_from_test_choice == 'Commercial':
+                # how many samples can we test under best case?
                 max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
+                # what samples need to be tested for the selected assay?
                 full_set = self.queryClinicalSamples(assay, max_number_of_samples)
+                # how many samples in the returned list?
                 sample_count = full_set.__len__()
+                # What iChipLots and iChips can be used for the selected assay?
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 # Need to order full_set by collection_date oldest to newest,
                 # then test_ordered_status
@@ -154,7 +158,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         brains = api.content.find(
             portal_type='ClinicalSample', review_state='received')
-        import pdb;pdb.set_trace()
         tmp = {}
         for sample in (b.getObject() for b in brains):
             # collate the samples by the test_ordered_status.
@@ -203,7 +206,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get child items
             children = parent.items()
             aliquots = self.collectAliquots(children)
-            import pdb;pdb.set_trace()
             print aliquots
             for c in aliquots:
                 # wrap a safety net on checking aliquots
@@ -217,7 +219,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 except:
                     print "object " + c.id + " lacks the ability to be checked"
             print aliquot_uids_for_testing
-        import pdb;pdb.set_trace()
         return aliquot_uids_for_testing
 
     def collectAliquots(self, array_of_aliquots):
@@ -242,35 +243,41 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         return all_child_objects
 
     def getiChipsForTesting(self, assay, sample_count, frame):
-        """Get iChips needed for testing
+        """Get iChips that can be used for the selected assay
+        [[<iChipLotID>,[<iChip>,<iChip>,<iChip>]]]
         """
+        # convert frame to string
+        st_frame = str(frame)
         values = api.content.find(context=api.portal.get(),
                                   portal_type='iChipLot')
-        # gets the catalog brains for the iChipLot objects
         ichiplot_uid = [u.UID for u in values]
         # get the UID for each iChipLot in the LIMS
-        lots_for_selected_assay = []
-        dict_ichips = {}
+        list_ichiplot_and_ichips = []
+        # get iChipLots in order first, then get child objects
+        tmp = []
+        today = datetime.date.today()
         for v in ichiplot_uid:
             ichiplot = api.content.get(UID=v)
             for n in ichiplot.intended_assay:
-                if n == assay and ichiplot.acceptance_status == 'Passed' and ichiplot.frames == frame:
-                    # commercial needs
-                    dict_key = ichiplot.title
-                    ichips_in_lot = ichiplot.contentIds()
-                    list_ichip_objects = []
-                    for ichip in ichips_in_lot:
-                        a = ichiplot.__getitem__(ichip)
-                        if a.ichip_status == 'Released':
-                            chip_object = a
-                            list_ichip_objects.append(chip_object)
-                            list_ichip_objects.sort()
-                            print list_ichip_objects
-                        dict_ichips.update({dict_key: list_ichip_objects})
-        # need to order iChipLots by exp date, and iChips by ID lowest to highest
-        # return a list of [[iChipLotID,[<iChip>,<iChip>,<iChip>]]]
-        print dict_ichips
-        return dict_ichips
+                if n == assay and ichiplot.acceptance_status == 'Passed' and \
+                                ichiplot.frames == st_frame and \
+                                ichiplot.ichip_lot_expiration_date > today :
+                    # commercial needs, correct assay
+                    # want to order the ichiplots in this list by exp date
+                    tmp.append([ichiplot.ichip_lot_expiration_date, ichiplot])
+        tmp.sort()
+        for a in tmp:
+            ichiplot = a[1]
+            ichips_in_lot = ichiplot.contentIds()
+            list_ichip_objects = []
+            for ichip in ichips_in_lot:
+                b = ichiplot.__getitem__(ichip)
+                if b.ichip_status == 'Released':
+                    chip_object = b
+                    list_ichip_objects.append(b)
+            #list_ichip_objects.sort() Places objects in reverse order?
+            list_ichiplot_and_ichips.append([ichiplot,list_ichip_objects])
+        return list_ichiplot_and_ichips
 
     def makePullList(self):
         """Make a simple pull list of box location number and sample IDs to pull
