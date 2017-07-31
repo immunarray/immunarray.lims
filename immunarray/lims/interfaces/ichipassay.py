@@ -22,9 +22,9 @@ class IiChipAssay(model.Schema):
         required=False,
     )
 
-    ichiptype = schema.TextLine(
-        title=_(u"iChip Type"),
-        description=_(u"iChip Type"),
+    framecount = schema.Int(
+        title=_(u"Frame Layout"),
+        description=_(u"No Well = 1, Eight Well = 8"),
         required=True,
     )
 
