@@ -49,16 +49,17 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status_from_test_choice = assay_parameters['status']
 
             if status_from_test_choice == 'Commercial':
-                full_set = self.queryClinicalSamples(assay)
+                max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
+                full_set = self.queryClinicalSamples(assay, max_number_of_samples)
                 sample_count = full_set.__len__()
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 # Need to order full_set by collection_date oldest to newest,
                 # then test_ordered_status
-                get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
+                get_working_aliquots = self.queryWorkingAliquots(full_set, assay_parameters)
                 # how many samples are in queue?
                 sample_queue_length = get_working_aliquots.__len__()
                 # theoretical max samples to test under perfect conditions
-                max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
+
                 # how many plates will this test run be?
                 # build test run object
                 # list of cs and ichips selected for initial return to the test form
@@ -126,7 +127,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             print "Assay Parameters Not Available"
 
     def maxNumberOfSamplesToRun(self, assay_parameters):
-        """take the assay paramaters and determine the max number of samples
+        """take the assay parameters and determine the max number of samples
         that can be tested in a single run
         """
         max_plates = assay_parameters['max_number_of_plates_per_test_run']
@@ -136,25 +137,24 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             'number_of_same_lot_replication_needed_for_samples']
         number_unique_lot = assay_parameters[
             'number_of_unique_ichips_lots_needed']
-        framecount = assay_parameters['framecount']
+        frame_count = assay_parameters['framecount']
         # update type to be frame type (int)
         wells_needed_per_sample = number_same_lot * number_unique_lot
-        max_wells = max_plates * framecount
+        max_wells = max_plates * frame_count
         testing_wells_for_hqc = wells_needed_per_sample * hqc
         testing_wells_for_lqc = wells_needed_per_sample * lqc
         sample_wells = max_wells - (testing_wells_for_hqc + testing_wells_for_lqc)
         max_samples_to_test = sample_wells - wells_needed_per_sample
-        import pdb;pdb.set_trace()
         return max_samples_to_test
 
-    def queryClinicalSamples(self, assay):
+    def queryClinicalSamples(self, assay, max_number_of_samples):
         """Get all the samples that are 'received', order them by date, 
         and filter them for those who's test_ordered_status is one of 
         'Received', 'Rerun', or 'To Be Tested'.
         """
         brains = api.content.find(
             portal_type='ClinicalSample', review_state='received')
-
+        import pdb;pdb.set_trace()
         tmp = {}
         for sample in (b.getObject() for b in brains):
             # collate the samples by the test_ordered_status.
@@ -172,14 +172,26 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # now sort all the lists in tmp by draw_date
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
-
+        # Cap with max number of samples so we don't waste overhead later
+        # looking or things we can't test in the run
         # import pdb;pdb.set_trace()
         # then return the groups, in order.
-        return tmp.get('Received', []) + \
-               tmp.get('Rerun', []) + \
-               tmp.get('To Be Tested', [])
+        a = tmp.get('Received', []) + \
+            tmp.get('Rerun', []) + \
+            tmp.get('To Be Tested', [])
+        c = []
+        # just send back a if it is smaller than max number of samples
+        if a.__len__()< max_number_of_samples:
+            return a
+        else:
+            for b in a:
+                count=0
+                while count < max_number_of_samples:
+                    c.append(b)
+                    count += 1
+                return c
 
-    def queryWorkingAliqutos(self, full_set, assay_parameters):
+    def queryWorkingAliquots(self, full_set, assay_parameters):
         """Query to get working aliquots to test with
         """
         aliquot_uids_for_testing = []
@@ -191,6 +203,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get child items
             children = parent.items()
             aliquots = self.collectAliquots(children)
+            import pdb;pdb.set_trace()
+            print aliquots
             for c in aliquots:
                 # wrap a safety net on checking aliquots
                 try:
@@ -198,11 +212,12 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             assay_parameters['desired_working_aliquot_volume']:
                         aliquot_uids_for_testing.append(c)
                         break
-                        # get out of the current loop!
                     else:
                         print "no aliquot found for at this level", c.id
                 except:
                     print "object " + c.id + " lacks the ability to be checked"
+            print aliquot_uids_for_testing
+        import pdb;pdb.set_trace()
         return aliquot_uids_for_testing
 
     def collectAliquots(self, array_of_aliquots):
@@ -243,13 +258,17 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                     # commercial needs
                     dict_key = ichiplot.title
                     ichips_in_lot = ichiplot.contentIds()
-                    dict_values = []
+                    list_ichip_objects = []
                     for ichip in ichips_in_lot:
                         a = ichiplot.__getitem__(ichip)
                         if a.ichip_status == 'Released':
-                            chip_uid = a.UID()
-                            dict_values.append(chip_uid)
-                        dict_ichips.update({dict_key: dict_values})
+                            chip_object = a
+                            list_ichip_objects.append(chip_object)
+                            list_ichip_objects.sort()
+                            print list_ichip_objects
+                        dict_ichips.update({dict_key: list_ichip_objects})
+        # need to order iChipLots by exp date, and iChips by ID lowest to highest
+        # return a list of [[iChipLotID,[<iChip>,<iChip>,<iChip>]]]
         print dict_ichips
         return dict_ichips
 
