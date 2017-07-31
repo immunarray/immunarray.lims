@@ -42,7 +42,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 return self.template()  # setup for "custom"
 
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
-            frames = assay_parameters['ichiptype']
+            frames = assay_parameters['framecount']
             # get dictionary of all the samples that need to be tested for the selected assay
             # logic on what samples to be tested
             # can make decisions based on the assay_parameters status
@@ -56,7 +56,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # then test_ordered_status
                 get_working_aliquots = self.queryWorkingAliqutos(full_set, assay_parameters)
                 # how many samples are in queue?
-                sample_queue_lenght = get_working_aliquots.len()
+                sample_queue_length = get_working_aliquots.__len__()
+                # theoretical max samples to test under perfect conditions
                 max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
                 # how many plates will this test run be?
                 # build test run object
@@ -67,19 +68,19 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
                 # How do we want to get solutions?
                 # Need to add it to iChip Assay?
-                soluitons_for_session = {}
+                solutions_for_session = {}
 
             if status_from_test_choice == 'Development':
                 samples_to_get = 'RandDSample'
                 # make a developmoent run
                 development_samples = {}
                 ichips_for_session = {}
-                soluitons_for_session = {}
+                solutions_for_session = {}
 
             if assay == 'Custom':
                 all_samples_in_lims = {}
                 ichips_for_session = {}
-                soluitons_for_session = {}
+                solutions_for_session = {}
 
             # button push
             # commercial_samples_finial = []
@@ -96,7 +97,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         ichipassays = {}
         selected_assay_paramaters = {}
         variables_to_get = ['creation_date', 'creators', 'description',
-                            'desired_working_aliquot_volume', 'ichiptype', 'id',
+                            'desired_working_aliquot_volume', 'framecount', 'id',
                             'max_number_of_plates_per_test_run',
                             'modification_date',
                             'number_of_high_value_controls',
@@ -135,14 +136,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             'number_of_same_lot_replication_needed_for_samples']
         number_unique_lot = assay_parameters[
             'number_of_unique_ichips_lots_needed']
-        frame_type = assay_parameters['ichiptype']
+        framecount = assay_parameters['framecount']
         # update type to be frame type (int)
         wells_needed_per_sample = number_same_lot * number_unique_lot
-        max_wells = max_plates * frame_type
-        wells_for_hqc = wells_needed_per_sample * hqc
-        wells_for_lqc = wells_needed_per_sample * lqc
-        sample_wells = max_wells - (wells_for_hqc + wells_for_lqc)
-        max_samples_to_test = sample_wells / wells_needed_per_sample
+        max_wells = max_plates * framecount
+        testing_wells_for_hqc = wells_needed_per_sample * hqc
+        testing_wells_for_lqc = wells_needed_per_sample * lqc
+        sample_wells = max_wells - (testing_wells_for_hqc + testing_wells_for_lqc)
+        max_samples_to_test = sample_wells - wells_needed_per_sample
+        import pdb;pdb.set_trace()
         return max_samples_to_test
 
     def queryClinicalSamples(self, assay):
@@ -265,4 +267,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-
+    def makeTestPlan(self, assay_parameters,ichips_for_assay, max_number_of_samples,):
+        """use collected iChips, assay parameters, working aliquots
+        """
