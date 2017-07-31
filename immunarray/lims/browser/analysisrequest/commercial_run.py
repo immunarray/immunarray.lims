@@ -214,11 +214,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             assay_parameters['desired_working_aliquot_volume']:
                         aliquot_uids_for_testing.append(c)
                         break
-                    else:
-                        print "no aliquot found for at this level", c.id
                 except:
                     print "object " + c.id + " lacks the ability to be checked"
-            print aliquot_uids_for_testing
         return aliquot_uids_for_testing
 
     def collectAliquots(self, array_of_aliquots):
@@ -275,7 +272,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 if b.ichip_status == 'Released':
                     chip_object = b
                     list_ichip_objects.append(b)
-            #list_ichip_objects.sort() Places objects in reverse order?
+            #list_ichip_objects.sort() #Places objects in reverse order?
             list_ichiplot_and_ichips.append([ichiplot,list_ichip_objects])
         return list_ichiplot_and_ichips
 
@@ -293,6 +290,26 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-    def makeTestPlan(self, assay_parameters,ichips_for_assay, max_number_of_samples,):
-        """use collected iChips, assay parameters, working aliquots
+    def makeTestPlan(self, assay_parameters,ichips_for_assay, max_number_of_samples, sample_count):
+        """use ordered [ichiplot, [ichips]], assay parameters{}, [working aliquots] to build test plan
         """
+        #how many plates do I need?
+        # vars defined for operation
+        slide_per_plate = 4 # constant that needs to be defined
+        max_plates = assay_parameters['max_number_of_plates_per_test_run']
+        hqc = assay_parameters['number_of_high_value_controls']
+        lqc = assay_parameters['number_of_low_value_controls']
+        number_same_lot = assay_parameters['number_of_same_lot_replication_needed_for_samples']
+        number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
+        frame_count = assay_parameters['framecount']
+        number_of_ichipslots = ichips_for_assay.__len__()
+        if number_unique_lot< number_of_ichipslots:
+            print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
+        count = 0
+        running_sc = sample_count
+        # condition that lets me know to keep making plates both parts must be true
+        while count < max_plates and running_sc > 0:
+            pass
+
+
+
