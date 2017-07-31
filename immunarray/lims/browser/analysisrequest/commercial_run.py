@@ -170,8 +170,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
 
         # now sort all the lists in tmp by draw_date
-        for key in tmp.keys():
-            tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
+        #for key in tmp.keys():
+        #    tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
         # Cap with max number of samples so we don't waste overhead later
         # looking or things we can't test in the run
         # import pdb;pdb.set_trace()
