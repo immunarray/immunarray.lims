@@ -139,7 +139,7 @@ def structure_permissions(lims):
 def create_material_types(portal):
     materials = [
         ("caseinsalt", u"Casein Salt"),
-        ("ethylalcohol", u"Ethyl Alcahol Denatured"),
+        ("ethylalcohol", u"Ethyl Alcohol Denatured"),
         ("glycerol", u"Glycerol"),
         ("nacl", u"Sodium Chloride (NaCl)"),
         ("kcl", u"Potassium Chloride (KCl)"),
