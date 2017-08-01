@@ -112,7 +112,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             'number_of_working_aliquots_needed', 'portal_type',
                             'sample_qc_dilution_factor',
                             'sample_qc_dilution_material', 'status', 'title',
-                            'qc_high_choice', 'qc_low_choice']
+                            'qc_high_choice', 'qc_low_choice',
+                            'minimum_working_aliquot_volume']
         ichipassay_ids = [v.UID for v in values]
         for i in ichipassay_ids:
             value = api.content.get(UID=i)
@@ -308,16 +309,34 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         number_same_lot = assay_parameters['number_of_same_lot_replication_needed_for_samples']
         number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
         frame_count = assay_parameters['framecount']
+        min_volume_per_sample= assay_parameters['minimum_working_aliquot_volume']
 
-        number_of_ichipslots = ichips_for_assay.__len__()
+        number_of_ichips_available = ichips_for_assay.__len__()
+        # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
 
-        if number_unique_lot< number_of_ichipslots:
+        if number_unique_lot < number_of_ichips_available:
             print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
         count = 0
         running_sc = sample_count
+        test_run = {}
+        # test_run = {plate1:}
         # condition that lets me know to keep making plates both parts must be true
         while count < max_plates and running_sc > 0:
             print "Make A New Plate"
+
+            plate = []
+            #select ichiplots and ichips, remove from pool.
+            a = ichips_for_assay[0]
+            # prove the ichiplot has enough chips to make a plate
+            if a[1].len() >= number_same_lot:
+                print a[0].title + "selected for testing"
+            else:
+                del ichips_for_assay[0]
+                # condition met so we can use this lot and ichips
+            b = ichips_for_assay[1]
+            if b[1].len() >= number_same_lot:
+
+
 
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
