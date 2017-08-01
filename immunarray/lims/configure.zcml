@@ -79,4 +79,8 @@
       name="immunarray.lims.vocabularies.ichip.ICommercialNoFrameChipsVocabulary"
       component="immunarray.lims.vocabularies.ichip.ICommercialNoFrameChipsVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
+  <utility
+      name="immunarray.lims.vocabularies.qc.QCListVocabulary"
+      component="immunarray.lims.vocabularies.qc.QCListVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
 </configure>
