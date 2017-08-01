@@ -104,6 +104,13 @@ class IiChipAssay(model.Schema):
         default=12,
     )
 
+    minimum_working_aliquot_volume = schema.Int(
+        title=_(u"Minimum Working Aliquot Volume (uL)"),
+        description=_(u"Minimum Working Aliquot Volume (uL)"),
+        required=True,
+        default=8,
+    )
+
     status = schema.Choice(
         title=_(u"iChip Assay Status"),
         description=_(u"iChip Layout"),
