@@ -48,6 +48,7 @@ class IiChipAssay(model.Schema):
         required=True,
         default=2,
     )
+
     qc_high_choice = schema.Choice(
         title =_(u"Select High/Positive QC Veracis ID"),
         description =_(u"Select High/Positive QC Veracis ID"),
@@ -60,6 +61,13 @@ class IiChipAssay(model.Schema):
         description=_(u"Number of Low/Negative Controls"),
         required=True,
         default=1,
+    )
+
+    qc_low_choice = schema.Choice(
+    title =_(u"Select Low/Negative QC Veracis ID"),
+    description =_(u"Select Low/Negative QC Veracis ID"),
+    source = QCListVocabulary,
+    required=False,
     )
 
     sample_qc_dilution_factor = schema.Int(
