@@ -335,7 +335,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # condition met so we can use this lot and ichips
             b = ichips_for_assay[1]
             if b[1].len() >= number_same_lot:
-
+                pass
 
 
     def getQCSampleObject(self, veracis_id):
