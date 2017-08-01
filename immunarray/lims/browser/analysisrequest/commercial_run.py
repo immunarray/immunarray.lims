@@ -111,7 +111,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             'number_of_unique_ichips_lots_needed',
                             'number_of_working_aliquots_needed', 'portal_type',
                             'sample_qc_dilution_factor',
-                            'sample_qc_dilution_material', 'status', 'title']
+                            'sample_qc_dilution_material', 'status', 'title',
+                            'qc_high_choice', 'qc_low_choice']
         ichipassay_ids = [v.UID for v in values]
         for i in ichipassay_ids:
             value = api.content.get(UID=i)
@@ -295,21 +296,41 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         #how many plates do I need?
         # vars defined for operation
+        hqc = assay_parameters['number_of_high_value_controls']
+        hqc_veracis_id = assay_parameters['qc_high_choice']
+        hqc_object = self.getQCSampleObject(hqc_veracis_id)
+        lqc = assay_parameters['number_of_low_value_controls']
+        lqc_veracis_id= assay_parameters['qc_low_choice']
+        lqc_object = self.getQCSampleObject(lqc_veracis_id)
+
         slide_per_plate = 4 # constant that needs to be defined
         max_plates = assay_parameters['max_number_of_plates_per_test_run']
-        hqc = assay_parameters['number_of_high_value_controls']
-        lqc = assay_parameters['number_of_low_value_controls']
         number_same_lot = assay_parameters['number_of_same_lot_replication_needed_for_samples']
         number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
         frame_count = assay_parameters['framecount']
+
         number_of_ichipslots = ichips_for_assay.__len__()
+
         if number_unique_lot< number_of_ichipslots:
             print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
         count = 0
         running_sc = sample_count
         # condition that lets me know to keep making plates both parts must be true
         while count < max_plates and running_sc > 0:
-            pass
+            print "Make A New Plate"
 
+    def getQCSampleObject(self, veracis_id):
+        """input veracis_id, get qc sample object
+        """
+        qc = veracis_id
+        values = api.content.find(context=api.portal.get(), portal_type='QCSample')
+        qcsample_ids = [v.UID for v in values]
+        d = []
+        for i in qcsample_ids:
+            a = api.content.get(UID=i)
+            if qc == a.veracis_id:
+                d.append(a)
+                break
+        return d
 
 
