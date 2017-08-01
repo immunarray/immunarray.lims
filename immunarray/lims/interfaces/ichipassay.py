@@ -8,7 +8,7 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.dexterity.utils import createContentInContainer
 from plone.autoform import directives
 from zope.interface import alsoProvides
-
+from immunarray.lims.vocabularies.qc import QCListVocabulary
 class IiChipAssay(model.Schema):
     """ Interface that will allow for creation of new iChip Assays"""
     title = schema.TextLine(
@@ -47,6 +47,12 @@ class IiChipAssay(model.Schema):
         description=_(u"Number of High/Positive Controls"),
         required=True,
         default=2,
+    )
+    qc_high_choice = schema.Choice(
+        title =_(u"Select High/Positive QC Veracis ID"),
+        description =_(u"Select High/Positive QC Veracis ID"),
+        source = QCListVocabulary,
+        required=False,
     )
 
     number_of_low_value_controls = schema.Int(
