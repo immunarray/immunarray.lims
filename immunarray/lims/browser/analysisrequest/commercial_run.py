@@ -67,7 +67,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # how many plates will this test run be?
                 # build test run object
                 # list of cs and ichips selected for initial return to the test form
-
+                plates = self.makeTestPlan( assay_parameters,ichips_for_assay, max_number_of_samples, sample_count)
                 commercial_samples_inital = []
                 ichips_for_assay_initial = []
 
@@ -300,6 +300,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         hqc = assay_parameters['number_of_high_value_controls']
         hqc_veracis_id = assay_parameters['qc_high_choice']
         hqc_object = self.getQCSampleObject(hqc_veracis_id)
+
         lqc = assay_parameters['number_of_low_value_controls']
         lqc_veracis_id= assay_parameters['qc_low_choice']
         lqc_object = self.getQCSampleObject(lqc_veracis_id)
@@ -310,33 +311,42 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
         frame_count = assay_parameters['framecount']
         min_volume_per_sample= assay_parameters['minimum_working_aliquot_volume']
-
-        number_of_ichips_available = ichips_for_assay.__len__()
+        wells_needed_persample = number_same_lot * number_unique_lot # 4 in this case
+        number_of_ichip_lots_available = ichips_for_assay.__len__()
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
-
-        if number_unique_lot < number_of_ichips_available:
+        import pdb;pdb.set_trace()
+        if number_of_ichip_lots_available >= number_unique_lot:
             print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
-        count = 0
+        else:
+            print "Enough iChip Lots To Start Evaluation Process"
+        count1 = 0
         running_sc = sample_count
         test_run = {}
         # test_run = {plate1:}
+
+
         # condition that lets me know to keep making plates both parts must be true
-        while count < max_plates and running_sc > 0:
+        while count1 < max_plates and running_sc > 0:
             print "Make A New Plate"
-
+            # logic to pick lots of ichips for plate
+            active_lots =[]
+            # will read over the ichips_for_assay to get an active set of
+            # ichiplots and ichips to build plates from
+            # make this a def to be called if coditon is met again!
+            while active_lots.__len__() < number_unique_lot:
+                # select ichiplots and ichips, remove from pool.
+                for n in ichips_for_assay:
+                    # prove the ichiplot has enough chips to make a plate
+                    if n[1].__len__() >= number_same_lot:
+                        active_lots.append(n)
+                        print n[0].title + " selected for testing"
+                        ichips_for_assay.pop(0)
+                        break # gets me out of current loop, but back into
+                    else:
+                        print n[0].title + " NOT selected for testing"
+                        ichips_for_assay.pop(0) # Remove from list of choices
+                        break
             plate = []
-            #select ichiplots and ichips, remove from pool.
-            a = ichips_for_assay[0]
-            # prove the ichiplot has enough chips to make a plate
-            if a[1].len() >= number_same_lot:
-                print a[0].title + "selected for testing"
-            else:
-                del ichips_for_assay[0]
-                # condition met so we can use this lot and ichips
-            b = ichips_for_assay[1]
-            if b[1].len() >= number_same_lot:
-                pass
-
 
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
