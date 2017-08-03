@@ -314,7 +314,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         wells_needed_persample = number_same_lot * number_unique_lot # 4 in this case
         number_of_ichip_lots_available = ichips_for_assay.__len__()
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
-        import pdb;pdb.set_trace()
+
         if number_of_ichip_lots_available >= number_unique_lot:
             print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
         else:
@@ -324,7 +324,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         test_run = {}
         # test_run = {plate1:}
 
-
         # condition that lets me know to keep making plates both parts must be true
         while count1 < max_plates and running_sc > 0:
             print "Make A New Plate"
@@ -333,6 +332,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # will read over the ichips_for_assay to get an active set of
             # ichiplots and ichips to build plates from
             # make this a def to be called if coditon is met again!
+
+            plate = []
             while active_lots.__len__() < number_unique_lot:
                 # select ichiplots and ichips, remove from pool.
                 for n in ichips_for_assay:
@@ -346,7 +347,35 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                         print n[0].title + " NOT selected for testing"
                         ichips_for_assay.pop(0) # Remove from list of choices
                         break
-            plate = []
+
+            # Pick needed chips
+            # variable I have to work with
+            # number_unique_lot
+            # number_same_lot
+            # slide_per_plate (4)
+            unique_lot_count = 0
+            active_slide_count = 0
+
+            while active_slide_count < slide_per_plate:
+
+                while unique_lot_count < number_unique_lot:
+
+                    while active_slide_count < number_same_lot:
+
+                        for n in active_lots:
+                            import pdb;pdb.set_trace()
+                            # n = [<ichiplot>, [<ichip>, <ichip>, <ichip>]]
+                            list_of_chip_objects = n[1]
+                            # append to plate list
+                            plate.append(list_of_chip_objects[0])
+                            # remove chip selected from active_lots
+                            active_lots.pop([1][0])
+                            active_slide_count += 1
+                            break
+                        active_slide_count += 1
+                        break
+                break
+
 
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
