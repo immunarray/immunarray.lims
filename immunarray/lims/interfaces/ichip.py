@@ -64,6 +64,8 @@ class IiChip(model.Schema):
         required=False,
     )
 
+    # update to have vocabulary tied to choices
+
     storage_location = schema.Choice(
         title=_(u"iChip Storage Location"),
         description=_(u"Storage Location of iChip"),
