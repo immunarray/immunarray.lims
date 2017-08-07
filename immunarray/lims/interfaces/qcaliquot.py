@@ -58,6 +58,12 @@ class IQCAliquot(model.Schema):
         required=False,
     )
 
+    consume_date = schema.Date(
+        title=_(u"Aliquot Consume Date"),
+        description =_(u"Aliquot Consume Date"),
+        required=False,
+    )
+
     source = schema.TextLine(
         title=_(u"Source of QC Sample"),
         description=_(u"Source of QC Sample"),
@@ -78,7 +84,7 @@ class IQCAliquot(model.Schema):
                 _(u'Working')],
     )
 
-    initial_volume = schema.Float(
+    volume = schema.Float(
         title=_(u"Volume of QC Sample in micro liters (uL)"),
         description=_(u"Volume of QC Sample in micro liters (uL)"),
         required=False,
