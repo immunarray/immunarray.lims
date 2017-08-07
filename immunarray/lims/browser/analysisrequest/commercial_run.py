@@ -325,7 +325,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # test_run = {plate1:}
 
         # condition that lets me know to keep making plates both parts must be true
-        while plate_count < max_plates and running_sc > 0:
+        while plate_count < max_plates and running_sc >= 0:
             print "Make A New Plate"
             # logic to pick lots of ichips for plate
             active_lots =[]
@@ -357,19 +357,22 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # number_unique_lot
             # number_same_lot
             # slide_per_plate (4)
-            while plate.__len__() < slide_per_plate:
-                for a in active_lots:
-                    # active_lots has the needed number of ichiplots, and has
-                    # enough chips for at least one pass!
-                    b = a[1][:number_same_lot]
-                    for c in b:
-                        plate.append(c)
-                    # remove selected objects from active_lots.  How to do that?
-                    del a[1][:number_same_lot]
+            # while plate.__len__() < slide_per_plate:, put this in later
+            for a in active_lots:
+                # active_lots has the needed number of ichiplots, and has
+                # enough chips for at least one pass!
+                b = a[1][:number_same_lot]
+                for c in b:
+                    plate.append(c)
+                # remove selected objects from active_lots.  How to do that?
+                del a[1][:number_same_lot]
+            # a this point we have a selection of ichips, we now need to get
+            # samples to be run on them.
             # Pick QC to run on ichips in the plate, will need to do this if and
-            #  when ichiplots change
-            print active_lots
-
+            # when ichiplots change
+            # make variable
+            # sample slots (max of *) want to make it dynamic range(1:frame_count)
+            sample_slots = []  # list of the sample objects to be put on the current selection of ichips
             hqc_aliquots = self.collectAliquots(hqc_object[0].items())
             hqc_aliquot_to_add_to_plate = self.selectQCAliquot(
                 hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
@@ -381,6 +384,31 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
                 lqc_aliquots)
             print lqc_aliquot_to_add_to_plate
+            import pdb;pdb.set_trace()
+            if sample_count < frame_count:
+                # make simple test setup
+                sample_slots.append(hqc_aliquot_to_add_to_plate)
+                sample_slots.append(hqc_aliquot_to_add_to_plate)
+                sample_slots.append(lqc_aliquot_to_add_to_plate)
+                for n in get_working_aliquots:
+                    sample_slots.append(n)  # add sample to list
+                    del get_working_aliquots[0]  # remove added sample
+                    running_sc -= 1  # increase running sample count
+            else:
+                while sample_slots.__len__() < frame_count:
+                    # if condition to add QC to test if not in previous plate
+                    sample_slots.append(hqc_aliquot_to_add_to_plate)
+                    sample_slots.append(hqc_aliquot_to_add_to_plate)
+                    sample_slots.append(lqc_aliquot_to_add_to_plate)
+                    for n in get_working_aliquots:
+                        sample_slots.append(n)  # add sample to list
+                        del get_working_aliquots[0]  # remove added sample
+                        running_sc += 1  # increase running sample count
+            # define test locations
+            # test location
+            # is the set of wells that each aliquot needs to be placed into
+            # assigning samples to test locations
+
 
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
@@ -388,9 +416,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         qc = veracis_id
         values = api.content.find(context=api.portal.get(),
                                   portal_type='QCSample')
-        qcsample_ids = [v.UID for v in values]
+        qc_sample_ids = [v.UID for v in values]
         d = []
-        for i in qcsample_ids:
+        for i in qc_sample_ids:
             a = api.content.get(UID=i)
             if qc == a.veracis_id:
                 d.append(a)
