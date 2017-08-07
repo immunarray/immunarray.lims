@@ -99,7 +99,7 @@
         <input type="hidden" name="submitted" value="1"/>
         <select id="assay_selection">
             <option name="None">None</option>>
-                <tal:block repeat="assay object/@@ctest/ichipassaylist">
+                <tal:block repeat="assay object/@@ctest/iChipAssayList">
                     <option tal:content ="assay"></option>
                 </tal:block>
             <option name="Custom">Custom</option>
