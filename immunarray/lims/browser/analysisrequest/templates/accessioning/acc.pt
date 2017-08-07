@@ -564,7 +564,7 @@
         </table>
         <table>
           <fieldset id="assay_choice_from_rec" name="assay_choice_from_rec">
-            <tal:block repeat="assay object/@@ctest/ichipassaylist">
+            <tal:block repeat="assay object/@@ctest/iChipAssayList">
               <input type='checkbox' class='test-choice'
                      tal:content ="assay"
                      tal:attributes="id assay;value assay; name assay"/>
