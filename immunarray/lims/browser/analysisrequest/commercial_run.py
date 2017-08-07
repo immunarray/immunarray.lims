@@ -67,7 +67,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # how many plates will this test run be?
                 # build test run object
                 # list of cs and ichips selected for initial return to the test form
-                plates = self.makeTestPlan( assay_parameters,ichips_for_assay, max_number_of_samples, sample_count)
+                plates = self.makeTestPlan(assay_parameters,ichips_for_assay, max_number_of_samples, sample_count, get_working_aliquots)
                 commercial_samples_inital = []
                 ichips_for_assay_initial = []
 
@@ -242,7 +242,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         return all_child_objects
 
     def getiChipsForTesting(self, assay, sample_count, frame):
-        """Get iChips that can be used for the selected assay
+        """Get ALL iChips that can be used for the selected assay
         [[<iChipLotID>,[<iChip>,<iChip>,<iChip>]]]
         """
         # convert frame to string
@@ -278,13 +278,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             list_ichiplot_and_ichips.append([ichiplot,list_ichip_objects])
         return list_ichiplot_and_ichips
 
-    def makePullList(self):
-        """Make a simple pull list of box location number and sample IDs to pull
-        for test run
-        """
-        pass
-
-    def ichipassaylist(self):
+    def iChipAssayList(self):
         vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
         return vocab_keys
 
@@ -292,7 +286,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-    def makeTestPlan(self, assay_parameters,ichips_for_assay, max_number_of_samples, sample_count):
+    def makeTestPlan(self, assay_parameters,ichips_for_assay, max_number_of_samples, sample_count, get_working_aliquots):
         """use ordered [ichiplot, [ichips]], assay parameters{}, [working aliquots] to build test plan
         """
         #how many plates do I need?
@@ -311,7 +305,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
         frame_count = assay_parameters['framecount']
         min_volume_per_sample= assay_parameters['minimum_working_aliquot_volume']
+
         wells_needed_persample = number_same_lot * number_unique_lot # 4 in this case
+
+        # Need to ensure that lots are unique V10_1 and V10_2 are the "same" lot
+        # as the materials used to make them are the same, so we need to split
+        # on _'s and be sure the first part is unique.
+
         number_of_ichip_lots_available = ichips_for_assay.__len__()
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
 
@@ -319,69 +319,75 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
         else:
             print "Enough iChip Lots To Start Evaluation Process"
-        count1 = 0
+        plate_count = 0
         running_sc = sample_count
         test_run = {}
         # test_run = {plate1:}
 
         # condition that lets me know to keep making plates both parts must be true
-        while count1 < max_plates and running_sc > 0:
+        while plate_count < max_plates and running_sc > 0:
             print "Make A New Plate"
             # logic to pick lots of ichips for plate
             active_lots =[]
             # will read over the ichips_for_assay to get an active set of
             # ichiplots and ichips to build plates from
-            # make this a def to be called if coditon is met again!
+            # make this a def to be called if condition is met again!
 
+            # select ichiplots and ichips, remove from pool.
             plate = []
-            while active_lots.__len__() < number_unique_lot:
-                # select ichiplots and ichips, remove from pool.
-                for n in ichips_for_assay:
-                    # prove the ichiplot has enough chips to make a plate
-                    if n[1].__len__() >= number_same_lot:
-                        active_lots.append(n)
-                        print n[0].title + " selected for testing"
-                        ichips_for_assay.pop(0)
-                        break # gets me out of current loop, but back into
-                    else:
-                        print n[0].title + " NOT selected for testing"
-                        ichips_for_assay.pop(0) # Remove from list of choices
-                        break
+            # get lot id independent to print lot, this value should be unique
+            # for selection/addition to active lots!
+            # ichips_for_assay[0][0].title.split(".")[0], gives ichip lot split
+            for n in ichips_for_assay:
+                if n[0].title.split(".")[0] not in active_lots:  # need to test
+                    while active_lots.__len__() < number_unique_lot:
+                        # prove the ichiplot has enough chips to make a plate
+                        if n[1].__len__() >= number_same_lot:
+                            active_lots.append(n)
+                            print n[0].title + " selected for testing"
+                            ichips_for_assay.pop(0)
+                            break  # gets me out of current loop, but back into
+                        else:
+                            print n[0].title + " NOT selected for testing"
+                            ichips_for_assay.pop(0)  # Remove from list of choices
+                            break
 
             # Pick needed chips
             # variable I have to work with
             # number_unique_lot
             # number_same_lot
             # slide_per_plate (4)
-            unique_lot_count = 0
-            active_slide_count = 0
+            while plate.__len__() < slide_per_plate:
+                for a in active_lots:
+                    # active_lots has the needed number of ichiplots, and has
+                    # enough chips for at least one pass!
+                    b = a[1][:number_same_lot]
+                    for c in b:
+                        plate.append(c)
+                    # remove selected objects from active_lots.  How to do that?
+                    del a[1][:number_same_lot]
+            # Pick QC to run on ichips in the plate, will need to do this if and
+            #  when ichiplots change
+            print active_lots
 
-            while active_slide_count < slide_per_plate:
+            hqc_aliquots = self.collectAliquots(hqc_object[0].items())
+            hqc_aliquot_to_add_to_plate = self.selectQCAliquot(
+                hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
+                hqc_aliquots)
+            print hqc_aliquot_to_add_to_plate
 
-                while unique_lot_count < number_unique_lot:
-
-                    while active_slide_count < number_same_lot:
-
-                        for n in active_lots:
-                            import pdb;pdb.set_trace()
-                            # n = [<ichiplot>, [<ichip>, <ichip>, <ichip>]]
-                            list_of_chip_objects = n[1]
-                            # append to plate list
-                            plate.append(list_of_chip_objects[0])
-                            # remove chip selected from active_lots
-                            active_lots.pop([1][0])
-                            active_slide_count += 1
-                            break
-                        active_slide_count += 1
-                        break
-                break
-
+            lqc_aliquots = self.collectAliquots(lqc_object[0].items())
+            lqc_aliquot_to_add_to_plate = self.selectQCAliquot(
+                lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
+                lqc_aliquots)
+            print lqc_aliquot_to_add_to_plate
 
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
         """
         qc = veracis_id
-        values = api.content.find(context=api.portal.get(), portal_type='QCSample')
+        values = api.content.find(context=api.portal.get(),
+                                  portal_type='QCSample')
         qcsample_ids = [v.UID for v in values]
         d = []
         for i in qcsample_ids:
@@ -391,4 +397,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 break
         return d
 
+    def selectQCAliquot(self, number_of_controls, min_working_volume,
+                        number_same_lot_replication, number_of_unique_ichips,
+                        array_of_qc_samples):
+        """Input of wells to test, array of qc aliquots, return aliquot that can
+         be used for testing
+        """
+        wells_to_test = number_of_controls * number_same_lot_replication * number_of_unique_ichips
+        min_volume = wells_to_test * min_working_volume
+        for c in array_of_qc_samples:
+            # wrap a safety net on checking aliquots
+            try:
+                if c.aliquot_type == "Working" and c.consume_date is None and c.volume >= min_volume:
+                    return c
+                else: print "Aliquot Does Not Meet Needs of Assay UID of Object Checked is " + c.UID()
+            except:
+                print "object " + c.UID() + " lacks the ability to be checked"
 
+    def makePullList(self):
+        """Make a simple pull list of box location number and sample IDs to pull
+        for test run
+        """
+        pass
