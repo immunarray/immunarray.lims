@@ -394,7 +394,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                     sample_slots.append(n)  # add sample to list
                     del get_working_aliquots[0]  # remove added sample
                     running_sc -= 1  # increase running sample count
-            else:
+            else:  # will populate the 
                 while sample_slots.__len__() < frame_count:
                     # if condition to add QC to test if not in previous plate
                     sample_slots.append(hqc_aliquot_to_add_to_plate)
