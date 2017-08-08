@@ -54,14 +54,14 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # what samples need to be tested for the selected assay?
                 full_set = self.queryClinicalSamples(assay, max_number_of_samples)
                 # how many samples in the returned list?
-                sample_count = full_set.__len__()
+                sample_count = len(full_set)
                 # What iChipLots and iChips can be used for the selected assay?
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 # Need to order full_set by collection_date oldest to newest,
                 # then test_ordered_status
                 get_working_aliquots = self.queryWorkingAliquots(full_set, assay_parameters)
                 # how many samples are in queue?
-                sample_queue_length = get_working_aliquots.__len__()
+                sample_queue_length = len(get_working_aliquots)
                 # theoretical max samples to test under perfect conditions
 
                 # how many plates will this test run be?
@@ -158,6 +158,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         and filter them for those who's test_ordered_status is one of 
         'Received', 'Rerun', or 'To Be Tested'.
         """
+        import pdb;pdb.set_trace()
         brains = api.content.find(
             portal_type='ClinicalSample', review_state='received')
         tmp = {}
@@ -186,7 +187,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             tmp.get('To Be Tested', [])
         c = []
         # just send back a if it is smaller than max number of samples
-        if a.__len__()< max_number_of_samples:
+        if len(a) < max_number_of_samples:
             return a
         else:
             for b in a:
@@ -224,20 +225,17 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """Get in array of objects to see if they are the last in the chain
         and return a list of objects back
         """
+        """Check if it is a working aliquot that meets the needs of the assay
+        """
         all_child_objects = []
         for n in array_of_aliquots:
             all_child_objects.append(n[1])
-            # adding all objects that came into the function to the running tab of objects
         for n in array_of_aliquots:
             if n[1].items() is None:
-                # means it doesn't have a child object and is the end of the line
                 all_child_objects.append(n[1])
             else:
                 a = self.collectAliquots(n[1].items())
-                # pass object n[1] to collectAliquots
-                # return an array of child objects
                 for n in a:
-                    # trick is that only objects are in the returned array
                     all_child_objects.append(n)
         return all_child_objects
 
@@ -313,7 +311,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # as the materials used to make them are the same, so we need to split
         # on _'s and be sure the first part is unique.
 
-        number_of_ichip_lots_available = ichips_for_assay.__len__()
+        number_of_ichip_lots_available = len(ichips_for_assay)
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
 
         if number_of_ichip_lots_available >= number_unique_lot:
@@ -396,14 +394,18 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 if get_working_aliquots:
                     sample_slots.append(get_working_aliquots[0])
                     get_working_aliquots = get_working_aliquots[1:]
-            import pdb;pdb.set_trace()
             sample_ids = [x.id for x in sample_slots]
             result.append([[x.id, sample_ids] for x in required_ichips_for_testing])
+            import pdb;pdb.set_trace()
 
             # define test locations
             # test location
             # is the set of wells that each aliquot needs to be placed into
-            # assigning samples to test locations
+            # assign sample slots to required_ichips_for_testing
+            # if required_ichips_for_testing  = 4 chips make a plate
+            # else need to get more things to test to add to the set
+            # need qc everytime we change ichiplots!
+
 
 
     def getQCSampleObject(self, veracis_id):
