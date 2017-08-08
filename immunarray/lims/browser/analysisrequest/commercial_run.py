@@ -291,6 +291,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """
         #how many plates do I need?
         # vars defined for operation
+
         hqc = assay_parameters['number_of_high_value_controls']
         hqc_veracis_id = assay_parameters['qc_high_choice']
         hqc_object = self.getQCSampleObject(hqc_veracis_id)
@@ -316,16 +317,20 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
 
         if number_of_ichip_lots_available >= number_unique_lot:
-            print "Can Not Run Selected Assay, Not Enough Unique iChip Lots"
-        else:
             print "Enough iChip Lots To Start Evaluation Process"
+        else:
+            print "Can Run Selected Assay, Not Enough Unique iChip Lots"
         plate_count = 0
         running_sc = sample_count
         test_run = {}
         # test_run = {plate1:}
-
+        _used_ichips = []
+        _used_samples = []
         # condition that lets me know to keep making plates both parts must be true
+        result = []
+
         while plate_count < max_plates and running_sc >= 0:
+
             print "Make A New Plate"
             # logic to pick lots of ichips for plate
             active_lots =[]
@@ -334,24 +339,24 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # make this a def to be called if condition is met again!
 
             # select ichiplots and ichips, remove from pool.
-            plate = []
+            required_ichips_for_testing = []
             # get lot id independent to print lot, this value should be unique
             # for selection/addition to active lots!
             # ichips_for_assay[0][0].title.split(".")[0], gives ichip lot split
-            for n in ichips_for_assay:
-                if n[0].title.split(".")[0] not in active_lots:  # need to test
-                    while active_lots.__len__() < number_unique_lot:
-                        # prove the ichiplot has enough chips to make a plate
-                        if n[1].__len__() >= number_same_lot:
-                            active_lots.append(n)
-                            print n[0].title + " selected for testing"
-                            ichips_for_assay.pop(0)
-                            break  # gets me out of current loop, but back into
-                        else:
-                            print n[0].title + " NOT selected for testing"
-                            ichips_for_assay.pop(0)  # Remove from list of choices
-                            break
+            #
 
+            for n in ichips_for_assay:  # V10.1 and V10.2 can't be in the set
+                if n in _used_ichips:
+                    continue
+                _used_ichips.append(n)
+                ichip_lot_object = n[0]
+                list_of_ichip_objects = n[1]
+
+                if ichip_lot_object.title.split(".")[0] not in active_lots:
+                        if len(list_of_ichip_objects) >= number_same_lot:
+                           active_lots.append(n)
+                if len(active_lots) == number_unique_lot:
+                    break
             # Pick needed chips
             # variable I have to work with
             # number_unique_lot
@@ -359,51 +364,42 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # slide_per_plate (4)
             # while plate.__len__() < slide_per_plate:, put this in later
             for a in active_lots:
+                ichip_objects = a[1]
+                ichip_lot_object = a[0]
                 # active_lots has the needed number of ichiplots, and has
                 # enough chips for at least one pass!
-                b = a[1][:number_same_lot]
-                for c in b:
-                    plate.append(c)
-                # remove selected objects from active_lots.  How to do that?
-                del a[1][:number_same_lot]
+                required_ichips_for_testing.extend(ichip_objects[:number_same_lot])
             # a this point we have a selection of ichips, we now need to get
             # samples to be run on them.
             # Pick QC to run on ichips in the plate, will need to do this if and
             # when ichiplots change
             # make variable
             # sample slots (max of *) want to make it dynamic range(1:frame_count)
-            sample_slots = []  # list of the sample objects to be put on the current selection of ichips
+
             hqc_aliquots = self.collectAliquots(hqc_object[0].items())
             hqc_aliquot_to_add_to_plate = self.selectQCAliquot(
                 hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
                 hqc_aliquots)
+
             print hqc_aliquot_to_add_to_plate
 
             lqc_aliquots = self.collectAliquots(lqc_object[0].items())
             lqc_aliquot_to_add_to_plate = self.selectQCAliquot(
                 lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
                 lqc_aliquots)
+
             print lqc_aliquot_to_add_to_plate
+
+            sample_slots = [hqc_aliquot_to_add_to_plate]*assay_parameters['number_of_high_value_controls']
+            sample_slots += [lqc_aliquot_to_add_to_plate]*assay_parameters['number_of_low_value_controls']
+            for i in range(frame_count - len(sample_slots)):
+                if get_working_aliquots:
+                    sample_slots.append(get_working_aliquots[0])
+                    get_working_aliquots = get_working_aliquots[1:]
             import pdb;pdb.set_trace()
-            if sample_count < frame_count:
-                # make simple test setup
-                sample_slots.append(hqc_aliquot_to_add_to_plate)
-                sample_slots.append(hqc_aliquot_to_add_to_plate)
-                sample_slots.append(lqc_aliquot_to_add_to_plate)
-                for n in get_working_aliquots:
-                    sample_slots.append(n)  # add sample to list
-                    del get_working_aliquots[0]  # remove added sample
-                    running_sc -= 1  # increase running sample count
-            else:  # will populate the 
-                while sample_slots.__len__() < frame_count:
-                    # if condition to add QC to test if not in previous plate
-                    sample_slots.append(hqc_aliquot_to_add_to_plate)
-                    sample_slots.append(hqc_aliquot_to_add_to_plate)
-                    sample_slots.append(lqc_aliquot_to_add_to_plate)
-                    for n in get_working_aliquots:
-                        sample_slots.append(n)  # add sample to list
-                        del get_working_aliquots[0]  # remove added sample
-                        running_sc += 1  # increase running sample count
+            sample_ids = [x.id for x in sample_slots]
+            result.append([[x.id, sample_ids] for x in required_ichips_for_testing])
+
             # define test locations
             # test location
             # is the set of wells that each aliquot needs to be placed into
