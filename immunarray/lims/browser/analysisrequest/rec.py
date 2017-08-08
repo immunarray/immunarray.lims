@@ -143,9 +143,14 @@ class AddRecView(BrowserView):
             billable_primary = request.form.get('billing_primary')
             billable_secondary = request.form.get('billing_secondary')
             assay_selection_raw = request.form.get('assay_choice[]')
+            # case for single assay selected
             assay_selection = []
-            for i in assay_selection_raw:
-                assay_selection.append(i)
+            if isinstance(assay_selection_raw, basestring):
+                assay_selection.insert(0, assay_selection_raw)
+            # case for multiple assay choices selected
+            if isinstance(assay_selection_raw, list):
+                for i in assay_selection_raw:
+                    assay_selection.append(i)
             pt_UID = "new_patient"
             # See if we have an existing pt
             missing_date_feedback =  json.dumps({"feedback":"Missing Key Data Elements"})
@@ -298,7 +303,6 @@ class AddRecView(BrowserView):
         # logical test order passed via end user
         test_order = {}
         import pdb;pdb.set_trace()
-
         for a in assay_selection:
             test_order.update({a:u"To Be Tested"})
         # assign serial number for sample
