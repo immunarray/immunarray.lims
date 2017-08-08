@@ -158,7 +158,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         and filter them for those who's test_ordered_status is one of 
         'Received', 'Rerun', or 'To Be Tested'.
         """
-        import pdb;pdb.set_trace()
         brains = api.content.find(
             portal_type='ClinicalSample', review_state='received')
         tmp = {}
@@ -321,7 +320,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         plate_count = 0
         running_sc = sample_count
         test_run = {}
-        # test_run = {plate1:}
         _used_ichips = []
         _used_samples = []
         # condition that lets me know to keep making plates both parts must be true
@@ -343,12 +341,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # ichips_for_assay[0][0].title.split(".")[0], gives ichip lot split
             #
 
+            # this is added all of the ichips_for_assay if any are selected!
+            # not the specific chips
+
             for n in ichips_for_assay:  # V10.1 and V10.2 can't be in the set
+                ichip_lot_object = n[0]
+                list_of_ichip_objects = n[1]
                 if n in _used_ichips:
                     continue
                 _used_ichips.append(n)
-                ichip_lot_object = n[0]
-                list_of_ichip_objects = n[1]
 
                 if ichip_lot_object.title.split(".")[0] not in active_lots:
                         if len(list_of_ichip_objects) >= number_same_lot:
@@ -360,7 +361,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # number_unique_lot
             # number_same_lot
             # slide_per_plate (4)
-            # while plate.__len__() < slide_per_plate:, put this in later
+            # while len(plate) < slide_per_plate:, put this in later
             for a in active_lots:
                 ichip_objects = a[1]
                 ichip_lot_object = a[0]
@@ -379,14 +380,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
                 hqc_aliquots)
 
-            print hqc_aliquot_to_add_to_plate
-
             lqc_aliquots = self.collectAliquots(lqc_object[0].items())
             lqc_aliquot_to_add_to_plate = self.selectQCAliquot(
                 lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
                 lqc_aliquots)
-
-            print lqc_aliquot_to_add_to_plate
 
             sample_slots = [hqc_aliquot_to_add_to_plate]*assay_parameters['number_of_high_value_controls']
             sample_slots += [lqc_aliquot_to_add_to_plate]*assay_parameters['number_of_low_value_controls']
