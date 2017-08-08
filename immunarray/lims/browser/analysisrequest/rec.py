@@ -302,7 +302,6 @@ class AddRecView(BrowserView):
         """
         # logical test order passed via end user
         test_order = {}
-        import pdb;pdb.set_trace()
         for a in assay_selection:
             test_order.update({a:u"To Be Tested"})
         # assign serial number for sample
