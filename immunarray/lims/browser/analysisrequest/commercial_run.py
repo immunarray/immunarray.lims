@@ -289,13 +289,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         #how many plates do I need?
         # vars defined for operation
 
-        hqc = assay_parameters['number_of_high_value_controls']
-        hqc_veracis_id = assay_parameters['qc_high_choice']
-        hqc_object = self.getQCSampleObject(hqc_veracis_id)
 
-        lqc = assay_parameters['number_of_low_value_controls']
-        lqc_veracis_id= assay_parameters['qc_low_choice']
-        lqc_object = self.getQCSampleObject(lqc_veracis_id)
 
         slide_per_plate = 4 # constant that needs to be defined
         max_plates = assay_parameters['max_number_of_plates_per_test_run']
@@ -304,7 +298,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         frame_count = assay_parameters['framecount']
         min_volume_per_sample= assay_parameters['minimum_working_aliquot_volume']
 
-        wells_needed_persample = number_same_lot * number_unique_lot # 4 in this case
+        wells_needed_per_sample = number_same_lot * number_unique_lot # 4 in this case
 
         # Need to ensure that lots are unique V10_1 and V10_2 are the "same" lot
         # as the materials used to make them are the same, so we need to split
@@ -320,14 +314,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         plate_count = 0
         running_sc = sample_count
         test_run = {}
+        _used_ichiplots = []
         _used_ichips = []
         _used_samples = []
+        _used_ichiplot_length = 0
+
         # condition that lets me know to keep making plates both parts must be true
         result = []
 
         while plate_count < max_plates and running_sc >= 0:
-
-            print "Make A New Plate"
             # logic to pick lots of ichips for plate
             active_lots =[]
             # will read over the ichips_for_assay to get an active set of
@@ -339,61 +334,66 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get lot id independent to print lot, this value should be unique
             # for selection/addition to active lots!
             # ichips_for_assay[0][0].title.split(".")[0], gives ichip lot split
-            #
-
             # this is added all of the ichips_for_assay if any are selected!
             # not the specific chips
+            import pdb;pdb.set_trace()
+            # n = [<ichiplot>,[<ichip>,<ichip>, <ichip>]]
+
+            # Code block selects iChip Lots to use!
+            # number_unique_lot
 
             for n in ichips_for_assay:  # V10.1 and V10.2 can't be in the set
                 ichip_lot_object = n[0]
                 list_of_ichip_objects = n[1]
-                if n in _used_ichips:
-                    continue
-                _used_ichips.append(n)
 
+                if ichip_lot_object in _used_ichiplots:
+                    continue
+                else:
+                    print "Need a new set of QC's as iChip lots have updated"
+
+                # V10.1 and V10.2 can't be in the set
                 if ichip_lot_object.title.split(".")[0] not in active_lots:
-                        if len(list_of_ichip_objects) >= number_same_lot:
-                           active_lots.append(n)
+                    if len(list_of_ichip_objects) >= number_same_lot:
+                        if ichip_lot_object not in _used_ichiplots:
+                            active_lots.append(n)
+                            _used_ichiplots.append(ichip_lot_object)
+
                 if len(active_lots) == number_unique_lot:
+                    qc_list = self.getQCAliquots(assay_parameters)
+                        # if condition to get aliqouts to add to working aliquots
+                        # get_working_aliquots.insert(qc_list,0)
                     break
-            # Pick needed chips
-            # variable I have to work with
-            # number_unique_lot
-            # number_same_lot
-            # slide_per_plate (4)
+
             # while len(plate) < slide_per_plate:, put this in later
+
+            # Code section to select iChips
+            # number_same_lot
+
             for a in active_lots:
                 ichip_objects = a[1]
                 ichip_lot_object = a[0]
                 # active_lots has the needed number of ichiplots, and has
                 # enough chips for at least one pass!
-                required_ichips_for_testing.extend(ichip_objects[:number_same_lot])
+                if a not in _used_ichips:
+                    required_ichips_for_testing.extend(ichip_objects[:number_same_lot])
+                    _used_ichips.extend(ichip_objects[:number_same_lot])
+
             # a this point we have a selection of ichips, we now need to get
             # samples to be run on them.
             # Pick QC to run on ichips in the plate, will need to do this if and
-            # when ichiplots change
+            # when ichip lots change
             # make variable
             # sample slots (max of *) want to make it dynamic range(1:frame_count)
-
-            hqc_aliquots = self.collectAliquots(hqc_object[0].items())
-            hqc_aliquot_to_add_to_plate = self.selectQCAliquot(
-                hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
-                hqc_aliquots)
-
-            lqc_aliquots = self.collectAliquots(lqc_object[0].items())
-            lqc_aliquot_to_add_to_plate = self.selectQCAliquot(
-                lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
-                lqc_aliquots)
-
-            sample_slots = [hqc_aliquot_to_add_to_plate]*assay_parameters['number_of_high_value_controls']
-            sample_slots += [lqc_aliquot_to_add_to_plate]*assay_parameters['number_of_low_value_controls']
+            # wrap this in an if statement
+            # Check to see if set of ichip lots have been used in previous run?
+            sample_slots = []
             for i in range(frame_count - len(sample_slots)):
                 if get_working_aliquots:
                     sample_slots.append(get_working_aliquots[0])
                     get_working_aliquots = get_working_aliquots[1:]
             sample_ids = [x.id for x in sample_slots]
             result.append([[x.id, sample_ids] for x in required_ichips_for_testing])
-            import pdb;pdb.set_trace()
+
 
             # define test locations
             # test location
@@ -401,7 +401,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # assign sample slots to required_ichips_for_testing
             # if required_ichips_for_testing  = 4 chips make a plate
             # else need to get more things to test to add to the set
-            # need qc everytime we change ichiplots!
+            # need qc every time we change ichip lots!
 
 
 
@@ -436,6 +436,37 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 else: print "Aliquot Does Not Meet Needs of Assay UID of Object Checked is " + c.UID()
             except:
                 print "object " + c.UID() + " lacks the ability to be checked"
+
+    def getQCAliquots(self, assay_parameters):
+        """Get QC's aliquots
+        """
+        hqc = assay_parameters['number_of_high_value_controls']
+        hqc_veracis_id = assay_parameters['qc_high_choice']
+        hqc_object = self.getQCSampleObject(hqc_veracis_id)
+        lqc = assay_parameters['number_of_low_value_controls']
+        lqc_veracis_id= assay_parameters['qc_low_choice']
+        lqc_object = self.getQCSampleObject(lqc_veracis_id)
+        max_plates = assay_parameters['max_number_of_plates_per_test_run']
+        number_same_lot = assay_parameters['number_of_same_lot_replication_needed_for_samples']
+        number_unique_lot = assay_parameters['number_of_unique_ichips_lots_needed']
+        frame_count = assay_parameters['framecount']
+        min_volume_per_sample= assay_parameters['minimum_working_aliquot_volume']
+
+        hqc_aliquots = self.collectAliquots(hqc_object[0].items())
+        hqc_aliquot_to_add_to_plate = self.selectQCAliquot(
+            hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
+            hqc_aliquots)
+
+        lqc_aliquots = self.collectAliquots(lqc_object[0].items())
+        lqc_aliquot_to_add_to_plate = self.selectQCAliquot(
+            lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
+            lqc_aliquots)
+        # Check to see if set of ichip lots have been used in previous run?
+
+        qc_to_add_to_plate = [hqc_aliquot_to_add_to_plate]*assay_parameters['number_of_high_value_controls']
+        qc_to_add_to_plate += [lqc_aliquot_to_add_to_plate]*assay_parameters['number_of_low_value_controls']
+        print qc_to_add_to_plate
+        return qc_to_add_to_plate
 
     def makePullList(self):
         """Make a simple pull list of box location number and sample IDs to pull
