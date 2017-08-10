@@ -312,56 +312,61 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         else:
             print "Can Run Selected Assay, Not Enough Unique iChip Lots"
         plate_count = 0
-        running_sc = sample_count
-        test_run = {}
         _used_ichiplots = []
         _used_ichips = []
         _used_samples = []
         _used_ichiplot_length = 0
+        result = []  # thing that will be sent back each entry is a "plate"
 
         # condition that lets me know to keep making plates both parts must be true
-        result = []
+        while plate_count <= max_plates and len(get_working_aliquots) >= 0:
+            # add QC to get_working_aliquots is no ichiplots have been used
+            if not _used_ichiplots:
+                qc_list = self.getQCAliquots(assay_parameters)
+                for qc in qc_list:
+                    get_working_aliquots.insert(0, qc)
 
-        while plate_count < max_plates and running_sc >= 0:
-            # logic to pick lots of ichips for plate
             active_lots =[]
-            # will read over the ichips_for_assay to get an active set of
-            # ichiplots and ichips to build plates from
-            # make this a def to be called if condition is met again!
-
-            # select ichiplots and ichips, remove from pool.
             required_ichips_for_testing = []
             # get lot id independent to print lot, this value should be unique
             # for selection/addition to active lots!
             # ichips_for_assay[0][0].title.split(".")[0], gives ichip lot split
             # this is added all of the ichips_for_assay if any are selected!
             # not the specific chips
-            import pdb;pdb.set_trace()
             # n = [<ichiplot>,[<ichip>,<ichip>, <ichip>]]
-
             # Code block selects iChip Lots to use!
             # number_unique_lot
-
+            #while len(active_lots) <= number_unique_lot:
+            import pdb;pdb.set_trace()
             for n in ichips_for_assay:  # V10.1 and V10.2 can't be in the set
                 ichip_lot_object = n[0]
                 list_of_ichip_objects = n[1]
-
-                if ichip_lot_object in _used_ichiplots:
-                    continue
-                else:
-                    print "Need a new set of QC's as iChip lots have updated"
-
-                # V10.1 and V10.2 can't be in the set
+                # Why do I care?  This doesn't drive any decisions
+                # just forces new ichiplots to be selected!
+                #if ichip_lot_object in _used_ichiplots:
+                    # means that we have used this lot before!
+                #    continue
+                # this can't ever be false! Need to compare to _used_ichiplots!
+                # That tells me if we have used this lot before
                 if ichip_lot_object.title.split(".")[0] not in active_lots:
+                    # faulty because we don't update the list_of_ichip_objects,
+                    # if true once it will always be true!
                     if len(list_of_ichip_objects) >= number_same_lot:
+
                         if ichip_lot_object not in _used_ichiplots:
                             active_lots.append(n)
                             _used_ichiplots.append(ichip_lot_object)
 
                 if len(active_lots) == number_unique_lot:
-                    qc_list = self.getQCAliquots(assay_parameters)
-                        # if condition to get aliqouts to add to working aliquots
-                        # get_working_aliquots.insert(qc_list,0)
+                    # have the ichiplots selected for the current set of sample slots
+                    for lot in _used_ichiplots:
+                        if lot in (active_lots[i][0] for i in range(number_unique_lot)):
+                            continue # Using the same lot as in a previous run, no new qc needed
+                        else:
+                            qc_list = self.getQCAliquots(assay_parameters)
+                            for qc in qc_list:
+                                get_working_aliquots.insert(0, qc)
+                            break  # we know at least one lot is new and as such we need to run qc on the current set of sample slots
                     break
 
             # while len(plate) < slide_per_plate:, put this in later
@@ -374,7 +379,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 ichip_lot_object = a[0]
                 # active_lots has the needed number of ichiplots, and has
                 # enough chips for at least one pass!
-                if a not in _used_ichips:
+                if ichip_objects not in _used_ichips:
                     required_ichips_for_testing.extend(ichip_objects[:number_same_lot])
                     _used_ichips.extend(ichip_objects[:number_same_lot])
 
@@ -393,15 +398,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                     get_working_aliquots = get_working_aliquots[1:]
             sample_ids = [x.id for x in sample_slots]
             result.append([[x.id, sample_ids] for x in required_ichips_for_testing])
+            plate_count += 1  # increase plate_count
 
-
-            # define test locations
-            # test location
-            # is the set of wells that each aliquot needs to be placed into
-            # assign sample slots to required_ichips_for_testing
-            # if required_ichips_for_testing  = 4 chips make a plate
-            # else need to get more things to test to add to the set
-            # need qc every time we change ichip lots!
+        # define test locations
+        # test location
+        # is the set of wells that each aliquot needs to be placed into
+        # assign sample slots to required_ichips_for_testing
+        # if required_ichips_for_testing  = 4 chips make a plate
+        # else need to get more things to test to add to the set
+        # need qc every time we change ichip lots!
 
 
 
