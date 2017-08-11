@@ -356,7 +356,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                         if ichip_lot_object not in _used_ichiplots:
                             active_lots.append(n)
                             _used_ichiplots.append(ichip_lot_object)
-
+                        elif ichip_lot_object in _used_ichiplots:
+                            active_lots.append(n)
+                            _used_ichiplots.append(ichip_lot_object)
+                            # Need to account for how many ichips are left in the lot and if len(list_of_ichip_objects) - len(_used_ichips from that lot) > number_same_lot
+                            pass
+                        else:
+                            continue
                 if len(active_lots) == number_unique_lot:
                     # have the ichiplots selected for the current set of sample slots
                     for lot in _used_ichiplots:
