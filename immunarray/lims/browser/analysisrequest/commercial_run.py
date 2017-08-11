@@ -49,32 +49,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             status_from_test_choice = assay_parameters['status']
 
             if status_from_test_choice == 'Commercial':
-                # how many samples can we test under best case?
                 max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
-                # what samples need to be tested for the selected assay?
                 full_set = self.queryClinicalSamples(assay, max_number_of_samples)
-                # how many samples in the returned list?
                 sample_count = len(full_set)
-                # What iChipLots and iChips can be used for the selected assay?
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
-                # Need to order full_set by collection_date oldest to newest,
-                # then test_ordered_status
                 get_working_aliquots = self.queryWorkingAliquots(full_set, assay_parameters)
-                # how many samples are in queue?
                 sample_queue_length = len(get_working_aliquots)
-                # theoretical max samples to test under perfect conditions
-
-                # how many plates will this test run be?
-                # build test run object
-                # list of cs and ichips selected for initial return to the test form
                 plates = self.makeTestPlan(assay_parameters,ichips_for_assay, max_number_of_samples, sample_count, get_working_aliquots)
-                commercial_samples_inital = []
-                ichips_for_assay_initial = []
-
-                # How do we want to get solutions?
-                # Need to add it to iChip Assay?
-                solutions_for_session = {}
-
+                print plates
+                return json.dumps({"TestRun":plates})
             if status_from_test_choice == 'Development':
                 samples_to_get = 'RandDSample'
                 # make a developmoent run
