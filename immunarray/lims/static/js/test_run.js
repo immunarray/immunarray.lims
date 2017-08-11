@@ -16,9 +16,7 @@ require(['jquery'],
             if (statusCode.status === 210){
                 alert("No Samples Require this Assay Choice!!!")
             }
-            //var testPlanData = JSON.parse(responseText)
-            //break the reply and fill the form.
-            //will need to change inputs to choice fields with aliquot ids
+            var testPlanData = JSON.parse(responseText)
             }
         });
     })
