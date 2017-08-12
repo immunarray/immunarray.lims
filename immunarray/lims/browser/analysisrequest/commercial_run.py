@@ -146,13 +146,15 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         tmp = {}
         for sample in (b.getObject() for b in brains):
             # collate the samples by the test_ordered_status.
-            status = sample.test_ordered_status[assay]
-            if status not in tmp:
-                tmp[status] = []
-            tmp[status].append({'uid': sample.UID(),
-                                'draw_date': sample.collection_date,
-                                'test_status': sample.test_ordered_status,
-                                'sample': sample})
+
+            if assay in sample.test_ordered_status:
+                status = sample.test_ordered_status[assay]
+                if status not in tmp:
+                    tmp[status] = []
+                tmp[status].append({'uid': sample.UID(),
+                                    'draw_date': sample.collection_date,
+                                    'test_status': sample.test_ordered_status,
+                                    'sample': sample})
         # now sort all the lists in tmp
         for key in tmp.keys():
             tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
