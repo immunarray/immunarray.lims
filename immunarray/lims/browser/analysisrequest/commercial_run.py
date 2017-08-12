@@ -266,7 +266,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         vocab_keys = vocab.__call__(self).by_value.keys()
         return vocab_keys
 
-    def makeTestPlan(self, assay_parameters,ichips_for_assay, max_number_of_samples, sample_count, get_working_aliquots):
+    def makeTestPlan(self, assay_parameters,ichips_for_assay,
+                     max_number_of_samples, sample_count, get_working_aliquots):
         """use ordered [ichiplot, [ichips]], assay parameters{}, [working aliquots] to build test plan
         """
         slide_per_plate = 4 # constant that needs to be defined
@@ -305,7 +306,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # this can't ever be false! Need to compare to _used_ichiplots!
                 # That tells me if we have used this lot before
                 # Fix this!!!! V10.1 and V10.2 can't be in the set
-                if ichip_lot_object.title.split(".")[0] not in active_lots:
+                if ichip_lot_object.title.split(".")[0] not in (active_lots[j][0].title.split(".")[0] for j in range(len(active_lots))):
                     # faulty because we don't update the list_of_ichip_objects,
                     # if true once it will always be true!
                     if len(list_of_ichip_objects) >= number_same_lot:
