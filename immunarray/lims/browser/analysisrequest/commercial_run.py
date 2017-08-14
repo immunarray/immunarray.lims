@@ -305,9 +305,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             for n in ichips_for_assay:
                 ichip_lot_object = n[0]
                 list_of_ichip_objects = n[1]
-                # this can't ever be false! Need to compare to _used_ichiplots!
                 # That tells me if we have used this lot before
-                # Fix this!!!! V10.1 and V10.2 can't be in the set
                 if ichip_lot_object.title.split(".")[0] not in (active_lots[j][0].title.split(".")[0] for j in range(len(active_lots))):
                     # faulty because we don't update the list_of_ichip_objects,
                     # if true once it will always be true!
@@ -337,7 +335,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             break  # we know at least one lot is new and as such
                             #  we need to run qc on the current set of samples
                     break
-            # while len(plate) < slide_per_plate:, put this in later
             # Code section to select iChips
             # number_same_lot
             for a in active_lots:
@@ -373,6 +370,9 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 if get_working_aliquots:
                     sample_slots.append(get_working_aliquots[0])
                     get_working_aliquots = get_working_aliquots[1:]
+            # We have the objects to this point, shoudn't we send the id's to the GUI,
+            # but keep the objects in variables that can be used when the user confirms the run?
+            # I think it will save time of looking all this up again
             sample_ids = [x.id for x in sample_slots]
             result.append([[x.id, sample_ids] for x in required_ichips_for_testing])
             plate_count += 1
