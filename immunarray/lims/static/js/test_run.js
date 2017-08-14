@@ -16,8 +16,15 @@ require(['jquery'],
             if (statusCode.status === 210){
                 alert("No Samples Require this Assay Choice!!!")
             }
-            var testPlanData = JSON.parse(responseText)
+            var testPlanData = JSON.parse(responseText);
+            var arrayOfPlates = testPlanData["TestRun"];
+            var numberOfPlates = arrayOfPlates.length
+            alert (numberOfPlates); //number of plates sent back from LIMS
+            for (i = 0; i < numberOfPlates; i++){
+                var plateNumber = i +1;
+            }
             }
         });
+
     })
 }))
