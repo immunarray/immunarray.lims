@@ -1,3 +1,7 @@
+// Input will be plate number integer
+// Want to have it build the plate and input it into the page?
+// Or should it be just 8 plates all the time?
+
 <table id="table2" class="beta">
     <tr>
         <td colspan="12" style="text-align: center;background-color:lightgrey;">
