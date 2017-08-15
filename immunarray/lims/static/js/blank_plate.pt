@@ -5,314 +5,134 @@
 <table id="table2" class="beta">
     <tr>
         <td colspan="12" style="text-align: center;background-color:lightgrey;">
-            <p style="font-size:11pt;"><strong>PLATE 1</strong></p>
+            <p style="font-size:11pt;"><strong>plateTitle</strong></p>
         </td>
+    </tr><tr><td><p><strong>Well</strong></p></td>
+    <td  colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td  colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td  colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td  colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td><p><strong>&#10004 1<br>(serum)<strong></p></td>
+    <td><p><strong>Sample<br>class</strong></p></td>
+    <td><p><strong>Box</strong></p></td>
     </tr>
     <tr>
-        <td>
-            <p><strong>Well</strong></p>
-        </td>
-        <td  colspan="2">
-            <p><strong>Sample ID-Aliquot</strong></p>
-        </td>
-        <td  colspan="2">
-            <p><strong>Sample ID-Aliquot</strong></p>
-        </td>
-        <td  colspan="2">
-            <p><strong>Sample ID-Aliquot</strong></p>
-        </td>
-        <td  colspan="2">
-            <p><strong>Sample ID-Aliquot</strong></p>
-        </td>
-        <td>
-            <p><strong>&#10004 1<br>(serum)<strong></p>
-        </td>
-        <td>
-            <p><strong>Sample<br>class</strong></p>
-        </td>
-        <td>
-            <p><strong>Box</strong></p>
-        </td>
+        <td><p>1</p></td>
+        <td colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well1"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well1></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well1></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well1></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>1</p>
-        </td>
-        <td colspan="2">
-            <p><input id="aliquot-plate1-chip1-well1"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well1"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well1"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well1"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>2</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well2"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well2"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well2"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well2"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>2</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well2"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well2"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well2"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well2"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>3</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well3"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well3"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well3"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well3"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>3</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well3"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well3"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well3"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well3"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>4</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well4"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well4"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well4"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well4"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>4</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well4"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well4"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well4"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well4"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>5</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well5"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well5"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well5"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well5"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>5</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well5"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well5"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well5"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well5"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>6</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well6"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well6"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well6"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well6"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>6</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well6"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well6"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well6"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well6"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>7</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well7"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well7"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well7"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well7"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>7</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well7"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well7"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well7"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well7"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
+        <td><p>8</p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip1-well8"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip2-well8"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip3-well8"></p></td>
+        <td  colspan="2"><p><input id="aliquot-"+plateText+"-chip4-well8"></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
+        <td><p></p></td>
     </tr>
     <tr>
-        <td>
-            <p>8</p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip1-well8"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip2-well8"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip3-well8"></p>
-        </td>
-        <td  colspan="2">
-            <p><input id="aliquot-plate1-chip4-well8"></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-        <td>
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td rowspan="4">
-            <p></p>
-        </td>
-        <td>
-            <p>iChip 1 ID</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip1"></p>
-        </td>
-        <td>
-            <p>iChip 2 ID</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip2"></p>
-        </td>
-        <td>
-            <p>iChip 3 ID</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip3"></p>
-        </td>
-        <td>
-            <p>iChip 4 ID</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip4"></p>
-        </td>
+        <td rowspan="4"><p></p></td>
+        <td><p>iChip 1 ID</p></td>
+        <td><p><input id=""+plateText+"-ichip1"></p></td>
+        <td><p>iChip 2 ID</p></td>
+        <td><p><input id=""+plateText+"-ichip2"></p></td>
+        <td><p>iChip 3 ID</p></td>
+        <td><p><input id=""+plateText+"-ichip3"></p></td>
+        <td><p>iChip 4 ID</p></td>
+        <td><p><input id=""+plateText+"-ichip4"></p></td>
         <td style="vertical-align:top;" rowspan="3" colspan="3">
-            <p style="text-align:left;">Comments: <input id="plate1-comments"><br><br><br>
+            <p style="text-align:left;">Comments: <input id=""+plateText+"-comments"><br><br><br>
             </p>
         </td>
     </tr>
     <tr>
-        <td>
-            <p>Scan Slot</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip1-scan_slot"></p>
-        </td>
-        <td>
-            <p>Scan Slot</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip2-scan_slot"></p>
-        </td>
-        <td>
-            <p>Scan Slot</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip3-scan_slot"></p>
-        </td>
-        <td>
-            <p>Scan Slot</p>
-        </td>
-        <td>
-            <p><input id="plate1-ichip4-scan_slot"></p>
-        </td>
+        <td><p>Scan Slot</p></td>
+        <td><p><input id=""+plateText+"-ichip1-scan_slot"></p></td>
+        <td><p>Scan Slot</p></td>
+        <td><p><input id=""+plateText+"-ichip2-scan_slot"></p></td>
+        <td><p>Scan Slot</p></td>
+        <td><p><input id=""+plateText+"-ichip3-scan_slot"></p></td>
+        <td><p>Scan Slot</p></td>
+        <td><p><input id=""+plateText+"-ichip4-scan_slot"></p></td>
     </tr>
     <tr>
         <td style="height:50px;vertical-align:top;" colspan="2">
-            <p style="text-align:left;">Comments:<input id="plate1-ichip1-comments"></p>
+            <p style="text-align:left;">Comments:<input id=""+plateText+"-ichip1-comments"></p>
         </td>
         <td style="height:50px;vertical-align:top;" colspan="2">
-            <p style="text-align:left;">Comments:<input id="plate1-ichip2-comments"></p>
+            <p style="text-align:left;">Comments:<input id=""+plateText+"-ichip2-comments"></p>
         </td>
         <td style="height:50px;vertical-align:top;" colspan="2">
-            <p style="text-align:left;">Comments:<input id="plate1-ichip3-comments"></p>
+            <p style="text-align:left;">Comments:<input id=""+plateText+"-ichip3-comments"></p>
         </td>
         <td style="height:50px;vertical-align:top;" colspan="2">
-            <p style="text-align:left;">Comments:<input id="plate1-ichip4-comments"></p>
+            <p style="text-align:left;">Comments:<input id=""+plateText+"-ichip4-comments"></p>
         </td>
     </tr>
 </table>
