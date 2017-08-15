@@ -47,6 +47,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 max_number_of_samples = self.maxNumberOfSamplesToRun(assay_parameters)
                 full_set = self.queryClinicalSamples(assay, max_number_of_samples)
                 sample_count = len(full_set)
+                # insert feedback for not samples needing to be tested status
+                # =210
                 ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
                 get_working_aliquots = self.queryWorkingAliquots(full_set, assay_parameters)
                 sample_queue_length = len(get_working_aliquots)
