@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
-
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.dexterity.utils import createContentInContainer
@@ -10,15 +9,11 @@ from plone.dexterity.utils import createContentInContainer
 from Products.CMFPlone.resources import add_resource_on_request
 from Products.statusmessages.interfaces import IStatusMessage
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-import plone.protect
-import json
-import datetime
-from zope.component import getUtility
-from zope.component import queryUtility
+import plone.protect, json, datetime, fnmatch
+from zope.component import getUtility, queryUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.schema.interfaces import IVocabularyFactory
 from Products.CMFCore.utils import getToolByName
-import fnmatch
 
 
 class AddCommercialEightFrameTestRunView(BrowserView):
@@ -56,8 +51,17 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 get_working_aliquots = self.queryWorkingAliquots(full_set, assay_parameters)
                 sample_queue_length = len(get_working_aliquots)
                 plates = self.makeTestPlan(assay_parameters,ichips_for_assay, max_number_of_samples, sample_count, get_working_aliquots)
-                print plates
-                return json.dumps({"TestRun":plates})
+                # put logic to make code for plates on GUI!  Hold the json.dump
+                # and send the filled out plates, can build logic to show or
+                # hold last plate at this point
+                import pdb;pdb.set_trace()
+                for index, plate in enumerate(plates):
+                    plate_number = index
+                    html_plate = self.makePlateHTML(plate_number)
+
+
+                # return json.dumps({"TestRun":plates})
+
             if status_from_test_choice == 'Development':
                 samples_to_get = 'RandDSample'
                 # make a developmoent run
@@ -69,7 +73,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 all_samples_in_lims = {}
                 ichips_for_session = {}
                 solutions_for_session = {}
-
             # button push
             # commercial_samples_finial = []
             # ichips_for_session_finial = []
@@ -444,5 +447,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
     def makePullList(self):
         """Make a simple pull list of box location number and sample IDs to pull
         for test run
+        """
+        pass
+    def makePlateHTML(self, plate_number):
+        """Get in the Plate Number from AJAX request, build HTML code,
+        pass back to be inserted into form
         """
         pass
