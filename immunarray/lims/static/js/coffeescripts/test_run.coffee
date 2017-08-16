@@ -14,11 +14,13 @@ require [ 'jquery'], ($) ->
       success: (responseText, statusText, statusCode, xhr, $form) ->
         if statusCode.status == 210
           alert 'No Samples Require this Assay Choice!!!'
+        tmpl = document.getElementById('blank-plate')
+        document.body.appendChild tmpl.content.cloneNode(true)
         #testPlanData = JSON.parse(responseText)
         #arrayOfPlates = testPlanData['TestRun']
         #numberOfPlates = arrayOfPlates.length
-        # alert numberOfPlates
-        # number of plates sent back from LIMS
+        #alert numberOfPlates
+        #number of plates sent back from LIMS
         #i = 0
         #while i < numberOfPlates
         #  plateNumber = i + 1
@@ -33,6 +35,12 @@ require [ 'jquery'], ($) ->
         #      'plateID':plateNumber
         #      '_authenticator': authenticator
         #    success: (responseText, statusText, statusCode, xhr, $form) ->
+        # config = 'blank_plate.pt'
+
+        # foo = ->
+        #   fs.readFileSync config, 'utf8'
+
+        # console.log foo()
         return
     return
   return
