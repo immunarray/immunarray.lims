@@ -42,9 +42,9 @@ class IiChip(model.Schema):
 
     # Image name to actual image (zip image file before upload)
     image = schema.Dict(
-        key_value=schema.TextLine(
+        key_type=schema.TextLine(
             title=_(u"Image Title (ie Agilent Red)"),
-            descrition=_(u"Image Title (ie Agilent Red)"),
+            description=_(u"Image Title (ie Agilent Red)"),
             required=False,
         ),
         value_type=NamedBlobImage(
@@ -55,9 +55,9 @@ class IiChip(model.Schema):
 
     # Image extraction name to extraction
     image_extractions = schema.Dict(
-        key_value=schema.TextLine(
+        key_type=schema.TextLine(
             title=_(u"Image Extraction Title (ie Agilent Red)"),
-            descrition=_(u"Image Extraction Title (ie Agilent Red)"),
+            description=_(u"Image Extraction Title (ie Agilent Red)"),
             required=False,
         ),
         value_type=NamedBlobFile(
@@ -76,14 +76,14 @@ class IiChip(model.Schema):
 
     # well to aliquot ID tested on it
     well_to_aliquot = schema.Dict(
-        key_value=schema.TextLine(
+        key_type=schema.TextLine(
             title=_(u"Well ID"),
-            descrition=_(u"Well ID"),
+            description=_(u"Well ID"),
             required=False,
         ),
         value_type=schema.TextLine(
             title=_(u"Aliquot ID"),
-            descrition=_(u"Aliquot ID"),
+            description=_(u"Aliquot ID"),
             required=False,
         ),
     )
