@@ -5,19 +5,11 @@ from plone.app.textfield import RichText
 from plone.supermodel import model
 from zope import schema
 from plone.autoform.interfaces import IFormFieldProvider
-from immunarray.lims.vocabularies.ichip import *
-from immunarray.lims.vocabularies import ichip
-from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from immunarray.lims.vocabularies import ichipassay
-from immunarray.lims.vocabularies.provider import ProvidersVocabulary
-from z3c.relationfield import RelationChoice
 from plone.directives import form
 from plone import api
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
 from zope.interface import implements, Interface, implementer
-from zope.schema.interfaces import IVocabularyFactory
-from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.interfaces import IContextSourceBinder
 from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.utils import getToolByName
@@ -29,9 +21,18 @@ from z3c.form import form, button
 class ICommercailEightFrameRun(IVeracisRunBase):
     """Eight Frame Test Run
     """
-    aliquot_to_well = schema.Dict(
-        key_type=schema.TextLine(title=u"Aliquot ID", required=False),
-        value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
+    # All iChip_ids and aliquot ids for test run
+    ichipID_wells_to_aliquots = schema.Dict(
+        key_type=schema.TextLine(
+            title=_(u"iChip and Well ID"),
+            description=_(u"iChip and Well ID"),
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=_(u"Aliquot ID"),
+            description=_(u"Aliquot ID"),
+            required=False,
+        ),
     )
 
     # Solutions
@@ -83,37 +84,44 @@ class ICommercailEightFrameRun(IVeracisRunBase):
         description=_(u"Start Time of Serum Addition"),
         required=False,
     )
+
     serum_humidity_start = schema.Float(
         title=_(u"Humidity at Serum Addition Start"),
         description=_(u"Humidity at Serum Addition Start"),
         required=False,
     )
+
     serum_room_temperature_start = schema.Float(
         title=_(u"Room Temperature at Serum Addition Start"),
         description=_(u"Room Temperature at Serum Addition Start"),
         required=False,
     )
+
     serum_time_end = schema.Datetime(
         title=_(u"End Time of Serum Addition"),
         description=_(u"End Time of Serum Addition"),
         required=False,
     )
+
     serum_humidity_end = schema.Float(
         title=_(u"Humidity at Serum Addition End"),
         description=_(u"Humidity at Serum Addition End"),
         required=False,
     )
+
     serum_room_temperature_end = schema.Float(
         title=_(u"Room Temperature at Serum Addition End"),
         description=_(u"Room Temperature at Serum Addition End"),
         required=False,
     )
+
     # Choice of labtech/labmanager
     serum_witness_name = schema.TextLine(
         title=_(u"Witness for Serum Addition"),
         description=_(u"Witness for Serum Addition"),
         required=False,
     )
+
     serum_witness_date = schema.Date(
         title=_(u"Aliquot Consume Date"),
         description=_(u"Aliquot Consume Date"),
@@ -128,45 +136,51 @@ class ICommercailEightFrameRun(IVeracisRunBase):
         description=_(u"Start Time of Antibody Addition"),
         required=False,
     )
+
     antibody_humidity_start = schema.Float(
         title=_(u"Humidity at Antibody Addition Start"),
         description=_(u"Humidity at Antibody Addition Start"),
         required=False,
     )
+
     antibody_room_temperature_start = schema.Float(
         title=_(u"Room Temperature at Antibody Addition Start"),
         description=_(u"Room Temperature at Antibody Addition Start"),
         required=False,
     )
+
     antibody_time_end = schema.Datetime(
         title=_(u"End Time of Antibody Addition"),
         description=_(u"End Time of Antibody Addition"),
         required=False,
     )
+
     antibody_humidity_end = schema.Float(
         title=_(u"Humidity at Antibody Addition End"),
         description =_(u"Humidity at Antibody Addition End"),
         required=False,
     )
+
     antibody_room_temperature_end = schema.Float(
         title=_(u"Room Temperature at Antibody Addition End"),
         description=_(u"Room Temperature at Antibody Addition End"),
         required=False,
     )
+
     # Choice of labtech/labmanager
     antibody_witness_name = schema.TextLine(
         title=_(u"Witness for Antibody Addition"),
         description=_(u"Witness for Antibody Addition"),
         required=False,
     )
+
     antibody_witness_date = schema.Date(
         title=_(u"Aliquot Consume Date"),
         description=_(u"Aliquot Consume Date"),
         required=False,
     )
 
-
-alsoProvides(IThreeFrameRun, IFormFieldProvider)
+alsoProvides(IFormFieldProvider)
 
 """
 from base run!
