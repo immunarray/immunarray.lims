@@ -8,21 +8,6 @@ from immunarray.lims import messageFactory as _
 from plone.autoform.interfaces import IFormFieldProvider
 from zope.interface import alsoProvides
 
-"""Add buttons to a form don't think it goes in the interface!"""
-
-#class Form(EditForm):
-#    @button.buttonAndHandler(
-#        u"Commercail Run",
-#        name="CommercalRun",
-#        condition=lambda form: form.okToDelete()
-#    )
-#    def handleDelete(self, action):
-#        """
-#            Delete this event.
-#        """
-#        pass
-#        self.status = "Event deleted."
-
 
 class IEightFrameRun(IVeracisRunBase):
     """Eight Frame Test Run
