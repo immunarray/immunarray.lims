@@ -115,7 +115,7 @@ class ICommercailEightFrameRun(IVeracisRunBase):
         required=False,
     )
 
-    # Choice of labtech/labmanager
+    # Choice of lab tech/lab manager
     serum_witness_name = schema.TextLine(
         title=_(u"Witness for Serum Addition"),
         description=_(u"Witness for Serum Addition"),
