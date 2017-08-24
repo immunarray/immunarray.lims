@@ -57,7 +57,13 @@ def assignVeracisId():
 class IQCSample(model.Schema):
     """QC Sample!
     """
-
+    veracis_id = schema.TextLine(
+        title=_(u"QC Veracis Sample ID"),
+        description=_(u"QC Veracis Sample ID"),
+        default=assignVeracisId(),
+        required=True,
+    )
+    
     source_id_one = schema.TextLine(
         title=_(u"Primary QC Source Sample ID"),
         description=_(u"Primary QC Source Sample ID"),
@@ -74,13 +80,6 @@ class IQCSample(model.Schema):
         title=_(u"Tertiary QC Source Sample ID"),
         description=_(u"Tertiary QC Source Sample ID"),
         required=False,
-    )
-
-    veracis_id = schema.TextLine(
-        title=_(u"QC Veracis Sample ID"),
-        description=_(u"QC Veracis Sample ID"),
-        default=assignVeracisId(),
-        required=True,
     )
 
     date_added = schema.Date(
