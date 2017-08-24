@@ -60,6 +60,7 @@ class IClinicalSample(model.Schema):
                                          _(u"Testing"),
                                          _(u"Rerun"),
                                          _(u"Resulted"),
+                                         _(u"Rejected"),
                                          _(u"Billing Message Sent"),
                                          _(u"Closed"), ], required=True),
         required=False,
