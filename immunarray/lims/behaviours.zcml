@@ -15,5 +15,12 @@
             provides="immunarray.lims.interfaces.solution.ISolution"
     />
 
+    <plone:behavior
+        title="Title from Material Name and Lot Number"
+        description="generates object title from material name and lot number"
+        provides="immunarray.lims.interfaces.material.ITitleFromLotAndType"
+    />
+
+    <adapter factory="immunarray.lims.interfaces.material.TitleFromLotAndType"/>
 
 </configure>
