@@ -23,4 +23,12 @@
 
     <adapter factory="immunarray.lims.interfaces.material.TitleFromLotAndType"/>
 
+    <plone:behavior
+        title="Title from Veracis ID and Source ID One"
+        description="generates object title from veracis id and source id one"
+        provides="immunarray.lims.interfaces.qcsample.ITitleFromVeracisIDAndSourceIDOne"
+    />
+
+    <adapter factory="immunarray.lims.interfaces.qcsample.TitleFromVeracisIDAndSourceIDOne"/>
+
 </configure>
