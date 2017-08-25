@@ -9,10 +9,10 @@ from Products.CMFCore.permissions import View, ListFolderContents, AccessContent
 
 
 from immunarray.lims.permissions import AddMaterial, AddNCE, AddPatient, \
-    AddProvider, AddPlate, AddSolution, AddiChipLot,AddiChipAssay, \
-    AddCustomerServiceCall, AddRack, AddCommercialBox,\
-    AddRandDBox, AddTestRun, AddNoFrameRun, AddEightFrameRun, AddThreeFrameRun,\
-    AddClinicalAliquot
+    AddProvider, AddPlate, AddSolution, AddiChipLot, AddiChipAssay, \
+    AddCustomerServiceCall, AddRack, AddCommercialBox, \
+    AddRandDBox, AddTestRun, AddNoFrameRun, AddEightFrameRun, AddThreeFrameRun, \
+    AddClinicalAliquot, AddSite, AddClinicalSample, AddRandDSample, AddQCSample
 
 from bika.lims.permissions import disallow_default_contenttypes
 
@@ -54,85 +54,98 @@ def create_structure(lims):
         # Configuration to bottom of nav.
         lims.moveObjectsToBottom(['configuration'])
 
-def structure_permissions(lims):
-    # Custom Add Permission
-    lims.materials.manage_permission(AddMaterial, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
-    lims.solutions.manage_permission(AddSolution, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichiplots.manage_permission(AddiChipLot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.plates.manage_permission(AddPlate, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.nce.manage_permission(AddNCE, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.patients.manage_permission(AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichipassay.manage_permission(AddiChipAssay, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.providers.manage_permission(AddProvider, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(AddCustomerServiceCall, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.testruns.manage_permission(AddTestRun, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(AddNoFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(AddEightFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(AddThreeFrameRun, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.inventory.manage_permission(AddRack, ['Manager', 'LabManager', 'Owner'], 0)
 
+def structure_permissions(lims):
     # Remove option to add folder to structure locations
-    lims.materials.manage_permission(permissions.AddFolder, [], 0)
-    lims.solutions.manage_permission(permissions.AddFolder, [], 0)
+    lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
+    lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
     lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
-    lims.plates.manage_permission(permissions.AddFolder, [], 0)
+    lims.inventory.manage_permission(permissions.AddFolder, [], 0)
+    lims.materials.manage_permission(permissions.AddFolder, [], 0)
     lims.nce.manage_permission(permissions.AddFolder, [], 0)
     lims.patients.manage_permission(permissions.AddFolder, [], 0)
-    lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
+    lims.plates.manage_permission(permissions.AddFolder, [], 0)
     lims.providers.manage_permission(permissions.AddFolder, [], 0)
-    lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
-    lims.inventory.manage_permission(permissions.AddFolder, [], 0)
+    lims.samples.manage_permission(permissions.AddFolder, [], 0)
+    lims.sites.manage_permission(permissions.AddFolder, [], 0)
+    lims.solutions.manage_permission(permissions.AddFolder, [], 0)
     lims.testruns.manage_permission(permissions.AddFolder, [], 0)
 
-    pm_options = ['ListFolderContents', 'View', 'AccessContentsInformation']
     # View permission
-    lims.materials.manage_permission(View, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
-    lims.solutions.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichiplots.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.plates.manage_permission(View, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.nce.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.patients.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichipassay.manage_permission(View, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.providers.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.inventory.manage_permission(View, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(View, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(View, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    lims.ichipassay.manage_permission(View, ['LabManager','LabClerk'], 0)
+    lims.ichiplots.manage_permission(View, ['LabManager','LabClerk'], 0)
+    lims.inventory.manage_permission(View, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.materials.manage_permission(View, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.nce.manage_permission(View, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk', 'RandDAnalyst', 'Executive', 'SalesRep', 'BillingExec'], 0)
+    lims.patients.manage_permission(View, ['LabManager','LabClerk'], 0)
+    lims.plates.manage_permission(View, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.providers.manage_permission(View, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.sites.manage_permission(View, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.solutions.manage_permission(View, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.testruns.manage_permission(View, ['LabManager','LabClerk'], 0)
     # Access Contents Information
-    lims.materials.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
-    lims.solutions.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichiplots.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.plates.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.nce.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.patients.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichipassay.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.providers.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.inventory.manage_permission(AccessContentsInformation, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(AccessContentsInformation, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+    lims.customerservicecall.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    lims.ichipassay.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
+    lims.ichiplots.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
+    lims.inventory.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.materials.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.nce.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk', 'RandDAnalyst', 'Executive', 'SalesRep', 'BillingExec'], 0)
+    lims.patients.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
+    lims.plates.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.providers.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.samples.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.sites.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.solutions.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.testruns.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
+    # List Folder Contents
+    lims.customerservicecall.manage_permission(ListFolderContents, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    lims.ichipassay.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
+    lims.ichiplots.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
+    lims.inventory.manage_permission(ListFolderContents, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.materials.manage_permission(ListFolderContents, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.nce.manage_permission(ListFolderContents, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk', 'RandDAnalyst', 'Executive', 'SalesRep', 'BillingExec'], 0)
+    lims.patients.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
+    lims.plates.manage_permission(ListFolderContents, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.providers.manage_permission(ListFolderContents, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.samples.manage_permission(ListFolderContents, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.sites.manage_permission(ListFolderContents, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.solutions.manage_permission(ListFolderContents, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.testruns.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
 
-    lims.materials.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
-    lims.solutions.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichiplots.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.plates.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.nce.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.patients.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichipassay.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.providers.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.inventory.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(ListFolderContents, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
-
-    lims.materials.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk','Owner'], 0)
-    lims.solutions.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichiplots.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.plates.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.nce.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.patients.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.ichipassay.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.providers.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.customerservicecall.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    lims.inventory.manage_permission(ModifyPortalContent, ['Manager', 'LabManager', 'Owner'], 0)
-    lims.testruns.manage_permission(ModifyPortalContent, ['Manager', 'LabManager','LabClerk', 'Owner'], 0)
+    # Custom Add Permission
+    lims.customerservicecall.manage_permission(AddCustomerServiceCall, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    lims.ichipassay.manage_permission(AddiChipAssay, ['LabManager'], 0)
+    lims.ichiplots.manage_permission(AddiChipLot, ['LabManager','LabClerk'], 0)
+    lims.inventory.manage_permission(AddRack, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.materials.manage_permission(AddMaterial, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.nce.manage_permission(AddNCE, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk', 'RandDAnalyst', 'Executive', 'SalesRep', 'BillingExec'], 0)
+    lims.patients.manage_permission(AddPatient, ['LabManager','LabClerk'], 0)
+    lims.plates.manage_permission(AddPlate, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.providers.manage_permission(AddProvider, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.providers.manage_permission(AddClinicalSample, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.providers.manage_permission(AddRandDSample, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.providers.manage_permission(AddQCSample, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.sites.manage_permission(AddSite, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.solutions.manage_permission(AddSolution, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
+    lims.testruns.manage_permission(AddEightFrameRun, ['LabManager','LabClerk'], 0)
+    lims.testruns.manage_permission(AddNoFrameRun, ['LabManager','LabClerk'], 0)
+    lims.testruns.manage_permission(AddTestRun, ['LabManager','LabClerk'], 0)
+    lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager','LabClerk'], 0)
+    # Modify portal content
+    lims.customerservicecall.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.ichipassay.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.ichiplots.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.inventory.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.materials.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.nce.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.patients.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.plates.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.providers.manage_permission(ModifyPortalContent, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.samples.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.sites.manage_permission(ModifyPortalContent, ['LabManager','LabClerk','SalesRep'], 0)
+    lims.solutions.manage_permission(ModifyPortalContent, ['LabManager'], 0)
+    lims.testruns.manage_permission(ModifyPortalContent, ['Manager'], 0)
 
 
 
@@ -160,7 +173,7 @@ def create_material_types(portal):
             i18n_domain='immunarray.lims',
             klass='plone.dexterity.content.Item',
             model_file=get_schema_filename('materials', tid),
-            immediate_view='folder_contents',
+            immediate_view='view',
             icon_expr='string:document_icon.png',
             filter_content_types=True,
             allowed_content_types=[],
@@ -197,7 +210,7 @@ def create_solution_types(portal):
             i18n_domain='immunarray.lims',
             klass='plone.dexterity.content.Item',
             model_file=get_schema_filename('solutions', tid),
-            immediate_view='folder_contents',
+            immediate_view='view',
             icon_expr='string:document_icon.png',
             filter_content_types=True,
             allowed_content_types=[],
