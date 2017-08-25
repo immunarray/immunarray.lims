@@ -85,6 +85,7 @@
             background-color:lightgrey;
             text-align:center;
             }
+            .hidden { display:none; }
 
         </style>
     </metal:slot>
@@ -173,7 +174,147 @@
                 </td>
             </tr>
         </table>
-        <!-- Plates Go Here -->
+
+        <div id="plates"> <!-- Plate tables are inserted here. -->
+
+        </div>
+
+        <table id="blank-plate" class="beta hidden">
+            <tr>
+                <td colspan="12" style="text-align: center;background-color:lightgrey;">
+                    <p style="font-size:11pt;"><strong><span class="plate-title">Plate</span></strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td><p><strong>Well</strong></p></td>
+                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+                <td><p><strong>&#10004 1<br>(serum)<strong></p></td>
+                <td><p><strong>Sample<br>class</strong></p></td>
+                <td><p><strong>Box</strong></p></td>
+            </tr>
+            <tr>
+                <td><p>1</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-1"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-1"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-1"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-1"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>2</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-2"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-2"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-2"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-2"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>3</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-3"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-3"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-3"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-3"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>4</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-4"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-4"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-4"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-4"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>5</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-5"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-5"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-5"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-5"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>6</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-6"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-6"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-6"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-6"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>7</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-7"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-7"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-7"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-7"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><p>8</p></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-8"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-8"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-8"/></td>
+                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-8"/></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td rowspan="4"></td>
+                <td>iChip 1 ID</td>
+                <td><input type="text" class="ichip-id ichip-1"></td>
+                <td>iChip 2 ID</td>
+                <td><input type="text" class="ichip-id ichip-2"></td>
+                <td>iChip 3 ID</td>
+                <td><input type="text" class="ichip-id ichip-3"></td>
+                <td>iChip 4 ID</td>
+                <td><input type="text" class="ichip-id ichip-4"></td>
+                <td style="vertical-align:top;" rowspan="3" colspan="3">
+                    <p style="text-align:left;">Comments: <input id="plate-comments"><br><br><br>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td><p>Scan Slot</p></td>
+                <td><p><input id="ichip1-scan_slot"></p></td>
+                <td><p>Scan Slot</p></td>
+                <td><p><input id="ichip2-scan_slot"></p></td>
+                <td><p>Scan Slot</p></td>
+                <td><p><input id="ichip3-scan_slot"></p></td>
+                <td><p>Scan Slot</p></td>
+                <td><p><input id="ichip4-scan_slot"></p></td>
+            </tr>
+            <tr>
+                <td style="height:50px;vertical-align:top;" colspan="2">
+                    <p style="text-align:left;">Comments:<input id="ichip1-comments"></p>
+                </td>
+                <td style="height:50px;vertical-align:top;" colspan="2">
+                    <p style="text-align:left;">Comments:<input id="ichip2-comments"></p>
+                </td>
+                <td style="height:50px;vertical-align:top;" colspan="2">
+                    <p style="text-align:left;">Comments:<input id="ichip3-comments"></p>
+                </td>
+                <td style="height:50px;vertical-align:top;" colspan="2">
+                    <p style="text-align:left;">Comments:<input id="ichip4-comments"></p>
+                </td>
+            </tr>
+        </table>
 
         <!--  Header for PP-007.02 Not needed for building the run-->
         <table id="table7" class="gama" align="center">

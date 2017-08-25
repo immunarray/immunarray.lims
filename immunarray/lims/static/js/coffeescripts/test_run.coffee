@@ -1,46 +1,39 @@
 #Brain for SLE-key_v_2_0_commercial.pt
-# something to test
 require [ 'jquery'], ($) ->
+
   $('#assay_selection').change ->
     assaySelected = $(this).val()
     authenticator = $('input[name="_authenticator"]').val()
-    alert assaySelected
     $.ajax
       url: 'ctest'
       type: 'POST'
+      dataType: 'json',
       data:
         'assaySeleced': assaySelected
         '_authenticator': authenticator
       success: (responseText, statusText, statusCode, xhr, $form) ->
         if statusCode.status == 210
           alert 'No Samples Require this Assay Choice!!!'
-        tmpl = document.getElementById('blank-plate')
-        document.body.appendChild tmpl.content.cloneNode(true)
-        #testPlanData = JSON.parse(responseText)
-        #arrayOfPlates = testPlanData['TestRun']
-        #numberOfPlates = arrayOfPlates.length
-        #alert numberOfPlates
-        #number of plates sent back from LIMS
-        #i = 0
-        #while i < numberOfPlates
-        #  plateNumber = i + 1
-          #make "plate-"+plateNumber.toString()
-          #make "PLATE "+plateNumber.toString() need them to loop over blank_plate
-        #  i++
-        #  $.ajax
-        #    url:'ctest'
-        #    type:'POST'
-        #    async: false
-        #    data:
-        #      'plateID':plateNumber
-        #      '_authenticator': authenticator
-        #    success: (responseText, statusText, statusCode, xhr, $form) ->
-        # config = 'blank_plate.pt'
-
-        # foo = ->
-        #   fs.readFileSync config, 'utf8'
-
-        # console.log foo()
+        $("div#plates").empty()
+        $.each responseText['TestRun'], (plate_nr, v) ->
+          # Clone and fix-up a new Plate table
+          plate = $("#blank-plate").clone()[0]
+          plate.id = '#plate-'+String(plate_nr+1)
+          $(plate).find(".plate-title").empty().append('Plate '+String(plate_nr+1))
+          $(plate).find(".ichip-id").addClass("plate-"+String(plate_nr+1))
+          # Loop the incoming sample data and populate the table
+          $.each v, (ichip_nr, vv) ->
+            ichip_id = vv[0]
+            samples = vv[1]
+            $(plate).find(".ichip-id.plate-"+String(plate_nr+1)).val ichip_id
+            $.each samples, (well_nr, sv) ->
+              $(plate).find(".sampleid-aliquot.chip-"+String(ichip_nr+1)+".well-"+String(well_nr+1)).val sv
+              return
+            return
+          # Insert new cloned plate to the HTML
+          $("div#plates").append($(plate))
+          $(plate).removeClass("hidden")
+          return
         return
     return
   return
