@@ -5,9 +5,11 @@ from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
 from zope.interface import alsoProvides
-
 from immunarray.lims import messageFactory as _
-
+from zope.component import adapter
+from zope.interface import Interface
+from zope.interface import implementer
+from plone.app.content.interfaces import INameFromTitle
 
 class IMaterial(model.Schema):
     """Base schema fields common to all Material types.
@@ -82,7 +84,7 @@ class IMaterial(model.Schema):
     product_name = schema.TextLine(
         title=_(u"Product Name"),
         description=_(u"Product Name"),
-        required=False
+        required=True
     )
     purchase_order = schema.TextLine(
         title=_(u"Purchase Order"),
@@ -143,3 +145,24 @@ class IMaterial(model.Schema):
     )
 
 alsoProvides(IMaterial, IFormFieldProvider)
+
+class ITitleFromLotAndType(Interface):
+    """Marker interface to enable name from filename behavior"""
+
+
+@implementer(INameFromTitle)
+@adapter(ITitleFromLotAndType)
+class TitleFromLotAndType(object):
+
+    def __new__(cls, context):
+        import pdb;pdb.set_trace()
+        instance = super(TitleFromLotAndType, cls).__new__(cls)
+        lotnumber = getattr(context, 'lot_number', None)
+        name =getattr(context, 'product_name', None)
+        filename = name + "--" + lotnumber
+        context.setTitle = filename
+        instance.title = filename
+        return instance
+
+    def __init__(self, context):
+        pass
