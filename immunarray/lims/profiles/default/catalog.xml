@@ -39,11 +39,6 @@
     <indexed_attr value="billable_code"/>
   </index>
   <column value="billable_code"/>
-  <!-- Allow for sorting of iChips without opening the object-->
-  <index name="ichip_status" meta_type="FieldIndex">
-    <indexed_attr value="ichip_status"/>
-  </index>
-  <column value="ichip_status"/>
   <!-- Veracis ID is indexed and added to metadata, together these are
   used to create new sequential IDs. -->
   <index name="veracis_id" meta_type="FieldIndex">

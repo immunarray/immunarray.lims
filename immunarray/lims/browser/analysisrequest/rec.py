@@ -83,11 +83,7 @@ class AddRecView(BrowserView):
 
         if "all_data" in request.form:
             authenticator = request.form.get('_authenticator')
-            # import pdb;pdb.set_trace()
-            try:
-                plone.protect.CheckAuthenticator(authenticator)
-            except:
-                import pdb;pdb.set_trace()
+            plone.protect.CheckAuthenticator(authenticator)
             # Patient Data Elemetns
             usn_from_form = request.form.get('usn_from_from')
             site_id = request.form.get('site_id')

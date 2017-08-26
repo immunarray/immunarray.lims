@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.utils import getToolByName
 from plone import api
+from plone.api.content import get_state
+from plone.autoform.interfaces import IFormFieldProvider
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import alsoProvides
 from zope.interface import implementer
+from zope.interface import implements
+from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.interfaces import IContextSourceBinder
-from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.utils import getToolByName
-from zope.interface import alsoProvides
-from plone.autoform.interfaces import IFormFieldProvider
-from plone.directives import form
-import pdb
+
 
 #broken code for dict
 
@@ -21,7 +20,6 @@ class IChipsAllBroken(object):
     """ Produces all iChips that have been decared as broken
     """
     def __call__(self, context):
-        pdb.set_trace()
         catalog = getToolByName(context, 'portal_catalog')
         values = catalog(portal_type='iChip')
         names = [([v.id]) for v in values]
@@ -60,7 +58,6 @@ class IThreeFrameChipsInUS (object):
     # get all IChipLots where iChipLot.acceptance_status = ("Quarantined" or"Passed")
     # values = api.content.find(context=api.portal.get(), portal_type='iChip')
     # get all iChipLots where iChipLot.frames = 3 Frame iChips (base iChipLots to use)
-    # Metadata of "ichip_status" can be used to filter.
     implements(IVocabularyFactory, IContextSourceBinder)
     def __call__(self, context):
         wells = []
@@ -134,13 +131,12 @@ class ICommercialThreeFrameChipWells (object):
         eight_well = ["-A","-B","-C","-D","-E","-F","-G","-H"]
         values = api.content.find(context=api.portal.get(), portal_type='iChip')
         # filter __parent__ to get only 3 frame iChips
-        import pdb;pdb.set_trace()
         ichips = []
 
         for v in values:
-            a = v.getObject()
-            if "released" in a.ichip_status.lower():
-                ichips.append("-".join([a.title, str(a.ichip_status)]))
+            ichip = v.getObject()
+            if get_state(ichip) == 'released':
+                ichips.append("{}-{}".format(ichip.title, get_state(ichip)))
         unique_ichip_wells=[]
         for o in ichips:
             for w in three_well:

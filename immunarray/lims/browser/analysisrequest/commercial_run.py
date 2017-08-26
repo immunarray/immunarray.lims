@@ -8,6 +8,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone import api
+from plone.api.content import get_state
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
 
@@ -229,8 +230,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             ichips_in_lot = ichiplot.contentIds()
             list_ichip_objects = []
             for ichip in ichips_in_lot:
-                chip_object = ichiplot.__getitem__(ichip)
-                if chip_object.ichip_status == 'Released':
+                chip_object = ichiplot[ichip]
+                if get_state(chip_object) == 'released':
                     list_ichip_objects.append(chip_object)
             # list_ichip_objects.sort() #Places objects in reverse order?
             list_ichiplot_and_ichips.append([ichiplot, list_ichip_objects])

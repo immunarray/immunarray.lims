@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="ichip_workflow"
+             title="iChip Workflow"
+             description=""
+             state_variable="review_state"
+             initial_state="quarantined"
+             manager_bypass="True">
+
+  <state state_id="quarantined" title="Quarantined">
+    <description>Quarantined</description>
+    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="use_for_release_testing"/>
+    <exit-transition transition_id="use_for_validation"/>
+    <exit-transition transition_id="use_for_training"/>
+    <exit-transition transition_id="reserve_for_stability_testing"/>
+    <exit-transition transition_id="retain_usa"/>
+    <exit-transition transition_id="retain_ial"/>
+    <exit-transition transition_id="broken"/>
+    <exit-transition transition_id="expire"/>
+  </state>
+
+  <state state_id="released" title="Released">
+    <description>Released</description>
+    <exit-transition transition_id="reject"/>
+    <exit-transition transition_id="queue"/>
+    <exit-transition transition_id="use_for_validation"/>
+    <exit-transition transition_id="residual"/>
+    <exit-transition transition_id="expired"/>
+    <exit-transition transition_id="broken"/>
+  </state>
+
+  <state state_id="used_for_release_testing" title="Used for release testing">
+    <description>Used for release testing</description>
+  </state>
+
+  <state state_id="used_for_training" title="Used for training">
+    <description>Used for training</description>
+  </state>
+
+  <state state_id="reserved_for_stability_testing" title="Reserved for stability testing">
+    <description>Reserved for stability testing</description>
+    <exit-transition transition_id="use_for_stability_testing"/>
+    <exit-transition transition_id="broken"/>
+  </state>
+
+  <state state_id="used_for_stability_testing" title="Used for stability testing">
+    <description>Used for stability testing</description>
+  </state>
+
+  <state state_id="retained_usa" title="Retained in USA">
+    <description>Retained in USA</description>
+    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="expire"/>
+    <exit-transition transition_id="broken"/>
+  </state>
+
+  <state state_id="retained_ial" title="Retained in IAL">
+    <description>Retained in IAL</description>
+    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="expire"/>
+    <exit-transition transition_id="broken"/>
+  </state>
+
+  <state state_id="rejected" title="Rejected">
+    <description>Released</description>
+    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="expire"/>
+    <exit-transition transition_id="discard"/>
+    <exit-transition transition_id="broken"/>
+  </state>
+
+  <state state_id="residual" title="Residual">
+    <description>Residual</description>
+    <exit-transition transition_id="expire"/>
+    <exit-transition transition_id="discard"/>
+    <exit-transition transition_id="broken"/>
+    <exit-transition transition_id="released"/>
+  </state>
+
+  <state state_id="queued" title="Queued">
+    <description>Queued</description>
+    <exit-transition transition_id="in_process"/>
+    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="broken"/>
+    <exit-transition transition_id="expire"/>
+  </state>
+
+  <state state_id="in_process" title="In Process">
+    <description>In Process</description>
+    <exit-transition transition_id="used_qc_pass"/>
+    <exit-transition transition_id="used_qc_fail"/>
+  </state>
+
+
+  <state state_id="broken" title="Broken">
+    <description>Broken</description>
+    <exit-transition transition_id="discard"/>
+  </state>
+
+  <state state_id="expired" title="Expired">
+    <description>Expired</description>
+    <exit-transition transition_id="discard"/>
+  </state>
+
+  <state state_id="discarded" title="Discarded">
+    <description>Discarded</description>
+  </state>
+
+  <transition transition_id="release"
+              title="Release iChip"
+              new_state="released"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=release"
+            category="workflow"
+            icon="">Release iChip
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="use_for_release_testing"
+              title="Use for release testing"
+              new_state="used_for_release_testing"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=use_for_release_testing"
+            category="workflow"
+            icon="">Use for release testing
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="use_for_validation"
+              title="Use for validation"
+              new_state="used_for_validation"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=use_for_validation"
+            category="workflow"
+            icon="">Use for validation
+    </action>
+    <guard/>
+  </transition>
+
+
+  <transition transition_id="use_for_training"
+              title="Use for training"
+              new_state="used_for_training"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=use_for_training"
+            category="workflow"
+            icon="">Use for training
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="reserve_for_stability_testing"
+              title="Reserve for stability testing"
+              new_state="reserved_for_stability_testing"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=reserve_for_stability_testing"
+            category="workflow"
+            icon="">Reserve for stability testing
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="use_for_stability_testing"
+              title="Use for stability testing"
+              new_state="used_for_stability_testing"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=used_for_stability_testing"
+            category="workflow"
+            icon="">Use for stability testing
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="retain_usa"
+              title="Retain in USA"
+              new_state="retained_usa"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=retain_usa"
+            category="workflow"
+            icon="">Retain in USA
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="retain_ial"
+              title="Retain in IAL"
+              new_state="retained_ial"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=retain_ial"
+            category="workflow"
+            icon="">Retain in IAL
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="reject"
+              title="Reject iChip"
+              new_state="rejected"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+            category="workflow"
+            icon="">Reject iChip
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="residual"
+              title="Residual"
+              new_state="residual"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard/>
+  </transition>
+
+  <transition transition_id="queue"
+              title="Queue iChip"
+              new_state="queued"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=queue"
+            category="workflow"
+            icon="">Queue iChip
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="in_process"
+              title="In Process"
+              new_state="in_process"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard/>
+  </transition>
+
+  <transition transition_id="used_qc_pass"
+              title="QC Pass"
+              new_state="used_qc_pass"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard/>
+  </transition>
+
+  <transition transition_id="used_qc_fail"
+              title="QC Fail"
+              new_state="used_qc_fail"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard/>
+  </transition>
+
+  <transition transition_id="broken"
+              title="Broken"
+              new_state="broken"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=broken"
+            category="workflow"
+            icon="">Broken
+    </action>
+    <guard/>
+  </transition>
+
+  <transition transition_id="expire"
+              title="Expire"
+              new_state="expired"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard/>
+  </transition>
+
+  <transition transition_id="discard"
+              title="Discard"
+              new_state="discarded"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=discard"
+            category="workflow"
+            icon="">Discard
+    </action>
+    <guard/>
+  </transition>
+
+</dc-workflow>

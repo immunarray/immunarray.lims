@@ -38,11 +38,6 @@
                 </div>
             </div>​
             <div class="tr">
-                <div class="td label">iChip Status</div>
-                <div class="td value" tal:content="context/ichip_status">
-                </div>
-            </div>​
-            <div class="tr">
                 <div class="td label">iChip Storage Location</div>
                 <div class="td value" tal:content="context/storage_location">
                 </div>

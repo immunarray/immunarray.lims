@@ -22,24 +22,6 @@ class IiChip(model.Schema):
         required=False,
     )
 
-    ichip_status = schema.Choice(
-        title=_(u"iChip Status"),
-        description=_(u"Status of iChip"),
-        required=True,
-        values=[_(u'Quarantined'),
-                _(u'Released'),
-                _(u'Retained-US'),
-                _(u'Retained-IA'),
-                _(u'In-Process'),
-                _(u'Used-QC-Passed'),
-                _(u'Used-QC-Failed'),
-                _(u'Residual'),
-                _(u'Broken'),
-                _(u'Used-Training'),
-                _(u'Used-Validation')],
-        default=_(u'Quarantined'),
-    )
-
     # Image name to actual image (zip image file before upload)
     image = schema.Dict(
         key_type=schema.TextLine(
