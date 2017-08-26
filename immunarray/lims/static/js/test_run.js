@@ -39,6 +39,16 @@
             $("div#plates").append($(plate));
             $(plate).removeClass("hidden");
           });
+          $('button[class="delete-plate"]').on('click', function(ev) {
+            ev.preventDefault();
+            $(this).closest(".plate-container").remove();
+            $.each($('.plate-container'), function(i, plate) {
+              var plate_nr;
+              plate_nr = String(i + 1);
+              $(plate).id = "plate-" + plate_nr;
+              $(plate).find(".plate-title").empty().append('Plate ' + plate_nr);
+            });
+          });
         }
       });
     });

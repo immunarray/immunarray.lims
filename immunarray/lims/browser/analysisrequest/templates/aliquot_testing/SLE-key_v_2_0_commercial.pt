@@ -110,7 +110,11 @@
               -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
               -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
               transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-            }
+          }
+          .delete-plate{
+              cursor: pointer;
+              background-color:lightgrey;
+          }
         </style>
     <form action="buildtest" name="buildtest" method="post">
         <input type="hidden" name="submitted" value="1"/>
@@ -195,12 +199,12 @@
 
         </div>
 
-        <table id="blank-plate" class="beta hidden">
+        <table id="blank-plate" class="plate-container beta hidden">
             <tr>
                 <td colspan="11" style="text-align: center;background-color:lightgrey;">
                     <p style="font-size:11pt;"><strong><span class="plate-title">Plate</span></strong></p>
                 </td>
-                <td><a class="delete-plate" href="#">&#9747;</a></td>
+                <td><button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button></td>
             </tr>
             <tr>
                 <td><p><strong>Well</strong></p></td>
@@ -208,7 +212,7 @@
                 <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
                 <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
                 <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
-                <td><p><strong>&#10004 1<br>(serum)<strong></p></td>
+                <td><p><strong>&#10004 1<br>(serum)</strong></p></td>
                 <td><p><strong>Sample<br>class</strong></p></td>
                 <td><p><strong>Box</strong></p></td>
             </tr>
