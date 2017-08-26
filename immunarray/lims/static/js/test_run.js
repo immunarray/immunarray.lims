@@ -29,7 +29,7 @@
               ichip_nr = String(ii + 1);
               ichip_id = vv[0];
               samples = vv[1];
-              $(plate).find(".ichip-id.plate-" + plate_nr).val(ichip_id);
+              $(plate).find(".ichip-id.ichip-" + ichip_nr + ".plate-" + plate_nr).val(ichip_id);
               $.each(samples, function(iii, vvv) {
                 var well_nr;
                 well_nr = String(iii + 1);
