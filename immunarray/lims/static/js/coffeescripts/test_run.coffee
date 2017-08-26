@@ -15,19 +15,22 @@ require [ 'jquery'], ($) ->
         if statusCode.status == 210
           alert 'No Samples Require this Assay Choice!!!'
         $("div#plates").empty()
-        $.each responseText['TestRun'], (plate_nr, v) ->
+        $.each responseText['TestRun'], (i, v) ->
+          plate_nr = String(i+1)
           # Clone and fix-up a new Plate table
           plate = $("#blank-plate").clone()[0]
-          plate.id = '#plate-'+String(plate_nr+1)
-          $(plate).find(".plate-title").empty().append('Plate '+String(plate_nr+1))
-          $(plate).find(".ichip-id").addClass("plate-"+String(plate_nr+1))
+          plate.id = '#plate-'+plate_nr
+          $(plate).find(".plate-title").empty().append('Plate '+plate_nr)
+          $(plate).find(".ichip-id").addClass("plate-"+plate_nr)
           # Loop the incoming sample data and populate the table
-          $.each v, (ichip_nr, vv) ->
+          $.each v, (ii, vv) ->
+            ichip_nr = String(ii+1)
             ichip_id = vv[0]
             samples = vv[1]
-            $(plate).find(".ichip-id.plate-"+String(plate_nr+1)).val ichip_id
-            $.each samples, (well_nr, sv) ->
-              $(plate).find(".sampleid-aliquot.chip-"+String(ichip_nr+1)+".well-"+String(well_nr+1)).val sv
+            $(plate).find(".ichip-id.plate-"+plate_nr).val ichip_id
+            $.each samples, (iii, vvv) ->
+              well_nr = String(iii+1)
+              $(plate).find(".chip-"+ichip_nr+".well-"+well_nr).val vvv
               return
             return
           # Insert new cloned plate to the HTML
