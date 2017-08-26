@@ -180,6 +180,8 @@ def create_material_types(portal):
             global_allow=True,
             behaviors=[
                 "immunarray.lims.interfaces.material.IMaterial",
+                "immunarray.lims.interfaces.qcsample.\
+                ITitleFromVeracisIDAndSourceIDOne",
             ],
             add_permission='immunarray.lims.permissions.AddMaterial',
         )
