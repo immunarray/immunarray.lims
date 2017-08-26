@@ -3,7 +3,12 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="sits">
 
-<metal:slot fill-slot="css_slot">
+    <head>
+        <meta charset="UTF-8">
+        <title>SLE-key v2.0</title>
+    </head>
+<body>
+<metal:main fill-slot="main">
     <style media="all" type="text/css">
             @page{margin:0cm 0cm 0cm 0cm}
             #table1, #table2,#table3, #table4, #table5, #table6, #table8,
@@ -87,15 +92,26 @@
             }
             .hidden { display:none; }
 
+            /*This is Plone's style for inputs; I just want to apply the same to input[type="date"] */
+            #testingdate {
+              display: block;
+              width: 100%;
+              height: 34px;
+              padding: 6px 12px;
+              font-size: 14px;
+              line-height: 1.42857143;
+              color: #696969;
+              background-color: #fff;
+              background-image: none;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+              box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+              -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+              -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+              transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            }
         </style>
-    </metal:slot>
-
-    <head>
-        <meta charset="UTF-8">
-        <title>SLE-key v2.0</title>
-    </head>
-<body>
-<metal:main fill-slot="main">
     <form action="buildtest" name="buildtest" method="post">
         <input type="hidden" name="submitted" value="1"/>
         <select id="assay_selection">
@@ -112,7 +128,7 @@
         <table id="table1" class="alpha">
             <tr>
                 <td style="width:10%" rowspan="5">
-                    <div id="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
+                    <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
                     <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
                 </td>
                 <td colspan="3" style="text-align: center">
@@ -286,7 +302,7 @@
                 <td>iChip 4 ID</td>
                 <td><input type="text" class="ichip-id ichip-4"></td>
                 <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments: <input type="text" class="plate-comments"><br><br><br>
+                    <p style="text-align:left;">Comments: <textarea size="5" class="plate-comments"/>
                     </p>
                 </td>
             </tr>
@@ -320,7 +336,7 @@
         <table id="table7" class="gama" align="center">
             <tr>
                 <td style="width:10%" rowspan="5">
-                    <div id="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
+                    <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
                     <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
                 </td>
                 <td colspan="3" style="text-align: center;">
