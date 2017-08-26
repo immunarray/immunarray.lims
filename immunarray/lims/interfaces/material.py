@@ -155,14 +155,14 @@ class ITitleFromLotAndType(Interface):
 class TitleFromLotAndType(object):
 
     def __new__(cls, context):
-        import pdb;pdb.set_trace()
         instance = super(TitleFromLotAndType, cls).__new__(cls)
         lotnumber = getattr(context, 'lot_number', None)
         name =getattr(context, 'product_name', None)
         filename = name + "--" + lotnumber
-        context.setTitle = filename
+        context.setTitle(filename)
         instance.title = filename
         return instance
 
     def __init__(self, context):
         pass
+
