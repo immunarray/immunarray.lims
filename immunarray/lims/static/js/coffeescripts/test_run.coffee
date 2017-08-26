@@ -35,6 +35,7 @@ require ['jquery'], ($) ->
                     $("div#plates").append($(plate))
                     $(plate).removeClass("hidden")
                     return
+                # Deleting a plate re-orders and sets titles of remaining plates
                 $('button[class="delete-plate"]').on 'click', (ev) ->
                     ev.preventDefault()
                     $(this).closest(".plate-container").remove()
