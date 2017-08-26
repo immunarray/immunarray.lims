@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from datetime import date
-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.api.content import transition
