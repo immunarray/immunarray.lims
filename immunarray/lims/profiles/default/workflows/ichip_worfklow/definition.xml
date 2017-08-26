@@ -116,7 +116,10 @@
             category="workflow"
             icon="">Release iChip
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('release')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="use_for_release_testing"
@@ -129,7 +132,10 @@
             category="workflow"
             icon="">Use for release testing
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('use_for_release_testing')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="use_for_validation"
@@ -142,7 +148,10 @@
             category="workflow"
             icon="">Use for validation
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('use_for_validation')</guard-expression>
+    </guard>
   </transition>
 
 
@@ -156,7 +165,10 @@
             category="workflow"
             icon="">Use for training
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('use_for_training')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="reserve_for_stability_testing"
@@ -169,7 +181,10 @@
             category="workflow"
             icon="">Reserve for stability testing
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('reserve_for_stability_testing')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="use_for_stability_testing"
@@ -182,7 +197,10 @@
             category="workflow"
             icon="">Use for stability testing
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('use_for_stability_testing')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="retain_usa"
@@ -195,7 +213,10 @@
             category="workflow"
             icon="">Retain in USA
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('retain_usa')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="retain_ial"
@@ -208,7 +229,10 @@
             category="workflow"
             icon="">Retain in IAL
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('retain_ial')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="reject"
@@ -221,7 +245,10 @@
             category="workflow"
             icon="">Reject iChip
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('reject')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="residual"
@@ -230,7 +257,10 @@
               before_script=""
               after_script=""
               trigger="USER">
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('residual')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="queue"
@@ -243,7 +273,10 @@
             category="workflow"
             icon="">Queue iChip
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('queue')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="in_process"
@@ -252,7 +285,10 @@
               before_script=""
               after_script=""
               trigger="USER">
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('in_process')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="used_qc_pass"
@@ -261,7 +297,10 @@
               before_script=""
               after_script=""
               trigger="USER">
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('used_qc_pass')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="used_qc_fail"
@@ -270,7 +309,10 @@
               before_script=""
               after_script=""
               trigger="USER">
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('used_qc_fail')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="broken"
@@ -283,7 +325,10 @@
             category="workflow"
             icon="">Broken
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('broken')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="expire"
@@ -292,7 +337,10 @@
               before_script=""
               after_script=""
               trigger="USER">
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('expire')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="discard"
@@ -305,7 +353,10 @@
             category="workflow"
             icon="">Discard
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('discard')</guard-expression>
+    </guard>
   </transition>
 
 </dc-workflow>
