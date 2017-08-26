@@ -197,9 +197,10 @@
 
         <table id="blank-plate" class="beta hidden">
             <tr>
-                <td colspan="12" style="text-align: center;background-color:lightgrey;">
+                <td colspan="11" style="text-align: center;background-color:lightgrey;">
                     <p style="font-size:11pt;"><strong><span class="plate-title">Plate</span></strong></p>
                 </td>
+                <td><a class="delete-plate" href="#">&#9747;</a></td>
             </tr>
             <tr>
                 <td><p><strong>Well</strong></p></td>
