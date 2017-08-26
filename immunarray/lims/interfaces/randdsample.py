@@ -39,7 +39,7 @@ class IRandDSample(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
         description=_(u"R&D Veracis Sample ID"),
-        default=assignVeracisId(),
+        #default=assignVeracisId(),
         required=True,
     )
 

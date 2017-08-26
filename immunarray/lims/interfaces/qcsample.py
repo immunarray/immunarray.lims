@@ -20,6 +20,7 @@ def currentDate():
 def assignVeracisId():
     """Pull all Veracis IDs for R&D and QC samples and get the next one.
     """
+
     allVeracisIds = []
     qcsamples=[]
     randdsamples = []

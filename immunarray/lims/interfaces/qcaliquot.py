@@ -22,7 +22,7 @@ class IQCAliquot(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"QC Veracis Sample ID"),
         description=_(u"QC Veracis Sample ID"),
-        default=assignVeracisId(),
+        #default=assignVeracisId(),
         required=True,
     )
 
