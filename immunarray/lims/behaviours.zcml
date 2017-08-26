@@ -4,15 +4,15 @@
         i18n_domain="immunarray.lims">
 
     <plone:behavior
-            title="LIMS: Raw Material"
-            description="This FTI will be registered as a material in the LIMS"
-            provides="immunarray.lims.interfaces.material.IMaterial"
+        title="LIMS: Raw Material"
+        description="This FTI will be registered as a material in the LIMS"
+        provides="immunarray.lims.interfaces.material.IMaterial"
     />
 
     <plone:behavior
-            title="LIMS: Solution"
-            description="This FTI will be registered as a solution in the LIMS"
-            provides="immunarray.lims.interfaces.solution.ISolution"
+        title="LIMS: Solution"
+        description="This FTI will be registered as a solution in the LIMS"
+        provides="immunarray.lims.interfaces.solution.ISolution"
     />
 
     <plone:behavior

@@ -25,6 +25,7 @@
     <property name="behaviors">
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
         <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <element value="immunarray.lims.interfaces.qcsample.TitleFromVeracisIDAndSourceIDOne"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.qcsample.IQCSample</property>
     <property name="model_source"/>

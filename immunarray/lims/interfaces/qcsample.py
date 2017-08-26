@@ -24,7 +24,8 @@ def assignVeracisId():
     qcsamples=[]
     randdsamples = []
     try:
-        qcsamples = api.content.find(context=api.portal.get(), portal_type='QCSample')
+        qcsamples = api.content.find(context=api.portal.get(),
+                                     portal_type='QCSample')
     except:
         print "No QC samples found"
     if len(qcsamples) != 0:
@@ -36,10 +37,9 @@ def assignVeracisId():
             except:
                 print "QC Veracis ID can't be converted to Int"
     # Get R&D Veracis ID's, append to allVeracisIds array
-    try:
-        randdsamples = api.content.find(context=api.portal.get(), portal_type='RandDSample')
-    except:
-        print "No R&D samples found"
+    randdsamples = api.content.find(context=api.portal.get(),
+                                        portal_type='RandDSample')
+    if not randdsamples: print "No R&D samples found"
     if len(randdsamples) != 0:
         randd_sampel_uids = [u.UID for u in randdsamples]
         for i in randd_sampel_uids:
@@ -64,7 +64,7 @@ class IQCSample(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"QC Veracis Sample ID"),
         description=_(u"QC Veracis Sample ID"),
-        default=assignVeracisId(),
+        defaultFactory=assignVeracisId,
         required=True,
     )
 
@@ -143,6 +143,7 @@ class IQCSample(model.Schema):
         description=_(u"Any Notes or Comments About the QC Sample"),
         required=False,
     )
+
 
 class ITitleFromVeracisIDAndSourceIDOne(Interface):
     """Marker interface to enable name from filename behavior"""
