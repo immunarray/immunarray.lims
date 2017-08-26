@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
 from immunarray.lims.interfaces.qcsample import assignVeracisId
