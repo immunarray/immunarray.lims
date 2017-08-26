@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import date
+import datetime
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from z3c.form import button
 from z3c.form.form import EditForm
@@ -8,6 +8,12 @@ from immunarray.lims import messageFactory as _
 from plone.autoform.interfaces import IFormFieldProvider
 from zope.interface import alsoProvides
 
+def currentTime():
+    return datetime.datetime.now()
+
+
+def currentDate():
+    return datetime.datetime.now().date()
 
 class IEightFrameRun(IVeracisRunBase):
     """Eight Frame Test Run
