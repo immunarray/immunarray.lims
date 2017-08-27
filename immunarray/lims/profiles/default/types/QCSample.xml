@@ -23,7 +23,7 @@
     <property name="add_permission">immunarray.lims.permissions.AddQCSample</property>
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
-        <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCor        <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCor -->
         <element value="immunarray.lims.interfaces.qcsample.ITitleFromVeracisIDAndSourceIDOne"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.qcsample.IQCSample</property>
