@@ -5,16 +5,16 @@
 
     <browser:viewlet
             for="bika.lims.interfaces.aliquot.IAliquot"
-            name="addworkingaliqutfrombulk-viewlet"
-            class=".addworkingaliquotfrombulk.AddWorkingAliquotFromBulkViewlet"
+            name="add-aliquots-viewlet"
+            class=".add_aliquots.AddAliquotsViewlet"
             manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
             permission="zope2.View"
     />
 
     <browser:page
             for="bika.lims.interfaces.aliquot.IAliquot"
-            name="addworkingaliquotfrombulk"
-            class=".addworkingaliquotfrombulk.AddWorkingAliquotFromBulkHandler"
+            name="add-aliquots"
+            class=".add_aliquots.AddAliquotsHandler"
             permission="zope2.View"
     />
 

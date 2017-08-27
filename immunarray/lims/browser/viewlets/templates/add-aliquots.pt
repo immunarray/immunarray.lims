@@ -1,0 +1,23 @@
+<html>
+<body>
+<style type="text/css">
+    .add-aliquots .discreet{
+      font-size:50%;
+      color:#ddd;
+    }
+</style>
+
+<div class="add-aliquots" style="padding: 10px 0px;">
+    <form name="add-aliquots" action="add-aliquots" method="POST">
+        <input name="aliquot_volume" type="number" class="aliquot-volume" placeholder="Volume of aliquots"><span class='discreet'>uL</span>
+        <input name="aliquot_count" type="number" class="aliquot-count" placeholder="Number of aliquots">
+        <label for="count">Count is optional; if omitted, parent's volume will be divided by aliquot volume entered here.</label>
+        <select name="aliquot_type">
+            <option name="aliquot_type_bulk" id="aliquot_type_bulk">Bulk</option>
+            <option name="aliquot_type_working" id="aliquot_type_working">Working</option>
+        </select>
+        <br/><input type="submit" class="aliquots-add" value="Add Aliquots">
+    </form>
+</div>
+</body>
+</html>

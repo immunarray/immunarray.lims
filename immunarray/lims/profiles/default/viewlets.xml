@@ -2,7 +2,7 @@
 <object>
 
     <order manager="plone.abovecontenttitle" skinname="*">
-        <viewlet name="addworkingaliquotfrombulk-viewlet"/>
+        <viewlet name="add-aliquots-viewlet"/>
     </order>
 
     <order manager="plone.abovecontentbody" skinname="*">

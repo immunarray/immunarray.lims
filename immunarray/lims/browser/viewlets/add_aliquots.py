@@ -4,15 +4,15 @@ from plone.app.layout.viewlets import ViewletBase
 from plone import api
 
 
-class AddWorkingAliquotFromBulkViewlet(ViewletBase):
+class AddAliquotsViewlet(ViewletBase):
     index = ViewPageTemplateFile(
-        "templates/addworkingaliquotfrombulk_viewlet.pt")
+        "templates/add-aliquots.pt")
 
     def render(self):
         return self.index()
 
 
-class AddWorkingAliquotFromBulkHandler(BrowserView):
+class AddAliquotsHandler(BrowserView):
 
     def __call__(self):
 
