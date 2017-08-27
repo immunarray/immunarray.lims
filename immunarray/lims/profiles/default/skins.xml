@@ -1,17 +1,8 @@
 <?xml version="1.0"?>
-<object name="portal_skins"
-        meta_type="Plone Skins Tool"
-        allow_any="False"
-        cookie_persistence="False"
-        default_skin="Sunburst Theme"
-        request_varname="plone_skin">
-
-  <object name="immunarray"
-          meta_type="Filesystem Directory View"
-          directory="immunarray.lims:skins/immunarray"/>
-
+<object name="portal_skins" meta_type="Plone Skins Tool">
+ <object name="immunarray" meta_type="Filesystem Directory View"
+         directory="immunarray.lims:skins/immunarray"/>
   <skin-path name="*">
     <layer name="immunarray" insert-after="custom"/>
   </skin-path>
-
 </object>
