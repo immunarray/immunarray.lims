@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from immunarray.lims.content.abstractaliquot import AbstractAliquot
 
 
-class ClinicalAliquot(Container):
+class ClinicalAliquot(AbstractAliquot):
     def __init__(self, *args, **kwargs):
         super(ClinicalAliquot, self).__init__(*args, **kwargs)
