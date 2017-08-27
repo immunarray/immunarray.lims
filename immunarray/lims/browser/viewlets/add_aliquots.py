@@ -15,8 +15,8 @@ class AddAliquotsViewlet(ViewletBase):
         return self.index()
 
     def __call__(self):
-        import pdb;
-        pdb.set_trace();
+        import pdb
+        pdb.set_trace()
         pass
         # loop and create.8
         # aliquot_type
@@ -34,10 +34,12 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
 
         result = {'success': False, 'feedback': 'Error.'}
 
+        form = self.request.form
+
         # validate aliquot_volume.
         # After this block, aliquot_volume WILL be defined.
         try:
-            aliquot_volume = self.request.form.get('aliquot_volume', '')
+            aliquot_volume = form.get('aliquot_volume', '')
             aliquot_volume = int(aliquot_volume)
         except ValueError:
             result['feedback'] = 'Volume must be a whole number.'
@@ -51,7 +53,7 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
         # after this block, aliquot_count and remaining_volume WILL be defined.
         parent_volume = self.context.remaining_volume
         try:
-            aliquot_count = self.request.form.get('aliquot_count', '')
+            aliquot_count = form.get('aliquot_count', 0)
             aliquot_count = int(aliquot_count)
         except ValueError:
             result['feedback'] = 'Aliquot count must be a whole number.'
@@ -77,7 +79,7 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
                       veracis_id=self.context.veracis_id)
         sequence_start = len(brains)
 
-        aliquot_type = self.request.form['aliquot_type']
+        aliquot_type = form['aliquot_type']
         result['feedback'] = """{aliquot_count} {aliquot_type} aliquots will 
         be created, using {required_volume} uL of {parent_volume} uL 
         remaining on {self.context.id}, and leavning {remaining_volume} 
