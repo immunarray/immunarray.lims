@@ -90,7 +90,7 @@ class IiChipLot(model.Schema):
     acceptance_status = schema.Choice(
         title=_(u"iChip Acceptance Status"),
         description=_(u"Acceptance Status of iChip Lot"),
-        values=[_(u"Quarantined"), _(u"Passed"),_(u"Consumed")],
+        values=[_(u"Quarantined"), _(u"Released"),_(u"Consumed")],
         required=True,
     )
 
