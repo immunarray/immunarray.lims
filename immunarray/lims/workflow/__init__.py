@@ -17,7 +17,10 @@ def AfterTransitionEventHandler(instance, event):
     """
     if not event.transition:
         return
-    wfmodule = _load_wf_module('{0}.events'.format(instance.portal_type))
+    try:
+        wfmodule = _load_wf_module('{0}.events'.format(instance.portal_type))
+    except ImportError:
+        return
     if not wfmodule:
         return
     key = 'after_{0}'.format(event.transition.id)
