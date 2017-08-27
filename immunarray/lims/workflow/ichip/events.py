@@ -46,12 +46,6 @@ def after_release(self, instance):
     pass
 
 
-def after_released(self, instance):
-    """
-    """
-    pass
-
-
 def after_reserve_for_stability_testing(self, instance):
     """
     """

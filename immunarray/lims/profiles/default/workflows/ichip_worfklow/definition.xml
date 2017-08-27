@@ -62,7 +62,7 @@
   </state>
 
   <state state_id="rejected" title="Rejected">
-    <description>Released</description>
+    <description>Rejected</description>
     <exit-transition transition_id="release"/>
     <exit-transition transition_id="expire"/>
     <exit-transition transition_id="discard"/>
@@ -74,7 +74,7 @@
     <exit-transition transition_id="expire"/>
     <exit-transition transition_id="discard"/>
     <exit-transition transition_id="broken"/>
-    <exit-transition transition_id="released"/>
+    <exit-transition transition_id="release"/>
   </state>
 
   <state state_id="queued" title="Queued">
