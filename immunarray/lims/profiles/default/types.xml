@@ -3,28 +3,27 @@
     <property name="title">
       Controls the available content types in your portal
     </property>
+    <object name="ClinicalAliquot" meta_type="Dexterity FTI"/>
+    <object name="ClinicalSample" meta_type="Dexterity FTI"/>
+    <object name="CommercialBox" meta_type="Dexterity FTI"/>
+    <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
+    <object name="EightFrameRun" meta_type="Dexterity FTI"/>
+    <object name="Freezer" meta_type="Dexterity FTI"/>
     <object name="iChip" meta_type="Dexterity FTI"/>
+    <object name="iChipAssay" meta_type="Dexterity FTI"/>
     <object name="iChipLot" meta_type="Dexterity FTI"/>
     <object name="NCE" meta_type="Dexterity FTI"/>
+    <object name="NoFrameRun" meta_type="Dexterity FTI"/>
     <object name="Patient" meta_type="Dexterity FTI"/>
     <object name="Plate96Well" meta_type="Dexterity FTI"/>
     <object name="Provider" meta_type="Dexterity FTI"/>
-    <object name="NoFrameRun" meta_type="Dexterity FTI"/>
-    <object name="EightFrameRun" meta_type="Dexterity FTI"/>
-    <object name="ThreeFrameRun" meta_type="Dexterity FTI"/>
-    <object name="ClinicalSample" meta_type="Dexterity FTI"/>
-    <object name="ClinicalAliquot" meta_type="Dexterity FTI"/>
-    <object name="RandDSample" meta_type="Dexterity FTI"/>
-    <object name="RandDAliquot" meta_type="Dexterity FTI"/>
-    <object name="QCSample" meta_type="Dexterity FTI"/>
     <object name="QCAliquot" meta_type="Dexterity FTI"/>
-    <object name="iChipAssay" meta_type="Dexterity FTI"/>
-    <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
-    <object name="Freezer" meta_type="Dexterity FTI"/>
-    <object name="Shelf" meta_type="Dexterity FTI"/>
+    <object name="QCSample" meta_type="Dexterity FTI"/>
     <object name="Rack" meta_type="Dexterity FTI"/>
-    <object name="CommercialBox" meta_type="Dexterity FTI"/>
+    <object name="RandDAliquot" meta_type="Dexterity FTI"/>
     <object name="RandDBox" meta_type="Dexterity FTI"/>
+    <object name="RandDSample" meta_type="Dexterity FTI"/>
+    <object name="Shelf" meta_type="Dexterity FTI"/>
     <object name="Site" meta_type="Dexterity FTI"/>
-    <object name="iChipAssayQC" meta_type="Dexterity FTI"/>
+    <object name="ThreeFrameRun" meta_type="Dexterity FTI"/>
 </object>

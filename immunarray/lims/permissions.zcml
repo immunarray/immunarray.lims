@@ -2,31 +2,31 @@
            xmlns:zcml="http://namespaces.zope.org/zcml"
            i18n_domain="immunarray.lims">
 
+    <permission id="immunarray.lims.permissions.AddClinicalAliquot" title="LIMS: Add Clinical Aliquot"/>
+    <permission id="immunarray.lims.permissions.AddClinicalSample" title="LIMS: Add Clinical Sample"/>
+    <permission id="immunarray.lims.permissions.AddCommercialBox" title="LIMS: Add Commercial Box"/>
+    <permission id="immunarray.lims.permissions.AddCustomerServiceCall" title="LIMS: Add Customer Service Call"/>
+    <permission id="immunarray.lims.permissions.AddEightFrameRun" title="LIMS: Add Eight Frame Run"/>
+    <permission id="immunarray.lims.permissions.AddFreezer" title="LIMS: Add Freezer"/>
     <permission id="immunarray.lims.permissions.AddiChip" title="LIMS: Add iChip"/>
+    <permission id="immunarray.lims.permissions.AddiChipAssay" title="LIMS: Add iChip Assay"/>
     <permission id="immunarray.lims.permissions.AddiChipLot" title="LIMS: Add iChip Lot"/>
     <permission id="immunarray.lims.permissions.AddMaterial" title="LIMS: Add Material"/>
-    <permission id="immunarray.lims.permissions.AddPlate" title="LIMS: Add Plate"/>
     <permission id="immunarray.lims.permissions.AddNCE" title="LIMS: Add NCE"/>
+    <permission id="immunarray.lims.permissions.AddNoFrameRun" title="LIMS: Add No Frame Run"/>
     <permission id="immunarray.lims.permissions.AddPatient" title="LIMS: Add Patient"/>
+    <permission id="immunarray.lims.permissions.AddPlate" title="LIMS: Add Plate"/>
     <permission id="immunarray.lims.permissions.AddProvider" title="LIMS: Add Provider"/>
+    <permission id="immunarray.lims.permissions.AddQCAliquot" title="LIMS: Add Quality Control Aliquot"/>
+    <permission id="immunarray.lims.permissions.AddQCSample" title="LIMS: Add Quality Control Sample"/>
+    <permission id="immunarray.lims.permissions.AddRack" title="LIMS: Add Rack"/>
+    <permission id="immunarray.lims.permissions.AddRandDAliquot" title="LIMS: Add Research and Development Aliquot"/>
+    <permission id="immunarray.lims.permissions.AddRandDBox" title="LIMS: Add RandD Box"/>
+    <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
+    <permission id="immunarray.lims.permissions.AddShelf" title="LIMS: Add Shelf"/>
+    <permission id="immunarray.lims.permissions.AddSite" title="LIMS: Add Site"/>
     <permission id="immunarray.lims.permissions.AddSolution" title="LIMS: Add Solution"/>
     <permission id="immunarray.lims.permissions.AddTestRun" title="LIMS: Add Test Run"/>
-    <permission id="immunarray.lims.permissions.AddClinicalSample" title="LIMS: Add Clinical Sample"/>
-    <permission id="immunarray.lims.permissions.AddClinicalAliquot" title="LIMS: Add Clinical Aliquot"/>
-    <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
-    <permission id="immunarray.lims.permissions.AddRandDAliquot" title="LIMS: Add Research and Development Aliquot"/>
-    <permission id="immunarray.lims.permissions.AddQCSample" title="LIMS: Add Quality Control Sample"/>
-    <permission id="immunarray.lims.permissions.AddQCAliquot" title="LIMS: Add Quality Control Aliquot"/>
-    <permission id="immunarray.lims.permissions.AddiChipAssay" title="LIMS: Add iChip Assay"/>
-    <permission id="immunarray.lims.permissions.AddCustomerServiceCall" title="LIMS: Add Customer Service Call"/>
-    <permission id="immunarray.lims.permissions.AddFreezer" title="LIMS: Add Freezer"/>
-    <permission id="immunarray.lims.permissions.AddShelf" title="LIMS: Add Shelf"/>
-    <permission id="immunarray.lims.permissions.AddRack" title="LIMS: Add Rack"/>
-    <permission id="immunarray.lims.permissions.AddCommercialBox" title="LIMS: Add Commercial Box"/>
-    <permission id="immunarray.lims.permissions.AddRandDBox" title="LIMS: Add RandD Box"/>
-    <permission id="immunarray.lims.permissions.AddSite" title="LIMS: Add Site"/>
-    <permission id="immunarray.lims.permissions.AddNoFrameRun" title="LIMS: Add No Frame Run"/>
-    <permission id="immunarray.lims.permissions.AddEightFrameRun" title="LIMS: Add Eight Frame Run"/>
     <permission id="immunarray.lims.permissions.AddThreeFrameRun" title="LIMS: Add Three Frame Run"/>
 
 </configure>
