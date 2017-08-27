@@ -30,6 +30,14 @@
 
     <adapter factory="immunarray.lims.interfaces.qcsample.TitleFromVeracisIDAndSourceIDOne"/>
 
+    <plone:behavior
+        title="Title from First and Last Name"
+        description="generates object title from first name and last name"
+        provides="immunarray.lims.interfaces.provider.ITitleFromFirstAndLastName"
+    />
+
+    <adapter factory="immunarray.lims.interfaces.provider.TitleFromFirstAndLastName"/>
+
 
 
 
