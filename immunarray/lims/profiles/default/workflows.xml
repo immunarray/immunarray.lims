@@ -10,15 +10,9 @@
     <type type_id="iChip">
       <bound-workflow workflow_id="ichip_workflow"/>
     </type>
-  </bindings>
-
-  <bindings>
     <type type_id="iChipLot">
       <bound-workflow workflow_id="ichiplot_workflow"/>
     </type>
-  </bindings>
-
-  <bindings>
     <type type_id="ClinicalSample">
       <bound-workflow workflow_id="clinicalsample_workflow"/>
     </type>
