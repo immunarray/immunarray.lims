@@ -6,7 +6,7 @@
     <subscriber
       for="*
            Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-      handler="bika.lims.workflow.AfterTransitionEventHandler"
+      handler="immunarray.lims.workflow.AfterTransitionEventHandler"
     />
 
 </configure>
