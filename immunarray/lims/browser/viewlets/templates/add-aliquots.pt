@@ -1,21 +1,51 @@
 <html>
-<body>
-<style type="text/css">
-    .add-aliquots .discreet{
-      font-size:50%;
-      color:#ddd;
-    }
-</style>
+  <body>
+    <style type="text/css">
+        .add-aliquots {
+          padding:10px;
+          border:1px solid lightgrey;
+          border-radius: 2px;
+        }
+        .add-aliquots .discreet{
+          font-size:50%;
+          color:#ddd;
+        }
+        .add-aliquots .table {
+          display:table
+        }
+        .add-aliquots .tr {
+          display:table-row
+        }
+        .add-aliquots .td {
+          display:table-cell;
+        }
+    </style>
 
-<div class="add-aliquots" style="padding: 10px 0px;">
-    <form name="add-aliquots" action="add-aliquots" method="POST">
-        <input name="aliquot_volume" type="number" class="aliquot-volume" placeholder="Volume of aliquots"><span class='discreet'>uL</span>
-        <input name="aliquot_count" type="number" class="aliquot-count" placeholder="Number of aliquots">
-        <label for="count">Count is optional; if omitted, parent's volume will be divided by aliquot volume entered here.</label>
-        <input type="radio" name="aliquot_type" value="bulk"/>
-        <input type="radio" name="aliquot_type" value="working"/>
-        <br/><input type="submit" class="aliquots-add" value="Add Aliquots">
-    </form>
-</div>
-</body>
+    <div class="add-aliquots">
+      <form name="add-aliquots" action="add-aliquots" method="POST">
+        <div class="table">
+          <div class="tr">
+            <div class="td" style="whitespace:nowrap">
+              <select name="aliquot_type">
+                <option value="bulk">Create bulk aliquots</option>
+                <option value="working">Create working aliquots</option>
+              </select>
+            </div>
+            &nbsp;&nbsp;
+            <div class="td">
+              Volume (uL):&nbsp;<input name="aliquot_volume" type="number" class="aliquot-volume" placeholder="Volume of aliquots">
+            </div>
+            &nbsp;&nbsp;
+            <div class="td">
+              Count:&nbsp;<input name="aliquot_count" type="number" class="aliquot-count" placeholder="Number of aliquots">
+            </div>
+          </div>
+        </div>
+        <br/>
+        <input type="submit" class="aliquots-add" value="Add Aliquots">
+      </form>
+      <div id="feedback"/>
+    </div>
+    <script src="++resource++immunarray.lims/js/add-aliquots.js"></script>
+  </body>
 </html>

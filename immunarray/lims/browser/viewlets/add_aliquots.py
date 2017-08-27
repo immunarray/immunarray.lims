@@ -1,81 +1,82 @@
+import json
+
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from immunarray.lims.interfaces.qcaliquot import IQCAliquot
+from immunarray.lims.interfaces.randdaliquot import IRandDAliquot
+from plone.api.content import find
 from plone.app.layout.viewlets import ViewletBase
-from plone import api
 
 
 class AddAliquotsViewlet(ViewletBase):
-    index = ViewPageTemplateFile(
-        "templates/add-aliquots.pt")
+    index = ViewPageTemplateFile("templates/add-aliquots.pt")
 
     def render(self):
         return self.index()
 
+    def __call__(self):
+        import pdb;
+        pdb.set_trace();
+        pass
+        # loop and create.8
+        # aliquot_type
+        # msg = u'%s working aliquots created.' % len(created_ids)
+        # self.context.plone_utils.addPortalMessage(msg)
+        # self.request.response.redirect(bulk.absolute_url())
 
-class AddAliquotsHandler(BrowserView):
+
+class AddAliquotsViewletAJAXHandler(BrowserView):
+    """When any input in the add-aliquots viewlet is changed, this
+    view returns feedback to the viewlet.
+    """
 
     def __call__(self):
 
-        bulk = self.context
+        result = {
+            'success': False,
+            'feedback': 'Error.',
+        }
 
+        # validate aliquot_volume
         try:
-            count = int(self.request.form.get('count', ''))
-            volume = self.request.form.get('volume', '').lower()
-            if 'ul' in volume:
-                volume = volume.replace('ul', '').strip()
-            volume = int(volume)
+            aliquot_volume = self.request.form.get('aliquot_volume', '')
+            aliquot_volume = int(aliquot_volume)
         except ValueError:
-            msg = u'Count and Volume must both be integers'
-            self.context.plone_utils.addPortalMessage(msg)
-            self.request.response.redirect(bulk.absolute_url())
-            return
-        if not (count or volume):
-            msg = u'Count and Volume must both be greater than 0'
-            self.context.plone_utils.addPortalMessage(msg)
-            self.request.response.redirect(bulk.absolute_url())
-            return
+            result['feedback'] = 'Volume must be a whole number.'
+            return json.dumps(result)
+        if not aliquot_volume:
+            result['feedback'] = 'Aliquot volume is required.'
+            return json.dumps(result)
 
-        # the bulk aliquot at XXX-A01 creates working aliquots A02, A03...
-        # we want to extend this series.
-        basename = self.context.id[:-2]  # XXX-A
-
-        for x in range(2, 100):
-            tmp_id = "%s%02d"%(basename, x)
-            proxies = api.content.find(
-                object_provides='bika.lims.interfaces.aliquot.IAliquot',
-                id=tmp_id)
-            if not proxies:
-                break
+        # validate aliquot_count.  If no count is entered, calculate
+        # from parent's remaining_volume / entered aliquot_volume.
+        try:
+            aliquot_count = self.request.form.get('aliquot_count', '')
+            aliquot_count = int(aliquot_count)
+        except ValueError:
+            result['feedback'] = 'Aliquot count must be a whole number.'
+            return json.dumps(result)
+        if not aliquot_count:
+            dm = divmod(self.context.remaining_volume, aliquot_volume)
+            aliquot_count, remaining_volume = dm
+            result['aliquot_count'] = aliquot_count
         else:
-            msg = u"Cannot find ID for new working aliquots (shouldn't happen)."
-            self.context.plone_utils.addPortalMessage(msg)
-            self.request.response.redirect(bulk.absolute_url())
-            return
+            required_volume = aliquot_count * aliquot_volume
+            if required_volume > self.context.remaining_volume:
+                result['feedback'] = \
+                    "Remaining volume is not sufficient for requested aliquots."
+                return json.dumps(result)
+            remaining_volume = self.context.remaining_volume - required_volume
 
-        bulk_volume = self.context.Volume
-        req_volume = volume * count
-        if req_volume > bulk_volume:
-            msg = u'Not enough bulk material (%s required, %s available).' % \
-                  (req_volume, bulk_volume)
-            self.context.plone_utils.addPortalMessage(msg)
-            self.request.response.redirect(bulk.absolute_url())
-            return
-
-        created_ids = []
-        for x in range(x, x + count):
-            new_id = "%s%02d"%(basename, x)
-            new_aliquot = api.content.create(
-                type='aliquot',
-                title=new_id,
-                container=bulk)
-            self.context.Volume -= volume
-            new_aliquot.Volume = volume
-            new_aliquot.Use = "Working"
-            new_aliquot.Status = "Available"
-            new_aliquot.FluidType = self.context.FluidType
-            new_aliquot.Department = self.context.Department
-            created_ids.append(new_id)
-
-        msg = u'%s working aliquots created.' % len(created_ids)
-        self.context.plone_utils.addPortalMessage(msg)
-        self.request.response.redirect(bulk.absolute_url())
+        # brains = find(object_provides=[IQCAliquot.__identifier__,
+        #                                IRandDAliquot.__identifier__],
+        #               veracis_id=self.context.veracis_id,
+        #               sort_on='id',
+        #               sort_order='reverse',
+        #               limit=1)
+        brains = find(object_provides=[IQCAliquot.__identifier__,
+                                       IRandDAliquot.__identifier__],
+                      path={'query': self.context.getPhysicalPath(),
+                            'level': '1',
+                            'depth': '1',})
+        sequence_start = len(brains)
