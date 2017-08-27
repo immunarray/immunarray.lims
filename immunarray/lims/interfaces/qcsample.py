@@ -47,8 +47,6 @@ class ITitleFromVeracisIDAndSourceIDOne(Interface):
 @adapter(ITitleFromVeracisIDAndSourceIDOne)
 class TitleFromVeracisIDAndSourceIDOne(object):
     def __new__(cls, context):
-        import pdb;
-        pdb.set_trace()
         instance = super(TitleFromVeracisIDAndSourceIDOne, cls).__new__(cls)
         veracisid = context.veracis_id
         simple_name = context.source_id_one
