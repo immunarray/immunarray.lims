@@ -2,6 +2,7 @@
 import datetime
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.solution import *
 from plone import api
 from plone.app.content.interfaces import INameFromTitle
@@ -59,7 +60,7 @@ class TitleFromVeracisIDAndSourceIDOne(object):
         pass
 
 
-class IQCSample(model.Schema):
+class IQCSample(ISample):
     """QC Sample!
     """
     veracis_id = schema.TextLine(
@@ -118,12 +119,6 @@ class IQCSample(model.Schema):
     description = schema.TextLine(
         title=_(u"Description of QC Sample"),
         description=_(u"Description of QC Sample"),
-        required=False,
-    )
-
-    initial_volume = schema.Float(
-        title=_(u"Volume of QC Sample in micro liters (uL)"),
-        description=_(u"Volume of QC Sample in micro liters (uL)"),
         required=False,
     )
 

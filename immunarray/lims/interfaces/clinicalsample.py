@@ -2,16 +2,16 @@
 from datetime import date
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.interface import alsoProvides
 
 
-class IClinicalSample(model.Schema):
+class IClinicalSample(ISample):
     """Sample that will contain all the billing info and high level information
     that is applicable to all aliquots made from this material, location of
     tests ordered on sample

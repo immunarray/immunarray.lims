@@ -2,13 +2,13 @@
 from datetime import date
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from plone.namedfile.field import *
-from plone.supermodel import model
+from plone.namedfile.field import NamedBlobImage
 from zope import schema
 
 
-class IClinicalAliquot(model.Schema):
+class IClinicalAliquot(IAliquot):
     title = schema.TextLine(
         title=_(u"Aliquot Name"),
         description=_(u"Aliquot Name/ID"),

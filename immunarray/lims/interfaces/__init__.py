@@ -16,6 +16,3 @@ class IBulkAliquot(Interface):
     """
 
 
-class ISample(Interface):
-    """Umbrella marker interface for all types of Samples
-    """

@@ -2,7 +2,7 @@
 import datetime
 
 from immunarray.lims import messageFactory as _
-from immunarray.lims.interfaces.solution import *
+from immunarray.lims.interfaces.aliquot import IAliquot
 from zope import schema
 
 
@@ -14,7 +14,7 @@ def currentDate():
     return datetime.datetime.now().date()
 
 
-class IQCAliquot(model.Schema):
+class IQCAliquot(IAliquot):
     """QC Sample!
     """
 
@@ -81,12 +81,6 @@ class IQCAliquot(model.Schema):
         required=True,
         values=[_(u'Bulk'),
                 _(u'Working')],
-    )
-
-    volume = schema.Float(
-        title=_(u"Volume of QC Sample in micro liters (uL)"),
-        description=_(u"Volume of QC Sample in micro liters (uL)"),
-        required=False,
     )
 
     fluid_type = schema.Choice(

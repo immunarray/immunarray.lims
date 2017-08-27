@@ -2,7 +2,9 @@
 import datetime
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.solution import *
+from zope import schema
 
 
 def currentTime():
@@ -13,7 +15,7 @@ def currentDate():
     return datetime.datetime.now().date()
 
 
-class IRandDSample(model.Schema):
+class IRandDSample(ISample):
     """R and D sample!
     """
 
@@ -71,12 +73,6 @@ class IRandDSample(model.Schema):
     description = schema.TextLine(
         title=_(u"Description of R&D Sample"),
         description=_(u"Description of R&D Sample"),
-        required=False,
-    )
-
-    volume_received = schema.Float(
-        title=_(u"Volume of R&D Sample in micro liters (uL)"),
-        description=_(u"Volume of R&D Sample in micro liters (uL)"),
         required=False,
     )
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from plone.supermodel import model
+from immunarray.lims.interfaces.aliquot import IAliquot
 
 
-class IRandDAliquot(model.Schema):
+class IRandDAliquot(IAliquot):
     pass
     """
     date_created = schema.Datetime(
