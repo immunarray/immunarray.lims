@@ -22,7 +22,7 @@
     <property name="klass">plone.dexterity.content.Item</property>
     <property name="behaviors">
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-        <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <element value="immunarray.lims.interfaces.provider.ITitleFromFirstAndLastName"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.provider.IProvider</property>
     <property name="model_source"/>
