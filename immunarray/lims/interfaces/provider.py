@@ -59,3 +59,23 @@ class IProvider(IPerson):
         values=[_(u'Standard'), _(u'Extended')],
         required=True,
     )
+
+class ITitleFromLotAndType(Interface):
+    """Marker interface to enable name from filename behavior"""
+
+
+@implementer(INameFromTitle)
+@adapter(ITitleFromFirstAndLastName)
+class TitleFromFirstAndLastName(object):
+
+    def __new__(cls, context):
+        instance = super(TitleFromFirstAndLastName, cls).__new__(cls)
+        fristname = content.first_name
+        lastname = content.last_name
+        filename = lastname + " " + lastname
+        context.setTitle(filename)
+        instance.title = filename
+        return instance
+
+    def __init__(self, context):
+        pass
