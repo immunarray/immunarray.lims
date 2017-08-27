@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from datetime import date
-from immunarray.lims.interfaces import veracisrunbase
+from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
+
 
 class ICommercailNoFrame(IVeracisRunBase):
     pass

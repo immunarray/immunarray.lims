@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 from datetime import date
-from plone.app.textfield import RichText
-from zope import schema
-from plone.supermodel import model
+
 from immunarray.lims import messageFactory as _
-from plone.dexterity.utils import createContentInContainer
-from bika.lims.interfaces.sample import ISample
-from plone.autoform import directives
-from zope.interface import alsoProvides
 from plone.autoform.interfaces import IFormFieldProvider
-from z3c.form.browser.radio import RadioFieldWidget
 from plone.namedfile.field import NamedBlobImage
+from plone.supermodel import model
+from zope import schema
+from zope.interface import alsoProvides
 
 
 class IVeracisRunBase(model.Schema):
@@ -49,5 +45,6 @@ class IVeracisRunBase(model.Schema):
         description=_(u"PDF Upload of Test Form"),
         required=False,
     )
+
 
 alsoProvides(IVeracisRunBase, IFormFieldProvider)

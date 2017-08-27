@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from plone.supermodel import model
-from zope import schema
-
-from bika.lims import messagefactory as _
-from bika.lims.interfaces.aliquot import IAliquot
 
 
 class IRandDAliquot(model.Schema):

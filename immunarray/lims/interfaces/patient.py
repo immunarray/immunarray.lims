@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from bika.lims.interfaces.person import IPerson
 from immunarray.lims import messageFactory as _
-from zope import schema
-
 from plone.app.content.interfaces import INameFromTitle
+from zope import schema
 from zope.component import adapter
 from zope.interface import Interface, implementer
 
@@ -47,7 +46,9 @@ class IPatient(IPerson):
     ethnicity = schema.Choice(
         title=_(u"Patient Race"),
         description=_(u"Patient Race"),
-        values=[_(u'African American or Black'), _(u'Asian Indian Middle Eastern'), _(u'Caucasian'), _(u'Hispanic or Latino'), _(u'Other')],
+        values=[_(u'African American or Black'),
+                _(u'Asian Indian Middle Eastern'), _(u'Caucasian'),
+                _(u'Hispanic or Latino'), _(u'Other')],
         required=False,
     )
 
@@ -61,12 +62,13 @@ class IPatient(IPerson):
 
     tested_unique_sample_ids = schema.List(
         title=_(u"List of Unique Sample Numbers"),
-        description =_(u"List of Unique Sample Numbers"),
+        description=_(u"List of Unique Sample Numbers"),
         required=False,
         value_type=schema.TextLine()
     )
 
     #  title = IPerson.first_name + " " + IPerson.last_name
+
 
 class ITitleFromFirstAndLastName(Interface):
     """Marker interface to enable name from filename behavior"""
@@ -75,7 +77,6 @@ class ITitleFromFirstAndLastName(Interface):
 @implementer(INameFromTitle)
 @adapter(ITitleFromFirstAndLastName)
 class TitleFromFirstAndLastName(object):
-
     def __new__(cls, context):
         instance = super(TitleFromFirstAndLastName, cls).__new__(cls)
         firstname = context.first_name

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-
+from immunarray.lims import messageFactory as _
+from plone.app.content.interfaces import INameFromTitle
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
-from zope.interface import alsoProvides
-from immunarray.lims import messageFactory as _
+from zope import schema
 from zope.component import adapter
 from zope.interface import Interface
+from zope.interface import alsoProvides
 from zope.interface import implementer
-from plone.app.content.interfaces import INameFromTitle
+
 
 class IMaterial(model.Schema):
     """Base schema fields common to all Material types.
@@ -98,14 +98,14 @@ class IMaterial(model.Schema):
     )
 
     intended_use = schema.Choice(
-        title =_(u"Intended Use"),
+        title=_(u"Intended Use"),
         description=_(u"Intended Use"),
         values=[_(u'Commercial'), _(u'Development')],
         required=True,
     )
 
     meets_raw_material_specifications = schema.Choice(
-        title =_(u"Meets Raw Material Specifications"),
+        title=_(u"Meets Raw Material Specifications"),
         description=_(u"Meets Raw Material Specifications"),
         values=[_(u'Yes'), _(u'No')],
         required=False,
@@ -138,13 +138,17 @@ class IMaterial(model.Schema):
     )
 
     temp_on_arrival_acceptable_limit = schema.Choice(
-        title=_(u"Temerature of Raw Material on Arrival Within Acceptable Limit"),
-        description=_(u"Temerature of Raw Materail on Arrival Within Acceptable Limit"),
+        title=_(
+            u"Temerature of Raw Material on Arrival Within Acceptable Limit"),
+        description=_(
+            u"Temerature of Raw Materail on Arrival Within Acceptable Limit"),
         values=[_(u"Yes"), _(u"No")],
         required=False,
     )
 
+
 alsoProvides(IMaterial, IFormFieldProvider)
+
 
 class ITitleFromLotAndType(Interface):
     """Marker interface to enable name from filename behavior"""
@@ -153,11 +157,10 @@ class ITitleFromLotAndType(Interface):
 @implementer(INameFromTitle)
 @adapter(ITitleFromLotAndType)
 class TitleFromLotAndType(object):
-
     def __new__(cls, context):
         instance = super(TitleFromLotAndType, cls).__new__(cls)
         lotnumber = getattr(context, 'lot_number', None)
-        name =getattr(context, 'product_name', None)
+        name = getattr(context, 'product_name', None)
         filename = name + "--" + lotnumber
         context.setTitle(filename)
         instance.title = filename
@@ -165,4 +168,3 @@ class TitleFromLotAndType(object):
 
     def __init__(self, context):
         pass
-

@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-from datetime import date
-from plone.app.textfield import RichText
-from zope import schema
-from plone.supermodel import model
 from immunarray.lims import messageFactory as _
-from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.utils import createContentInContainer
-from plone.autoform import directives
-from zope.interface import alsoProvides
 from immunarray.lims.vocabularies.qc import QCListVocabulary
+from plone.app.textfield import RichText
+from plone.supermodel import model
+from zope import schema
+
+
 class IiChipAssay(model.Schema):
     """ Interface that will allow for creation of new iChip Assays"""
     title = schema.TextLine(
@@ -50,9 +47,9 @@ class IiChipAssay(model.Schema):
     )
 
     qc_high_choice = schema.Choice(
-        title =_(u"Select High/Positive QC Veracis ID"),
-        description =_(u"Select High/Positive QC Veracis ID"),
-        source = QCListVocabulary,
+        title=_(u"Select High/Positive QC Veracis ID"),
+        description=_(u"Select High/Positive QC Veracis ID"),
+        source=QCListVocabulary,
         required=False,
     )
 
@@ -64,10 +61,10 @@ class IiChipAssay(model.Schema):
     )
 
     qc_low_choice = schema.Choice(
-    title =_(u"Select Low/Negative QC Veracis ID"),
-    description =_(u"Select Low/Negative QC Veracis ID"),
-    source = QCListVocabulary,
-    required=False,
+        title=_(u"Select Low/Negative QC Veracis ID"),
+        description=_(u"Select Low/Negative QC Veracis ID"),
+        source=QCListVocabulary,
+        required=False,
     )
 
     sample_qc_dilution_factor = schema.Int(
@@ -125,4 +122,3 @@ class IiChipAssay(model.Schema):
         description=_(u"Comments"),
         required=False,
     )
-

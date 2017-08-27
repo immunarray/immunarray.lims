@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone.autoform import directives as form
 from plone.namedfile.field import NamedFile
 from plone.supermodel import model
-from zope import schema
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from plone.autoform import directives as form
-from immunarray.lims.vocabularies import ichipassay
+from zope import schema
 
 
 class IiChipAssayQC(model.Schema):
@@ -19,8 +18,8 @@ class IiChipAssayQC(model.Schema):
         required=True,
     )
 
-    #Allow mutiple selections!
-    #Need to connect this to iChipAssay.name
+    # Allow mutiple selections!
+    # Need to connect this to iChipAssay.name
     form.widget(intended_assay=CheckBoxFieldWidget)
     intended_assay = schema.List(
         title=_(u"Intended Assay(s)"),
@@ -33,7 +32,7 @@ class IiChipAssayQC(model.Schema):
         title=_(u"Type of Control"),
         description=_(u"Type of Control"),
         values=[_(u"High/Positive"),
-            _(u"Low/Negative")],
+                _(u"Low/Negative")],
         required=True,
     )
 

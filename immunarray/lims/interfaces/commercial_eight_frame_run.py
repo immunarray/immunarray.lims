@@ -1,22 +1,10 @@
-from datetime import date
-from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
+# -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
-from plone.app.textfield import RichText
-from plone.supermodel import model
-from zope import schema
+from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.directives import form
-from plone import api
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from zope.component import queryUtility
-from zope.interface import implements, Interface, implementer
-from zope.schema.interfaces import IContextSourceBinder
-from Products.CMFCore.interfaces import IContentish
-from Products.CMFCore.utils import getToolByName
+from zope import schema
 from zope.interface import alsoProvides
-from plone.app.z3cform.widget import *
-from plone.autoform import directives
-from z3c.form import form, button
+
 
 class ICommercailEightFrameRun(IVeracisRunBase):
     """Eight Frame Test Run
@@ -67,15 +55,16 @@ class ICommercailEightFrameRun(IVeracisRunBase):
     )
 
     antibodies_used = schema.Dict(
-        key_type=schema.TextLine(title=u"Anitbody/Antigen Used",required=True),
-        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",required=True)
+        key_type=schema.TextLine(title=u"Anitbody/Antigen Used", required=True),
+        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",
+                                   required=True)
     )
 
     # iChip Humidity
 
     ichip_humidity = schema.Dict(
-        key_type=schema.TextLine(title=u"iChip Print Lot",required=True),
-        value_type=schema.TextLine(title=u"Humidity",required=True)
+        key_type=schema.TextLine(title=u"iChip Print Lot", required=True),
+        value_type=schema.TextLine(title=u"Humidity", required=True)
     )
 
     # Serum Addition
@@ -157,7 +146,7 @@ class ICommercailEightFrameRun(IVeracisRunBase):
 
     antibody_humidity_end = schema.Float(
         title=_(u"Humidity at Antibody Addition End"),
-        description =_(u"Humidity at Antibody Addition End"),
+        description=_(u"Humidity at Antibody Addition End"),
         required=False,
     )
 
@@ -179,6 +168,7 @@ class ICommercailEightFrameRun(IVeracisRunBase):
         description=_(u"Aliquot Consume Date"),
         required=False,
     )
+
 
 alsoProvides(IFormFieldProvider)
 

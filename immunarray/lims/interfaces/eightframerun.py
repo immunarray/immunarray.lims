@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import datetime
-from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
-from z3c.form import button
-from z3c.form.form import EditForm
-from zope import schema
+
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from plone.autoform.interfaces import IFormFieldProvider
+from zope import schema
 from zope.interface import alsoProvides
+
 
 def currentTime():
     return datetime.datetime.now()
@@ -14,6 +14,7 @@ def currentTime():
 
 def currentDate():
     return datetime.datetime.now().date()
+
 
 class IEightFrameRun(IVeracisRunBase):
     """Eight Frame Test Run
@@ -64,15 +65,16 @@ class IEightFrameRun(IVeracisRunBase):
     )
 
     antibodies_used = schema.Dict(
-        key_type=schema.TextLine(title=u"Anitbody/Antigen Used",required=True),
-        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",required=True)
+        key_type=schema.TextLine(title=u"Anitbody/Antigen Used", required=True),
+        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",
+                                   required=True)
     )
 
     # iChip Humidity
 
     ichip_humidity = schema.Dict(
-        key_type=schema.TextLine(title=u"iChip Print Lot",required=True),
-        value_type=schema.TextLine(title=u"Humidity",required=True)
+        key_type=schema.TextLine(title=u"iChip Print Lot", required=True),
+        value_type=schema.TextLine(title=u"Humidity", required=True)
     )
 
     # Serum Addition
@@ -154,7 +156,7 @@ class IEightFrameRun(IVeracisRunBase):
 
     antibody_humidity_end = schema.Float(
         title=_(u"Humidity at Antibody Addition End"),
-        description =_(u"Humidity at Antibody Addition End"),
+        description=_(u"Humidity at Antibody Addition End"),
         required=False,
     )
 
@@ -176,6 +178,7 @@ class IEightFrameRun(IVeracisRunBase):
         description=_(u"Aliquot Consume Date"),
         required=False,
     )
+
 
 alsoProvides(IFormFieldProvider)
 

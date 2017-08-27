@@ -3,8 +3,7 @@ import datetime
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
-from plone import api
-from immunarray.lims.interfaces.qcsample import assignVeracisId
+from zope import schema
 
 
 def currentTime():
@@ -22,7 +21,7 @@ class IQCAliquot(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"QC Veracis Sample ID"),
         description=_(u"QC Veracis Sample ID"),
-        #default=assignVeracisId(),
+        # default=assignVeracisId(),
         required=True,
     )
 
@@ -60,7 +59,7 @@ class IQCAliquot(model.Schema):
 
     consume_date = schema.Date(
         title=_(u"Aliquot Consume Date"),
-        description =_(u"Aliquot Consume Date"),
+        description=_(u"Aliquot Consume Date"),
         required=False,
     )
 

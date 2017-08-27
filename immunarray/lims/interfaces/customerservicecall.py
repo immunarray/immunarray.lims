@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 """Interface for Customer Service Incident
 """
-import datetime
 
 from immunarray.lims import messageFactory as _
-from plone.autoform import directives
 from plone.supermodel import model
 from zope import schema
 
-class ICustomerServiceCall (model.Schema):
+
+class ICustomerServiceCall(model.Schema):
     """Interface for Customer Service Call objects CSC
     """
     csc_client = schema.Choice(
@@ -17,7 +16,7 @@ class ICustomerServiceCall (model.Schema):
         required=True,
         values=[_(u'Quarantined'), _(u'Released')],
     )
-    csc_instance =  schema.Choice(
+    csc_instance = schema.Choice(
         title=_(u"Instance Type"),
         description=_(u"Instance Type"),
         required=True,
@@ -40,7 +39,7 @@ class ICustomerServiceCall (model.Schema):
         values=[_(u'Open'), _(u'Closed'), _(u'Held')],
     )
     csc_details = schema.Text(
-        title =_(u"Details of CSI"),
+        title=_(u"Details of CSI"),
         description=_(u"Details of CSI"),
         required=False,
     )

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import datetime
-from zope import schema
+
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
 from plone import api
-from zope.component import adapter
-from zope.interface import Interface, implements, alsoProvides
-from zope.interface import implementer
 from plone.app.content.interfaces import INameFromTitle
+from zope import schema
+from zope.component import adapter
+from zope.interface import Interface, alsoProvides, implements
+from zope.interface import implementer
 from zope.schema.interfaces import IContextAwareDefaultFactory
 
 
@@ -20,7 +21,6 @@ def currentDate():
 
 
 class assignVeracisId():
-
     implements(IContextAwareDefaultFactory)
 
     def __init__(self):
@@ -46,9 +46,9 @@ class ITitleFromVeracisIDAndSourceIDOne(Interface):
 @implementer(INameFromTitle)
 @adapter(ITitleFromVeracisIDAndSourceIDOne)
 class TitleFromVeracisIDAndSourceIDOne(object):
-
     def __new__(cls, context):
-        import pdb;pdb.set_trace()
+        import pdb;
+        pdb.set_trace()
         instance = super(TitleFromVeracisIDAndSourceIDOne, cls).__new__(cls)
         veracisid = context.veracis_id
         simple_name = context.source_id_one
@@ -59,6 +59,7 @@ class TitleFromVeracisIDAndSourceIDOne(object):
 
     def __init__(self, context):
         pass
+
 
 class IQCSample(model.Schema):
     """QC Sample!
@@ -91,7 +92,8 @@ class IQCSample(model.Schema):
     commercial_use_status = schema.Choice(
         title=_(u"QC Commercial Use Status"),
         description=_(u"QC Commercial Use Status"),
-        values=[_(u"Under Review"), _(u"Rejected"),  _(u"Released"), _(u"In Use"),_(u"Consumed")],
+        values=[_(u"Under Review"), _(u"Rejected"), _(u"Released"),
+                _(u"In Use"), _(u"Consumed")],
         required=True,
     )
 
@@ -145,5 +147,6 @@ class IQCSample(model.Schema):
         description=_(u"Any Notes or Comments About the QC Sample"),
         required=False,
     )
+
 
 alsoProvides(IQCSample, IFormFieldProvider)

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-from Products.CMFPlone.utils import safe_hasattr
 from bika.lims.interfaces.organisation import IOrganisation
 from immunarray.lims import messageFactory as _
+from zope import schema
 
 
 class ISite(IOrganisation):
@@ -61,7 +60,7 @@ class ISite(IOrganisation):
     inbound_shipping_method = schema.Choice(
         title=_(u"Inbound Shipping Method"),
         description=_(u"Inbound Shipping Method"),
-        values = [(u'FedEx'),(u'UPS')],
+        values=[(u'FedEx'), (u'UPS')],
         required=False,
     )
 
@@ -96,5 +95,3 @@ class ISite(IOrganisation):
         description=_(u"Site Notes"),
         required=False,
     )
-
-

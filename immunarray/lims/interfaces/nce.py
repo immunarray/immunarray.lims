@@ -4,9 +4,9 @@
 import datetime
 
 from immunarray.lims import messageFactory as _
-from plone.autoform import directives
 from plone.supermodel import model
 from zope import schema
+
 
 def currentTime():
     return datetime.datetime.now()
@@ -33,7 +33,7 @@ class INCE(model.Schema):
         description=_(u"Date of NCE Discovery"),
         required=True,
     )
-    
+
     reporter = schema.Choice(
         title=_(u"Operator that is Reporting NCE"),
         description=_(u"Operator that is Reporting NCE"),
@@ -50,7 +50,8 @@ class INCE(model.Schema):
     area_of_operation = schema.Choice(
         title=_(u"Area of Operation"),
         description=_(u"Area of Operation"),
-        values=[_(u'Scanning'),_(u'Accessioning'),_(u'Test Preparation'),_(u'Blocking'),_(u'Testing'),_(u'Data Analysis')],
+        values=[_(u'Scanning'), _(u'Accessioning'), _(u'Test Preparation'),
+                _(u'Blocking'), _(u'Testing'), _(u'Data Analysis')],
         required=False,
     )
 
@@ -101,7 +102,7 @@ class INCE(model.Schema):
     risk_score = schema.Choice(
         title=_(u"Risk Score"),
         description=_(u"Risk Score"),
-        values=[_(u'Lowest'),_(u'Intermediate'),_(u'High')],
+        values=[_(u'Lowest'), _(u'Intermediate'), _(u'High')],
         required=False,
     )
     initial_finding = schema.Text(
@@ -126,7 +127,7 @@ class INCE(model.Schema):
     remedial_action_type = schema.Choice(
         title=_(u"Remedial Action Type"),
         description=_(u"Remedial Action Type"),
-        values=[_(u'Corrective'),_(u'Preventive'),_(u'Process Improve')],
+        values=[_(u'Corrective'), _(u'Preventive'), _(u'Process Improve')],
         required=False,
     )
 
@@ -158,7 +159,7 @@ class INCE(model.Schema):
     nce_status = schema.Choice(
         title=_(u"Status"),
         description=_(u"Status"),
-        values=[_(u'Closed'),_(u'In Process'),_(u'Non Resolvable')],
+        values=[_(u'Closed'), _(u'In Process'), _(u'Non Resolvable')],
         required=False,
     )
     date_closed = schema.Date(

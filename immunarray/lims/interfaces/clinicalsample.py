@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import date
+
 from immunarray.lims import messageFactory as _
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from plone.api.content import transition
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
@@ -13,8 +13,8 @@ from zope.interface import alsoProvides
 
 class IClinicalSample(model.Schema):
     """Sample that will contain all the billing info and high level information
-        that is applicable to all aliquots made from this material, location of
-        tests ordered on sample
+    that is applicable to all aliquots made from this material, location of
+    tests ordered on sample
     """
     title = schema.TextLine(
         title=_(u"Unique Sample Number"),
@@ -22,7 +22,7 @@ class IClinicalSample(model.Schema):
         required=False,
     )
 
-    #want to index this field
+    # want to index this field
     sample_serial_number = schema.Int(
         title=_(u"Sample Serial Number"),
         description=_(u"Sample Serial Number"),
@@ -43,12 +43,12 @@ class IClinicalSample(model.Schema):
     )
 
     front_end_qa = schema.Choice(
-        title = _(u"Front End QA Status"),
-        description = _(u"Front End QA Status"),
-        required = False,
+        title=_(u"Front End QA Status"),
+        description=_(u"Front End QA Status"),
+        required=False,
         values=[_(u"Initial"),
                 _(u"Review Pass"),
-                _(u"Held"),],
+                _(u"Held"), ],
     )
     # dictonary with value stauts and key test ordered
     test_ordered_status = schema.Dict(
@@ -77,7 +77,7 @@ class IClinicalSample(model.Schema):
         required=False,
     )
 
-    #directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
+    # directives.widget(primary_healthcare_provider=AutocompleteFieldWidget)
     primary_healthcare_provider = schema.TextLine(
         title=_(u"Primary Healthcare Provider"),
         description=_(u"Primary Healthcare Provider"),
@@ -106,11 +106,11 @@ class IClinicalSample(model.Schema):
 
     xray_ordered = schema.Bool(
         title=_(u"Other Test(s) Ordered"),
-        description =_(u"Other Test(s) Ordered Enter One Per Line"),
+        description=_(u"Other Test(s) Ordered Enter One Per Line"),
     )
     other_test_ordered = schema.List(
         title=_(u"Other Test(s) Ordered"),
-        description =_(u"Other Test(s) Ordered Enter One Per Line"),
+        description=_(u"Other Test(s) Ordered Enter One Per Line"),
         missing_value=None,
         required=False,
         value_type=schema.TextLine()
@@ -133,7 +133,7 @@ class IClinicalSample(model.Schema):
 
     joint_pain_text = schema.List(
         title=_(u"Joint Pain Specifics"),
-        description =_(u"Joint Pain Specifics (Enter One Per Line)"),
+        description=_(u"Joint Pain Specifics (Enter One Per Line)"),
         missing_value=None,
         required=False,
         value_type=schema.TextLine()
@@ -141,7 +141,7 @@ class IClinicalSample(model.Schema):
 
     inflammation_text = schema.List(
         title=_(u"Inflammation Specifics"),
-        description =_(u"Inflammation Specifics (Enter One Per Line)"),
+        description=_(u"Inflammation Specifics (Enter One Per Line)"),
         missing_value=None,
         required=False,
         value_type=schema.TextLine()
@@ -149,7 +149,7 @@ class IClinicalSample(model.Schema):
 
     other_symptoms_text = schema.List(
         title=_(u"Other Symptom(s)"),
-        description =_(u"Other Symptom(s) Enter One Per Line"),
+        description=_(u"Other Symptom(s) Enter One Per Line"),
         missing_value=None,
         required=False,
         value_type=schema.TextLine()
@@ -171,7 +171,7 @@ class IClinicalSample(model.Schema):
 
     diagnosis_code_other = schema.List(
         title=_(u"Other Diagnosis Code(s)"),
-        description =_(u"Other Diagnosis Code(s) Enter one Per Line"),
+        description=_(u"Other Diagnosis Code(s) Enter one Per Line"),
         missing_value=None,
         required=False,
         value_type=schema.TextLine()
@@ -179,69 +179,69 @@ class IClinicalSample(model.Schema):
 
     phlebotomist_name = schema.TextLine(
         title=_(u"Phlebotomist Name"),
-        description =_(u"Phlebotomist Name"),
+        description=_(u"Phlebotomist Name"),
         required=False,
     )
 
-    phlebotomist_signature_provided=schema.Bool(
+    phlebotomist_signature_provided = schema.Bool(
         title=_(u"Ordering Healthcare Provider Signature Provided"),
         description=_(u"Ordering Healthcare Provider Signature Provided"),
     )
 
     collection_date = schema.Date(
         title=_(u"Sample Collection Date"),
-        description =_(u"Sample Collection Date"),
+        description=_(u"Sample Collection Date"),
         required=False,
         default=date.today(),
     )
 
     received_date = schema.Date(
         title=_(u"Sample Received Date"),
-        description =_(u"Sample Received Date"),
+        description=_(u"Sample Received Date"),
         required=False,
         default=date.today(),
     )
 
     sample_primary_insurance_name = schema.TextLine(
         title=_(u"Primary Insurance Name"),
-        description =_(u"Primary Insurance Name"),
+        description=_(u"Primary Insurance Name"),
         required=False,
     )
 
     sample_primary_insurance_payerID = schema.TextLine(
         title=_(u"Primary Insurance Payer ID"),
-        description =_(u"Primary Insurance Payer ID"),
+        description=_(u"Primary Insurance Payer ID"),
         required=False,
     )
 
     sample_primary_insurance_policy_number = schema.TextLine(
         title=_(u"Primary Insurance Policy Number"),
-        description =_(u"Primary Insurance Policy Number"),
+        description=_(u"Primary Insurance Policy Number"),
         required=False,
     )
 
     sample_primary_insurance_plan_number = schema.TextLine(
         title=_(u"Primary Insurance Plan Number"),
-        description =_(u"Primary Insurance Plan Number"),
+        description=_(u"Primary Insurance Plan Number"),
         required=False,
     )
 
     sample_primary_insurance_authorization_precertificate = schema.TextLine(
         title=_(u"Primary Insurance Authorization"),
-        description =_(u"Primary Insurance Authorization"),
+        description=_(u"Primary Insurance Authorization"),
         required=False,
     )
 
     sample_primary_insurance_subscriber_name = schema.TextLine(
         title=_(u"Primary Insurance Subscriber Name"),
-        description =_(u"Primary Insurance Subscriber Name"),
+        description=_(u"Primary Insurance Subscriber Name"),
         required=False,
     )
 
     """directives.widget(level=RadioFieldWidget)"""
     sample_primary_insurance_relation_to_insured = schema.Choice(
         title=_(u"Primary Insurance Relation to Insured"),
-        description =_(u"Primary Insurance Relation to Insured"),
+        description=_(u"Primary Insurance Relation to Insured"),
         values=[_(u"Self"),
                 _(u"Spouse"),
                 _(u"Child"),
@@ -251,80 +251,80 @@ class IClinicalSample(model.Schema):
 
     sample_primary_insurance_subscriber_DOB = schema.Date(
         title=_(u"Primary Insurance Subscriber DOB"),
-        description =_(u"Primary Insurance Subscriber DOB"),
+        description=_(u"Primary Insurance Subscriber DOB"),
         required=False,
     )
 
     sample_primary_insurance_effective_date = schema.Date(
         title=_(u"Primary Insurance Effective Date"),
-        description =_(u"Primary Insurance Effective Date"),
+        description=_(u"Primary Insurance Effective Date"),
         required=False,
     )
 
     sample_primary_insurance_address = schema.TextLine(
         title=_(u"Primary Insurance Address"),
-        description =_(u"Primary Insurance Address"),
+        description=_(u"Primary Insurance Address"),
         required=False,
     )
 
     sample_primary_city = schema.TextLine(
         title=_(u"Primary Insurance City"),
-        description =_(u"Primary Insurance City"),
+        description=_(u"Primary Insurance City"),
         required=False,
     )
 
     sample_primary_state = schema.TextLine(
         title=_(u"Primary Insurance State"),
-        description =_(u"Primary Insurance State"),
+        description=_(u"Primary Insurance State"),
         required=False,
     )
 
     sample_primary_insurance_zip_code = schema.TextLine(
         title=_(u"Primary Insurance Zip Code"),
-        description =_(u"Primary Insurance Zip Code"),
+        description=_(u"Primary Insurance Zip Code"),
         required=False,
     )
 
     sample_secondary_insurance_name = schema.TextLine(
         title=_(u"Secondary Insurance Name"),
-        description =_(u"Secondary Insurance Name"),
+        description=_(u"Secondary Insurance Name"),
         required=False,
     )
 
     sample_secondary_insurance_payerID = schema.TextLine(
         title=_(u"Secondary Insurance Payer ID"),
-        description =_(u"Secondary Insurance Payer ID"),
+        description=_(u"Secondary Insurance Payer ID"),
         required=False,
     )
 
     sample_secondary_insurance_policy_number = schema.TextLine(
         title=_(u"Secondary Insurance Policy Number"),
-        description =_(u"Secondary Insurance Policy Number"),
+        description=_(u"Secondary Insurance Policy Number"),
         required=False,
     )
 
     sample_secondary_insurance_plan_number = schema.TextLine(
         title=_(u"Secondary Insurance Plan Number"),
-        description =_(u"Secondary Insurance Plan Number"),
+        description=_(u"Secondary Insurance Plan Number"),
         required=False,
     )
 
     sample_secondary_insurance_authorization_precertificate = schema.TextLine(
         title=_(u"Secondary Insurance Authorization"),
-        description =_(u"Secondary Insurance Authorization"),
+        description=_(u"Secondary Insurance Authorization"),
         required=False,
     )
 
     sample_secondary_insurance_subscriber_name = schema.TextLine(
         title=_(u"Secondary Insurance Subscriber Name"),
-        description =_(u"Secondary Insurance Subscriber Name"),
+        description=_(u"Secondary Insurance Subscriber Name"),
         required=False,
     )
 
     """directives.widget(level=RadioFieldWidget)"""
     sample_secondary_insurance_relation_to_insured = schema.Choice(
         title=_(u"Secondary Insurance Relation to Insured"),
-        description =_(u"Secondary Insurance Relation to Insured"),
+        description=_(u"Secondary Insurance Relation to Insured"),
         values=[_(u"Self"),
                 _(u"Spouse"),
                 _(u"Child"),
@@ -334,37 +334,37 @@ class IClinicalSample(model.Schema):
 
     sample_secondary_insurance_subscriber_DOB = schema.Datetime(
         title=_(u"Secondary Insurance Subscriber DOB"),
-        description =_(u"Secondary Insurance Subscriber DOB"),
+        description=_(u"Secondary Insurance Subscriber DOB"),
         required=False,
     )
 
     sample_secondary_insurance_effective_date = schema.Datetime(
         title=_(u"Secondary Insurance Effective Date"),
-        description =_(u"Secondary Insurance Effective Date"),
+        description=_(u"Secondary Insurance Effective Date"),
         required=False,
     )
 
     sample_secondary_insurance_address = schema.TextLine(
         title=_(u"Secondary Insurance Address"),
-        description =_(u"Secondary Insurance Address"),
+        description=_(u"Secondary Insurance Address"),
         required=False,
     )
 
     sample_secondary_city = schema.TextLine(
         title=_(u"Secondary Insurance City"),
-        description =_(u"Secondary Insurance City"),
+        description=_(u"Secondary Insurance City"),
         required=False,
     )
 
     sample_secondary_state = schema.TextLine(
         title=_(u"Secondary Insurance State"),
-        description =_(u"Secondary Insurance State"),
+        description=_(u"Secondary Insurance State"),
         required=False,
     )
 
     sample_secondary_insurance_zip_code = schema.TextLine(
         title=_(u"Secondary Insurance Zip Code"),
-        description =_(u"Secondary Insurance Zip Code"),
+        description=_(u"Secondary Insurance Zip Code"),
         required=False,
     )
 
@@ -377,7 +377,8 @@ class IClinicalSample(model.Schema):
                 _(u'No Charge')],
     )
 
-    # will allow for sub categorization of billing status ie, vulture, non ball bill ect
+    # will allow for sub categorization of billing status ie, vulture,
+    # non ball bill ect
     billable_code_designation = schema.TextLine(
         title=_(u"Billing Designation of Sample"),
         description=_(u"Billing Designation of Sample"),
@@ -386,7 +387,7 @@ class IClinicalSample(model.Schema):
 
     assignment_of_benefits_patient_name = schema.TextLine(
         title=_(u"Assignment of Benefits Patient Name"),
-        description =_(u"Assignment of Benefits Patient Name"),
+        description=_(u"Assignment of Benefits Patient Name"),
         required=False,
     )
 
@@ -397,14 +398,14 @@ class IClinicalSample(model.Schema):
 
     assignment_of_benefits_signature_date = schema.Date(
         title=_(u"Assignment of Benefits Signature Date"),
-        description =_(u"Assignment of Benefits Signature Date"),
+        description=_(u"Assignment of Benefits Signature Date"),
         required=False,
         default=date.today(),
     )
 
     authorization_signature_patient_name = schema.TextLine(
         title=_(u"Authorization Signature Patient Name"),
-        description =_(u"Authorization Signature Patient Name"),
+        description=_(u"Authorization Signature Patient Name"),
         required=False,
     )
     payment_signed = schema.Bool(
@@ -414,8 +415,10 @@ class IClinicalSample(model.Schema):
 
     authorization_signature_date = schema.Date(
         title=_(u"Authorization Signature Date"),
-        description =_(u"Authorization Signature Date"),
+        description=_(u"Authorization Signature Date"),
         required=False,
         default=date.today(),
     )
+
+
 alsoProvides(IClinicalSample, IFormFieldProvider)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from plone.app.textfield import RichText
-from plone.namedfile.field import NamedBlobImage, NamedBlobFile
+from plone.namedfile.field import NamedBlobFile, NamedBlobImage
 from plone.supermodel import model
 from zope import schema
 

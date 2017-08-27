@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone.autoform import directives as form
 from plone.namedfile.field import NamedFile
 from plone.supermodel import model
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.interface import Invalid
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from plone.autoform import directives as form
-from immunarray.lims.vocabularies import ichipassay
 
 
 def NonZeroConstraint(value):
@@ -71,8 +70,8 @@ class IiChipLot(model.Schema):
                 _(u"8")],
         required=True,
     )
-    #Allow mutiple selections!
-    #Need to connect this to iChipAssay.name
+    # Allow mutiple selections!
+    # Need to connect this to iChipAssay.name
     form.widget(intended_assay=CheckBoxFieldWidget)
     intended_assay = schema.List(
         title=_(u"Intended Assay(s)"),
@@ -90,7 +89,7 @@ class IiChipLot(model.Schema):
     acceptance_status = schema.Choice(
         title=_(u"iChip Acceptance Status"),
         description=_(u"Acceptance Status of iChip Lot"),
-        values=[_(u"Quarantined"), _(u"Released"),_(u"Consumed")],
+        values=[_(u"Quarantined"), _(u"Released"), _(u"Consumed")],
         required=True,
     )
 
@@ -140,7 +139,8 @@ class IiChipLot(model.Schema):
 
     temp_on_arrival_acceptable_limit = schema.Choice(
         title=_(u"Temerature of iChips on Arrival Within Acceptable Limit"),
-        description=_(u"Temerature of iChips on Arrival Within Acceptable Limit"),
+        description=_(
+            u"Temerature of iChips on Arrival Within Acceptable Limit"),
         values=[_(u"Yes"), _(u"No")],
         required=True,
     )

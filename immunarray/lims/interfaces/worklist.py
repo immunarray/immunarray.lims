@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from collective.z3cform.datagridfield import DictRow
+from immunarray.lims import messageFactory as _
 from plone.directives import form
 from zope import schema
 from zope.interface import Interface
-
-from immunarray.lims import messageFactory as _
 
 
 class ITestFormTableRowSchema(form.Schema):

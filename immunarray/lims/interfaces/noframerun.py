@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from datetime import date
-from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims import messageFactory as _
-from plone.app.textfield import RichText
-from plone.supermodel import model
+from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from zope import schema
+
 
 class INoFrameRun(IVeracisRunBase):
     # Well position to aliquot id tested
     aliquot_to_well = schema.Dict(
         key_type=schema.TextLine(title=u"Aliquot ID", required=False),
-        value_type=schema.Choice(source=ICommercailThreeFrameChipWellsVocabulary, required=False)
+        value_type=schema.Choice(
+            source=ICommercailThreeFrameChipWellsVocabulary, required=False)
     )
 
     # Solutions
@@ -45,15 +44,16 @@ class INoFrameRun(IVeracisRunBase):
     )
 
     antibodies_used = schema.Dict(
-        key_type=schema.TextLine(title=u"Anitbody/Antigen Used",required=True),
-        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",required=True)
+        key_type=schema.TextLine(title=u"Anitbody/Antigen Used", required=True),
+        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",
+                                   required=True)
     )
 
     # iChip Humidity
 
     ichip_humidity = schema.Dict(
-        key_type=schema.TextLine(title=u"iChip Print Lot",required=True),
-        value_type=schema.TextLine(title=u"Humidity",required=True)
+        key_type=schema.TextLine(title=u"iChip Print Lot", required=True),
+        value_type=schema.TextLine(title=u"Humidity", required=True)
     )
 
     # Serum Addition
@@ -124,7 +124,7 @@ class INoFrameRun(IVeracisRunBase):
     )
     antibody_humidity_end = schema.Float(
         title=_(u"Humidity at Antibody Addition End"),
-        description =_(u"Humidity at Antibody Addition End"),
+        description=_(u"Humidity at Antibody Addition End"),
         required=False,
     )
     antibody_room_temperature_end = schema.Float(

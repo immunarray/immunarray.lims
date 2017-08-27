@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
-from datetime import date
-from plone.app.textfield import RichText
-from zope import schema
-from plone.supermodel import model
 from immunarray.lims import messageFactory as _
-from plone.autoform.interfaces import IFormFieldProvider
-from plone.dexterity.utils import createContentInContainer
-from plone.autoform import directives
-from zope.interface import alsoProvides
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.autoform import directives as form
+from plone.supermodel import model
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from zope import schema
+
 
 class IMedicalHistoryPatient(model.Schema):
     """ Interface for clinical information input given by patient"""
@@ -27,6 +22,7 @@ class IMedicalHistoryPatient(model.Schema):
                     _(u"Seizures or psychosis"),
                     _(u"Hair loss")]),
     )
+
 
 class ICaseReportFormPhysician(model.Schema):
     """ Interface for clinial information input given by physician"""

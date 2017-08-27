@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
+
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.solution import *
-from immunarray.lims.interfaces.qcsample import assignVeracisId
 
 
 def currentTime():
@@ -38,7 +38,7 @@ class IRandDSample(model.Schema):
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
         description=_(u"R&D Veracis Sample ID"),
-        #default=assignVeracisId(),
+        # default=assignVeracisId(),
         required=True,
     )
 
@@ -99,7 +99,7 @@ class IRandDSample(model.Schema):
         required=False,
     )
 
-    #Should be on the aliquot object not the sample
+    # Should be on the aliquot object not the sample
     """
     status = schema.Choice(
         title=_(
@@ -111,7 +111,7 @@ class IRandDSample(model.Schema):
         required=False,
     )
     """
-    #Should be on the aliquot object not the sample
+    # Should be on the aliquot object not the sample
     """
     date_disposed = schema.Date(
         title=_(u"Date R&D Sample was Disposed"),

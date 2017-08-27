@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-from plone.supermodel import model
-from zope.interface import Interface
 from immunarray.lims import messageFactory as _
+from plone.supermodel import model
+from zope import schema
 
 
 class ITestRequisition(model.Schema):
