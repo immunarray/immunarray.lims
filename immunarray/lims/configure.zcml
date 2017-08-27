@@ -20,6 +20,9 @@
   <include package=".subscribers"/>
   <include package=".workflow"/>
   <include package=".utils"/>
+
+  <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
+
   <browser:resourceDirectory name="immunarray.lims" directory="static"/>
   <utility
       name="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"
