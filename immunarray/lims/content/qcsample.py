@@ -1,4 +1,4 @@
-from immunarray.lims.interfaces import ISample
+from immunarray.lims.interfaces.sample import ISample
 from plone.dexterity.content import Container
 from zope.interface import implements
 
