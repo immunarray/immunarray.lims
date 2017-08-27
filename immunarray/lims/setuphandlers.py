@@ -1,11 +1,8 @@
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import INonInstallable
-from zope.component import getUtility
+from immunarray.lims.permissions import setup_default_permissions
 from zope.component.hooks import getSite
 from zope.interface import implementer
 
-from immunarray.lims.permissions import *
 
 @implementer(INonInstallable)
 class HiddenProfiles(object):
@@ -18,38 +15,26 @@ class HiddenProfiles(object):
             'immunarray.lims:uninstall',
         ]
 
+
 def setupVarious(context):
     if context.readDataFile('immunarraylims_default.txt') is None:
         return
 
     portal = getSite()
-    mp = portal.manage_permission
-    mp(AddMaterial, [], 0)
-    mp(AddSolution, [], 0)
-    mp(AddiChipLot, [], 0)
-    mp(AddiChip, [], 0)
-    mp(AddTestRun, [], 0)
-    mp(AddNoFrameRun, [], 0)
-    mp(AddEightFrameRun, [], 0)
-    mp(AddThreeFrameRun, [], 0)
-    mp(AddPlate, [], 0)
-    mp(AddNCE, [], 0)
-    mp(AddPatient, [], 0)
-    mp(AddProvider, [], 0)
-    mp(AddClinicalSample, [], 0)
-    mp(AddClinicalAliquot, [], 0)
-    mp(AddRandDSample, [], 0)
-    mp(AddRandDAliquot,[], 0)
-    mp(AddQCSample, [], 0)
-    mp(AddQCAliquot, [], 0)
-    mp(AddiChipAssay, [], 0)
-    mp(AddCustomerServiceCall, [], 0)
-    mp(AddFreezer, [], 0)
-    mp(AddShelf, [], 0)
-    mp(AddRack, [], 0)
-    mp(AddRandDBox, [], 0)
-    mp(AddCommercialBox, [], 0)
-    mp(AddSite, [], 0)
+
+    remove_default_content(portal)
+
+    setup_default_permissions(portal)
+
+
+def remove_default_content(portal):
+    del_ids = []
+    for obj_id in ['Members', 'news', 'events']:
+        if obj_id in portal.objectIds():
+            del_ids.append(obj_id)
+    if del_ids:
+        portal.manage_delObjects(ids=del_ids)
+
 
 def uninstall(context):
     """Uninstall script"""
