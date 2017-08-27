@@ -12,10 +12,8 @@
         <input name="aliquot_volume" type="number" class="aliquot-volume" placeholder="Volume of aliquots"><span class='discreet'>uL</span>
         <input name="aliquot_count" type="number" class="aliquot-count" placeholder="Number of aliquots">
         <label for="count">Count is optional; if omitted, parent's volume will be divided by aliquot volume entered here.</label>
-        <select name="aliquot_type">
-            <option name="aliquot_type_bulk" id="aliquot_type_bulk">Bulk</option>
-            <option name="aliquot_type_working" id="aliquot_type_working">Working</option>
-        </select>
+        <radio name="aliquot_type" value="bulk">Bulk</radio>
+        <radio name="aliquot_type" value="working">Working</radio>
         <br/><input type="submit" class="aliquots-add" value="Add Aliquots">
     </form>
 </div>

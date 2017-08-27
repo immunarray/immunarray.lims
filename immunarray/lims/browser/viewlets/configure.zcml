@@ -1,21 +1,22 @@
 <configure
-        xmlns="http://namespaces.zope.org/zope"
-        xmlns:browser="http://namespaces.zope.org/browser"
-        i18n_domain="immunarray.lims">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="immunarray.lims">
 
-    <browser:viewlet
-            for="bika.lims.interfaces.aliquot.IAliquot"
-            name="add-aliquots-viewlet"
-            class=".add_aliquots.AddAliquotsViewlet"
-            manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
-            permission="zope2.View"
-    />
+  <browser:viewlet
+      for="immunarray.lims.interfaces.ISample"
+      name="add-aliquots-viewlet"
+      class=".add_aliquots.AddAliquotsViewlet"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+      permission="zope2.View"
+  />
 
-    <browser:page
-            for="bika.lims.interfaces.aliquot.IAliquot"
-            name="add-aliquots"
-            class=".add_aliquots.AddAliquotsHandler"
-            permission="zope2.View"
-    />
+  <browser:viewlet
+      for="immunarray.lims.interfaces.IBulkAliquot"
+      name="add-aliquots-viewlet"
+      class=".add_aliquots.AddAliquotsViewlet"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+      permission="zope2.View"
+  />
 
 </configure>
