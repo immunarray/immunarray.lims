@@ -22,7 +22,7 @@
     <property name="klass">plone.dexterity.content.Container</property>
     <property name="behaviors">
         <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-        <element value="plone.app.content.interfaces.INameFromTitle"/>
+        <element value="immunarray.lims.interfaces.patient.ITitleFromFirstAndLastName"/>
     </property>
     <property name="schema">immunarray.lims.interfaces.patient.IPatient</property>
     <property name="model_source"/>
