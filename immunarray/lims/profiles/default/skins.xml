@@ -6,7 +6,7 @@
         default_skin="Sunburst Theme"
         request_varname="plone_skin">
 
-  <object name="bika"
+  <object name="immunarray"
           meta_type="Filesystem Directory View"
           directory="immunarray.lims:skins/immunarray"/>
 
