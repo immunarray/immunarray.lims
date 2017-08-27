@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from zope import schema
-from zope.interface import Interface
+
+from plone.app.content.interfaces import INameFromTitle
+from zope.component import adapter
+from zope.interface import Interface, implementer
 from immunarray.lims import messageFactory as _
 from bika.lims.interfaces.person import IPerson
 
@@ -60,7 +63,7 @@ class IProvider(IPerson):
         required=True,
     )
 
-class ITitleFromLotAndType(Interface):
+class ITitleFromFirstAndLastName(Interface):
     """Marker interface to enable name from filename behavior"""
 
 
@@ -70,9 +73,9 @@ class TitleFromFirstAndLastName(object):
 
     def __new__(cls, context):
         instance = super(TitleFromFirstAndLastName, cls).__new__(cls)
-        fristname = content.first_name
-        lastname = content.last_name
-        filename = lastname + " " + lastname
+        firstname = context.first_name
+        lastname = context.last_name
+        filename = firstname + " " + lastname
         context.setTitle(filename)
         instance.title = filename
         return instance
