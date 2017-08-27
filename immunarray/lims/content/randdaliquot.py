@@ -1,4 +1,5 @@
 from immunarray.lims.content.abstractaliquot import AbstractAliquot
+from immunarray.lims.interfaces.sample import ISample
 
 
 class RandDAliquot(AbstractAliquot):
