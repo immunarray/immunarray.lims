@@ -31,7 +31,10 @@
             category="workflow"
             icon="">Release
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('release')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="quarantine"
@@ -44,7 +47,10 @@
             category="workflow"
             icon="">Quarantine
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('quarantine')</guard-expression>
+    </guard>
   </transition>
 
   <transition transition_id="close"
@@ -57,7 +63,10 @@
             category="workflow"
             icon="">Close
     </action>
-    <guard/>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('close')</guard-expression>
+    </guard>
   </transition>
 
 </dc-workflow>
