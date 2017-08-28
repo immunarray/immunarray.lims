@@ -178,11 +178,8 @@ def create_material_types(portal):
             filter_content_types=True,
             allowed_content_types=[],
             global_allow=True,
-            behaviors=[
-                "immunarray.lims.interfaces.material.IMaterial",
-                "immunarray.lims.interfaces.qcsample.\
-                ITitleFromVeracisIDAndSourceIDOne",
-            ],
+            schema="immunarray.lims.interfaces.material.IMaterial",
+            behaviors=[],
             add_permission='immunarray.lims.permissions.AddMaterial',
         )
         if tid in portal.portal_types:
@@ -217,9 +214,8 @@ def create_solution_types(portal):
             filter_content_types=True,
             allowed_content_types=[],
             global_allow=True,
-            behaviors=[
-                "immunarray.lims.interfaces.solution.ISolution",
-            ],
+            schema="immunarray.lims.interfaces.solution.ISolution",
+            behaviors=[],
             add_permission='immunarray.lims.permissions.AddSolution',
         )
         if tid in portal.portal_types:
