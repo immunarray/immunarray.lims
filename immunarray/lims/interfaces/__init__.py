@@ -14,12 +14,3 @@ class IWorkingAliquot(Interface):
 class IBulkAliquot(Interface):
     """Marker interface to denote Bulk Aliquots
     """
-
-
-class IQCSample(Interface):
-    """Marker interface to denote QC Sample
-    """
-
-class IRandDSample(Interface):
-    """Marker interface to denote RandD Sample
-    """
