@@ -38,12 +38,7 @@ class AddRecView(BrowserView):
             # can be updated, sales person needs to add the kits to the site for this to work
 
             authenticator = request.form.get('_authenticator')
-            try:
-                plone.protect.CheckAuthenticator(authenticator)
-                #is this working?  the except is not kicking off
-                # what does it do?
-            except:
-                import pdb;pdb.set_trace()
+            plone.protect.CheckAuthenticator(authenticator)
             # define request.form.get's
             usn = request.form.get('usn')
             site_id = request.form.get('site_id')
