@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
+from zope import schema
+
 from immunarray.lims import messageFactory as _
-from plone.app.content.interfaces import INameFromTitle
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
 from plone.supermodel import model
-from zope import schema
-from zope.component import adapter
-from zope.interface import Interface
 from zope.interface import alsoProvides
-from zope.interface import implementer
 
 
 class IMaterial(model.Schema):
@@ -148,23 +145,3 @@ class IMaterial(model.Schema):
 
 
 alsoProvides(IMaterial, IFormFieldProvider)
-
-
-class ITitleFromLotAndType(Interface):
-    """Marker interface to enable name from filename behavior"""
-
-
-@implementer(INameFromTitle)
-@adapter(ITitleFromLotAndType)
-class TitleFromLotAndType(object):
-    def __new__(cls, context):
-        instance = super(TitleFromLotAndType, cls).__new__(cls)
-        lotnumber = getattr(context, 'lot_number', None)
-        name = getattr(context, 'product_name', None)
-        filename = name + "--" + lotnumber
-        context.setTitle(filename)
-        instance.title = filename
-        return instance
-
-    def __init__(self, context):
-        pass
