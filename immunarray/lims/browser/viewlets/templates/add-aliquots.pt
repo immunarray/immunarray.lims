@@ -29,27 +29,10 @@
           color:#666666;
           padding-top: 10px;
         }
-        /*This is Plone's style for some inputs; I just want to apply the same to all. */
-        .add-aliquots-outer input {
-          height: 34px;
-          padding: 6px 12px !important;
-          font-size: 14px;
-          line-height: 1.42857143;
-          color: #696969;
-          background-color: #fff;
-          background-image: none;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-          -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-      }
     </style>
 
     <div class="add-aliquots-outer">
-      <form name="add-aliquots" action="add-aliquots" method="POST">
+      <form name="add-aliquots" action="add-aliquots-submit" method="POST">
         <div class="table">
           <div class="tr">
             <div class="td center" style="whitespace:nowrap">
@@ -59,15 +42,16 @@
               </select>
             </div>
             <div class="td center">
-              Volume (uL):&nbsp;<input name="aliquot_volume" type="number" class="aliquot-volume" placeholder="Volume of aliquots">
+              Volume (uL):&nbsp;<input name="aliquot_volume" type="text" class="aliquot-volume" placeholder="Volume of aliquots">
             </div>
             <div class="td center">
-              Count:&nbsp;<input name="aliquot_count" type="number" class="aliquot-count" placeholder="Number of aliquots">
+              Count:&nbsp;<input name="aliquot_count" type="text" class="aliquot-count" placeholder="Number of aliquots">
             </div>
           </div>
         </div>
         <input type="submit" class="add-aliquots-button" value="Add Aliquots"/>
         <div class="feedback" style="display:none"/>
+        <span tal:replace="structure context/@@authenticator/authenticator"/>
       </form>
     </div>
     <script src="++resource++immunarray.lims/js/add-aliquots.js"></script>
