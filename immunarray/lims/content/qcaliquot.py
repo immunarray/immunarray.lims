@@ -6,8 +6,7 @@ class QCAliquot(AbstractAliquot):
     def __init__(self, *args, **kwargs):
         super(QCAliquot, self).__init__(*args, **kwargs)
 
-    @property
-    def veracis_id(self):
+    def get_veracis_id(self):
         """Return the veracis_id of the sample this aliquot originated from.
         """
         parent = self.aq_parent

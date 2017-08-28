@@ -31,7 +31,7 @@ class AddAliquotsViewletSubmit(BrowserView):
         sequence_start = get_sequence_start(self.context.veracis_id)
 
         # Discover if it's RandD or QC aliquots that we will be creating.
-        sample = get_parent_sample
+        sample = _get_parent_sample
         if IQCSample.providedBy(sample):
             aliquot_portal_type = 'QCAliquot'
         else:
@@ -124,7 +124,7 @@ def get_sequence_start(veracis_id):
     return len(brains) + 1
 
 
-def get_parent_sample(context):
+def _get_parent_sample(context):
     """Get the sample associated with the current context.
     """
     parent = context.aq_parent
