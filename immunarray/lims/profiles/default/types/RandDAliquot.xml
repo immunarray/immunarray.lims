@@ -21,8 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddRandDAliquot</property>
   <property name="klass">immunarray.lims.content.randdaliquot.RandDAliquot</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.randdaliquot.IRandDAliquot</property>
   <property name="model_source"/>

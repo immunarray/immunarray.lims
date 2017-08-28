@@ -21,7 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddRandDBox</property>
   <property name="klass">immunarray.lims.content.randdbox.RandDBox</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.storage.IRandDBox</property>
   <property name="model_source"/>

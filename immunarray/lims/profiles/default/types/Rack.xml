@@ -21,7 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddRack</property>
   <property name="klass">immunarray.lims.content.rack.Rack</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.storage.IRack</property>
   <property name="model_source"/>

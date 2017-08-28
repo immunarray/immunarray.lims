@@ -21,8 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddiChipAssay</property>
   <property name="klass">immunarray.lims.content.ichipassay.iChipAssay</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.ichipassay.IiChipAssay</property>
   <property name="model_source"/>

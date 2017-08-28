@@ -22,8 +22,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddiChip</property>
   <property name="klass">immunarray.lims.content.ichip.iChip</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.ichip.IiChip</property>
   <property name="model_source"/>

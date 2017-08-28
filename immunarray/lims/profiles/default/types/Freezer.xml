@@ -21,7 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddFreezer</property>
   <property name="klass">immunarray.lims.content.freezer.Freezer</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.storage.IFreezer</property>
   <property name="model_source"/>

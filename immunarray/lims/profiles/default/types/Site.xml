@@ -21,7 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddSite</property>
   <property name="klass">immunarray.lims.content.site.Site</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.site.ISite</property>
   <property name="model_source"/>

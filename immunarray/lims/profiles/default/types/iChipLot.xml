@@ -24,7 +24,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddiChipLot</property>
   <property name="klass">immunarray.lims.content.ichiplot.iChipLot</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.ichiplot.IiChipLot</property>
   <property name="model_source"/>

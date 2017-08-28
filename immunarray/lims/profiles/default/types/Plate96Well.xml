@@ -23,8 +23,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddPlate</property>
   <property name="klass">immunarray.lims.content.plate96well.Plate96Well</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.plate.IPlate96Well</property>
   <property name="model_source"/>

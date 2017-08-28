@@ -21,8 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddPatient</property>
   <property name="klass">immunarray.lims.content.patient.Patient</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="immunarray.lims.interfaces.patient.ITitleFromFirstAndLastName"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.patient.IPatient</property>
   <property name="model_source"/>

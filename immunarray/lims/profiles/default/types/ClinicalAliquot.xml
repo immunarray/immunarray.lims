@@ -21,7 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddClinicalAliquot</property>
   <property name="klass">immunarray.lims.content.clinicalaliquot.ClinicalAliquot</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.clinicalaliquot.IClinicalAliquot</property>
   <property name="model_source"/>

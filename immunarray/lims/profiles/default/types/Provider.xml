@@ -21,8 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddProvider</property>
   <property name="klass">immunarray.lims.content.provider.Provider</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="immunarray.lims.interfaces.provider.ITitleFromFirstAndLastName"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.provider.IProvider</property>
   <property name="model_source"/>

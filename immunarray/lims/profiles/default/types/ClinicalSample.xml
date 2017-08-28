@@ -21,7 +21,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddClinicalSample</property>
   <property name="klass">immunarray.lims.content.clinicalsample.ClinicalSample</property>
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.clinicalsample.IClinicalSample</property>
   <property name="model_source"/>

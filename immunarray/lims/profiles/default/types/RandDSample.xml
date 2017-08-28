@@ -23,8 +23,6 @@
   <property name="add_permission">immunarray.lims.permissions.AddRandDSample</property>
   <property name="klass">immunarray.lims.content.randdsample.RandDSample</property>
   <property name="behaviors">
-    <!--<element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>-->
-    <element value="plone.app.content.interfaces.INameFromTitle"/>
   </property>
   <property name="schema">immunarray.lims.interfaces.randdsample.IRandDSample</property>
   <property name="model_source"/>
