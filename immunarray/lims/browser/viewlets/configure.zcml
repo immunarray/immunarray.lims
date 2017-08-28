@@ -4,7 +4,7 @@
     i18n_domain="immunarray.lims">
 
   <browser:viewlet
-      for="immunarray.lims.interfaces.IQCSample"
+      for="immunarray.lims.interfaces.qcsample.IQCSample"
       name="add-aliquots-viewlet"
       class=".add_aliquots.AddAliquotsViewlet"
       manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
@@ -12,7 +12,7 @@
   />
 
   <browser:viewlet
-      for="immunarray.lims.interfaces.IRandDSample"
+      for="immunarray.lims.interfaces.randdsample.IRandDSample"
       name="add-aliquots-viewlet"
       class=".add_aliquots.AddAliquotsViewlet"
       manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
