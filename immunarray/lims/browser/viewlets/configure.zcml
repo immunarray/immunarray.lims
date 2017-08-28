@@ -28,9 +28,15 @@
   />
 
   <browser:page
-    for="*"
-    name="add-aliquots-feedback"
-    class=".add_aliquots.AddAliquotsViewletAJAXFeedback"
-    permission="zope2.View"/>
+      for="*"
+      name="add-aliquots-feedback"
+      class=".add_aliquots.AddAliquotsViewletAJAXFeedback"
+      permission="zope2.View"/>
+
+  <browser:page
+      for="*"
+      name="add-aliquots"
+      class=".add_aliquots.AddAliquotsViewletSubmit"
+      permission="zope2.View"/>
 
 </configure>

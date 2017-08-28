@@ -3,8 +3,10 @@ import json
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
+from immunarray.lims.interfaces.qcsample import IQCSample
 from immunarray.lims.interfaces.randdaliquot import IRandDAliquot
-from plone.api.content import find
+from immunarray.lims.interfaces.sample import ISample
+from plone.api.content import find, create
 from plone.app.layout.viewlets import ViewletBase
 
 
@@ -14,15 +16,39 @@ class AddAliquotsViewlet(ViewletBase):
     def render(self):
         return self.index()
 
+
+class AddAliquotsViewletSubmit(BrowserView):
+    def __init__(self, context, request):
+        super(AddAliquotsViewletSubmit, self).__init__(context, request)
+        self.context = context
+        self.request = request
+
     def __call__(self):
-        import pdb
-        pdb.set_trace()
-        pass
-        # loop and create.8
-        # aliquot_type
-        # msg = u'%s working aliquots created.' % len(created_ids)
-        # self.context.plone_utils.addPortalMessage(msg)
-        # self.request.response.redirect(bulk.absolute_url())
+        form = self.request.form
+        aliquot_type = form['aliquot_type']
+        aliquot_volume = int(form['aliquot_volume'])
+        aliquot_count = int(form['aliquot_count'])
+        sequence_start = get_sequence_start(self.context.veracis_id)
+
+        # Discover if it's RandD or QC aliquots that we will be creating.
+        sample = get_parent_sample
+        if IQCSample.providedBy(sample):
+            aliquot_portal_type = 'QCAliquot'
+        else:
+            aliquot_portal_type = 'RandDAliquot'
+
+        # Create aliquots
+        for seq in range(sequence_start, sequence_start + aliquot_count):
+            _id = "{self.context.veracis_id}-{seq:03d}".format(**locals())
+            create(self.context, aliquot_portal_type, _id,
+                   initial_volume=aliquot_volume,
+                   aliquot_type=aliquot_type)
+
+        self.context.remaining_volume -= aliquot_volume * aliquot_count
+
+        msg = u'{} working aliquots created.'.format(aliquot_count)
+        self.context.plone_utils.addPortalMessage(msg)
+        self.request.response.redirect(self.context.absolute_url())
 
 
 class AddAliquotsViewletAJAXFeedback(BrowserView):
@@ -73,10 +99,7 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
 
         # Get the sequence start for the new aliquots which will be created.
         veracis_id = self.context.veracis_id
-        brains = find(object_provides=[IQCAliquot.__identifier__,
-                                       IRandDAliquot.__identifier__],
-                      veracis_id=veracis_id)
-        sequence_start = len(brains) + 1
+        sequence_start = get_sequence_start(veracis_id)
 
         # some variables for the feedback
         aliquot_type = form['aliquot_type']
@@ -89,3 +112,21 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
         result['aliquot_count'] = aliquot_count
         result['success'] = True
         return json.dumps(result)
+
+
+def get_sequence_start(veracis_id):
+    """Discover the next available aliquot number for the sample with
+    the provided veracis_id.
+    """
+    brains = find(object_provides=[IQCAliquot.__identifier__,
+                                   IRandDAliquot.__identifier__],
+                  veracis_id=veracis_id)
+    return len(brains) + 1
+
+
+def get_parent_sample(context):
+    """Get the sample associated with the current context.
+    """
+    parent = context.aq_parent
+    while not ISample.providedBy(parent):
+        parent = parent.aq_parent
