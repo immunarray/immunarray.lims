@@ -8,6 +8,7 @@ class AbstractAliquot(Container):
         super(AbstractAliquot, self).__init__(*args, **kwargs)
 
     def __setattr__(self, key, value):
+        super(AbstractAliquot, self).__setattr__(key, value)
         if key == 'aliquot_type':
             if value == 'Bulk':
                 alsoProvides(self, IBulkAliquot)
