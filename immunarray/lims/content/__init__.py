@@ -8,7 +8,7 @@ class BaseContainer(Container):
         """
         if hasattr(self, 'get_' + key) and not key.startswith('get_'):
             return getattr(self, 'get_' + key)()
-        return super(BaseContainer, self).__getattr__()
+        return super(BaseContainer, self).__getattr__(key)
 
     def __setattr__(self, key, value):
         """Allows to define set_XYZ, to be used automatically when setting 

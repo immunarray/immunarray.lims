@@ -1,5 +1,5 @@
 from immunarray.lims.content.abstractsample import AbstractSample
-from immunarray.lims.interfaces import ISample
+from immunarray.lims.interfaces.sample import ISample
 from zope.interface import implements
 
 
