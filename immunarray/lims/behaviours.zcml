@@ -1,51 +1,19 @@
 <configure
-        xmlns="http://namespaces.zope.org/zope"
-        xmlns:plone="http://namespaces.plone.org/plone"
-        i18n_domain="immunarray.lims">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="immunarray.lims">
 
-    <plone:behavior
-        title="LIMS: Raw Material"
-        description="This FTI will be registered as a material in the LIMS"
-        provides="immunarray.lims.interfaces.material.IMaterial"
-    />
+  <plone:behavior
+      title="LIMS: Raw Material"
+      description="This FTI will be registered as a material in the LIMS"
+      provides="immunarray.lims.interfaces.material.IMaterial"
+  />
 
-    <plone:behavior
-        title="LIMS: Solution"
-        description="This FTI will be registered as a solution in the LIMS"
-        provides="immunarray.lims.interfaces.solution.ISolution"
-    />
-
-    <plone:behavior
-        title="Title from Material Name and Lot Number"
-        description="generates object title from material name and lot number"
-        provides="immunarray.lims.interfaces.material.ITitleFromLotAndType"
-    />
-
-    <plone:behavior
-        title="Title from Veracis ID and Source ID One"
-        description="generates object title from veracis id and source id one"
-        provides="immunarray.lims.interfaces.qcsample.ITitleFromVeracisIDAndSourceIDOne"
-    />
-    <adapter factory="immunarray.lims.interfaces.material.TitleFromLotAndType"/>
-
-    <adapter factory="immunarray.lims.interfaces.qcsample.TitleFromVeracisIDAndSourceIDOne"/>
-
-    <plone:behavior
-        title="Title from First and Last Name"
-        description="generates object title from first name and last name"
-        provides="immunarray.lims.interfaces.provider.ITitleFromFirstAndLastName"
-    />
-
-    <adapter factory="immunarray.lims.interfaces.provider.TitleFromFirstAndLastName"/>
-
-    <plone:behavior
-        title="Title from First and Last Name"
-        description="generates object title from first name and last name"
-        provides="immunarray.lims.interfaces.patient.ITitleFromFirstAndLastName"
-    />
-
-    <adapter factory="immunarray.lims.interfaces.patient.TitleFromFirstAndLastName"/>
-
+  <plone:behavior
+      title="LIMS: Solution"
+      description="This FTI will be registered as a solution in the LIMS"
+      provides="immunarray.lims.interfaces.solution.ISolution"
+  />
 
 
 </configure>
