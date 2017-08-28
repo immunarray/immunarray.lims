@@ -40,10 +40,11 @@ class AddAliquotsViewletSubmit(BrowserView):
         # Create aliquots
         for seq in range(sequence_start, sequence_start + aliquot_count):
             _id = "{self.context.veracis_id}-{seq:03d}".format(**locals())
-            create(self.context, aliquot_portal_type, _id,
-                   initial_volume=aliquot_volume,
-                   aliquot_type=aliquot_type)
-
+            _title = "{self.context.veracis_id} - {seq:03d}".format(**locals())
+            aliquot = create(self.context, aliquot_portal_type, _id,
+                             initial_volume=aliquot_volume,
+                             aliquot_type=aliquot_type)
+            aliquot.setTitle(_title)
         self.context.remaining_volume -= aliquot_volume * aliquot_count
 
         msg = u'{} working aliquots created.'.format(aliquot_count)
