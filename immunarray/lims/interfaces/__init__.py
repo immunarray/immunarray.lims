@@ -16,3 +16,10 @@ class IBulkAliquot(Interface):
     """
 
 
+class IQCSample(Interface):
+    """Marker interface to denote QC Sample
+    """
+
+class IRandDSample(Interface):
+    """Marker interface to denote RandD Sample
+    """
