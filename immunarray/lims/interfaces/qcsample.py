@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 import datetime
+from zope import schema
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.solution import *
 from plone import api
-from plone.app.content.interfaces import INameFromTitle
-from zope import schema
-from zope.component import adapter
-from zope.interface import Interface, alsoProvides, implements
-from zope.interface import implementer
+from zope.interface import alsoProvides, implements
 from zope.schema.interfaces import IContextAwareDefaultFactory
 
 
@@ -40,26 +37,6 @@ class assignVeracisId():
         return u"1000"
 
 
-class ITitleFromVeracisIDAndSourceIDOne(Interface):
-    """Marker interface to enable name from filename behavior"""
-
-
-@implementer(INameFromTitle)
-@adapter(ITitleFromVeracisIDAndSourceIDOne)
-class TitleFromVeracisIDAndSourceIDOne(object):
-    def __new__(cls, context):
-        instance = super(TitleFromVeracisIDAndSourceIDOne, cls).__new__(cls)
-        veracisid = context.veracis_id
-        simple_name = context.source_id_one
-        filename = simple_name + "--" + veracisid
-        context.setTitle(filename)
-        instance.title = filename
-        return instance
-
-    def __init__(self, context):
-        pass
-
-
 class IQCSample(ISample):
     """QC Sample!
     """
@@ -73,7 +50,7 @@ class IQCSample(ISample):
     source_id_one = schema.TextLine(
         title=_(u"Primary QC Source Sample ID"),
         description=_(u"Primary QC Source Sample ID"),
-        required=False,
+        required=True,
     )
 
     source_id_two = schema.TextLine(

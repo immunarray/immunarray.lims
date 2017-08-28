@@ -63,21 +63,3 @@ class IProvider(IPerson):
     )
 
 
-class ITitleFromFirstAndLastName(Interface):
-    """Marker interface to enable name from filename behavior"""
-
-
-@implementer(INameFromTitle)
-@adapter(ITitleFromFirstAndLastName)
-class TitleFromFirstAndLastName(object):
-    def __new__(cls, context):
-        instance = super(TitleFromFirstAndLastName, cls).__new__(cls)
-        firstname = context.first_name
-        lastname = context.last_name
-        filename = firstname + " " + lastname
-        context.setTitle(filename)
-        instance.title = filename
-        return instance
-
-    def __init__(self, context):
-        pass
