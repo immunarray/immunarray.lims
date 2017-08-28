@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class Freezer(Container):
+class Freezer(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Freezer, self).__init__(*args, **kwargs)

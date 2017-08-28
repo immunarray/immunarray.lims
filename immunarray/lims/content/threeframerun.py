@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class ThreeFrameRun(Container):
+class ThreeFrameRun(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(ThreeFrameRun, self).__init__(*args, **kwargs)

@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class Material(Container):
+class Material(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Material, self).__init__(*args, **kwargs)

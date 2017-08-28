@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class EightFrameRun(Container):
+class EightFrameRun(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(EightFrameRun, self).__init__(*args, **kwargs)

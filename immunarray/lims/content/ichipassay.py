@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class iChipAssay(Container):
+class iChipAssay(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(iChipAssay, self).__init__(*args, **kwargs)

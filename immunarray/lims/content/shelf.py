@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class Shelf(Container):
+class Shelf(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Shelf, self).__init__(*args, **kwargs)

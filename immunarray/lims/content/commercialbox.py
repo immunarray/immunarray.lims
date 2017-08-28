@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class CommercialBox(Container):
+class CommercialBox(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(CommercialBox, self).__init__(*args, **kwargs)

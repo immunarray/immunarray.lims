@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class Provider(Container):
+class Provider(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Provider, self).__init__(*args, **kwargs)

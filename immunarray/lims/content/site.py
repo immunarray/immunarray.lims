@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class Site(Container):
+class Site(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Site, self).__init__(*args, **kwargs)

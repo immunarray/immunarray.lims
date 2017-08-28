@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class NCE(Container):
+class NCE(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(NCE, self).__init__(*args, **kwargs)

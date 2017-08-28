@@ -1,6 +1,6 @@
-from plone.dexterity.content import Container
+from . import BaseContainer
 
 
-class NoFrameRun(Container):
+class NoFrameRun(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(NoFrameRun, self).__init__(*args, **kwargs)
