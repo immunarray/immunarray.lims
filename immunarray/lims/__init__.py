@@ -1,4 +1,5 @@
 # -*- extra stuff goes here -*-
+from AccessControl import allow_module
 from zope.i18nmessageid import MessageFactory
 
 messageFactory = MessageFactory('Immunarray')
@@ -6,3 +7,5 @@ messageFactory = MessageFactory('Immunarray')
 
 def initialize(context):
     """Initializer called when used as a Zope 2 product."""
+
+allow_module('immunarray.lims.workflow')

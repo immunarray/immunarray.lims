@@ -18,7 +18,8 @@ def AfterTransitionEventHandler(instance, event):
     if not event.transition:
         return
     try:
-        wfmodule = _load_wf_module('{0}.events'.format(instance.portal_type))
+        portal_type = instance.portal_type.lower()
+        wfmodule = _load_wf_module('{0}.events'.format(portal_type))
     except ImportError:
         return
     if not wfmodule:
@@ -37,7 +38,7 @@ def _load_wf_module(modrelname):
     found or importlib is unable to load it because of errors.
     Ex:
         _load_wf_module('sample.events')
-    will try to load the module 'bika.lims.workflow.sample.events'
+    will try to load the module 'immunarray.lims.workflow.sample.events'
     :param modrelname: relative name of the module to be loaded
     :type modrelname: string
     :return: the module
@@ -67,7 +68,7 @@ def GuardHandler(instance, transition_id):
     bika/lims/skins/guard_handler.py, which in turn is fired by Zope when an
     expression like "python:here.guard_handler('<transition_id>')" is set to
     any given guard (used by default in all bika's DC Workflow guards).
-    Walks through bika.lims.workflow.<obj_type>.guards and looks for a function
+    Walks through immunarray.lims.workflow.<obj_type>.guards and looks for a function
     that matches with 'guard_<transition_id>'. If found, calls the function and
     returns its value (true or false). If not found, returns True by default.
     Example:
@@ -77,7 +78,7 @@ def GuardHandler(instance, transition_id):
     When Zope fires this expression to evaluate if the transition 'publish' can
     be performed to a given Analysis Request, this function will try to find
     the following function:
-        bika.lims.workflow.analysisrequest.guards.guard_publish(obj)
+        immunarray.lims.workflow.analysisrequest.guards.guard_publish(obj)
         (where obj is the Analysis Request object)
     If found, this function will be called and the result returned. Otherwise,
     will return True.
@@ -90,7 +91,7 @@ def GuardHandler(instance, transition_id):
     """
     clazzname = instance.portal_type
 
-    # Inspect if bika.lims.workflow.<clazzname>.<guards> module exists
+    # Inspect if immunarray.lims.workflow.<clazzname>.<guards> module exists
     wfmodule = _load_wf_module('{0}.guards'.format(clazzname.lower()))
     if not wfmodule:
         return True

@@ -1,3 +1,6 @@
+from plone.api.content import get_state
+
+
 def guard_broken(instance):
     """
     """
@@ -43,12 +46,8 @@ def guard_reject(instance):
 def guard_release(instance):
     """
     """
-    return True
-
-
-def guard_released(instance):
-    """
-    """
+    if get_state(instance.aq_parent) != "released":
+        return False
     return True
 
 
@@ -107,6 +106,12 @@ def guard_used_qc_fail(instance):
 
 
 def guard_used_qc_pass(instance):
+    """
+    """
+    return True
+
+
+def guard_quarantine(instance):
     """
     """
     return True

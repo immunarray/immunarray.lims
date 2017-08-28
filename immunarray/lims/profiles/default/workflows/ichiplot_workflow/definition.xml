@@ -4,7 +4,7 @@
              description=""
              state_variable="review_state"
              initial_state="quarantined"
-             manager_bypass="True">
+             manager_bypass="False">
 
   <state state_id="quarantined" title="Quarantined">
     <description>Quarantined</description>

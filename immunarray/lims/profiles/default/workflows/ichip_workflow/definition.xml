@@ -4,7 +4,7 @@
              description=""
              state_variable="review_state"
              initial_state="quarantined"
-             manager_bypass="True">
+             manager_bypass="False">
 
   <state state_id="quarantined" title="Quarantined">
     <description>Quarantined</description>
@@ -27,6 +27,7 @@
     <exit-transition transition_id="residual"/>
     <exit-transition transition_id="expired"/>
     <exit-transition transition_id="broken"/>
+    <exit-transition transition_id="quarantine"/>
   </state>
 
   <state state_id="used_for_release_testing" title="Used for release testing">
@@ -134,7 +135,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('use_for_release_testing')</guard-expression>
+      <guard-expression>python:here.guard_handler('use_for_release_testing')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -150,7 +152,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('use_for_validation')</guard-expression>
+      <guard-expression>python:here.guard_handler('use_for_validation')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -167,7 +170,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('use_for_training')</guard-expression>
+      <guard-expression>python:here.guard_handler('use_for_training')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -183,7 +187,9 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('reserve_for_stability_testing')</guard-expression>
+      <guard-expression>
+        python:here.guard_handler('reserve_for_stability_testing')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -199,7 +205,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('use_for_stability_testing')</guard-expression>
+      <guard-expression>python:here.guard_handler('use_for_stability_testing')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -215,7 +222,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('retain_usa')</guard-expression>
+      <guard-expression>python:here.guard_handler('retain_usa')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -231,7 +239,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('retain_ial')</guard-expression>
+      <guard-expression>python:here.guard_handler('retain_ial')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -269,10 +278,6 @@
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=queue"
-            category="workflow"
-            icon="">Queue iChip
-    </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
       <guard-expression>python:here.guard_handler('queue')</guard-expression>
@@ -287,7 +292,8 @@
               trigger="USER">
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('in_process')</guard-expression>
+      <guard-expression>python:here.guard_handler('in_process')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -299,7 +305,8 @@
               trigger="USER">
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('used_qc_pass')</guard-expression>
+      <guard-expression>python:here.guard_handler('used_qc_pass')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -311,7 +318,8 @@
               trigger="USER">
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('used_qc_fail')</guard-expression>
+      <guard-expression>python:here.guard_handler('used_qc_fail')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -356,6 +364,23 @@
     <guard>
       <guard-permission>Modify portal content</guard-permission>
       <guard-expression>python:here.guard_handler('discard')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="quarantine"
+              title="Quarantined"
+              new_state="quarantined"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=quarantine"
+            category="workflow"
+            icon="">Quarantine
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('quarantine')
+      </guard-expression>
     </guard>
   </transition>
 

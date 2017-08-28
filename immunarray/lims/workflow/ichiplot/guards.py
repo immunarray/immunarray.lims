@@ -1,7 +1,6 @@
 def guard_release(instance):
     """
     """
-
     if not all([instance.temp_log,
                 instance.cofa,
                 instance.batch_release,
