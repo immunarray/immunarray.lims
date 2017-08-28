@@ -5,11 +5,22 @@ class Provider(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Provider, self).__init__(*args, **kwargs)
 
-    def set_last_name(self, value):
-        fullname = self.first_name + " " + value
-        self.setTitle(fullname)
+    @property
+    def first_name(self):
+        return getattr(self, "_first_name", "")
 
-    def set_first_name(self, value):
-        fullname = value + " " + self.last_name
-        self.setTitle(fullname)
+    @first_name.setter
+    def first_name(self, value):
+        self._first_name = value
+        lastname = getattr(self, "_last_name", "")
+        self.setTitle(value + " " + lastname)
 
+    @property
+    def last_name(self):
+        return getattr(self, "_last_name", "")
+
+    @last_name.setter
+    def last_name(self, value):
+        self._last_name = value
+        firstname = getattr(self, "_first_name", "")
+        self.setTitle(firstname + " " + value)
