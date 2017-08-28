@@ -1,9 +1,9 @@
-from immunarray.lims.interfaces.sample import ISample
-from plone.dexterity.content import Container
+from immunarray.lims.content.abstractsample import AbstractSample
+from immunarray.lims.interfaces import ISample
 from zope.interface import implements
 
 
-class ClinicalSample(Container):
+class ClinicalSample(AbstractSample):
     implements(ISample)
 
     def __init__(self, *args, **kwargs):
