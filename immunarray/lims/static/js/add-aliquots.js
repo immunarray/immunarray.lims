@@ -1,7 +1,7 @@
 (function() {
   require(['jquery'], function($) {
     var go;
-    go = function(ev) {
+    go = function(ev, allow_change_count) {
       var authenticator;
       authenticator = $('input[name="_authenticator"]').val();
       $.ajax({
@@ -14,17 +14,19 @@
           'aliquot_count': $('.aliquot-count').val()
         },
         success: function(responseText, statusText, statusCode, xhr, $form) {
-          $('.aliquot-count').val(responseText.aliquot_count);
+          if (allow_change_count) {
+            $('.aliquot-count').val(responseText.aliquot_count);
+          }
           $('.feedback').empty().append(responseText.feedback);
           $('.feedback').show('fast');
         }
       });
     };
-    $("input, select").on('change', function(ev) {
-      go(ev);
+    $(".aliquot-type, .aliquot-volume").on('change', function(ev) {
+      go(ev, true);
     });
-    $("input, select").on('keyup', function(ev) {
-      go(ev);
+    $(".aliquot-count").on('keyup', function(ev) {
+      go(ev, false);
     });
   });
 

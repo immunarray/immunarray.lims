@@ -1,5 +1,5 @@
 require ['jquery'], ($) ->
-    go = (ev) ->
+    go = (ev, allow_change_count) ->
         authenticator = $('input[name="_authenticator"]').val()
         $.ajax
             url: 'add-aliquots-feedback'
@@ -10,15 +10,16 @@ require ['jquery'], ($) ->
                 'aliquot_volume': $('.aliquot-volume').val()
                 'aliquot_count': $('.aliquot-count').val()
             success: (responseText, statusText, statusCode, xhr, $form) ->
-                $('.aliquot-count').val responseText.aliquot_count
+                if allow_change_count
+                    $('.aliquot-count').val responseText.aliquot_count
                 $('.feedback').empty().append responseText.feedback
                 $('.feedback').show('fast')
                 return
         return
-    $("input, select").on 'change', (ev) ->
-        go(ev)
+    $(".aliquot-type, .aliquot-volume").on 'change', (ev) ->
+        go(ev, true)
         return
-    $("input, select").on 'keyup', (ev) ->
-        go(ev)
+    $(".aliquot-count").on 'keyup', (ev) ->
+        go(ev, false)
         return
     return
