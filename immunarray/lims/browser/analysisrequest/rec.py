@@ -54,12 +54,9 @@ class AddRecView(BrowserView):
 
         if "check_name_and_dob" in request.form:
             authenticator = request.form.get('_authenticator')
-            try:
-                plone.protect.CheckAuthenticator(authenticator)
-            except:
-                import pdb;pdb.set_trace()
+            plone.protect.CheckAuthenticator(authenticator)
+
             # define request.form.get's
-            # import pdb;pdb.set_trace()
             pt_UID = "new_patient"
             dob_string = request.form.get('dob') # string value '%Y-%m-%d'
             patient_first_name = request.form.get('patient_first_name')
