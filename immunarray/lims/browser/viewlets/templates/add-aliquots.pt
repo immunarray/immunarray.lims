@@ -43,10 +43,10 @@
               </select>
             </div>
             <div class="td center">
-              Volume (uL):&nbsp;<input name="aliquot_volume" type="text" class="aliquot-volume" placeholder="Volume of aliquots">
+              Volume (uL):&nbsp;<input name="aliquot_volume" type="text" class="aliquot-volume">
             </div>
             <div class="td center">
-              Count:&nbsp;<input name="aliquot_count" type="text" class="aliquot-count" placeholder="Number of aliquots">
+              Count:&nbsp;<input name="aliquot_count" type="text" class="aliquot-count">
             </div>
           </div>
         </div>
