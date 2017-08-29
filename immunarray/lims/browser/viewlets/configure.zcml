@@ -10,7 +10,6 @@
       manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
       permission="zope2.View"
   />
-
   <browser:viewlet
       for="immunarray.lims.interfaces.randdsample.IRandDSample"
       name="add-aliquots-viewlet"
@@ -18,7 +17,6 @@
       manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
       permission="zope2.View"
   />
-
   <browser:viewlet
       for="immunarray.lims.interfaces.IBulkAliquot"
       name="add-aliquots-viewlet"
@@ -28,13 +26,34 @@
   />
 
   <browser:page
-      for="*"
+      for="immunarray.lims.interfaces.qcsample.IQCSample"
+      name="add-aliquots-feedback"
+      class=".add_aliquots.AddAliquotsViewletAJAXFeedback"
+      permission="zope2.View"/>
+  <browser:page
+      for="immunarray.lims.interfaces.randdsample.IRandDSample"
+      name="add-aliquots-feedback"
+      class=".add_aliquots.AddAliquotsViewletAJAXFeedback"
+      permission="zope2.View"/>
+  <browser:page
+      for="immunarray.lims.interfaces.IBulkAliquot"
       name="add-aliquots-feedback"
       class=".add_aliquots.AddAliquotsViewletAJAXFeedback"
       permission="zope2.View"/>
 
+
   <browser:page
-      for="*"
+      for="immunarray.lims.interfaces.qcsample.IQCSample"
+      name="add-aliquots-submit"
+      class=".add_aliquots.AddAliquotsViewletSubmit"
+      permission="zope2.View"/>
+  <browser:page
+      for="immunarray.lims.interfaces.randdsample.IRandDSample"
+      name="add-aliquots-submit"
+      class=".add_aliquots.AddAliquotsViewletSubmit"
+      permission="zope2.View"/>
+  <browser:page
+      for="immunarray.lims.interfaces.IBulkAliquot"
       name="add-aliquots-submit"
       class=".add_aliquots.AddAliquotsViewletSubmit"
       permission="zope2.View"/>
