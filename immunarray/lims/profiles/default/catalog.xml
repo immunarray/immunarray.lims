@@ -12,11 +12,6 @@
     <indexed_attr value="ichip_lot_expiration_date"/>
   </index>
   <column value="ichip_lot_expiration_date"/>
-  <!-- Phase this out, moved to workflow! -->
-  <index name="sample_status" meta_type="DateIndex">
-    <indexed_attr value="sample_status"/>
-  </index>
-  <column value="sample_status"/>
   <!-- Running count of select run purpose sessions, want to have this on
   surface of objects to allow for ease of assignment for new test runs-->
   <index name="veracis_run_number" meta_type="FieldIndex">
