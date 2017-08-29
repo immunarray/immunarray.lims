@@ -41,6 +41,12 @@ class IAssayRequest(model.Schema):
         required=False,
     )
 
+    aliquot_evaluated = schema.TextLine(
+        title=_(u"Aliquot ID Used For Assay Request"),
+        description=_(u"Aliquot ID Used For Assay Request"),
+        required=False,
+    )
+
     comment = schema.Text(
         title=_(u"Any Notes or Comments About the Assay Request"),
         description=_(u"Any Notes or Comments About the Assay Request"),

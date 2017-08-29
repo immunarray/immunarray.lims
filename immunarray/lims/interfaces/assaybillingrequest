@@ -2,7 +2,9 @@
 import datetime
 from zope import schema
 
+from immunarray.lims import messageFactory as _
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone.supermodel import model
 
 
 def currentDate():
@@ -19,6 +21,12 @@ class IAssayBillingRequest(model.Schema):
         source=IChipAssayListVocabulary,
         required=True
     ),
+    # Need to make content file and title from sampleid and assay name
+    sample_id = schema.TextLine(
+        title=_(u"Billing Sample ID`"),
+        description=_(u"Billing Sample ID`"),
+        required=False,
+    )
 
     date_ordered = schema.Date(
         title=_(u"Date Billing Requste was added to LIMS"),
