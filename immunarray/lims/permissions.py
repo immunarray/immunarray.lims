@@ -1,6 +1,7 @@
 """Permission should be duplicated in permissions.py and permissions.zcml
 """
 
+
 def setup_default_permissions(portal):
     mp = portal.manage_permission
     mp(AddMaterial, [], 0)
@@ -18,7 +19,7 @@ def setup_default_permissions(portal):
     mp(AddClinicalSample, [], 0)
     mp(AddClinicalAliquot, [], 0)
     mp(AddRandDSample, [], 0)
-    mp(AddRandDAliquot,[], 0)
+    mp(AddRandDAliquot, [], 0)
     mp(AddQCSample, [], 0)
     mp(AddQCAliquot, [], 0)
     mp(AddiChipAssay, [], 0)
@@ -29,6 +30,10 @@ def setup_default_permissions(portal):
     mp(AddRandDBox, [], 0)
     mp(AddCommercialBox, [], 0)
     mp(AddSite, [], 0)
+    mp(AddAssayBillingRequest, [], 0)
+    mp(AddAssayRequest, [], 0)
+    mp(AddBillingProgram, [], 0)
+
 
 AddClinicalAliquot = "LIMS: Add Clinical Aliquot"
 AddClinicalSample = "LIMS: Add Clinical Sample"
@@ -57,3 +62,6 @@ AddSolution = "LIMS: Add Solution"
 AddTestRun = "LIMS: Add Test Run"
 AddThreeFrameRun = "LIMS: Add Three Frame Run"
 AddVeracisRunBase = "LIMS: Add Veracis Run Base"
+AddAssayRequest = "LIMS: Add Assay Request"
+AddAssayBillingRequest = "Billing: Add Assay Billing Request"
+AddBillingProgram = "Billing: Add Billing Program"
