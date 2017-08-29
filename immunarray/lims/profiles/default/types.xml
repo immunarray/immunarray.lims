@@ -26,4 +26,7 @@
     <object name="Shelf" meta_type="Dexterity FTI"/>
     <object name="Site" meta_type="Dexterity FTI"/>
     <object name="ThreeFrameRun" meta_type="Dexterity FTI"/>
+    <object name="AssayBillingRequest" meta_type="Dexterity FTI"/>
+    <object name="AssayRequest" meta_type="Dexterity FTI"/>
+    <object name="BillingProgram" meta_type="Dexterity FTI"/>
 </object>
