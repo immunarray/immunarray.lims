@@ -53,7 +53,7 @@ class IClinicalSample(ISample):
     # dictonary with value stauts and key test ordered
     test_ordered_status = schema.Dict(
         key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
-        value_type=schema.Choice(values=[_(u"Received"),
+        value_type=schema.Choice(values=[_(u"Ordered"),
                                          _(u"To Be Tested"),
                                          _(u"In Queue"),
                                          _(u"Testing"),
