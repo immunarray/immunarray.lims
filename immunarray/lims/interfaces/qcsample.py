@@ -45,14 +45,6 @@ class IQCSample(ISample):
         required=False,
     )
 
-    commercial_use_status = schema.Choice(
-        title=_(u"QC Commercial Use Status"),
-        description=_(u"QC Commercial Use Status"),
-        values=[_(u"Under Review"), _(u"Rejected"), _(u"Released"),
-                _(u"In Use"), _(u"Consumed")],
-        required=True,
-    )
-
     date_added = schema.Date(
         title=_(u"Date QC Sample was added to LIMS"),
         description=_(u"Date QC Sample was added to LIMS"),
