@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="clinicalsample_workflow"
-             title="DC Workflow Definition"
+<dc-workflow workflow_id="qcsample_workflow"
+             title="QC Sample Workflow"
              description=""
              state_variable="review_state"
-             initial_state="received"
+             initial_state="under_review"
              manager_bypass="False">
 
   <state state_id="under_review" title="Under Review">

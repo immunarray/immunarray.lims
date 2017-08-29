@@ -21,9 +21,18 @@
       <bound-workflow workflow_id="clinicalsample_workflow"/>
     </type>
 
+    <type type_id="ClinicalAliquot">
+      <bound-workflow workflow_id="clinicalaliquot_workflow"/>
+    </type>
+
     <type type_id="QCSample">
       <bound-workflow workflow_id="qcsample_workflow"/>
     </type>
+
+    <type type_id="QCAliquot">
+      <bound-workflow workflow_id="qcaliquot_workflow"/>
+    </type>
+
 
   </bindings>
 

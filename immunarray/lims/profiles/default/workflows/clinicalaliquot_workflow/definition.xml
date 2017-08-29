@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="clinicalaliquot_workflow"
+             title="Clinical Aliquot Workflow"
+             description=""
+             state_variable="review_state"
+             initial_state="available"
+             manager_bypass="False">
+
+  <state state_id="available" title="Available">
+    <exit-transition transition_id="queue"/>
+  </state>
+
+  <state state_id="in_queue" title="In Queue">
+    <exit-transition transition_id="make_available"/>
+    <exit-transition transition_id="begin_process"/>
+  </state>
+
+  <state state_id="in_process" title="In Process">
+    <exit-transition transition_id="pass"/>
+    <exit-transition transition_id="fail"/>
+  </state>
+
+  <state state_id="qc_passed" title="QC Passed">
+  </state>
+
+  <state state_id="qc_failed" title="QC Failed">
+  </state>
+
+  <transition transition_id="make_available"
+              title="Make Available"
+              new_state="available"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=make_available"
+            category="workflow"
+            icon="">Make Available
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('make_available')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="queue"
+              title="Queue"
+              new_state="in_queue"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=queue"
+            category="workflow"
+            icon="">Queue
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('queue')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="begin_process"
+              title="Begin Process"
+              new_state="in_process"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=begin_process"
+            category="workflow"
+            icon="">Begin Process
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('begin_process')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="pass"
+              title="QC Fail"
+              new_state="qc_failed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=pass"
+            category="workflow"
+            icon="">QC Fail
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('pass')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="fail"
+              title="QC Pass"
+              new_state="qc_passed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=fail"
+            category="workflow"
+            icon="">QC Pass
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('fail')</guard-expression>
+    </guard>
+  </transition>
+
+</dc-workflow>
