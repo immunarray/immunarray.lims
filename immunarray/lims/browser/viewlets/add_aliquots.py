@@ -87,7 +87,7 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
     """
 
     def __call__(self):
-
+        import pdb;pdb.set_trace()
         result = {'success': False, 'feedback': 'Error.'}
 
         form = self.request.form

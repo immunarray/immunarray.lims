@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="clinicalaliquot_workflow"
+             title="Assay Billing Request"
+             description=""
+             state_variable="review_state"
+             initial_state="available"
+             manager_bypass="False">
+
+  <state state_id="available" title="Available">
+    <exit-transition transition_id="queue"/>
+  </state>
+
+  <state state_id="in_queue" title="In Queue">
+    <exit-transition transition_id="make_available"/>
+  </state>
+
+  <state state_id="in_process" title="In Process">
+    <exit-transition transition_id="pass"/>
+  </state>
+
+  <state state_id="qc_passed" title="QC Passed">
+    <exit-transition transition_id="pass"/>
+  </state>
+
+  <state state_id="qc_failed" title="QC Failed">
+    <exit-transition transition_id="pass"/>
+  </state>
+
+
+</dc-workflow>

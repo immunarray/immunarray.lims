@@ -52,7 +52,7 @@ def make_billing(portal):
     b1 = create(portal, 'Folder', 'billing', 'Billing')
     b2 = create(portal['billing'], 'Folder', 'assaybillingrequests',
                 'Assay Billing Requests')
-    b3 = create(portal['billing'], 'Folder', 'billingprograms',
+    b3 = create(portal['billing'], 'Folder', 'billingprograms_workflow',
                 'Billing Programs')
 
     disallow_default_contenttypes(b1)

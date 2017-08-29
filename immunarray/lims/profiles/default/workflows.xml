@@ -6,6 +6,9 @@
   <object name="ichip_workflow" meta_type="Workflow"/>
   <object name="clinicalsample_workflow" meta_type="Workflow"/>
   <object name="qcsample_workflow" meta_type="Workflow"/>
+  <object name="qcaliqout_workflow" meta_type="Workflow"/>
+  <object name="clinicalaliquot_workflow" meta_type="Workflow"/>
+  <object name="material_workflow" meta_type="Workflow"/>
 
   <bindings>
 
@@ -33,6 +36,9 @@
       <bound-workflow workflow_id="qcaliquot_workflow"/>
     </type>
 
+    <type type_id="Material">
+      <bound-workflow workflow_id="material_workflow"/>
+    </type>
 
   </bindings>
 
