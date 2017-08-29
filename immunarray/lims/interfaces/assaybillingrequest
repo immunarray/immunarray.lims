@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+import datetime
+from zope import schema
+
+from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+
+
+def currentDate():
+    return datetime.datetime.now().date()
+
+
+class IAssayBillingRequest(model.Schema):
+    """Object that will be attached to sample.  It will be the instance object
+    that has a workflow that can be tracked in the LIMS.
+    """
+    assay_name = schema.Choice(
+        title=_(u"Assay to be Billed"),
+        description=_(u"Assay to be Billed"),
+        source=IChipAssayListVocabulary,
+        required=True
+    ),
+
+    date_ordered = schema.Date(
+        title=_(u"Date Billing Requste was added to LIMS"),
+        description=_(u"Date Billing Requste was added to LIMS"),
+        defaultFactory=currentDate,
+        required=True,
+    )
+
+    date_resulted = schema.Date(
+        title=_(u"Assay Billing Resolved Date"),
+        description=_(u"Assay Billing Resolved Date"),
+        required=False,
+    )
+
+    date_billed = schema.Date(
+        title=_(u"Assay Billed on Date"),
+        description=_(u"Assay Billed on Date"),
+        required=False,
+    )
+
+    comment = schema.Text(
+        title=_(u"Any Notes or Comments About the Assay Billing Request"),
+        description=_(u"Any Notes or Comments About the Assay Billing Request"),
+        required=False,
+    )
