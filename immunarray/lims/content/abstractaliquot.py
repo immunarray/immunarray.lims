@@ -15,7 +15,7 @@ class AbstractAliquot(BaseContainer):
     @aliquot_type.setter
     def aliquot_type(self, value):
         self._aliquot_type = value
-        if value == 'Bulk':
+        if 'bulk' in value.lower():
             alsoProvides(self, IBulkAliquot)
         else:
             alsoProvides(self, IWorkingAliquot)
