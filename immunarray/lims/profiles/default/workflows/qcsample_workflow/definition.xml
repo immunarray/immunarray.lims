@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="clinicalsample_workflow"
+             title="DC Workflow Definition"
+             description=""
+             state_variable="review_state"
+             initial_state="received"
+             manager_bypass="False">
+
+  <state state_id="under_review" title="Under Review">
+    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="reject"/>
+  </state>
+
+  <state state_id="released" title="Released">
+    <exit-transition transition_id="use"/>
+    <exit-transition transition_id="reject"/>
+  </state>
+
+  <state state_id="rejected" title="Rejected">
+    <exit-transition transition_id="review"/>
+  </state>
+
+  <state state_id="in_use" title="In Use">
+    <exit-transition transition_id="reject"/>
+    <exit-transition transition_id="consume"/>
+  </state>
+
+  <state state_id="consumed" title="Consumed">
+  </state>
+
+  <transition transition_id="review"
+              title="Review Sample"
+              new_state="under_review"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=review"
+            category="workflow"
+            icon="">Review Sample
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('review')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="reject"
+              title="Reject Sample"
+              new_state="rejected"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+            category="workflow"
+            icon="">Reject Sample
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('reject')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="release"
+              title="Release Sample"
+              new_state="released"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=release"
+            category="workflow"
+            icon="">Release Sample
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('release')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="use"
+              title="Use Sample"
+              new_state="in_use"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=use"
+            category="workflow"
+            icon="">Use
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('use')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="consume"
+              title="Consume Sample"
+              new_state="consumed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=consume"
+            category="workflow"
+            icon="">Consume Sample
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('consume')</guard-expression>
+    </guard>
+  </transition>
+
+
+</dc-workflow>
