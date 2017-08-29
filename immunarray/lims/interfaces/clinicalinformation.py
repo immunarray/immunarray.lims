@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from plone.autoform import directives as form
-from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 
 
-class IMedicalHistoryPatient(model.Schema):
+class IMedicalHistoryPatient(BaseModel):
     """ Interface for clinical information input given by patient"""
     form.widget(symptoms_choice=CheckBoxFieldWidget)
     clinical_impression = schema.List(
@@ -24,6 +24,6 @@ class IMedicalHistoryPatient(model.Schema):
     )
 
 
-class ICaseReportFormPhysician(model.Schema):
+class ICaseReportFormPhysician(BaseModel):
     """ Interface for clinial information input given by physician"""
     pass

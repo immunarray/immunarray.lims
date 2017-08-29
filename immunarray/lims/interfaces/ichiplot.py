@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.autoform import directives as form
 from plone.namedfile.field import NamedFile
-from plone.supermodel import model
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.interface import Invalid
@@ -21,7 +21,7 @@ def NonZeroConstraint(value):
     return True
 
 
-class IiChipLot(model.Schema):
+class IiChipLot(BaseModel):
     """An iChip Lot that will contain iChip objects.
     """
 

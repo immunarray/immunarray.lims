@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from plone.app.textfield import RichText
 from plone.namedfile.field import NamedBlobFile, NamedBlobImage
-from plone.supermodel import model
 from zope import schema
 
 
-class IiChip(model.Schema):
+class IiChip(BaseModel):
     """An iChip Lot that will be the container class object
     """
 

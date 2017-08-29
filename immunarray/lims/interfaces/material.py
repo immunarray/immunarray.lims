@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
-from plone.supermodel import model
+from zope import schema
 from zope.interface import alsoProvides
 
 
-class IMaterial(model.Schema):
+class IMaterial(BaseModel):
     """Base schema fields common to all Material types.
 
     To use these fields, create a new Dexterity type and enable the

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
-from plone.supermodel import model
+from immunarray.lims.interfaces import BaseModel
 from zope import schema
 
 
-class ITestRequisition(model.Schema):
+class ITestRequisition(BaseModel):
     """
     """
 

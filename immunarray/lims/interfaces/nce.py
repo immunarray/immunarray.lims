@@ -4,7 +4,7 @@
 import datetime
 
 from immunarray.lims import messageFactory as _
-from plone.supermodel import model
+from immunarray.lims.interfaces import BaseModel
 from zope import schema
 
 
@@ -12,7 +12,7 @@ def currentTime():
     return datetime.datetime.now()
 
 
-class INCE(model.Schema):
+class INCE(BaseModel):
     """General NCE Item to be used to track non conformance events in the lab
     """
 

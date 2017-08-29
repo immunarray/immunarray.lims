@@ -3,11 +3,11 @@
 """
 
 from immunarray.lims import messageFactory as _
-from plone.supermodel import model
+from immunarray.lims.interfaces import BaseModel
 from zope import schema
 
 
-class ICustomerServiceCall(model.Schema):
+class ICustomerServiceCall(BaseModel):
     """Interface for Customer Service Call objects CSC
     """
     csc_client = schema.Choice(

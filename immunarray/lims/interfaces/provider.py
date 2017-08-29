@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from bika.lims.interfaces.person import IPerson
 from immunarray.lims import messageFactory as _
-from plone.app.content.interfaces import INameFromTitle
 from zope import schema
-from zope.component import adapter
-from zope.interface import Interface, implementer
 
 
 class IProvider(IPerson):
@@ -61,5 +58,3 @@ class IProvider(IPerson):
         values=[_(u'Standard'), _(u'Extended')],
         required=True,
     )
-
-

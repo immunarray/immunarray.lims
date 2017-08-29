@@ -2,14 +2,14 @@
 from datetime import date
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
-from plone.supermodel import model
 from zope import schema
 from zope.interface import alsoProvides
 
 
-class IVeracisRunBase(model.Schema):
+class IVeracisRunBase(BaseModel):
     """Object that will be the base of all veracis runs
     """
     veracis_run_number = schema.Int(

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.qc import QCListVocabulary
 from plone.app.textfield import RichText
-from plone.supermodel import model
 from zope import schema
 
 
-class IiChipAssay(model.Schema):
+class IiChipAssay(BaseModel):
     """ Interface that will allow for creation of new iChip Assays"""
     title = schema.TextLine(
         title=_(u"iChip Assay"),

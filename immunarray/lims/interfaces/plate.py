@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from plone.supermodel import model
+from immunarray.lims.interfaces import BaseModel
 
 
-class IPlate96Well(model.Schema):
+class IPlate96Well(BaseModel):
     """
     A 96 Well plate object
     """

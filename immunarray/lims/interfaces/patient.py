@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from bika.lims.interfaces.person import IPerson
 from immunarray.lims import messageFactory as _
-from plone.app.content.interfaces import INameFromTitle
 from zope import schema
-from zope.component import adapter
-from zope.interface import Interface, implementer
 
 
 class IPatient(IPerson):
@@ -68,6 +65,3 @@ class IPatient(IPerson):
     )
 
     #  title = IPerson.first_name + " " + IPerson.last_name
-
-
-

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import datetime
-from zope import schema
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.content.abstractsample import assignVeracisId
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.solution import *
-from plone import api
-from zope.interface import alsoProvides, implements
-from zope.schema.interfaces import IContextAwareDefaultFactory
+from zope import schema
+from zope.interface import alsoProvides
 
 
 def currentTime():
@@ -16,25 +15,6 @@ def currentTime():
 
 def currentDate():
     return datetime.datetime.now().date()
-
-
-class assignVeracisId():
-    implements(IContextAwareDefaultFactory)
-
-    def __init__(self):
-        pass
-
-    def __call__(self, context):
-        """Pull all Veracis IDs for R&D and QC samples and get the next one.
-        """
-        brains = api.content.find(
-            portal_type=['QCSample', 'RandDSample'], sort_on='veracis_id',
-            sort_order='reverse', limit=1)
-        if brains:
-            _id = str(int(brains[0].veracis_id) + 1)
-            return unicode(_id)
-        print "No QC or RandD samples found"
-        return u"1000"
 
 
 class IQCSample(ISample):

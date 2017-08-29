@@ -1,8 +1,9 @@
-from zope import schema
-from plone.supermodel import model
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
+from zope import schema
 
-class IAliquot(model.Schema):
+
+class IAliquot(BaseModel):
     """Common schema fields for all types of Aliquots
     """
 
@@ -18,4 +19,3 @@ class IAliquot(model.Schema):
         required=True,
         readonly=True,
     )
-

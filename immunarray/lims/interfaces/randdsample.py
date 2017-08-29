@@ -2,8 +2,8 @@
 import datetime
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.content.abstractsample import assignVeracisId
 from immunarray.lims.interfaces.sample import ISample
-from immunarray.lims.interfaces.solution import *
 from zope import schema
 
 
@@ -40,7 +40,7 @@ class IRandDSample(ISample):
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
         description=_(u"R&D Veracis Sample ID"),
-        # default=assignVeracisId(),
+        defaultFactory=assignVeracisId(),
         required=True,
     )
 
