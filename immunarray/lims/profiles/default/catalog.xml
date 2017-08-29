@@ -45,4 +45,9 @@
     <indexed_attr value="veracis_id"/>
   </index>
   <column value="veracis_id"/>
+  <!-- Remaining volume for overview of samples/aliquots -->
+  <index name="remaining_volume" meta_type="FieldIndex">
+    <indexed_attr value="remaining_volume"/>
+  </index>
+  <column value="remaining_volume"/>
 </object>
