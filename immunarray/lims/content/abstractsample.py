@@ -1,6 +1,32 @@
+from immunarray.lims import logger
 from immunarray.lims.interfaces.sample import ISample
-from . import BaseContainer
 from zope.interface import implements
+from zope.schema.interfaces import IContextAwareDefaultFactory
+from plone.api.content import find
+
+from . import BaseContainer
+
+
+class assignVeracisId():
+    """QC and RandD samples use this as the default value of their 
+    veracis_id fields.
+    """
+    implements(IContextAwareDefaultFactory)
+
+    def __init__(self):
+        pass
+
+    def __call__(self, context):
+        """Pull all Veracis IDs for R&D and QC samples and get the next one.
+        """
+        brains = find(portal_type=['QCSample', 'RandDSample'],
+                      sort_on='veracis_id',
+                      sort_order='reverse', limit=1)
+        if brains:
+            _id = str(int(brains[0].veracis_id) + 1)
+            return unicode(_id)
+        logger.info("assignVeracisId: No QC or RandD samples: using ID '1000'")
+        return u"1000"
 
 
 class AbstractSample(BaseContainer):
