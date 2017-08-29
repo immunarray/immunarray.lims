@@ -36,7 +36,6 @@ class AbstractSample(BaseContainer):
 
     def __init__(self, *args, **kwargs):
         super(AbstractSample, self).__init__(*args, **kwargs)
-        self._initial_volume = 0
 
     @property
     def initial_volume(self):
@@ -45,7 +44,7 @@ class AbstractSample(BaseContainer):
     @initial_volume.setter
     def initial_volume(self, value):
         # if there's already an _initial_volume, do NOT update remaining_volume.
-        already_set = self._initial_volume
+        already_set = getattr(self, '_initial_volume', False)
         self._initial_volume = value
         if not already_set:
             self.remaining_volume = value

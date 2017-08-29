@@ -38,7 +38,7 @@ class AbstractAliquot(BaseContainer):
     @initial_volume.setter
     def initial_volume(self, value):
         # if there's already an _initial_volume, do NOT update remaining_volume.
-        already_set = self._initial_volume
+        already_set = getattr(self, '_initial_volume', False)
         self._initial_volume = value
         if not already_set:
             self.remaining_volume = value
