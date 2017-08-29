@@ -25,13 +25,20 @@ class AddAliquotsViewletSubmit(BrowserView):
 
     def __call__(self):
         form = self.request.form
+
         aliquot_type = form.get('aliquot_type', False)
+        if not aliquot_type:
+            msg = u'You must select the type of aliquot to be created.'
+            self.context.plone_utils.addPortalMessage(msg)
+            self.request.response.redirect(self.context.absolute_url())
+
         aliquot_volume = form.get('aliquot_volume', False)
         aliquot_count = form.get('aliquot_count', False)
         if not all([aliquot_type, aliquot_volume, aliquot_count]):
             msg = u'One of Aliquot type, volume or count was not defined!'
             self.context.plone_utils.addPortalMessage(msg)
             self.request.response.redirect(self.context.absolute_url())
+
         try:
             aliquot_volume = int(aliquot_volume)
             aliquot_count = int(aliquot_count)
@@ -80,6 +87,13 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
         result = {'success': False, 'feedback': 'Error.'}
 
         form = self.request.form
+
+        # validate aliquot_type
+        aliquot_type = form.get('aliquot_type', False)
+        if not aliquot_type:
+            result['feedback'] = \
+                u'You must select the type of aliquot to be created.'
+            return json.dumps(result)
 
         # validate aliquot_volume.
         aliquot_volume = form.get('aliquot_volume', '')

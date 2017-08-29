@@ -37,6 +37,7 @@
           <div class="tr">
             <div class="td center" style="whitespace:nowrap">
               Aliquot type:&nbsp;<select name="aliquot_type" class="aliquot-type">
+                <option value=""></option>
                 <option value="Bulk">Create bulk aliquots</option>
                 <option value="Working">Create working aliquots</option>
               </select>

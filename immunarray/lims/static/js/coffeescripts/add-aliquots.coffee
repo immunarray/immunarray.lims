@@ -1,8 +1,9 @@
 require ['jquery'], ($) ->
     go = (ev, allow_change_count) ->
         authenticator = $('input[name="_authenticator"]').val()
+        base_url = $('body').attr('data-base-url')
         $.ajax
-            url: window.location.href + '/add-aliquots-feedback'
+            url: base_url + '/add-aliquots-feedback'
             type: 'POST'
             dataType: 'json'
             data:

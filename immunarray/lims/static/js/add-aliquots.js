@@ -2,10 +2,11 @@
   require(['jquery'], function($) {
     var go;
     go = function(ev, allow_change_count) {
-      var authenticator;
+      var authenticator, base_url;
       authenticator = $('input[name="_authenticator"]').val();
+      base_url = $('body').attr('data-base-url');
       $.ajax({
-        url: window.location.href + '/add-aliquots-feedback',
+        url: base_url + '/add-aliquots-feedback',
         type: 'POST',
         dataType: 'json',
         data: {
