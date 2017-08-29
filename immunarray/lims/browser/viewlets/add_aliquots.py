@@ -25,9 +25,21 @@ class AddAliquotsViewletSubmit(BrowserView):
 
     def __call__(self):
         form = self.request.form
-        aliquot_type = form['aliquot_type']
-        aliquot_volume = int(form['aliquot_volume'])
-        aliquot_count = int(form['aliquot_count'])
+        aliquot_type = form.get('aliquot_type', False)
+        aliquot_volume = form.get('aliquot_volume', False)
+        aliquot_count = form.get('aliquot_count', False)
+        if not all([aliquot_type, aliquot_volume, aliquot_count]):
+            msg = u'One of Aliquot type, volume or count was not defined!'
+            self.context.plone_utils.addPortalMessage(msg)
+            self.request.response.redirect(self.context.absolute_url())
+        try:
+            aliquot_volume = int(aliquot_volume)
+            aliquot_count = int(aliquot_count)
+        except (ValueError, TypeError):
+            msg = u'Aliquot volume and count must both be whole numbers!'
+            self.context.plone_utils.addPortalMessage(msg)
+            self.request.response.redirect(self.context.absolute_url())
+
         sequence_start = get_sequence_start(self.context.veracis_id)
 
         # Discover if it's RandD or QC aliquots that we will be creating.
@@ -41,13 +53,19 @@ class AddAliquotsViewletSubmit(BrowserView):
         for seq in range(sequence_start, sequence_start + aliquot_count):
             _id = "{self.context.veracis_id}-{seq:03d}".format(**locals())
             _title = "{self.context.veracis_id} - {seq:03d}".format(**locals())
-            aliquot = create(self.context, aliquot_portal_type, _id,
+            aliquot = create(self.context,
+                             aliquot_portal_type,
+                             _id,
                              initial_volume=aliquot_volume,
                              aliquot_type=aliquot_type)
             aliquot.setTitle(_title)
         self.context.remaining_volume -= aliquot_volume * aliquot_count
 
-        msg = u'{} working aliquots created.'.format(aliquot_count)
+        msg = '{} {} aliquots created. Remaining volume on "{}" is {} uL' \
+            .format(aliquot_count,
+                    aliquot_type.lower(),
+                    self.context.title,
+                    self.context.remaining_volume)
         self.context.plone_utils.addPortalMessage(msg)
         self.request.response.redirect(self.context.absolute_url())
 
