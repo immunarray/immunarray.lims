@@ -68,7 +68,9 @@ class AddAliquotsViewletSubmit(BrowserView):
                              initial_volume=aliquot_volume,
                              aliquot_type=aliquot_type)
             aliquot.setTitle(_title)
+
         self.context.remaining_volume -= aliquot_volume * aliquot_count
+        self.context.reindexObject(idxs=['remaining_volume'])
 
         msg = '{} {} aliquots created. Remaining volume on "{}" is {} uL' \
             .format(aliquot_count,
