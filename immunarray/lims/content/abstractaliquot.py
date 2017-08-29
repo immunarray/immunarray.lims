@@ -30,3 +30,15 @@ class AbstractAliquot(BaseContainer):
         """
         self._id = value
         self.setTitle(' - '.join(value.split('-')))
+
+    @property
+    def initial_volume(self):
+        return getattr(self, "_initial_volume", 0)
+
+    @initial_volume.setter
+    def initial_volume(self, value):
+        # if there's already an _initial_volume, do NOT update remaining_volume.
+        already_set = self._initial_volume
+        self._initial_volume = value
+        if not already_set:
+            self.remaining_volume = value
