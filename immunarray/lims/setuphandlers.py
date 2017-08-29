@@ -2,9 +2,9 @@ from Products.CMFCore.permissions import View, ListFolderContents, \
     AccessContentsInformation, ModifyPortalContent
 from Products.CMFPlone import permissions
 from Products.CMFPlone.interfaces import INonInstallable
-from bika.lims.permissions import disallow_default_contenttypes
+from bika.lims.permissions import disallow_default_contenttypes, AddLIMSRoot
 from immunarray.lims.permissions import setup_default_permissions, \
-    AddAssayBillingRequest, AddBillingProgram
+    AddAssayBillingRequest, AddBillingProgram, AddCustomerServiceCall
 from plone.api.content import create
 from plone.app.contenttypes import permissions
 from zope.component.hooks import getSite
@@ -33,6 +33,8 @@ def setupVarious(context):
 
     setup_default_permissions(portal)
     make_billing(portal)
+    make_customer_service(portal)
+    make_executive(portal)
 
 
 def remove_default_content(portal):
@@ -42,7 +44,6 @@ def remove_default_content(portal):
             del_ids.append(obj_id)
     if del_ids:
         portal.manage_delObjects(ids=del_ids)
-
 
 def make_billing(portal):
     """LIMS root object has been created
@@ -62,7 +63,21 @@ def make_billing(portal):
     b2.setLayout('folder_contents')
     b3.setLayout('folder_contents')
 
-    # Remove option to add folder to structure locations
+    b1.manage_permission(AddLIMSRoot, [], 0)
+    b1.manage_permission(
+        permissions.AddFolder, [], 0)
+    b1.manage_permission(
+        View, ['LabManager', 'BillingExec'], 0)
+    b1.manage_permission(
+        AccessContentsInformation, ['LabManager', 'BillingExec'], 0)
+    b1.manage_permission(
+        ListFolderContents, ['LabManager', 'BillingExec'], 0)
+    b1.manage_permission(
+        AddAssayBillingRequest, ['LabManager', 'BillingExec'], 0)
+    b1.manage_permission(
+        ModifyPortalContent, ['LabManager', 'BillingExec'], 0)
+
+    b2.manage_permission(AddLIMSRoot, [], 0)
     b2.manage_permission(
         permissions.AddFolder, [], 0)
     b2.manage_permission(
@@ -75,6 +90,8 @@ def make_billing(portal):
         AddAssayBillingRequest, ['LabManager', 'BillingExec'], 0)
     b2.manage_permission(
         ModifyPortalContent, ['LabManager', 'BillingExec'], 0)
+
+    b3.manage_permission(AddLIMSRoot, [], 0)
     b3.manage_permission(
         permissions.AddFolder, [], 0)
     b3.manage_permission(
@@ -87,6 +104,108 @@ def make_billing(portal):
         AddBillingProgram, ['LabManager', 'BillingExec'], 0)
     b3.manage_permission(
         ModifyPortalContent, ['LabManager', 'BillingExec'], 0)
+
+
+def make_customer_service(portal):
+    """LIMS root object has been created
+    Here we will add the ImmunArray specific objects and configuration.
+    """
+    cs1 = create(portal, 'Folder', 'customerservice', 'Customer Service')
+    cs2 = create(portal['customerservice'], 'Folder', 'customercalls',
+                'Customer Calls')
+    cs3 = create(portal['customerservice'], 'Folder', 'providercalls',
+                'Provider Calls')
+
+    disallow_default_contenttypes(cs1)
+    disallow_default_contenttypes(cs2)
+    disallow_default_contenttypes(cs3)
+
+    cs1.setLayout('folder_contents')
+    cs2.setLayout('folder_contents')
+    cs3.setLayout('folder_contents')
+
+
+    cs1.manage_permission(AddLIMSRoot, [], 0)
+    cs1.manage_permission(
+        permissions.AddFolder, [], 0)
+    cs1.manage_permission(
+        View, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs1.manage_permission(
+        AccessContentsInformation, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs1.manage_permission(
+        ListFolderContents, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs1.manage_permission(
+        AddAssayBillingRequest, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs1.manage_permission(
+        ModifyPortalContent, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+
+    cs2.manage_permission(AddLIMSRoot, [], 0)
+    cs2.manage_permission(
+        permissions.AddFolder, [], 0)
+    cs2.manage_permission(
+        View, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs2.manage_permission(
+        AccessContentsInformation, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs2.manage_permission(
+        ListFolderContents, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs2.manage_permission(
+        AddCustomerServiceCall, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs2.manage_permission(
+        ModifyPortalContent, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+
+    cs3.manage_permission(AddLIMSRoot, [], 0)
+    cs3.manage_permission(
+        permissions.AddFolder, [], 0)
+    cs3.manage_permission(
+        View, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs3.manage_permission(
+        AccessContentsInformation, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs3.manage_permission(
+        ListFolderContents, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs3.manage_permission(
+        AddBillingProgram, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+    cs3.manage_permission(
+        ModifyPortalContent, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
+
+
+def make_executive(portal):
+    """LIMS root object has been created
+    Here we will add the ImmunArray specific objects and configuration.
+    """
+    ex1 = create(portal, 'Folder', 'executive', 'Executive')
+    ex2 = create(portal['executive'], 'Folder', 'reports',
+                 'Reports')
+
+    disallow_default_contenttypes(ex1)
+    disallow_default_contenttypes(ex2)
+
+    ex1.setLayout('folder_contents')
+    ex2.setLayout('folder_contents')
+
+    ex1.manage_permission(AddLIMSRoot, [], 0)
+    ex1.manage_permission(
+        permissions.AddFolder, [], 0)
+    ex1.manage_permission(
+        View, ['LabManager', 'Executive'], 0)
+    ex1.manage_permission(
+        AccessContentsInformation, ['LabManager', 'Executive'], 0)
+    ex1.manage_permission(
+        ListFolderContents, ['LabManager', 'Executive'], 0)
+    ex1.manage_permission(
+        ModifyPortalContent, ['LabManager', 'Executive'], 0)
+
+    ex2.manage_permission(AddLIMSRoot, [], 0)
+    ex2.manage_permission(
+        permissions.AddFolder, [], 0)
+    ex2.manage_permission(
+        View, ['LabManager', 'Executive'], 0)
+    ex2.manage_permission(
+        AccessContentsInformation, ['LabManager', 'Executive'], 0)
+    ex2.manage_permission(
+        ListFolderContents, ['LabManager', 'Executive'], 0)
+    ex2.manage_permission(
+        ModifyPortalContent, ['LabManager', 'Executive'], 0)
+
 
 
 def uninstall(context):
