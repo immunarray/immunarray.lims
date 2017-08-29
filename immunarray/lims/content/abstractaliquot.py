@@ -19,3 +19,14 @@ class AbstractAliquot(BaseContainer):
             alsoProvides(self, IBulkAliquot)
         else:
             alsoProvides(self, IWorkingAliquot)
+
+    @property
+    def id(self):
+        return getattr(self, '_id')
+
+    @id.setter
+    def id(self, value):
+        """The title is set the same as the ID, but has spaces in it.
+        """
+        self._id = value
+        self.setTitle(' - '.join(value.split('-')))
