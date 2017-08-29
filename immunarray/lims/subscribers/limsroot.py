@@ -45,7 +45,6 @@ def create_structure(lims):
         [lims, 'Folder', 'patients', 'Patients'],
         [lims, 'Folder', 'providers', 'Providers'],
         [lims, 'Folder', 'ichipassay', 'iChip Assays'],
-        [lims, 'Folder', 'customerservicecall', 'Customer Service Calls']
     ]:
         obj = api.content.create(container=x[0], type=x[1], id=x[2], title=x[3])
         obj.setLayout('folder_contents')
@@ -57,7 +56,6 @@ def create_structure(lims):
 
 def structure_permissions(lims):
     # Remove option to add folder to structure locations
-    lims.customerservicecall.manage_permission(permissions.AddFolder, [], 0)
     lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
     lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
     lims.inventory.manage_permission(permissions.AddFolder, [], 0)
@@ -72,7 +70,6 @@ def structure_permissions(lims):
     lims.testruns.manage_permission(permissions.AddFolder, [], 0)
 
     # View permission
-    lims.customerservicecall.manage_permission(View, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
     lims.ichipassay.manage_permission(View, ['LabManager','LabClerk'], 0)
     lims.ichiplots.manage_permission(View, ['LabManager','LabClerk'], 0)
     lims.inventory.manage_permission(View, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
@@ -85,7 +82,6 @@ def structure_permissions(lims):
     lims.solutions.manage_permission(View, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
     lims.testruns.manage_permission(View, ['LabManager','LabClerk'], 0)
     # Access Contents Information
-    lims.customerservicecall.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
     lims.ichipassay.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
     lims.ichiplots.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
     lims.inventory.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
@@ -99,7 +95,6 @@ def structure_permissions(lims):
     lims.solutions.manage_permission(AccessContentsInformation, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
     lims.testruns.manage_permission(AccessContentsInformation, ['LabManager','LabClerk'], 0)
     # List Folder Contents
-    lims.customerservicecall.manage_permission(ListFolderContents, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
     lims.ichipassay.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
     lims.ichiplots.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
     lims.inventory.manage_permission(ListFolderContents, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
@@ -114,7 +109,6 @@ def structure_permissions(lims):
     lims.testruns.manage_permission(ListFolderContents, ['LabManager','LabClerk'], 0)
 
     # Custom Add Permission
-    lims.customerservicecall.manage_permission(AddCustomerServiceCall, ['LabManager','LabClerk','SalesRep','BillingExec'], 0)
     lims.ichipassay.manage_permission(AddiChipAssay, ['LabManager'], 0)
     lims.ichiplots.manage_permission(AddiChipLot, ['LabManager','LabClerk'], 0)
     lims.inventory.manage_permission(AddRack, ['LabManager','LabClerk','RandDManager','RandDLabClerk'], 0)
@@ -130,7 +124,6 @@ def structure_permissions(lims):
     lims.testruns.manage_permission(AddTestRun, ['LabManager','LabClerk'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager','LabClerk'], 0)
     # Modify portal content
-    lims.customerservicecall.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.ichipassay.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.ichiplots.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.inventory.manage_permission(ModifyPortalContent, ['LabManager'], 0)
