@@ -32,7 +32,7 @@
     </style>
 
     <div class="add-aliquots-outer">
-      <form name="add-aliquots" action="add-aliquots-submit" method="POST">
+      <form name="add-aliquots" method="POST" tal:attributes="action python:context.absolute_url() + '/add-aliquots-submit'">
         <div class="table">
           <div class="tr">
             <div class="td center" style="whitespace:nowrap">

@@ -5,7 +5,7 @@
       var authenticator;
       authenticator = $('input[name="_authenticator"]').val();
       $.ajax({
-        url: 'add-aliquots-feedback',
+        url: window.location.href + '/add-aliquots-feedback',
         type: 'POST',
         dataType: 'json',
         data: {
