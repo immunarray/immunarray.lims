@@ -1,1935 +1,1929 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
       lang="en"
-      metal:use-macro="here/main_template/macros/master"
-      i18n:domain="sits">
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="immunarray">
 
-    <head>
-        <meta charset="UTF-8">
-        <title>SLE-key v2.0</title>
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <title>SLE-key v2.0</title>
+</head>
 <body>
 <metal:main fill-slot="main">
-    <style media="all" type="text/css">
-            @page{margin:0cm 0cm 0cm 0cm}
-            #table1, #table2,#table3, #table4, #table5, #table6, #table8,
-            #table9, #table10, #table11,#table12, #table13, #table14, #table15,
-            #table16, #table17, #table18, #table19, #table20, #table21,
-            #table22,#table23,#table24,#table25,#table26{
-            width:8in;
-            border-collapse:collapse;
-            }
-            #table7{
-            width:7in;
-            border-collapse:collapse;
-            }
-            .alpha p{
-            font-family:Helvetica;
-            font-size:10pt;
-            margin-top: 0px;
-            margin-right: 0px;
-            margin-bottom: 0px;
-            margin-left: 0px;
-            }
-            .alpha table, tr, td {
-            border:0.5px solid black;
-            }
-            .alpha table{
-            width:8in;
-            border-collapse:collapse;
-            }
-            .alpha tr, td{
-            padding-top: 0px;
-            padding-right: 2px;
-            padding-bottom: 0px;
-            padding-left: 2px;
-            }
-            .beta p{
-            font-family:Helvetica;
-            font-size:10pt;
-            margin-top: 0px;
-            margin-right: 0px;
-            margin-bottom: 0px;
-            margin-left: 0px;
-            }
-            .beta p{
-            font-family:Helvetica;
-            font-size:9pt;
-            }
-            .beta td{
-            text-align:center;
-            }
-            .gama p{
-            font-family:Helvetica;
-            font-size:10pt;
-            margin-top: 0px;
-            margin-right: 0px;
-            margin-bottom: 0px;
-            margin-left: 0px;
-            }
-            .delta p{
-            font-family:Helvetica;
-            font-size:9pt;
-            }
-            .gama p{
-            font-family:Helvetica;
-            font-size:9pt;
-            margin-top: 0px;
-            margin-right: 0px;
-            margin-bottom: 0px;
-            margin-left: 0px;
-            }
-            .delta p{
-            font-family:Helvetica;
-            font-size:9pt;
-            margin-top: 0px;
-            margin-right: 0px;
-            margin-bottom: 0px;
-            margin-left: 0px;
-            }
-            .delta th{
-            background-color:lightgrey;
-            text-align:center;
-            }
-            .hidden { display:none; }
+<style media="all" type="text/css">
+      @page{
+        margin:0cm;
+      }
+      table {
+        width:100%;
+        border-collapse:collapse;
+      }
+      .alpha p{
+        font-family:Helvetica;
+        font-size:10pt;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+      }
+      .alpha table, tr, td {
+        border:0.5px solid black;
+      }
+      .alpha tr, td{
+        padding-top: 0px 2px 0px 2px;
+      }
+      .beta p{
+        font-family:Helvetica;
+        font-size:10pt;
+        margin: 0px;
+      }
+      .beta p{
+        font-family:Helvetica;
+        font-size:9pt;
+      }
+      .beta td{
+        text-align:center;
+      }
+      .gama p{
+        font-family:Helvetica;
+        font-size:10pt;
+        margin: 0px;
+      }
+      .delta p{
+        font-family:Helvetica;
+        font-size:9pt;
+      }
+      .gama p{
+        font-family:Helvetica;
+        font-size:9pt;
+        margin: 0px;
+      }
+      .delta p{
+        font-family:Helvetica;
+        font-size:9pt;
+        margin: 0px;
+      }
+      .delta th{
+        background-color:lightgrey;
+        text-align:center;
+      }
+      .hidden {
+        display:none;
+      }
+      /*This is Plone's style for inputs; I just want to apply the same to input[type="date"] */
+      input[type="date"] {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #696969;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      }
+      .delete-plate{
+          cursor: pointer;
+          background-color:lightgrey;
+      }
+</style>
+<form action="buildtest" name="buildtest" method="post">
+<input type="hidden" name="submitted" value="1"/>
+<select id="assay_selection">
+  <option name="None">None</option>
+  <tal:block repeat="assay object/@@ctest/iChipAssayList">
+    <option tal:content="assay"></option>
+  </tal:block>
+  <option name="Custom">Custom</option>
+</select>
+<!-- Header PP-007.04-->
+<input type="button" id="buildselectedrun" value="Build Selected Run"/>
+<input type="button" id="saverun" value="Save Run"/>
+<input type="button" id="printrun" value="Print Run"/>
+<table id="table1" class="alpha">
+  <tr>
+    <td style="width:10%" rowspan="5">
+      <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
+      <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
+    </td>
+    <td colspan="3" style="text-align: center">
+      <p>CONFIDENTIAL</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <p>Chapter:&nbsp;&nbsp;Processes & Procedures</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <p>Topic:&nbsp;&nbsp;Immunkey &reg; Test Form 8 Frames -5 Plates X 8 Samples</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Document No. PP-007.04</p>
+    </td>
+    <td>
+      <p>Version: 01</p>
+    </td>
+    <td>
+      <p>Page:</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <p> Effective Date:</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p><strong>FILE NAME:</strong> SLE-key &reg; v2.0 Test <input type="text" id="veracistestcount"> (Veracis Test Run
+        <input type="text" id="veracisrunnumber">)</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p><strong>PURPOSE:</strong> Clinical Testing</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Date:&nbsp;
+        <input type="date" id="testingdate">
+      </strong></p>
+    </td>
+    <td>
+      <p><strong>PLANNED BY: <input type="text" id="testplanner"></strong></p>
+    </td>
+    <td colspan="2">
+      <p><strong>PERFORMED BY: <input type="text" id="testoperator"></strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p><strong>Sample Class: 3=Pos. QC 5=Neg. QC 1=Unknown</strong></p>
+    </td>
+  </tr>
+</table>
 
-            /*This is Plone's style for inputs; I just want to apply the same to input[type="date"] */
-            #testingdate {
-              display: block;
-              width: 100%;
-              height: 34px;
-              padding: 6px 12px;
-              font-size: 14px;
-              line-height: 1.42857143;
-              color: #696969;
-              background-color: #fff;
-              background-image: none;
-              border: 1px solid #ccc;
-              border-radius: 4px;
-              -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-              box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-              -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-              -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-              transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          }
-          .delete-plate{
-              cursor: pointer;
-              background-color:lightgrey;
-          }
-        </style>
-    <form action="buildtest" name="buildtest" method="post">
-        <input type="hidden" name="submitted" value="1"/>
-        <select id="assay_selection">
-            <option name="None">None</option>>
-                <tal:block repeat="assay object/@@ctest/iChipAssayList">
-                    <option tal:content ="assay"></option>
-                </tal:block>
-            <option name="Custom">Custom</option>
-        </select>
-        <!-- Header PP-007.04-->
-        <input type="button" id="buildselectedrun" value="Build Selected Run"/>
-        <input type="button" id="saverun" value="Save Run"/>
-        <input type="button" id="printrun" value="Print Run"/>
-        <table id="table1" class="alpha">
-            <tr>
-                <td style="width:10%" rowspan="5">
-                    <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
-                    <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
-                </td>
-                <td colspan="3" style="text-align: center">
-                    <p>CONFIDENTIAL</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <p>Chapter:&nbsp;&nbsp;Processes & Procedures</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <p>Topic:&nbsp;&nbsp;Immunkey &reg; Test Form 8 Frames -5 Plates X 8 Samples</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>Document No. PP-007.04</p>
-                </td>
-                <td>
-                    <p>Version: 01</p>
-                </td>
-                <td>
-                    <p>Page:</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <p> Effective Date:</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <p><strong>FILE NAME:</strong> SLE-key &reg; v2.0 Test <input type="text" id="veracistestcount"> (Veracis Test Run <input type="text" id=veracisrunnumber>)</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <p><strong>PURPOSE:</strong> Clinical Testing</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><strong>Date:&nbsp;
-                    <input type="date" id="testingdate">
-                    </strong></p>
-                </td>
-                <td>
-                    <p><strong>PLANNED BY: <input type="text" id="testplanner"></strong></p>
-                </td>
-                <td colspan="2">
-                    <p><strong>PERFORMED BY: <input type="text" id="testoperator"></strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <p><strong>Sample Class: 3=Pos. QC 5=Neg. QC 1=Unknown</strong></p>
-                </td>
-            </tr>
-        </table>
+<div id="plates"> <!-- Plate tables are inserted here. -->
 
-        <div id="plates"> <!-- Plate tables are inserted here. -->
+</div>
 
-        </div>
+<table id="blank-plate" class="plate-container beta hidden">
+  <tr>
+    <td colspan="11" style="text-align: center;background-color:lightgrey;">
+      <p style="font-size:11pt;"><strong><span class="plate-title">Plate</span></strong></p>
+    </td>
+    <td>
+      <button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button>
+    </td>
+  </tr>
+  <tr>
+    <td><p><strong>Well</strong></p></td>
+    <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
+    <td><p><strong>&#10004 1<br>(serum)</strong></p></td>
+    <td><p><strong>Sample<br>class</strong></p></td>
+    <td><p><strong>Box</strong></p></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-1"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-1"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-1"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-1"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>2</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-2"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-2"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-2"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-2"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>3</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-3"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-3"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-3"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-3"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>4</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-4"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-4"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-4"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-4"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>5</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-5"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-5"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-5"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-5"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>6</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-6"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-6"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-6"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-6"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>7</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-7"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-7"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-7"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-7"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><p>8</p></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-8"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-8"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-8"/></td>
+    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-8"/></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td rowspan="4"></td>
+    <td>iChip 1 ID</td>
+    <td><input type="text" class="ichip-id ichip-1"></td>
+    <td>iChip 2 ID</td>
+    <td><input type="text" class="ichip-id ichip-2"></td>
+    <td>iChip 3 ID</td>
+    <td><input type="text" class="ichip-id ichip-3"></td>
+    <td>iChip 4 ID</td>
+    <td><input type="text" class="ichip-id ichip-4"></td>
+    <td style="vertical-align:top;" rowspan="3" colspan="3">
+      <p style="text-align:left;">Comments: <textarea size="5" class="plate-comments"/>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td><p>Scan Slot</p></td>
+    <td><p><input type="text" class="scan-slot ichip-1"></p></td>
+    <td><p>Scan Slot</p></td>
+    <td><p><input type="text" class="scan-slot ichip-2"></p></td>
+    <td><p>Scan Slot</p></td>
+    <td><p><input type="text" class="scan-slot ichip-3"></p></td>
+    <td><p>Scan Slot</p></td>
+    <td><p><input type="text" class="scan-slot ichip-4"></p></td>
+  </tr>
+  <tr>
+    <td style="height:50px;vertical-align:top;" colspan="2">
+      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-1"></p>
+    </td>
+    <td style="height:50px;vertical-align:top;" colspan="2">
+      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-2"></p>
+    </td>
+    <td style="height:50px;vertical-align:top;" colspan="2">
+      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-3"></p>
+    </td>
+    <td style="height:50px;vertical-align:top;" colspan="2">
+      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-4"></p>
+    </td>
+  </tr>
+</table>
 
-        <table id="blank-plate" class="plate-container beta hidden">
-            <tr>
-                <td colspan="11" style="text-align: center;background-color:lightgrey;">
-                    <p style="font-size:11pt;"><strong><span class="plate-title">Plate</span></strong></p>
-                </td>
-                <td><button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button></td>
-            </tr>
-            <tr>
-                <td><p><strong>Well</strong></p></td>
-                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
-                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
-                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
-                <td colspan="2"><p><strong>Sample ID-Aliquot</strong></p></td>
-                <td><p><strong>&#10004 1<br>(serum)</strong></p></td>
-                <td><p><strong>Sample<br>class</strong></p></td>
-                <td><p><strong>Box</strong></p></td>
-            </tr>
-            <tr>
-                <td><p>1</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-1"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-1"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-1"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-1"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>2</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-2"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-2"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-2"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-2"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>3</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-3"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-3"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-3"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-3"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>4</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-4"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-4"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-4"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-4"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>5</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-5"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-5"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-5"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-5"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>6</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-6"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-6"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-6"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-6"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>7</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-7"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-7"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-7"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-7"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><p>8</p></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-8"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-8"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-8"/></td>
-                <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-8"/></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td rowspan="4"></td>
-                <td>iChip 1 ID</td>
-                <td><input type="text" class="ichip-id ichip-1"></td>
-                <td>iChip 2 ID</td>
-                <td><input type="text" class="ichip-id ichip-2"></td>
-                <td>iChip 3 ID</td>
-                <td><input type="text" class="ichip-id ichip-3"></td>
-                <td>iChip 4 ID</td>
-                <td><input type="text" class="ichip-id ichip-4"></td>
-                <td style="vertical-align:top;" rowspan="3" colspan="3">
-                    <p style="text-align:left;">Comments: <textarea size="5" class="plate-comments"/>
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td><p>Scan Slot</p></td>
-                <td><p><input type="text" class="scan-slot ichip-1"></p></td>
-                <td><p>Scan Slot</p></td>
-                <td><p><input type="text" class="scan-slot ichip-2"></p></td>
-                <td><p>Scan Slot</p></td>
-                <td><p><input type="text" class="scan-slot ichip-3"></p></td>
-                <td><p>Scan Slot</p></td>
-                <td><p><input type="text" class="scan-slot ichip-4"></p></td>
-            </tr>
-            <tr>
-                <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:<input type="text" id="comments ichip-1"></p>
-                </td>
-                <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:<input type="text" id="comments ichip-2"></p>
-                </td>
-                <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:<input type="text" id="comments ichip-3"></p>
-                </td>
-                <td style="height:50px;vertical-align:top;" colspan="2">
-                    <p style="text-align:left;">Comments:<input type="text" id="comments ichip-4"></p>
-                </td>
-            </tr>
-        </table>
+<!--  Header for PP-007.02 Not needed for building the run-->
+<table id="table7" class="gama" align="center">
+  <tr>
+    <td style="width:10%" rowspan="5">
+      <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
+      <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
+    </td>
+    <td colspan="3" style="text-align: center;">
+      <p>CONFIDENTIAL</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="text-align: left;">
+      <p>Chapter:&nbsp;&nbsp;Processes & Procedures</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="text-align: left;">
+      <p>Title:&nbsp;&nbsp;Serum Testing ImmunKey Procedure with Frames Checklist</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Document No. PP-007.02</p>
+    </td>
+    <td>
+      <p>Version: 01</p>
+    </td>
+    <td>
+      <p>Page: 1 of 4</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" style="text-align: left;">
+      <p>Effective Date:</p>
+    </td>
+  </tr>
+</table>
+<!--  Checklist Run Summary Data  -->
+<table id="table8" class="delta">
+  <tr>
+    <td>
+      <p><strong>Assay (File Name)</strong></p>
+    </td>
+    <td>
+      <p>SLE-key&reg; v2.0 Test ###(Veracis Test Run ####)</p>
+    </td>
+    <td>
+      <p><strong>Test Date</strong>
+      <p>
+    </td>
+    <td>
+      <p>mm/dd/yyyy</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Purpose</strong></p>
+    </td>
+    <td>
+      <p>Clinical Testing</p>
+    </td>
+    <td>
+      <p><strong>Scan Date</strong>
+      <p>
+    </td>
+    <td>
+      <p>mm/dd/yyyy</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Performer</strong></p>
+    </td>
+    <td>
+      <p>Operator</p>
+    </td>
+    <td>
+      <p><strong>Witness</strong></p>
+    </td>
+    <td>
+      <p>Witness Name</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>QC Reviewer</strong>
+      <p>
+    </td>
+    <td>
+      <p>QC Reviewer</p>
+    </td>
+    <td>
+      <p><strong>Scan PMT</strong>
+      <p>
+    </td>
+    <td>
+      <p>50 (Agilent D Scanner G4900DA)</p>
+    </td>
+  </tr>
+</table>
+<!-- Solution Summary Table -->
+<table id="table9" class="delta">
+  <tr style="background-color:lightgrey;">
+    <td style="text-align:center;width:250px">
+      <p><strong>Solutions</strong></p>
+    </td>
+    <td style="text-align:center">
+      <p><strong>Batch #</strong></p>
+    </td>
+    <td style="text-align:center;width:250px">
+      <p><strong>Expiration Date</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Reverse Osmosis Water (ROW)</p>
+    </td>
+    <td style="text-align:center">
+      <p>N/A</p>
+    </td>
+    <td style="text-align:center">
+      <p>N/A</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>10X PBS</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>1X PBS</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>1X PBS - 22.4% Tween 20</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>1X PBS - 1% Casein</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>G&alpha;hulgG-Cy5 in 50% Glycerol</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>G&alpha;hulgM-AF647 in 50% Glycerol</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>70% Ethanol</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<!-- Test Preparation -->
+<br>
+<table id="table10" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;text-align:center;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Test Preparation</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Turn on Incubator at 37.0&deg;C at least 2 hours before testing</p>
+    </td>
+    <td style="width:30px;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Take out slides and equilibrate to room temperature for 1 hour</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Take out slides according to the Test Form and place in secondary slide box</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Record % humidity of the slide package using the humidity indicating card (lavender spot indicates the humidity)</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<!--  Humidy data input for iChips used -->
+<table id="table11" class="delta">
+  <tr>
+    <td>
+      <p>iCHIP Print Lot:</p>
+    </td>
+    <td>
+      <p>iCHIP Print Lot:</p>
+    </td>
+    <td>
+      <p>iCHIP Print Lot:</p>
+    </td>
+    <td>
+      <p>iCHIP Print Lot:</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Humidity:</p>
+    </td>
+    <td>
+      <p>Humidity:</p>
+    </td>
+    <td>
+      <p>Humidity:</p>
+    </td>
+    <td>
+      <p>Humidity:</p>
+    </td>
+  </tr>
+</table>
+<!--  Test Preparation Cont. -->
+<table id="table12" class="delta">
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Filter 1X PBS - 1% Casein solution using a 0.22&upsilon;m filter</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Take out serum specimens (10&upsilon;L) according to the Test Form and equilibrate to room temperature for 1 hour</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>7</strong></p>
+    </td>
+    <td>
+      <p>Centrifuge serum specimens for 5 seconds</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>8</strong></p>
+    </td>
+    <td>
+      <p>Add 740&upsilon;L of freshly filtered 1XPBS -1% Casein solution to each 10&upsilon;L serum specimen to reach 1:75 dilution</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>9</strong></p>
+    </td>
+    <td>
+      <p>Mix the solution by gently pipetting up and down</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>10</strong></p>
+    </td>
+    <td>
+      <p>Arrange diluted serum specimens and slides in order according to the Test Form</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Prepare 1X PBS 0.0445% Tween 20 for slide washing steps</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Record the batch # of 1X PBS - 22.4% Tween 20 on the solutions section</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>In a graduated cylinder, meRecord the batch # of 1X PBS - 22.4% Tween 20 on the solutions section</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Add 500&upsilon;L of 1X PBS - 22.4% Tween 20 and mix gently</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Label bottle: Name (1X PBS - 0.044% Tween 20) Batch #, Date Made, Expiration Date (12 hours), Hazards (none), Storage Conditions (20-25&deg;C)</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Frame Assembly</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Before placing frames on slide do a visual inspection of the gaskets to ensure proper fit on the frames</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Attach the frames to the slides</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Verify correct alignment of the array inside the frames</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Gently squeeze the frame and slide together before securing with the spring clips.</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Blocking</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amount of 1% casein into 25mL disposable reagent reservoir</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Pipette 250&upsilon;L of 1% casein into each will by slowly adding the solution to the upper left corner of the well</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Make sure there is even coverage in each well</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Cover the plate with the transparent plastic cover and incubate on a shaker at 34 rpm for 1 hour at room temperature</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Serum Addition</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Dump the 1X PBS 1% casein solution into a waste container and tap the frame on fiber free paper to remove residual solution</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+</table>
+<!--  Serum start time point table -->
+<table id="table13" class="delta">
+  <tr>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Start time for adding serum (hh:mm):</p>
+    </td>
+    <td style="height:50px;text-align:left;vertical-align:top">
+      <p>Humidity (%):</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Room Temperature (&degC):</p>
+    </td>
+  </tr>
+</table>
+<table id="table14" class="delta">
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Dispense 150&upsilon;L of diluted serum into each well</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Have the witness check the slide # and serum specimen # on the test form against the slide and well. If numbers match, place a check mark in column 1
+        on the test form. Indicate any issues in the comments section</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;vertic-align:center">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Incubate the plates with the slides for 1 hour at 37&deg;C. Rocking at 15 rpm.</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<!-- Serum finsh time point table -->
+<table id="table15" class="delta">
+  <tr>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Finish time for adding specimens (hh:mm):</p>
+    </td>
+    <td style="height:50px;text-align:left;vertical-align:top">
+      <p>Humidity (%):</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Room Temperature (&degC):</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Witness Signature:</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Date:</p>
+    </td>
+</table>
+<br>
+<table id="table16" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Serum Removal</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Remove plate(s) from incubator</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>To remove serum tilt plate to the side and use multichannel pipette to remove serum (set volume to more than 150&upsilon;L)Have the witness check the
+        slide # and serum specimen # on the test form against the slide and well. If numbers match, place a check mark in column 1 on the test form. Indicate
+        any issues in the comments section</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Dispose of serum in waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Serum Washing Procedure</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining 1X PBS onto fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amount of 1X PBS - 0.0445% Tween 20 into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of 1X PBS - 0.0445% Tween 20 to each well and rock at 34 rpm for 5 minutes at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>7</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the 1X PBS - 0.0445% Tween into a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>8</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining 1X PBS - 0.0445% Tween 20 onto fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>9</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>10</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>11</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>12</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining 1X PBS onto fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<br>
+<!-- Header secondary antibody section -->
+<table id="table17" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Secondary Antibody Preparation and Addition</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+</table>
+<!--  Secondary antibody start time point table -->
+<table id="table18" class="delta">
+  <tr>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Start time for adding serum (hh:mm):</p>
+    </td>
+    <td style="height:50px;text-align:left;vertical-align:top">
+      <p>Humidity (%):</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Room Temperature (&degC):</p>
+    </td>
+  </tr>
+</table>
+<table id="table19" class="delta">
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Measure 23mL of 1X PBS - 1% Casein solution into a 50mL conical tube</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Add 10&upsilon;L of 1mg/ml G&alpha;hulgG-Cy5 in 50% Glycerol to the 23mL</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Add 5&upsilon;L of 1mg/ml G&alpha;hulgM-AF647 in 50% Glycerol to the 23mL</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Invert gently until thoroughly mixed</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Dispense 150&upsilon;L of mixed secondary antibody solution into each well</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Incubate the plates with the slides for 1 hour at 37&deg;C. Rocking at 15 rpm.</p>
+    </td>
+    <td style="width:30px;text-align:center;">
+      <p></p>
+    </td>
+  </tr>
+</table>
+<!-- Serum finsh time point table -->
+<table id="table20" class="delta">
+  <tr>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Finish time for adding specimens (hh:mm):</p>
+    </td>
+    <td style="height:50px;text-align:left;vertical-align:top">
+      <p>Humidity (%):</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Room Temperature (&degC):</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Witness Signature:</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Date:</p>
+    </td>
+  </tr>
+</table>
+<br>
+<table id="table21" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Secondary Antibody Washing Procedure</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the secondary antibody solution int a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining secondary antibody on fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining 1X PBS onto fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>7</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amount of 1X PBS - 0.0445% Tween 20 into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>8</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of 1X PBS - 0.0445% Tween 20 to each well and rock at 34 rpm for 5 minutes at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>9</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the 1X PBS - 0.0445% Tween into a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>10</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining 1X PBS - 0.0445% Tween 20 onto fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>11</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>12</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>13</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>14</strong></p>
+    </td>
+    <td>
+      <p>Turn frame upside down and gently tap remaining 1X PBS on fiber free paper</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>15</strong></p>
+    </td>
+    <td>
+      <p>Pour desired amount of ROW into a disposable reagent reservoir</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>16</strong></p>
+    </td>
+    <td>
+      <p>Add 250&upsilon;L of ROW to each well and rock at 34 rpm for 1 minute at room temperature</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<br>
+<!--  Slide Washing and Drying Procedure -->
+<table id="table22" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Slide Washing and Drying Procedure</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Place 2 sheets of fiber free paper on top of 3 sheets of Whatman papers in a 25 slot slide box</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Remove frames from plate one at a time and dump the ROW into a saste container</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Carefully remove the spring clips from the slides/frames and hold each slide on the long narrow edge (not the flat surface)</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Dip each slide 10 times at 1 second per dip in the first beaker of ROW using an up and down motion</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Grasping the other end of the long narrow edge, dip 10 more times at 1 second per dip in a second beaker of ROW using an up and down motion</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Gently tap the long narrow side of each slide on fiber free paper wipe to remove excess water</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>7</strong></p>
+    </td>
+    <td>
+      <p>Place in slide drying box</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>8</strong></p>
+    </td>
+    <td>
+      <p>Fill the slide drying box with an equal number of slides, but no more than 12 slides per box</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>9</strong></p>
+    </td>
+    <td>
+      <p>Centrifuge the slides in the box for 10 minutes at 2500 rpm</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<br>
+<!--  Slide Scanning Procedure -->
+<table id="table23" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Slide Scanning Procedure</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;vertical-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Insert slides into slide holders and load into scanner cassette. Have witness verify slide is in correct position and record in column 2 on Test
+        Form</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Enter the Slide IDs using the format: V(for SLE-key v2.0) Slide Print Lot#_Slide# (i.e. V85.1_42)</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Highlight all slides to be scanned and choose the Scan Profile you intend to use from the menu</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Enter the slot # into the Test Form</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Click on "Output Path" and choose the location you want your data to save</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Enter the Operator ID</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>7</strong></p>
+    </td>
+    <td>
+      <p>Once "Ready" appears in the lower left corner of the window, add all slides to the queue</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>8</strong></p>
+    </td>
+    <td>
+      <p>Once all slides have been added to the queue hit "Start Scan"</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>9</strong></p>
+    </td>
+    <td>
+      <p>Verify that scanning has begun</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>10</strong></p>
+    </td>
+    <td>
+      <p>Review the scan log for any scanning errors at the end of the run</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>11</strong></p>
+    </td>
+    <td>
+      <p>If applicable, rescan any slides that were not properly scanned and make note in the "Comments" column of the Test Form</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>12</strong></p>
+    </td>
+    <td>
+      <p>Remove slides from slide holders and store in a slide box labeled wit hthe Veracis Test Run#. Store at 4&deg;C</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>13</strong></p>
+    </td>
+    <td>
+      <p>If scanning for all tess and rescans is complete, close the Agilent scan control software and turn off the scanner.</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>14</strong></p>
+    </td>
+    <td>
+      <p>Submit Agilent scan files for data analysis</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<table id="table24" class="delta">
+  <tr>
+    <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Witness Signature:</p>
+    </td>
+    <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+      <p>Date:</p>
+    </td>
+  </tr>
+</table>
+<br>
+<!--  Post Testing -->
+<table id="table25" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>Post Testing</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;vertical-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Incubator: Turn of incubator</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Reagents: Discard the expired reagents from daily test run such as the remaining secondary antibody solution, filtered Casein, and 1X PBS.</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Rockers: If there is no testing in the near future, clean rockers to prevent corrosion by removing the wet materials, rinsing with distilled water and
+        drying with a clean cloth.</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Materials, reagents, solutions: Check that adequate supplies and solutions are available for next test run (such as pipette tips and 10X PBS). Notify
+        appropriate persons of needed supplies and solutions. Update the "need to order list".</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td style="height:50px;text-align:left;vertical-align:top;">
+      <p>Comments:</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
+<br>
+<!--  QA Checklist -->
+<table id="table26" class="delta">
+  <tr>
+    <td style="width:35px;background-color:lightgrey;">
+      <p><strong>Step</strong></p>
+    </td>
+    <td style="text-align:center;background-color:lightgrey;">
+      <p><strong>QA Checklist</strong></p>
+    </td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;">
+      <p><strong>&#10004</strong></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;vertical-align:center;">
+      <p><strong>1</strong></p>
+    </td>
+    <td>
+      <p>Review testing checklist for completeness, nonconforming events (NCE), test run number, signatures, etc. Initiate NCE reports if missing.</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>2</strong></p>
+    </td>
+    <td>
+      <p>Review solution records and solution logs for batch numbers, expiration dates, and completed checklists</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>3</strong></p>
+    </td>
+    <td>
+      <p>Update ImmunKey Test Run Summary (PP-004.03)</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>4</strong></p>
+    </td>
+    <td>
+      <p>Update ImmunKey Slide Database (MM-003.03) with the slide use date and description</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>5</strong></p>
+    </td>
+    <td>
+      <p>Update Specimen Database (MM-002.03) with the aliquot use date</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>6</strong></p>
+    </td>
+    <td>
+      <p>Close out all NCE reports affecting the test run. Cross reference the NCE number with a brief description in comment section below.</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>7</strong></p>
+    </td>
+    <td>
+      <p>Scan the completed, signed, reviewed checklist</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>8</strong></p>
+    </td>
+    <td>
+      <p>File checklist in ImmunKey Test Run Log</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="width:35px;text-align:center;">
+      <p><strong>9</strong></p>
+    </td>
+    <td style="height:100px;text-align:left;vertical-align:top;">
+      <p>Comments:</p>
+    </td>
+    <td>
+      <p></p>
+    </td>
+  </tr>
+</table>
 
-        <!--  Header for PP-007.02 Not needed for building the run-->
-        <table id="table7" class="gama" align="center">
-            <tr>
-                <td style="width:10%" rowspan="5">
-                    <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
-                    <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
-                </td>
-                <td colspan="3" style="text-align: center;">
-                    <p>CONFIDENTIAL</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" style="text-align: left;">
-                    <p>Chapter:&nbsp;&nbsp;Processes & Procedures</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" style="text-align: left;">
-                    <p>Title:&nbsp;&nbsp;Serum Testing ImmunKey Procedure with Frames Checklist</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>Document No. PP-007.02</p>
-                </td>
-                <td>
-                    <p>Version: 01</p>
-                </td>
-                <td>
-                    <p>Page: 1 of 4</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" style="text-align: left;">
-                    <p>Effective Date:</p>
-                </td>
-            </tr>
-        </table>
-        <!--  Checklist Run Summary Data  -->
-        <table id="table8" class="delta">
-            <tr>
-                <td>
-                    <p><strong>Assay (File Name)</strong></p>
-                </td>
-                <td>
-                    <p>SLE-key&reg; v2.0 Test ###(Veracis Test Run ####)</p>
-                </td>
-                <td>
-                    <p><strong>Test Date</strong><p>
-                </td>
-                <td>
-                    <p>mm/dd/yyyy</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><strong>Purpose</strong></p>
-                </td>
-                <td>
-                    <p>Clinical Testing</p>
-                </td>
-                <td>
-                    <p><strong>Scan Date</strong><p>
-                </td>
-                <td>
-                    <p>mm/dd/yyyy</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><strong>Performer</strong></p>
-                </td>
-                <td>
-                    <p>Operator</p>
-                </td>
-                <td>
-                    <p><strong>Witness</strong></p>
-                </td>
-                <td>
-                    <p>Witness Name</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><strong>QC Reviewer</strong><p>
-                </td>
-                <td>
-                    <p>QC Reviewer</p>
-                </td>
-                <td>
-                    <p><strong>Scan PMT</strong><p>
-                </td>
-                <td>
-                    <p>50 (Agilent D Scanner G4900DA)</p>
-                </td>
-            </tr>
-        </table>
-        <!-- Solution Summary Table -->
-        <table id="table9" class="delta">
-            <tr style="background-color:lightgrey;">
-                <td style="text-align:center;width:250px">
-                    <p><strong>Solutions</strong></p>
-                </td>
-                <td style="text-align:center">
-                    <p><strong>Batch #</strong></p>
-                </td>
-                <td style="text-align:center;width:250px">
-                    <p><strong>Expiration Date</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>Reverse Osmosis Water (ROW)</p>
-                </td>
-                <td style="text-align:center">
-                    <p>N/A</p>
-                </td>
-                <td style="text-align:center">
-                    <p>N/A</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>10X PBS</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>1X PBS</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>1X PBS - 22.4% Tween 20</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>1X PBS - 1% Casein</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>G&alpha;hulgG-Cy5 in 50% Glycerol</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>G&alpha;hulgM-AF647 in 50% Glycerol</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>70% Ethanol</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <!-- Test Preparation -->
-        <br>
-        <table id="table10" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;text-align:center;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Test Preparation</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Turn on Incubator at 37.0&deg;C at least 2 hours before testing</p>
-                </td>
-                <td style="width:30px;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Take out slides and equilibrate to room temperature for 1 hour</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Take out slides according to the Test Form and place in secondary slide box</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Record % humidity of the slide package using the humidity indicating card (lavender spot indicates the humidity)</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <!--  Humidy data input for iChips used -->
-        <table id="table11" class="delta">
-            <tr>
-                <td>
-                    <p>iCHIP Print Lot:</p>
-                </td>
-                <td>
-                    <p>iCHIP Print Lot:</p>
-                </td>
-                <td>
-                    <p>iCHIP Print Lot:</p>
-                </td>
-                <td>
-                    <p>iCHIP Print Lot:</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>Humidity:</p>
-                </td>
-                <td>
-                    <p>Humidity:</p>
-                </td>
-                <td>
-                    <p>Humidity:</p>
-                </td>
-                <td>
-                    <p>Humidity:</p>
-                </td>
-            </tr>
-        </table>
-        <!--  Test Preparation Cont. -->
-        <table id="table12" class="delta">
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Filter 1X PBS - 1% Casein solution using a 0.22&upsilon;m filter</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Take out serum specimens (10&upsilon;L) according to the Test Form and equilibrate to room temperature for 1 hour</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>7</strong></p>
-                </td>
-                <td>
-                    <p>Centrifuge serum specimens for 5 seconds</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>8</strong></p>
-                </td>
-                <td>
-                    <p>Add 740&upsilon;L of freshly filtered 1XPBS -1% Casein solution to each 10&upsilon;L serum specimen to reach 1:75 dilution</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>9</strong></p>
-                </td>
-                <td>
-                    <p>Mix the solution by gently pipetting up and down</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>10</strong></p>
-                </td>
-                <td>
-                    <p>Arrange diluted serum specimens and slides in order according to the Test Form</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Prepare 1X PBS 0.0445% Tween 20 for slide washing steps</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Record the batch # of 1X PBS - 22.4% Tween 20 on the solutions section</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>In a graduated cylinder, meRecord the batch # of 1X PBS - 22.4% Tween 20 on the solutions section</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Add 500&upsilon;L of 1X PBS - 22.4% Tween 20 and mix gently</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Label bottle: Name (1X PBS - 0.044% Tween 20) Batch #, Date Made, Expiration Date (12 hours), Hazards (none), Storage Conditions (20-25&deg;C)</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Frame Assembly</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Before placing frames on slide do a visual inspection of the gaskets to ensure proper fit on the frames</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Attach the frames to the slides</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Verify correct alignment of the array inside the frames</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Gently squeeze the frame and slide together before securing with the spring clips.</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Blocking</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amount of 1% casein into 25mL disposable reagent reservoir</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Pipette 250&upsilon;L of 1% casein into each will by slowly adding the solution to the upper left corner of the well</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Make sure there is even coverage in each well</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Cover the plate with the transparent plastic cover and incubate on a shaker at 34 rpm for 1 hour at room temperature</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Serum Addition</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Dump the 1X PBS 1% casein solution into a waste container and tap the frame on fiber free paper to remove residual solution</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <!--  Serum start time point table -->
-        <table id="table13" class="delta">
-            <tr>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Start time for adding serum (hh:mm):</p>
-                </td>
-                <td style="height:50px;text-align:left;vertical-align:top">
-                    <p>Humidity (%):</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Room Temperature (&degC):</p>
-                </td>
-            </tr>
-        </table>
-        <table id="table14" class="delta">
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Dispense 150&upsilon;L of diluted serum into each well</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Have the witness check the slide # and serum specimen # on the test form against the slide and well.  If numbers match, place a check mark in column 1 on the test form.  Indicate any issues in the comments section</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;vertic-align:center">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Incubate the plates with the slides for 1 hour at 37&deg;C.  Rocking at 15 rpm.</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <!-- Serum finsh time point table -->
-        <table id="table15" class="delta">
-            <tr>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Finish time for adding specimens (hh:mm):</p>
-                </td>
-                <td style="height:50px;text-align:left;vertical-align:top">
-                    <p>Humidity (%):</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Room Temperature (&degC):</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Witness Signature:</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Date:</p>
-                </td>
-        </table>
-        <br>
-        <table id="table16" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Serum Removal</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Remove plate(s) from incubator</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            <tr>
-            <td style="width:35px;text-align:center;">
-                <p><strong>2</strong></p>
-            </td>
-            <td>
-                <p>To remove serum tilt plate to the side and use multichannel pipette to remove serum (set volume to more than 150&upsilon;L)Have the witness check the slide # and serum specimen # on the test form against the slide and well.  If numbers match, place a check mark in column 1 on the test form.  Indicate any issues in the comments section</p>
-            </td>
-            <td>
-                <p></p>
-            </td>
-        </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Dispose of serum in waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Serum Washing Procedure</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining 1X PBS onto fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amount of 1X PBS - 0.0445% Tween 20 into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of 1X PBS - 0.0445% Tween 20 to each well and rock at 34 rpm for 5 minutes at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>7</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the 1X PBS - 0.0445% Tween into a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>8</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining 1X PBS - 0.0445% Tween 20 onto fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>9</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>10</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>11</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>12</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining 1X PBS onto fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <!-- Header secondary antibody section -->
-        <table id="table17" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Secondary Antibody Preparation and Addition</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-        </table>
-        <!--  Secondary antibody start time point table -->
-        <table id="table18" class="delta">
-            <tr>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Start time for adding serum (hh:mm):</p>
-                </td>
-                <td style="height:50px;text-align:left;vertical-align:top">
-                    <p>Humidity (%):</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Room Temperature (&degC):</p>
-                </td>
-            </tr>
-        </table>
-        <table id="table19" class="delta">
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Measure 23mL of 1X PBS - 1% Casein solution into a 50mL conical tube</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Add 10&upsilon;L of 1mg/ml G&alpha;hulgG-Cy5 in 50% Glycerol to the 23mL</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Add 5&upsilon;L of 1mg/ml G&alpha;hulgM-AF647 in 50% Glycerol to the 23mL</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Invert gently until thoroughly mixed</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Dispense 150&upsilon;L of mixed secondary antibody solution into each well</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Incubate the plates with the slides for 1 hour at 37&deg;C. Rocking at 15 rpm.</p>
-                </td>
-                <td style="width:30px;text-align:center;">
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <!-- Serum finsh time point table -->
-        <table id="table20" class="delta">
-            <tr>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Finish time for adding specimens (hh:mm):</p>
-                </td>
-                <td style="height:50px;text-align:left;vertical-align:top">
-                    <p>Humidity (%):</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Room Temperature (&degC):</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Witness Signature:</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Date:</p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <table id="table21" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Secondary Antibody Washing Procedure</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the secondary antibody solution int a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining secondary antibody on fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining 1X PBS onto fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>7</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amount of 1X PBS - 0.0445% Tween 20 into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>8</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of 1X PBS - 0.0445% Tween 20 to each well and rock at 34 rpm for 5 minutes at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>9</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the 1X PBS - 0.0445% Tween into a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>10</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining 1X PBS - 0.0445% Tween 20 onto fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>11</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amout of 1X PBS into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>12</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of 1X PBS to each well and rock at 34 rpm for 5 minutes at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>13</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the 1X PBS into a waste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>14</strong></p>
-                </td>
-                <td>
-                    <p>Turn frame upside down and gently tap remaining 1X PBS on fiber free paper</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>15</strong></p>
-                </td>
-                <td>
-                    <p>Pour desired amount of ROW into a disposable reagent reservoir</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>16</strong></p>
-                </td>
-                <td>
-                    <p>Add 250&upsilon;L of ROW to each well and rock at 34 rpm for 1 minute at room temperature</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <!--  Slide Washing and Drying Procedure -->
-        <table id="table22" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Slide Washing and Drying Procedure</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Place 2 sheets of fiber free paper on top of 3 sheets of Whatman papers in a 25 slot slide box</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Remove frames from plate one at a time and dump the ROW into a saste container</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Carefully remove the spring clips from the slides/frames and hold each slide on the long narrow edge (not the flat surface)</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Dip each slide 10 times at 1 second per dip in the first beaker of ROW using an up and down motion</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Grasping the other end of the long narrow edge, dip 10 more times at 1 second per dip in a second beaker of ROW using an up and down motion</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Gently tap the long narrow side of each slide on fiber free paper wipe to remove excess water</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>7</strong></p>
-                </td>
-                <td>
-                    <p>Place in slide drying box</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>8</strong></p>
-                </td>
-                <td>
-                    <p>Fill the slide drying box with an equal number of slides, but no more than 12 slides per box</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>9</strong></p>
-                </td>
-                <td>
-                    <p>Centrifuge the slides in the box for 10 minutes at 2500 rpm</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <!--  Slide Scanning Procedure -->
-        <table id="table23" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Slide Scanning Procedure</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;vertical-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Insert slides into slide holders and load into scanner cassette.  Have witness verify slide is in correct position and record in column 2 on Test Form</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Enter the Slide IDs using the format: V(for SLE-key v2.0) Slide Print Lot#_Slide# (i.e. V85.1_42)</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Highlight all slides to be scanned and choose the Scan Profile you intend to use from the menu</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Enter the slot # into the Test Form</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Click on "Output Path" and choose the location you want your data to save</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Enter the Operator ID</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>7</strong></p>
-                </td>
-                <td>
-                    <p>Once "Ready" appears in the lower left corner of the window, add all slides to the queue</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>8</strong></p>
-                </td>
-                <td>
-                    <p>Once all slides have been added to the queue hit "Start Scan"</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>9</strong></p>
-                </td>
-                <td>
-                    <p>Verify that scanning has begun</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>10</strong></p>
-                </td>
-                <td>
-                    <p>Review the scan log for any scanning errors at the end of the run</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>11</strong></p>
-                </td>
-                <td>
-                    <p>If applicable, rescan any slides that were not properly scanned and make note in the "Comments" column of the Test Form</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>12</strong></p>
-                </td>
-                <td>
-                    <p>Remove slides from slide holders and store in a slide box labeled wit hthe Veracis Test Run#. Store at 4&deg;C</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>13</strong></p>
-                </td>
-                <td>
-                    <p>If scanning for all tess and rescans is complete, close the Agilent scan control software and turn off the scanner.</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>14</strong></p>
-                </td>
-                <td>
-                    <p>Submit Agilent scan files for data analysis</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <table id="table24" class="delta">
-            <tr>
-                <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Witness Signature:</p>
-                </td>
-                <td style="width:250px;height:50px;text-align:left;vertical-align:top">
-                    <p>Date:</p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <!--  Post Testing -->
-        <table id="table25" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>Post Testing</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;vertical-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Incubator: Turn of incubator</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Reagents: Discard the expired reagents from daily test run such as the remaining secondary antibody solution, filtered Casein, and 1X PBS.</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Rockers: If there is no testing in the near future, clean rockers to prevent corrosion by removing the wet materials, rinsing with distilled water and drying with a clean cloth.</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Materials, reagents, solutions: Check that adequate supplies and solutions are available for next test run (such as pipette tips and 10X PBS).  Notify appropriate persons of needed supplies and solutions.  Update the "need to order list".</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td style="height:50px;text-align:left;vertical-align:top;">
-                    <p>Comments:</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <!--  QA Checklist -->
-        <table id="table26" class="delta">
-            <tr>
-                <td style="width:35px;background-color:lightgrey;">
-                    <p><strong>Step</strong></p>
-                </td>
-                <td style="text-align:center;background-color:lightgrey;">
-                    <p><strong>QA Checklist</strong></p>
-                </td>
-                <td style="width:30px;background-color:lightgrey;text-align:center;">
-                    <p><strong>&#10004</strong></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;vertical-align:center;">
-                    <p><strong>1</strong></p>
-                </td>
-                <td>
-                    <p>Review testing checklist for completeness, nonconforming events (NCE), test run number, signatures, etc.  Initiate NCE reports if missing.</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>2</strong></p>
-                </td>
-                <td>
-                    <p>Review solution records and solution logs for batch numbers, expiration dates, and completed checklists</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>3</strong></p>
-                </td>
-                <td>
-                    <p>Update ImmunKey Test Run Summary (PP-004.03)</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>4</strong></p>
-                </td>
-                <td>
-                    <p>Update ImmunKey Slide Database (MM-003.03) with the slide use date and description</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>5</strong></p>
-                </td>
-                <td>
-                    <p>Update Specimen Database (MM-002.03) with the aliquot use date</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>6</strong></p>
-                </td>
-                <td>
-                    <p>Close out all NCE reports affecting the test run.  Cross reference the NCE number with a brief description in comment section below.</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>7</strong></p>
-                </td>
-                <td>
-                    <p>Scan the completed, signed, reviewed checklist</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>8</strong></p>
-                </td>
-                <td>
-                    <p>File checklist in ImmunKey Test Run Log</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-            <tr>
-                <td style="width:35px;text-align:center;">
-                    <p><strong>9</strong></p>
-                </td>
-                <td style="height:100px;text-align:left;vertical-align:top;">
-                    <p>Comments:</p>
-                </td>
-                <td>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-
-    </form>
-    <script src= "++resource++immunarray.lims/js/test_run.js"></script>
+</form>
+<script src="++resource++immunarray.lims/js/test_run.js"></script>
 
 </metal:main>
 </body>
