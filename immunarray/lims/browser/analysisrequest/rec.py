@@ -64,7 +64,6 @@ class AddRecView(BrowserView):
             pt_UID = self.repeat_order_check(dob_string, patient_first_name,patient_last_name, pt_UID)
             if pt_UID != "new_patient":
                 previous_data = self.pull_previous_patient_data(pt_UID)
-                # import pdb;pdb.set_trace()
                 return json.dumps({"repeat order":"true", "Pt Data from LIMS":previous_data})
             else:
                 return json.dumps({"repeat order": "false"})
@@ -192,7 +191,6 @@ class AddRecView(BrowserView):
                 #    exec ("bulk_aliquot" %t) = self.make_bulk_aliquots(sample_UID, usn_from_form, t)
                 #    print"bulk_aliquot" % (t)
                 # make working aliquots
-                # import pdb;pdb.set_trace()
                 try:
                     self.update_kit_count(site_id)
                 except:
@@ -342,7 +340,6 @@ class AddRecView(BrowserView):
             site = api.content.get(UID=j)
             if site_id == str(site.title):
                 primary_provider = site.primary_provider
-        # import pdb;pdb.set_trace()
         # set permission for clinical sample
         cs = api.portal.get()
         sample = cs['lims']['samples']
@@ -389,13 +386,11 @@ class AddRecView(BrowserView):
         usn.append(usn_from_form)
         pt_phone=[]
         pt_phone.append(patient_phone)
-        #import pdb;pdb.set_trace()
         try:
             py_date = datetime.datetime.strptime(dob, "%Y-%m-%d").date()
         except:
             py_date = None
         title = first + " " + last
-        #import pdb;pdb.set_trace()
         pt = api.portal.get()
         patient = pt['lims']['patients']
         clinical_sample = api.content.create(container=patient,
@@ -418,7 +413,6 @@ class AddRecView(BrowserView):
                                              phone_numbers = pt_phone,
                                              tested_unique_sample_ids = usn,
                                              )
-        # import pdb;pdb.set_trace()
 
     def append_usn(self, usn_from_form, pt_UID):
         """If patient exist this will be used to "update" pt object and append usn
@@ -461,7 +455,6 @@ class AddRecView(BrowserView):
         "physical_address_zipcode":pt_record.physical_address_zipcode,
         "physical_address_country":pt_record.physical_address_country,
         "pt_phone_number":pt_record.phone_numbers}
-        # import pdb;pdb.set_trace()
         return data
 
     def update_existing_patient_data(self, pt_UID,dob, first, last, mrn, ssn, gender, marital_status, ethnicity, ethnicity_other,

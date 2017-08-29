@@ -50,6 +50,7 @@ class AddAliquotsViewletSubmit(BrowserView):
             aliquot_portal_type = 'RandDAliquot'
 
         # Create aliquots
+        import pdb;pdb.set_trace();pass
         for seq in range(sequence_start, sequence_start + aliquot_count):
             _id = "{self.context.veracis_id}-{seq:03d}".format(**locals())
             _title = "{self.context.veracis_id} - {seq:03d}".format(**locals())
