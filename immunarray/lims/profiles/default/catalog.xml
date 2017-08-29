@@ -50,4 +50,9 @@
     <indexed_attr value="remaining_volume"/>
   </index>
   <column value="remaining_volume"/>
+  <!-- distinguish between bulk/working in aliquot listings -->
+  <index name="aliquot_type" meta_type="FieldIndex">
+    <indexed_attr value="aliquot_type"/>
+  </index>
+  <column value="aliquot_type"/>
 </object>
