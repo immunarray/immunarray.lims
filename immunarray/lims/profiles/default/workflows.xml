@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <object name="portal_workflow" meta_type="Plone Workflow Tool" purge="False">
-  <property name="title">Contains workflow definitions for your portal</property>
+  <property name="title">Contains workflow definitions for your portal
+  </property>
 
   <object name="ichiplot_workflow" meta_type="Workflow"/>
   <object name="ichip_workflow" meta_type="Workflow"/>
@@ -9,6 +10,9 @@
   <object name="qcaliqout_workflow" meta_type="Workflow"/>
   <object name="clinicalaliquot_workflow" meta_type="Workflow"/>
   <object name="material_workflow" meta_type="Workflow"/>
+  <object name="assay_request_workflow" meta_type="Workflow"/>
+  <object name="billing_programs_workflow" meta_type="Workflow"/>
+  <object name="assay_billing_request_workflow" meta_type="Workflow"/>
 
   <bindings>
 
@@ -38,6 +42,15 @@
 
     <type type_id="Material">
       <bound-workflow workflow_id="material_workflow"/>
+    </type>
+    <type type_id="AssayRequest">
+      <bound-workflow workflow_id="assay_request_workflow"/>
+    </type>
+    <type type_id="BillingPrograms">
+      <bound-workflow workflow_id="billing_programs_workflow"/>
+    </type>
+    <type type_id="AssayBillingRequestPrograms">
+      <bound-workflow workflow_id="assay_billing_request_workflow"/>
     </type>
 
   </bindings>
