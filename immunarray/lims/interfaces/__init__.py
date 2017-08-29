@@ -28,3 +28,63 @@ class IWorkingAliquot(Interface):
 class IBulkAliquot(Interface):
     """Marker interface to denote Bulk Aliquots
     """
+
+
+class ISamples(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class ISites(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IMaterials(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class ISolutions(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IiChipLots(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class ITestRuns(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class INonConformanceEvents(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IInventory(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IPatients(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IProviders(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IiChipAssays(Interface):
+    """Marker interface for navigation-root folder
+    """
+
+
+class IConfiguration(Interface):
+    """Marker interface for navigation-root folder
+    """
