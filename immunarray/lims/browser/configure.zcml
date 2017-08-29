@@ -14,4 +14,6 @@
     <include file="analysisrequest/configure.zcml"/>
     <include package=".viewlets"/>
 
+    <include file="samples/configure.zcml"/>
+
 </configure>
