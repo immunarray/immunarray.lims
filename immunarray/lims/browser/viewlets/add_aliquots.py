@@ -14,7 +14,9 @@ class AddAliquotsViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/add-aliquots.pt")
 
     def render(self):
-        return self.index()
+        if self.context.remaining_volume > 0:
+            return self.index()
+        return ''
 
 
 class AddAliquotsViewletSubmit(BrowserView):
@@ -138,10 +140,11 @@ class AddAliquotsViewletAJAXFeedback(BrowserView):
         aliquot_type = form['aliquot_type']
         s = "s" if aliquot_count > 1 else ""
 
-        result['feedback'] = """{aliquot_count} {aliquot_type} aliquot{s} to be 
-        created, using {required_volume} uL of the remaining {available_volume}
-        uL and leaving {remaining_volume} uL unallocated. The first aliquot 
-        ID will be {veracis_id}-{sequence_start:03d}""".format(**locals())
+        result['feedback'] = \
+            """{aliquot_count} {aliquot_type} aliquot{s} will be created,
+            using {required_volume} uL and leaving {remaining_volume} uL
+            unallocated. The first aliquot ID will be
+            {veracis_id}-{sequence_start:03d}""".format(**locals())
         result['aliquot_count'] = aliquot_count
         result['success'] = True
         return json.dumps(result)
