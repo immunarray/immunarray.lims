@@ -18,6 +18,7 @@ class QCSample(AbstractSample):
         self._veracis_id = value
         temp = getattr(self, "_source_id_one", "")
         self.setTitle(value + " - " + temp)
+        self.id = '{}-{}'.format(value, temp)
 
     @property
     def source_id_one(self):
@@ -28,3 +29,4 @@ class QCSample(AbstractSample):
         self._source_id_one = value
         temp = getattr(self, "_veracis_id", "")
         self.setTitle(temp + " - " + value)
+        self.id = '{}-{}'.format(temp, value)
