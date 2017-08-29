@@ -3,48 +3,79 @@
              title="Assay Request"
              description=""
              state_variable="review_state"
-             initial_state="available"
+             initial_state="ordered"
              manager_bypass="False">
 
   <state state_id="ordered" title="Ordered">
-    <exit-transition transition_id="recive"/>
+    <exit-transition transition_id="to_test"/>
+    <exit-transition transition_id="reject"/>
+    <exit-transition transition_id="order"/>
   </state>
 
-  <state state_id="in_queue" title="In Queue">
-    <exit-transition transition_id="make_available"/>
-    <exit-transition transition_id="begin_process"/>
+  <state state_id="to_be_tested" title="To_Be_Tested">
+    <exit-transition transition_id="queue"/>
+    <exit-transition transition_id="reject"/>
   </state>
 
-  <state state_id="in_process" title="In Process">
-    <exit-transition transition_id="pass"/>
-    <exit-transition transition_id="fail"/>
+  <state state_id="in_queue" title="Queued">
+    <exit-transition transition_id="result"/>
+    <exit-transition transition_id="to_test"/>
+    <exit-transition transition_id="reject"/>
   </state>
 
-  <state state_id="qc_passed" title="QC Passed">
+  <state state_id="re_run" title="Re_Run">
+    <exit-transition transition_id="queue"/>
   </state>
 
-  <state state_id="qc_failed" title="QC Failed">
+  <state state_id="resulted" title="Resulted">
+    <exit-transition transition_id="report"/>
+    <exit-transition transition_id="re_run"/>
+    <exit-transition transition_id="reject"/>
   </state>
 
-  <transition transition_id="make_available"
-              title="Make Available"
-              new_state="available"
+  <state state_id="reported" title="Reported">
+  </state>
+
+  <state state_id="rejected" title="Rejected">
+  </state>
+
+
+
+  <transition transition_id="order"
+              title="Assay Ordered"
+              new_state="ordered"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=make_available"
+    <action url="%(content_url)s/content_status_modify?workflow_action=order"
+            category="workflow"
+            icon="">Assay Ordered
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('order')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="to_test"
+              title="Make Available"
+              new_state="to_be_test"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=to_test"
             category="workflow"
             icon="">Make Available
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('make_available')</guard-expression>
+      <guard-expression>python:here.guard_handler('to_test')</guard-expression>
     </guard>
   </transition>
 
   <transition transition_id="queue"
               title="Queue"
-              new_state="in_queue"
+              new_state="In-Queue"
               before_script=""
               after_script=""
               trigger="USER">
@@ -58,52 +89,69 @@
     </guard>
   </transition>
 
-  <transition transition_id="begin_process"
-              title="Begin Process"
-              new_state="in_process"
+  <transition transition_id="re_run"
+              title="Re Run"
+              new_state="re-run"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=begin_process"
+    <action url="%(content_url)s/content_status_modify?workflow_action=re_run"
             category="workflow"
-            icon="">Begin Process
+            icon="">Re Run
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('begin_process')</guard-expression>
+      <guard-expression>python:here.guard_handler('re_run')</guard-expression>
     </guard>
   </transition>
 
-  <transition transition_id="pass"
-              title="QC Fail"
-              new_state="qc_failed"
+  <transition transition_id="result"
+              title="Resulted"
+              new_state="resulted"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=pass"
+    <action url="%(content_url)s/content_status_modify?workflow_action=result"
             category="workflow"
-            icon="">QC Fail
+            icon="">Resulted
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('pass')</guard-expression>
+      <guard-expression>python:here.guard_handler('result')</guard-expression>
     </guard>
   </transition>
 
-  <transition transition_id="fail"
-              title="QC Pass"
-              new_state="qc_passed"
+  <transition transition_id="report"
+              title="Reported"
+              new_state="Reported"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=fail"
+    <action url="%(content_url)s/content_status_modify?workflow_action=report"
             category="workflow"
-            icon="">QC Pass
+            icon="">Reported
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('fail')</guard-expression>
+      <guard-expression>python:here.guard_handler('report')</guard-expression>
     </guard>
   </transition>
+
+  <transition transition_id="reject"
+              title="Rejected"
+              new_state="Rejected"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+            category="workflow"
+            icon="">Rejected
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('reject')</guard-expression>
+    </guard>
+  </transition>
+
 
 </dc-workflow>
