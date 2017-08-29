@@ -11,6 +11,7 @@ class BaseModel(model.Schema):
     title = schema.TextLine(
         title=_(u"Title"),
         required=False,
+        readonly=True,
     )
 
 
