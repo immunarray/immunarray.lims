@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="ichipassay_workflow"
+             title="iChip Assay"
+             description=""
+             state_variable="review_state"
+             initial_state="activated"
+             manager_bypass="False">
+
+  <state state_id="activated" title="Activated">
+    <exit-transition transition_id="retire"/>
+
+  </state>
+
+  <state state_id="retired" title="Retired">
+    <exit-transition transition_id="activate"/>
+  </state>
+
+  <transition transition_id="retire"
+              title="iChip Assay Retired"
+              new_state="retired"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=retire"
+            category="workflow"
+            icon="">iChip Assay Retired</action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('retire')
+      </guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="activate"
+              title="iChip Assay Activated"
+              new_state="activated"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=activate"
+            category="workflow"
+            icon="">iChip Assay Activated</action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('activate')
+      </guard-expression>
+    </guard>
+  </transition>
+
+</dc-workflow>
