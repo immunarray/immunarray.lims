@@ -46,7 +46,7 @@
     </type>
 
     <type type_id="AssayRequest">
-      <bound-workflow workflow_id="assayrequestworkflow"/>
+      <bound-workflow workflow_id="assayrequest_workflow"/>
     </type>
 
     <type type_id="BillingProgram">
