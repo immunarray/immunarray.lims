@@ -2,11 +2,13 @@
 from zope import schema
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from plone.supermodel import model
+from plone.autoform.interfaces import IFormFieldProvider
+from zope.interface import alsoProvides
 
 
-class IBillingProgram(model.Schema):
+class IBillingProgram(BaseModel):
     """Object that will be billing programs that can be added to the system,
     will be what is used to determin if a billing message needs to be generated,
     cost to patient, and message structure to be sent to third party.
@@ -44,3 +46,6 @@ class IBillingProgram(model.Schema):
     )
 
     allow_balance_bill = schema.Bool()
+
+
+alsoProvides(IBillingProgram, IFormFieldProvider)
