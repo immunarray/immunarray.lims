@@ -6,8 +6,9 @@ from immunarray.lims.interfaces import ISites, ISamples, IMaterials, \
     ISolutions, IiChipLots, ITestRuns, INonConformanceEvents, IInventory, \
     IPatients, IProviders, IiChipAssays, IConfiguration
 from immunarray.lims.permissions import AddEightFrameRun, AddMaterial, AddNCE, \
-    AddNoFrameRun, AddPatient, AddPlate, AddProvider, AddRack, AddSite, \
-    AddSolution, AddTestRun, AddThreeFrameRun, AddiChipAssay, AddiChipLot
+    AddNoFrameRun, AddPatient, AddProvider, AddRack, AddSite, \
+    AddSolution, AddTestRun, AddThreeFrameRun, AddiChipAssay, AddiChipLot, \
+    AddClinicalSample, AddQCSample, AddRandDSample
 from pkg_resources import resource_filename
 from plone.api.content import create
 from plone.app.contenttypes import permissions
@@ -96,6 +97,8 @@ def structure_permissions(lims):
     lims.sites.manage_permission(View, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(View, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(View, ['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(View,['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+
     # Access Contents Information
     lims.ichipassay.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk'], 0)
     lims.ichiplots.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk'], 0)
@@ -108,6 +111,7 @@ def structure_permissions(lims):
     lims.sites.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk'], 0)
+
     # List Folder Contents
     lims.ichipassay.manage_permission(ListFolderContents, ['LabManager', 'LabClerk'], 0)
     lims.ichiplots.manage_permission(ListFolderContents, ['LabManager', 'LabClerk'], 0)
@@ -120,6 +124,7 @@ def structure_permissions(lims):
     lims.sites.manage_permission(ListFolderContents, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(ListFolderContents, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(ListFolderContents, ['LabManager', 'LabClerk'], 0)
+
     # Custom Add Permission
     lims.ichipassay.manage_permission(AddiChipAssay, ['LabManager'], 0)
     lims.ichiplots.manage_permission(AddiChipLot, ['LabManager', 'LabClerk'], 0)
@@ -134,6 +139,10 @@ def structure_permissions(lims):
     lims.testruns.manage_permission(AddNoFrameRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddTestRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(AddClinicalSample,['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(AddRandDSample,['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.samples.manage_permission(AddQCSample,['LabManager', 'LabClerk'], 0)
+
     # Modify portal content
     lims.ichipassay.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.ichiplots.manage_permission(ModifyPortalContent, ['LabManager'], 0)
@@ -142,10 +151,12 @@ def structure_permissions(lims):
     lims.nce.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.patients.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.providers.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'SalesRep'], 0)
-    lims.samples.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.sites.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.testruns.manage_permission(ModifyPortalContent, ['Manager'], 0)
+    lims.samples.manage_permission(ModifyPortalContent,['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(ModifyPortalContent,['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.samples.manage_permission(ModifyPortalContent,['LabManager', 'LabClerk'], 0)
     # @formatter:on
 
 
