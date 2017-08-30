@@ -43,13 +43,16 @@
     <type type_id="Material">
       <bound-workflow workflow_id="material_workflow"/>
     </type>
+
     <type type_id="AssayRequest">
       <bound-workflow workflow_id="assay_request_workflow"/>
     </type>
+
     <type type_id="BillingPrograms">
       <bound-workflow workflow_id="billing_programs_workflow"/>
     </type>
-    <type type_id="AssayBillingRequestPrograms">
+
+    <type type_id="AssayBillingRequest">
       <bound-workflow workflow_id="assay_billing_request_workflow"/>
     </type>
 
