@@ -50,7 +50,7 @@ class IClinicalSample(ISample):
                 _(u"Review Pass"),
                 _(u"Held"), ],
     )
-    
+
     sample_ordering_healthcare_provider = schema.TextLine(
         title=_(u"Ordering Healthcare Provider"),
         description=_(u"Ordering Healthcare Provider"),
