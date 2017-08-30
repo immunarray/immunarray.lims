@@ -3,15 +3,18 @@ import datetime
 from zope import schema
 
 from immunarray.lims import messageFactory as _
+from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
+from zope.interface import alsoProvides
 
 
 def currentDate():
     return datetime.datetime.now().date()
 
 
-class IAssayBillingRequest(model.Schema):
+class IAssayBillingRequest(BaseModel):
     """Object that will be attached to sample.  It will be the instance object
     that has a workflow that can be tracked in the LIMS.
     """
@@ -52,3 +55,5 @@ class IAssayBillingRequest(model.Schema):
         description=_(u"Any Notes or Comments About the Assay Billing Request"),
         required=False,
     )
+
+alsoProvides(IAssayBillingRequest, IFormFieldProvider)
