@@ -25,7 +25,7 @@ class IiChipLot(BaseModel):
     """An iChip Lot that will contain iChip objects.
     """
 
-    title = schema.TextLine(
+    lot_id = schema.TextLine(
         title=_(u"iChip Lot ID"),
         description=_(u"Used when naming iChips created in this lot"),
         required=True,
@@ -84,13 +84,6 @@ class IiChipLot(BaseModel):
         title=_(u"iChip Lot Travel Temperature Log"),
         description=_(u"Travel Temperature Log of iChip Lot"),
         required=False,
-    )
-
-    acceptance_status = schema.Choice(
-        title=_(u"iChip Acceptance Status"),
-        description=_(u"Acceptance Status of iChip Lot"),
-        values=[_(u"Quarantined"), _(u"Released"), _(u"Consumed")],
-        required=True,
     )
 
     cofa = NamedFile(
