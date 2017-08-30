@@ -49,6 +49,8 @@ def make_billing(portal):
     """LIMS root object has been created
     Here we will add the ImmunArray specific objects and configuration.
     """
+    if 'billing' in portal:
+        return
     b1 = create(portal, 'Folder', 'billing', 'Billing')
     b2 = create(portal['billing'], 'Folder', 'assaybillingrequests',
                 'Assay Billing Requests')
@@ -110,6 +112,8 @@ def make_customer_service(portal):
     """LIMS root object has been created
     Here we will add the ImmunArray specific objects and configuration.
     """
+    if 'customerservice' in portal:
+        return
     cs1 = create(portal, 'Folder', 'customerservice', 'Customer Service')
     cs2 = create(portal['customerservice'], 'Folder', 'customercalls',
                 'Customer Calls')
@@ -172,6 +176,8 @@ def make_executive(portal):
     """LIMS root object has been created
     Here we will add the ImmunArray specific objects and configuration.
     """
+    if 'executive' in portal:
+        return
     ex1 = create(portal, 'Folder', 'executive', 'Executive')
     ex2 = create(portal['executive'], 'Folder', 'reports',
                  'Reports')
