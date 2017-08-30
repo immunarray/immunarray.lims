@@ -108,12 +108,11 @@ class IiChipAssay(BaseModel):
         default=8,
     )
 
-    status = schema.Choice(
+    desired_use = schema.Choice(
         title=_(u"iChip Assay Status"),
         description=_(u"iChip Layout"),
         values=[_(u"Development"),
-                _(u"Commercial"),
-                _(u"Retired (No Longer Offered)")],
+                _(u"Commercial"),],
         required=True,
     )
 
