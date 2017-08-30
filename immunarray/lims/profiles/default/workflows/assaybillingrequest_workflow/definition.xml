@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="assay_billing_request_workflow"
-             title="Assay Billing Request"
+<dc-workflow workflow_id="assaybillingrequest_workflow"
+             title="Assay Billing Request Workflow"
              description=""
              state_variable="review_state"
-             initial_state="to_be_sent"
+             initial_state="collecting_data"
              manager_bypass="False">
 
-  <state state_id="to_be_sent" title="To Be Sent">
+  <state state_id="collecting_data" title="Collecting Data">
     <exit-transition transition_id="send"/>
     <exit-transition transition_id="close_billing_request"/>
   </state>
 
   <state state_id="sent" title="Sent">
-    <exit-transition transition_id="to_send"/>
-    <exit-transition transition_id="confirm_recipt"/>
+    <exit-transition transition_id="update_record"/>
+    <exit-transition transition_id="confirm_receipt"/>
   </state>
 
   <state state_id="receipt_confirmed" title="Receipt Confirmed">
@@ -21,23 +21,22 @@
   </state>
 
   <state state_id="billing_closed" title="Billing Closed">
-    <exit-transition transition_id="to_send"/>
+    <exit-transition transition_id="update_record"/>
   </state>
 
-
-  <transition transition_id="to_send"
-              title="To Be Sent"
-              new_state="to_be_sent"
+  <transition transition_id="update_record"
+              title="Update Record"
+              new_state="collecting_data"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=to_send"
+    <action url="%(content_url)s/content_status_modify?workflow_action=update_record"
             category="workflow"
-            icon="">To Be Sent
+            icon="">Update Record
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('to_send')</guard-expression>
+      <guard-expression>python:here.guard_handler('update_record')</guard-expression>
     </guard>
   </transition>
 
@@ -75,14 +74,14 @@
   </transition>
 
   <transition transition_id="close_billing_request"
-              title="Billing Closed"
+              title="Close Billing Request"
               new_state="billing_closed"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=close_billing_request"
             category="workflow"
-            icon="">Billing Closed
+            icon="">Close Billing Request
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>

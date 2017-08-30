@@ -1,10 +1,4 @@
-def guard_order(instance):
-    """
-    """
-    return True
-
-
-def guard_to_test(instance):
+def guard_make_available(instance):
     """
     """
     return True

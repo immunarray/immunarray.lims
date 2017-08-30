@@ -6,7 +6,7 @@ from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.supermodel import model
 
 
-class IBillingPrograms(model.Schema):
+class IBillingProgram(model.Schema):
     """Object that will be billing programs that can be added to the system,
     will be what is used to determin if a billing message needs to be generated,
     cost to patient, and message structure to be sent to third party.

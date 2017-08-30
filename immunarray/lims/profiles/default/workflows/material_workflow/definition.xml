@@ -34,27 +34,27 @@
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=quarantine"
             category="workflow"
-            icon="">Quarantine Material</action>
+            icon="">Quarantine Material
+    </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('quarantine')
-      </guard-expression>
+      <guard-expression>python:here.guard_handler('quarantine')</guard-expression>
     </guard>
   </transition>
 
   <transition transition_id="release"
-              title="Release"
+              title="Release Material"
               new_state="released"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=release"
             category="workflow"
-            icon="">Release Material</action>
+            icon="">Release Material
+    </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('release')
-      </guard-expression>
+      <guard-expression>python:here.guard_handler('release')</guard-expression>
     </guard>
   </transition>
 
@@ -66,11 +66,11 @@
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=put_in_use"
             category="workflow"
-            icon="">Put Material In Use</action>
+            icon="">Put Material In Use
+    </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('put_in_use')
-      </guard-expression>
+      <guard-expression>python:here.guard_handler('put_in_use')</guard-expression>
     </guard>
   </transition>
 
@@ -82,11 +82,11 @@
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=close"
             category="workflow"
-            icon="">Close Material</action>
+            icon="">Close Material
+    </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('close')
-      </guard-expression>
+      <guard-expression>python:here.guard_handler('close')</guard-expression>
     </guard>
   </transition>
 

@@ -1,25 +1,24 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="assay_request_workflow"
-             title="Assay Request"
+<dc-workflow workflow_id="assayrequest_workflow"
+             title="Assay Request Workflow"
              description=""
              state_variable="review_state"
              initial_state="ordered"
              manager_bypass="False">
 
   <state state_id="ordered" title="Ordered">
-    <exit-transition transition_id="to_test"/>
+    <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="reject"/>
-    <exit-transition transition_id="order"/>
   </state>
 
-  <state state_id="to_be_tested" title="To_Be_Tested">
+  <state state_id="to_be_tested" title="To Be Tested">
     <exit-transition transition_id="queue"/>
     <exit-transition transition_id="reject"/>
   </state>
 
   <state state_id="in_queue" title="Queued">
     <exit-transition transition_id="result"/>
-    <exit-transition transition_id="to_test"/>
+    <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="reject"/>
   </state>
 
@@ -39,37 +38,19 @@
   <state state_id="rejected" title="Rejected">
   </state>
 
-
-
-  <transition transition_id="order"
-              title="Assay Ordered"
-              new_state="ordered"
-              before_script=""
-              after_script=""
-              trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=order"
-            category="workflow"
-            icon="">Assay Ordered
-    </action>
-    <guard>
-      <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('order')</guard-expression>
-    </guard>
-  </transition>
-
-  <transition transition_id="to_test"
+  <transition transition_id="make_available"
               title="Make Available"
-              new_state="to_be_test"
+              new_state="to_be_tested"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=to_test"
+    <action url="%(content_url)s/content_status_modify?workflow_action=make_available"
             category="workflow"
             icon="">Make Available
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('to_test')</guard-expression>
+      <guard-expression>python:here.guard_handler('make_available')</guard-expression>
     </guard>
   </transition>
 
@@ -106,14 +87,14 @@
   </transition>
 
   <transition transition_id="result"
-              title="Resulted"
+              title="Result"
               new_state="resulted"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=result"
             category="workflow"
-            icon="">Resulted
+            icon="">Result
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -122,14 +103,14 @@
   </transition>
 
   <transition transition_id="report"
-              title="Reported"
-              new_state="Reported"
+              title="Report"
+              new_state="reported"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=report"
             category="workflow"
-            icon="">Reported
+            icon="">Report
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -138,14 +119,14 @@
   </transition>
 
   <transition transition_id="reject"
-              title="Rejected"
-              new_state="Rejected"
+              title="Reject"
+              new_state="rejected"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=reject"
             category="workflow"
-            icon="">Rejected
+            icon="">Reject
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>

@@ -1,4 +1,4 @@
-def after_to_send(instance):
+def after_update_record(instance):
     """
     """
 

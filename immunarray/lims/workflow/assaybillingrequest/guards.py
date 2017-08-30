@@ -1,5 +1,5 @@
 
-def guard_to_send(instance):
+def guard_update_record(instance):
     """
     """
     return True
