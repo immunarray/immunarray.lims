@@ -50,21 +50,7 @@ class IClinicalSample(ISample):
                 _(u"Review Pass"),
                 _(u"Held"), ],
     )
-    # dictonary with value stauts and key test ordered
-    test_ordered_status = schema.Dict(
-        key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
-        value_type=schema.Choice(values=[_(u"Ordered"),
-                                         _(u"To Be Tested"),
-                                         _(u"In Queue"),
-                                         _(u"Testing"),
-                                         _(u"Rerun"),
-                                         _(u"Resulted"),
-                                         _(u"Rejected"),
-                                         _(u"Billing Message Sent"),
-                                         _(u"Closed"), ], required=True),
-        required=False,
-    )
-
+    
     sample_ordering_healthcare_provider = schema.TextLine(
         title=_(u"Ordering Healthcare Provider"),
         description=_(u"Ordering Healthcare Provider"),
