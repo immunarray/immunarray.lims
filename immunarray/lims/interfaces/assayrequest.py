@@ -26,8 +26,8 @@ class IAssayRequest(BaseModel):
     )
 
     date_ordered = schema.Date(
-        title=_(u"Date QC Sample was added to LIMS"),
-        description=_(u"Date QC Sample was added to LIMS"),
+        title=_(u"Date Ordered"),
+        description=_(u"Date Ordered"),
         defaultFactory=currentDate,
         required=True,
     )
