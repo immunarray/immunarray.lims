@@ -187,6 +187,8 @@ class AddRecView(BrowserView):
                 print working_aliquotA03
                 working_aliquotA04 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[2])
                 print working_aliquotA04
+                #make assay request(s)
+                #make billing request(s)
                 #for t in tubes:
                 #    exec ("bulk_aliquot" %t) = self.make_bulk_aliquots(sample_UID, usn_from_form, t)
                 #    print"bulk_aliquot" % (t)
@@ -287,9 +289,6 @@ class AddRecView(BrowserView):
             Need to add option for assay choice at a later date
         """
         # logical test order passed via end user
-        test_order = {}
-        for a in assay_selection:
-            test_order.update({a:u"To Be Tested"})
         # assign serial number for sample
         sn = api.content.find(context=api.portal.get(),
                               portal_type='ClinicalSample')
@@ -351,7 +350,6 @@ class AddRecView(BrowserView):
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                              research_consent=consent_acquired,
-                                             test_ordered_status =test_order,
                                              sample_ordering_healthcare_provider=ordering_provider_name,
                                              sample_ordering_healthcare_provider_signature=provider_signed,
                                              primary_healthcare_provider=primary_provider,
