@@ -6,5 +6,6 @@
 
   <adapter name="Type" factory=".indexers.aliquot_Type"/>
   <adapter name="Type" factory=".indexers.ichipassay_Type"/>
+  <adapter name="expires" factory=".indexers.ichiplot_expires"/>
 
 </configure>
