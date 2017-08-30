@@ -10,7 +10,7 @@ class IiChip(BaseModel):
     """An iChip Lot that will be the container class object
     """
 
-    title = schema.TextLine(
+    ichip_id = schema.TextLine(
         title=_(u"iChip ID"),
         required=True,
     )
