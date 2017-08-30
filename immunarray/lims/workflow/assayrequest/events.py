@@ -1,6 +1,7 @@
 def after_order(instance):
     """
     """
+    return True
 
 
 def after_to_test(instance):

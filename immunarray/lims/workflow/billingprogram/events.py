@@ -1,6 +1,8 @@
-from plone.api.content import transition, get_state
-
-
-def after_close(instance):
+def after_activate(instance):
     """
     """
+
+def after_retire(instance):
+    """
+    """
+
