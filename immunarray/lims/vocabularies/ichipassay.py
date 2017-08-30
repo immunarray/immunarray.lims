@@ -13,7 +13,7 @@ class IChipAssayList(object):
     def __call__(self, context):
         brains = api.content.find(portal_type='iChipAssay',
                                   reivew_state='activated')
-        ichip_assay_titles = [brain.title for brain in brains]
-        return SimpleVocabulary.fromItems(ichip_assay_titles)
+        ichip_assay_titles = [brain.Title for brain in brains]
+        return SimpleVocabulary.fromValues(ichip_assay_titles)
 
 IChipAssayListVocabulary = IChipAssayList()
