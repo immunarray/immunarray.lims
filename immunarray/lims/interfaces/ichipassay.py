@@ -8,7 +8,7 @@ from zope import schema
 
 class IiChipAssay(BaseModel):
     """ Interface that will allow for creation of new iChip Assays"""
-    title = schema.TextLine(
+    name = schema.TextLine(
         title=_(u"iChip Assay"),
         required=True,
     )
