@@ -3,15 +3,21 @@ import datetime
 import json
 from operator import itemgetter
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.resources import add_resource_on_request
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone import api
-from plone.api.content import get_state
+from plone.api.content import get_state, find
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
 
+class NoIchipLotsFound(Exception):
+    pass
+
+class NotEnoughUniqueIChipLots(Exception):
+    pass
 
 class AddCommercialEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
@@ -33,32 +39,34 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 return self.template()  # setup for "custom"
 
             assay_parameters = self.getInfoAboutSelectedAssay(assay)
+            if assay_parameters == 0:
+                return json.dump({"TestRun": "No Assay Paramater Found"})
             frames = assay_parameters['framecount']
 
             # get dictionary of all the samples that need to be tested for the
             # selected assay. logic on what samples to be tested can make
             # decisions based on the assay_parameters status
 
-            if assay_parameters['status'] == 'Commercial':
+            if assay_parameters['desired_use'] == 'Commercial':
                 max_nr_samples = self.maxNumberOfSamplesToRun(assay_parameters)
                 full_set = self.queryClinicalSamples(assay, max_nr_samples)
                 sample_count = len(full_set)
-                # insert feedback for not samples needing to be tested status
-                # =210
-                ichips = self.getiChipsForTesting(assay, sample_count, frames)
+                ichips_for_assay = self.getiChipsForTesting(assay,
+                                                            sample_count,
+                                                            frames)
                 working_aliquots = self.queryWorkingAliquots(full_set,
                                                              assay_parameters)
-                plates = self.makeTestPlan(assay_parameters, ichips,
+                plates = self.makeTestPlan(assay_parameters, ichips_for_assay,
                                            max_nr_samples, sample_count,
                                            working_aliquots)
                 return json.dumps({"TestRun": plates})
 
-            if assay_parameters['status'] == 'Development':
-                samples_to_get = 'RandDSample'
-                # make a development run
-                development_samples = {}
-                ichips_for_session = {}
-                solutions_for_session = {}
+            # if assay_parameters['desired_use'] == 'Development':
+            #     samples_to_get = 'RandDSample'
+            #     # make a development run
+            #     development_samples = {}
+            #     ichips_for_session = {}
+            #     solutions_for_session = {}
 
             if assay == 'Custom':
                 all_samples_in_lims = {}
@@ -94,21 +102,20 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             'portal_type',
             'qc_high_choice',
             'qc_low_choice',
+            'desired_use',
             'sample_qc_dilution_factor',
             'sample_qc_dilution_material',
-            'status',
             'title',
         ]
         normalize = queryUtility(IIDNormalizer).normalize
-        for brain in api.content.find(portal_type='iChipAssay'):
-            assay_obj = brain.getObject()
-            assay_pretty_name = normalize(
-                "{}-{}".format(assay_obj.title, assay_obj.status)).upper()
-            ichipassays[assay_pretty_name] = assay_obj
-        assay_obj = ichipassays[assay]
-        params = {t: assay_obj._get_request_var_or_attr(t, '')
-                  for t in variables_to_get}
-        return params
+        brains = api.content.find(portal_type='iChipAssay', Title=assay)
+        if brains:
+            assay_obj = brains[0].getObject()
+            params = {t: assay_obj._get_request_var_or_attr(t, '')
+                      for t in variables_to_get}
+            return params
+        else:
+            return 0
 
     def maxNumberOfSamplesToRun(self, assay_parameters):
         """take the assay parameters and determine the max number of samples
@@ -132,34 +139,40 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         max_samples_to_test = sample_wells - wells_needed_per_sample
         return max_samples_to_test
 
-    def queryClinicalSamples(self, assay, max_nr_samples):
-        """Get all the samples that are 'received', order them by date, 
-        and filter them for those who's test_ordered_status is one of 
-        'Received', 'Rerun', or 'To Be Tested'.
+    def get_assay_request_from_sample(self, sample, assay_name):
+        """Return
         """
-        brains = api.content.find(
-            portal_type='ClinicalSample', review_state='received')
-        tmp = {}
-        for sample in (b.getObject() for b in brains):
-            # collate the samples by the test_ordered_status.
+        wf = getToolByName(sample, 'portal_workflow')
+        for obj in sample.getObjectValues():
+            if obj.portal_type == 'AssayRequest' \
+                    and obj.title == assay_name \
+                    and get_state(obj) in ['re_run', 'to_be_tested']:
+                return obj
 
-            if assay in sample.test_ordered_status:
-                status = sample.test_ordered_status[assay]
-                if status not in tmp:
-                    tmp[status] = []
-                tmp[status].append({'uid': sample.UID(),
-                                    'draw_date': sample.collection_date,
-                                    'test_status': sample.test_ordered_status,
-                                    'sample': sample})
-        # now sort all the lists in tmp
-        for key in tmp.keys():
-            tmp[key] = sorted(tmp[key], key=itemgetter('draw_date'))
+    def queryClinicalSamples(self, assay, max_nr_samples):
+        """Get all the samples that are review_state='received', and which
+        contain an "AssayRequest" who's title matches the assay_name, and who
+        have a review_state of (re_run or to_be_tested).
+        """
+        import pdb;pdb.set_trace()
+        sample_data = []
 
-        a = tmp.get('Rerun', []) + \
-            tmp.get('Received', []) + \
-            tmp.get('To Be Tested', [])
+        for testable_state in ['re_run', 'to_be_tested']:
+            brains = find(portal_type="AssayRequest",
+                          Title=assay,
+                          review_state=testable_state)
+            tmp = []
+            for brain in brains:
+                assay_request = brain.getObject()
+                sample = assay_request.aq_parent
+                tmp.append({'uid': sample.UID(),
+                            'draw_date': sample.collection_date,
+                            'test_status': get_state(assay_request),
+                            'sample': sample})
+            tmp = sorted(tmp, key=itemgetter('draw_date'))
+            sample_data.extend(tmp)
 
-        return a[:max_nr_samples]
+        return sample_data[:max_nr_samples]
 
     def queryWorkingAliquots(self, full_set, assay_parameters):
         """Query to get working aliquots to test with
@@ -205,37 +218,38 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """Get ALL iChips that can be used for the selected assay
         [[<iChipLotID>,[<iChip>,<iChip>,<iChip>]]]
         """
-        # convert frame to string
-        st_frame = str(frame)
-        values = api.content.find(portal_type='iChipLot')
-        ichiplot_uid = [u.UID for u in values]
-        # get the UID for each iChipLot in the LIMS
-        list_ichiplot_and_ichips = []
-        # get iChipLots in order first, then get child objects
-        tmp = []
+        ichips_for_assay = []
+
+        brains = find(portal_type='iChipLot',
+                      review_state='released',
+                      sort_on='expires')
+        if not brains:
+            raise NoIchipLotsFound
+
+        ichiplots = []
         today = datetime.date.today()
-        for v in ichiplot_uid:
-            ichiplot = api.content.get(UID=v)
-            for n in ichiplot.intended_assay:
-                if n == assay \
-                        and ichiplot.acceptance_status == 'Passed' \
-                        and ichiplot.frames == st_frame \
-                        and ichiplot.ichip_lot_expiration_date > today:
-                    # commercial needs, correct assay
-                    # want to order the ichiplots in this list by exp date
-                    tmp.append([ichiplot.ichip_lot_expiration_date, ichiplot])
-        tmp.sort()
-        for a in tmp:
-            ichiplot = a[1]
-            ichips_in_lot = ichiplot.contentIds()
-            list_ichip_objects = []
-            for ichip in ichips_in_lot:
-                chip_object = ichiplot[ichip]
-                if get_state(chip_object) == 'released':
-                    list_ichip_objects.append(chip_object)
-            # list_ichip_objects.sort() #Places objects in reverse order?
-            list_ichiplot_and_ichips.append([ichiplot, list_ichip_objects])
-        return list_ichiplot_and_ichips
+        for brain in brains:
+            ichiplot = brain.getObject()
+            if assay in ichiplot.intended_assay \
+                and ichiplot.frames == str(frame):
+                # commercial needs, correct assay
+                # want to order the ichiplots in this list by exp date
+                ichiplots.append(ichiplot)
+
+        ichips = []
+        for ichiplot in ichiplots:
+            brains = find(portal_type='iChip',
+                          review_state='released',
+                          path={'query':ichiplot.getPhysicalPath(),
+                                'depth':1},
+                          sort_on='id')
+            for brain in brains:
+                ichip = brain.getObject()
+                ichips.append(ichip)
+
+            ichips_for_assay.append([ichiplot, ichips])
+
+        return ichips_for_assay
 
     def iChipAssayList(self):
         vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
@@ -249,7 +263,32 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                      max_nr_samples, sample_count, working_aliquots):
         """use ordered [ichiplot, [ichips]], assay parameters{},
         [working aliquots] to build test plan
+
+        XXX
+
+        >>> asdf = create(ichiplot)
+        >>> asdf = create(ichiplot)
+        >>> asdf = create(clinicals)
+        >>> asdf = create(qc hi)
+        >>> asdf = create(qc lo)
+        >>> asdf = create(assay)
+        >>> makeTestPlan(assay_params, ich, max)
+        [[id_of_x, [y,z,yy,zz], [...], ]]
+
+
+        >>> asdf = create(ichiplot)
+        >>> asdf = create(ichiplot)
+        >>> asdf = create(clinicals)
+        >>> asdf = create(qc hi)
+        >>> asdf = create(qc lo)
+        >>> asdf = create(assay)
+        >>> makeTestPlan(assay_params, ich, max)
+        [[id_of_x, [y,z,yy,zz], [...], ]]
+
+
         """
+        import pdb;pdb.set_trace()
+
         slide_per_plate = 4  # constant that needs to be defined
         max_plates = assay_parameters['max_number_of_plates_per_test_run']
         number_same_lot = assay_parameters[
@@ -263,10 +302,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         wells_needed_per_sample = number_same_lot * number_unique_lot
         number_of_ichip_lots_available = len(ichips_for_assay)
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
-        if number_of_ichip_lots_available >= number_unique_lot:
-            print "Enough iChip Lots To Start Evaluation Process"
-        else:
-            print "Can Run Selected Assay, Not Enough Unique iChip Lots"
+
+        if not number_of_ichip_lots_available >= number_unique_lot:
+            raise NotEnoughUniqueIChipLots
+
         plate_count = 0
         _used_ichiplots = []
         _used_ichips = []
@@ -283,29 +322,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             active_lots = []
             required_ichips_for_testing = []
             for n in ichips_for_assay:
-                ichip_lot_object = n[0]
-                list_of_ichip_objects = n[1]
+                ichiplot, ichips = n
                 # That tells me if we have used this lot before
-                if ichip_lot_object.title.split(".")[0] not in (
+                if ichiplot.title.split(".")[0] not in (
                         active_lots[j][0].title.split(".")[0] for j in
                         range(len(active_lots))):
-                    # faulty because we don't update the list_of_ichip_objects,
+                    # faulty because we don't update the ichips,
                     # if true once it will always be true!
-                    if len(list_of_ichip_objects) >= number_same_lot:
-                        if ichip_lot_object not in _used_ichiplots:
+                    if len(ichips) >= number_same_lot:
+                        if ichiplot not in _used_ichiplots:
                             active_lots.append(n)
-                            _used_ichiplots.append(ichip_lot_object)
-                        elif ichip_lot_object in _used_ichiplots:
+                            _used_ichiplots.append(ichiplot)
+                        elif ichiplot in _used_ichiplots:
                             running_chip_count_in_lot = 0
                             for chip in _used_ichips:
-                                if chip.getParentNode() == ichip_lot_object:
+                                if chip.getParentNode() == ichiplot:
                                     running_chip_count_in_lot += 1  # count
                                     # of how many ichips have been used from
                                     # current lot
-                            if len(
-                                    list_of_ichip_objects) - \
-                                    running_chip_count_in_lot >= \
-                                    number_same_lot:
+                            if len(ichips) - running_chip_count_in_lot >= number_same_lot:
                                 active_lots.append(n)
                 # Need to account for how many ichips are left in the lot and
                 # if len(list_of_ichip_objects)-len(_used_ichips from that lot)
@@ -328,26 +363,25 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # Code section to select iChips
             # number_same_lot
             for a in active_lots:
-                ichip_objects = a[1]
-                ichip_lot_object = a[0]
-                c = []
+                ichiplot = a[0]
+                ichips = a[1]
+                j = []
                 # active_lots has the needed number of ichiplots, and has
                 # enough chips for at least one pass!
                 if plate_count != 0:
-                    for ichip in ichip_objects:
+                    for ichip in ichips:
                         if ichip in _used_ichips:
                             continue
                         else:
-                            c.append(ichip)
+                            j.append(ichip)
                             _used_ichips.append(ichip)
-                            if len(c) == number_same_lot:
+                            if len(j) == number_same_lot:
                                 break
-                    for d in c:
+                    for d in j:
                         required_ichips_for_testing.append(d)
                 if plate_count == 0:
-                    required_ichips_for_testing.extend(
-                        ichip_objects[:number_same_lot])
-                    _used_ichips.extend(ichip_objects[:number_same_lot])
+                    required_ichips_for_testing.extend(ichips[:number_same_lot])
+                    _used_ichips.extend(ichips[:number_same_lot])
 
             # a this point we have a selection of ichips, we now need to get
             # samples to be run on them.
@@ -368,9 +402,11 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # user confirms the run?
             # I think it will save time of looking all this up again
             sample_ids = [x.id for x in sample_slots]
+            # XXX Use residual slots for aliquots from Under Review QC samples.
             result.append(
                 [[x.id, sample_ids] for x in required_ichips_for_testing])
             plate_count += 1
+
         return result
 
     def getQCSampleObject(self, veracis_id):
