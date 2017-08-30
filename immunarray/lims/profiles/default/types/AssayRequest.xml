@@ -13,9 +13,9 @@
   <property name="filter_content_types">False</property>
   <property name="allowed_content_types"/>
   <property name="allow_discussion">False</property>
-  <property name="default_view">folder_contents</property>
+  <property name="default_view">view</property>
   <property name="view_methods">
-    <element value="folder_contents"/>
+    <element value="view"/>
   </property>
   <property name="default_view_fallback">False</property>
   <property name="add_permission">immunarray.lims.permissions.AddAssayRequest</property>
