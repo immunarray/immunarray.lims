@@ -3,28 +3,91 @@
              title="Assay Billing Request"
              description=""
              state_variable="review_state"
-             initial_state="available"
+             initial_state="to_be_sent"
              manager_bypass="False">
 
-  <state state_id="available" title="Available">
-    <exit-transition transition_id="queue"/>
+  <state state_id="to_be_sent" title="To Be Sent">
+    <exit-transition transition_id="send"/>
+    <exit-transition transition_id="close_billing_request"/>
   </state>
 
-  <state state_id="in_queue" title="In Queue">
-    <exit-transition transition_id="make_available"/>
+  <state state_id="sent" title="Sent">
+    <exit-transition transition_id="to_send"/>
+    <exit-transition transition_id="confirm_recipt"/>
   </state>
 
-  <state state_id="in_process" title="In Process">
-    <exit-transition transition_id="pass"/>
+  <state state_id="receipt_confirmed" title="Receipt Confirmed">
+    <exit-transition transition_id="close_billing_request"/>
   </state>
 
-  <state state_id="qc_passed" title="QC Passed">
-    <exit-transition transition_id="pass"/>
-  </state>
-
-  <state state_id="qc_failed" title="QC Failed">
-    <exit-transition transition_id="pass"/>
+  <state state_id="billing_closed" title="Billing Closed">
+    <exit-transition transition_id="to_send"/>
   </state>
 
 
+  <transition transition_id="to_send"
+              title="To Be Sent"
+              new_state="to_be_sent"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=to_send"
+            category="workflow"
+            icon="">To Be Sent
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('to_send')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="send"
+              title="Send"
+              new_state="sent"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=send"
+            category="workflow"
+            icon="">Send
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('send')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="confirm_receipt"
+              title="Confirm Receipt"
+              new_state="receipt_confirmed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=confirm_receipt"
+            category="workflow"
+            icon="">Confirm Receipt
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('confirm_receipt')
+      </guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="close_billing_request"
+              title="Billing Closed"
+              new_state="billing_closed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=close_billing_request"
+            category="workflow"
+            icon="">Billing Closed
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('close_billing_request')
+      </guard-expression>
+    </guard>
+  </transition>
 </dc-workflow>

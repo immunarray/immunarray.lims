@@ -75,7 +75,7 @@
 
   <transition transition_id="queue"
               title="Queue"
-              new_state="In-Queue"
+              new_state="in_queue"
               before_script=""
               after_script=""
               trigger="USER">
@@ -91,7 +91,7 @@
 
   <transition transition_id="re_run"
               title="Re Run"
-              new_state="re-run"
+              new_state="re_run"
               before_script=""
               after_script=""
               trigger="USER">
