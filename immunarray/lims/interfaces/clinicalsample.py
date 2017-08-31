@@ -94,12 +94,10 @@ class IClinicalSample(ISample):
         title=_(u"Other Test(s) Ordered"),
         description=_(u"Other Test(s) Ordered Enter One Per Line"),
     )
-    other_test_ordered = schema.List(
+    other_test_ordered = schema.TextLine(
         title=_(u"Other Test(s) Ordered"),
         description=_(u"Other Test(s) Ordered Enter One Per Line"),
-        missing_value=None,
         required=False,
-        value_type=schema.TextLine()
     )
 
     """working example of multi choice input jp 1-31-17"""
@@ -117,28 +115,19 @@ class IClinicalSample(ISample):
                     _(u"Hair Loss")]),
     )
 
-    joint_pain_text = schema.List(
+    joint_pain_text = schema.TextLine(
         title=_(u"Joint Pain Specifics"),
         description=_(u"Joint Pain Specifics (Enter One Per Line)"),
-        missing_value=None,
-        required=False,
-        value_type=schema.TextLine()
     )
 
-    inflammation_text = schema.List(
+    inflammation_text = schema.TextLine(
         title=_(u"Inflammation Specifics"),
         description=_(u"Inflammation Specifics (Enter One Per Line)"),
-        missing_value=None,
-        required=False,
-        value_type=schema.TextLine()
     )
 
-    other_symptoms_text = schema.List(
+    other_symptoms_text = schema.TextLine(
         title=_(u"Other Symptom(s)"),
         description=_(u"Other Symptom(s) Enter One Per Line"),
-        missing_value=None,
-        required=False,
-        value_type=schema.TextLine()
     )
 
     phlebotomist_name = schema.TextLine(
