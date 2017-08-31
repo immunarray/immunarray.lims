@@ -11,12 +11,13 @@ def iChipLotAdded(instance, event):
 
     # Set default permissions for a new ichiplot
     instance.manage_permission(
-        AddiChip, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        AddiChip, ['LabManager', 'LabClerk'], 0)
     disallow_default_contenttypes(instance)
 
     # I want to create X amount of iChips from form value.
     for x in range(1, instance.nr_ichips + 1):
         ichip = create(container=instance,
+                       title = "{0}_{1:03d}".format(instance.title, x),
                        type='iChip',
                        ichip_id="{0}_{1:03d}".format(instance.title, x))
         # Configure each ichip to reflect the parent's settings
