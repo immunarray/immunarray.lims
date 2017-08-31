@@ -12,15 +12,15 @@ class AssayBillingRequest(BaseContainer):
     @assay_name.setter
     def assay_name(self, value):
         self._assay_name = value
-        temp = getattr(self, "_program_name", "")
+        temp = getattr(self, "_sample_id", "")
         self.setTitle(value + " - " + temp)
 
     @property
-    def program_name(self):
-        return getattr(self, "_program_name", "")
+    def sample_id(self):
+        return getattr(self, "_sample_id", "")
 
-    @program_name.setter
-    def program_name(self, value):
+    @sample_id.setter
+    def sample_id(self, value):
         self._assay_name = value
         temp = getattr(self, "_assay_name", "")
         self.setTitle(temp + " - " + value)
