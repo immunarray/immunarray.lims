@@ -425,7 +425,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 "%s has no aliquots that meet assay parameters"%lqc_object)
         lqc_aliquot_to_add_to_plate = lqc_aliquots[0]
 
-        import pdb;pdb.set_trace()
         qc_to_add_to_plate = [hqc_aliquot_to_add_to_plate] * hqc
         qc_to_add_to_plate += [lqc_aliquot_to_add_to_plate] * lqc
         print qc_to_add_to_plate
