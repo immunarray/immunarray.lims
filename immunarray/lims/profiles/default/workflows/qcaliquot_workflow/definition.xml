@@ -38,7 +38,8 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('make_available')</guard-expression>
+      <guard-expression>python:here.guard_handler('make_available')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -70,19 +71,20 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('begin_process')</guard-expression>
+      <guard-expression>python:here.guard_handler('begin_process')
+      </guard-expression>
     </guard>
   </transition>
 
   <transition transition_id="pass"
-              title="QC Fail"
-              new_state="qc_failed"
+              title="QC Pass"
+              new_state="qc_passed"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=pass"
             category="workflow"
-            icon="">QC Fail
+            icon="">QC Pass
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -91,14 +93,14 @@
   </transition>
 
   <transition transition_id="fail"
-              title="QC Pass"
-              new_state="qc_passed"
+              title="QC Fail"
+              new_state="qc_failed"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=fail"
             category="workflow"
-            icon="">QC Pass
+            icon="">QC Fail
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>

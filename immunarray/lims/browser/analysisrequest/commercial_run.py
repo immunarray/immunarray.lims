@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 import json
 from operator import itemgetter
 
@@ -13,11 +12,22 @@ from plone.api.content import get_state, find
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryUtility
 
+
 class NoIchipLotsFound(Exception):
     pass
 
+
 class NotEnoughUniqueIChipLots(Exception):
     pass
+
+
+class QCSampleNotFound(Exception):
+    pass
+
+
+class NoWorkingAliquotsFound(Exception):
+    pass
+
 
 class AddCommercialEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
@@ -46,19 +56,24 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             # get dictionary of all the samples that need to be tested for the
             # selected assay. logic on what samples to be tested can make
             # decisions based on the assay_parameters status
-
             if assay_parameters['desired_use'] == 'Commercial':
                 max_nr_samples = self.maxNumberOfSamplesToRun(assay_parameters)
-                full_set = self.queryClinicalSamples(assay, max_nr_samples)
-                sample_count = len(full_set)
+                clinical_samples = self.queryClinicalSamples(
+                    assay, max_nr_samples)
+                sample_count = len(clinical_samples)
                 ichips_for_assay = self.getiChipsForTesting(assay,
                                                             sample_count,
                                                             frames)
-                working_aliquots = self.queryWorkingAliquots(full_set,
-                                                             assay_parameters)
+                working_qc_aliquots = self.queryWorkingAliquots(
+                    clinical_samples, assay_parameters,
+                    Type='QC Aliquot (Working)')
+                working_clinical_aliquots = self.queryWorkingAliquots(
+                    clinical_samples, assay_parameters,
+                    Type='Clinical Aliquot (Working)')
                 plates = self.makeTestPlan(assay_parameters, ichips_for_assay,
                                            max_nr_samples, sample_count,
-                                           working_aliquots)
+                                           working_qc_aliquots,
+                                           working_clinical_aliquots)
                 return json.dumps({"TestRun": plates})
 
             # if assay_parameters['desired_use'] == 'Development':
@@ -77,7 +92,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                 # ichips_for_session_finial = []
 
         return self.template()
-
 
     def getInfoAboutSelectedAssay(self, assay):
         """Use end user selection to pull needed number of working aliquots 
@@ -154,10 +168,10 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         contain an "AssayRequest" who's title matches the assay_name, and who
         have a review_state of (re_run or to_be_tested).
         """
-        import pdb;pdb.set_trace()
         sample_data = []
 
         for testable_state in ['re_run', 'to_be_tested']:
+            # this does get Clinical Samples keep reading jp
             brains = find(portal_type="AssayRequest",
                           Title=assay,
                           review_state=testable_state)
@@ -174,45 +188,43 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
         return sample_data[:max_nr_samples]
 
-    def queryWorkingAliquots(self, full_set, assay_parameters):
-        """Query to get working aliquots to test with
+    def queryWorkingAliquots(self, full_set, assay_parameters, Type):
+        """Query to get QC and Clinical working aliquots to test with.
         """
-        aliquot_uids_for_testing = []
+        aliquot_objects_for_testing = []
         # loop over all the samples coming into search
         for sample_dict in full_set:
             # object passed in from full_set
             parent = sample_dict['sample']  # parent is sample object
-            # get child items
-            children = parent.items()
-            aliquots = self.collectAliquots(children)
-            print aliquots
-            for c in aliquots:
-                # wrap a safety net on checking aliquots
-                try:
-                    vol = assay_parameters['desired_working_aliquot_volume']
-                    if c.aliquot_type == "Working" \
-                            and c.consume_date is None\
-                            and c.volume >= vol:
-                        aliquot_uids_for_testing.append(c)
-                        break
-                except:
-                    print "object " + c.id + " lacks the ability to be checked"
-        return aliquot_uids_for_testing
+            import pdb;pdb.set_trace()
 
-    def collectAliquots(self, array_of_aliquots):
+            aliquots = self.collectAliquots(parent, Type=Type)
+            for c in aliquots:
+                vol = assay_parameters['desired_working_aliquot_volume']
+                if c.remaining_volume >= vol:
+                    aliquot_objects_for_testing.append(c)
+                    break
+        if not aliquot_objects_for_testing:
+            raise NoWorkingAliquotsFound
+        return aliquot_objects_for_testing
+
+    # noinspection PyPep8Naming
+    def collectAliquots(self, qc_sample_object, Type,
+                        review_state='available'):
         """Get in array of objects to see if they are the last in the chain
         and return a list of objects back.  Check if each is a working aliquot
         that meets the needs of the assay
+
+        Type is the value of the index called 'Type'.  It's set (for aliquots)
+        in the adapters/indexers.py.
         """
-        all_child_objects = []
-        for n in array_of_aliquots:
-            all_child_objects.append(n[1])
-        for n in array_of_aliquots:
-            if n[1].items() is None:
-                all_child_objects.append(n[1])
-            else:
-                all_child_objects.extend(self.collectAliquots(n[1].items()))
-        return all_child_objects
+        brains = find(Type=Type,
+                      review_state=review_state,
+                      path={'query': qc_sample_object.getPhysicalPath(),
+                            'depth': -1},
+                      sort_on='id')
+        items = [b.getObject() for b in brains]
+        return items
 
     def getiChipsForTesting(self, assay, sample_count, frame):
         """Get ALL iChips that can be used for the selected assay
@@ -227,27 +239,16 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             raise NoIchipLotsFound
 
         ichiplots = []
-        today = datetime.date.today()
         for brain in brains:
             ichiplot = brain.getObject()
             if assay in ichiplot.intended_assay \
-                and ichiplot.frames == str(frame):
+                    and int(ichiplot.frames) == int(frame):
                 # commercial needs, correct assay
                 # want to order the ichiplots in this list by exp date
                 ichiplots.append(ichiplot)
 
-        ichips = []
         for ichiplot in ichiplots:
-            brains = find(portal_type='iChip',
-                          review_state='released',
-                          path={'query':ichiplot.getPhysicalPath(),
-                                'depth':1},
-                          sort_on='id')
-            for brain in brains:
-                ichip = brain.getObject()
-                ichips.append(ichip)
-
-            ichips_for_assay.append([ichiplot, ichips])
+            ichips_for_assay.append([ichiplot, ichiplot.objectValues()])
 
         return ichips_for_assay
 
@@ -287,8 +288,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
 
 
         """
-        import pdb;pdb.set_trace()
-
         slide_per_plate = 4  # constant that needs to be defined
         max_plates = assay_parameters['max_number_of_plates_per_test_run']
         number_same_lot = assay_parameters[
@@ -340,7 +339,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                                     running_chip_count_in_lot += 1  # count
                                     # of how many ichips have been used from
                                     # current lot
-                            if len(ichips) - running_chip_count_in_lot >= number_same_lot:
+                            if len(
+                                    ichips) - running_chip_count_in_lot >= number_same_lot:
                                 active_lots.append(n)
                 # Need to account for how many ichips are left in the lot and
                 # if len(list_of_ichip_objects)-len(_used_ichips from that lot)
@@ -412,17 +412,11 @@ class AddCommercialEightFrameTestRunView(BrowserView):
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
         """
-        qc = veracis_id
-        values = api.content.find(context=api.portal.get(),
-                                  portal_type='QCSample')
-        qc_sample_ids = [v.UID for v in values]
-        d = []
-        for i in qc_sample_ids:
-            a = api.content.get(UID=i)
-            if qc == a.veracis_id:
-                d.append(a)
-                break
-        return d
+        brains = api.content.find(portal_type='QCSample', review_state='in_use',
+                                  veracis_id=veracis_id)
+        if not brains:
+            raise QCSampleNotFound
+        return brains[0].getObject()
 
     def selectQCAliquot(self, number_of_controls, min_working_volume,
                         number_same_lot_replication, number_of_unique_ichips,
@@ -436,7 +430,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         for c in array_of_qc_samples:
             # wrap a safety net on checking aliquots
             try:
-                if c.aliquot_type == "Working" and c.consume_date is None and\
+                if c.aliquot_type == "Working" and c.consume_date is None and \
                                 c.volume >= min_volume:
                     return c
                 else:
@@ -462,13 +456,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         frame_count = assay_parameters['framecount']
         min_volume_per_sample = assay_parameters[
             'minimum_working_aliquot_volume']
-
-        hqc_aliquots = self.collectAliquots(hqc_object[0].items())
+        hqc_aliquots = self.collectAliquots(hqc_object,
+                                            Type='QC Aliquot (Working)')
         hqc_aliquot_to_add_to_plate = self.selectQCAliquot(
             hqc, min_volume_per_sample, number_same_lot, number_unique_lot,
             hqc_aliquots)
-
-        lqc_aliquots = self.collectAliquots(lqc_object[0].items())
+        lqc_aliquots = self.collectAliquots(lqc_object,
+                                            Type='QC Aliquot (Working)')
         lqc_aliquot_to_add_to_plate = self.selectQCAliquot(
             lqc, min_volume_per_sample, number_same_lot, number_unique_lot,
             lqc_aliquots)
