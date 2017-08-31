@@ -15,11 +15,17 @@
     <exit-transition transition_id="put_in_use"/>
     <exit-transition transition_id="quarantine"/>
     <exit-transition transition_id="close"/>
+    <exit-transition transition_id="expire"/>
   </state>
 
   <state state_id="in_use" title="In-Use">
     <exit-transition transition_id="quarantine"/>
     <exit-transition transition_id="close"/>
+    <exit-transition transition_id="expire"/>
+  </state>
+
+  <state state_id="expired" title="Expired">
+    <exit-transition transition_id="quarantine"/>
   </state>
 
   <state state_id="closed" title="Closed">
@@ -71,6 +77,22 @@
     <guard>
       <guard-permission>Modify portal content</guard-permission>
       <guard-expression>python:here.guard_handler('put_in_use')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="expire"
+              title="Expire"
+              new_state="expired"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=expire"
+            category="workflow"
+            icon="">Expire
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('expire')</guard-expression>
     </guard>
   </transition>
 
