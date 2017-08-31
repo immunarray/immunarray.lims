@@ -379,6 +379,7 @@ class AddRecView(BrowserView):
             billing_request = api.content.create(container=assay_request,
                                                  type='AssayBillingRequest',
                                                  title=usn_from_form,
+                                                 safe_id=True,
                                                  assay_name=a,
                                                  sample_id=usn_from_form,
                                                  diagnosis_code=diagnosis_code,
