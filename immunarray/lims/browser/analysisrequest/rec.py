@@ -2,6 +2,7 @@
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
+from plone.api.content import transition
 from plone.dexterity.utils import createContentInContainer
 from plone import api
 from bika.lims.permissions import disallow_default_contenttypes
@@ -187,6 +188,8 @@ class AddRecView(BrowserView):
                 print working_aliquotA03
                 working_aliquotA04 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[2])
                 print working_aliquotA04
+
+
                 #make assay request(s)
                 #make billing request(s)
                 #for t in tubes:
@@ -367,6 +370,15 @@ class AddRecView(BrowserView):
                                             )
         print ("Clinical Sample Made with id of " + usn_from_form)
         clinical_sample_uid = clinical_sample.UID()
+        # Creates Assay Request Object on Sample Creation, on for each assay selected!
+        for a in assay_selection:
+            assay_request = api.content.create(container=clinical_sample,
+                                               type='AssayRequest',
+                                               title=a,
+                                               assay_name=a)
+            transition(assay_request, to_state='to_be_tested')
+
+
         return clinical_sample_uid
         # pass UID to be the start point for making aliquots
         # make aliquots for testing
@@ -485,7 +497,7 @@ class AddRecView(BrowserView):
                                                title =usn_from_form + "-"+letter_to_add+"01",
                                                sample_id = usn_from_form,
                                                aliquot_type = 'Bulk',
-                                               volume = 2000,
+                                               initial_volume = 2000,
                                                pour_date = today
                                               )
         print "Clinical Bulk Aliquot with ID of "+clinical_aliquot.title +"made"
@@ -497,13 +509,13 @@ class AddRecView(BrowserView):
         today = datetime.datetime.today().date()
         target_clinical_sample = api.content.get(UID=bulk_aliquot_UID)
         #adjust volume for child aliquot
-        target_clinical_sample.volume -= 12
+        target_clinical_sample.remaining_volume -= 12
         clinical_aliquot = api.content.create(container=target_clinical_sample,
                                               type='ClinicalAliquot',
                                               title=usn_from_form + "-A" + tube_number,
                                               sample_id=target_clinical_sample.title,
                                               aliquot_type='Working',
-                                              volume=12,
+                                              initial_volume=12,
                                               pour_date=today
                                               )
         print "Clinical Working Aliquot with ID of " + clinical_aliquot.title + " made"
@@ -521,3 +533,5 @@ class AddRecView(BrowserView):
             if site_id == str(site.title):
                 site_is_sales_rep=site.sales_rep
         return site_is_sales_rep
+
+
