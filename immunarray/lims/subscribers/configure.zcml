@@ -69,11 +69,17 @@
       handler="immunarray.lims.subscribers.aliquot.RandDAliquotAdded"
   />
 
+
+
   <subscriber
-      for="immunarray.lims.interfaces.qcaliquot.IQCAliquot
+      for="immunarray.lims.interfaces.assayrequest.IAssayRequest
            zope.lifecycleevent.IObjectAddedEvent"
-      handler="immunarray.lims.subscribers.aliquot.QCAliquotAdded"
+      handler="immunarray.lims.subscribers.assayrequest.AssayRequest"
   />
 
-
+  <subscriber
+      for="immunarray.lims.interfaces.assaybillingrequest.IAssayBillingRequest
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.assaybillingrequest.AssayBillingRequest"
+  />
 </configure>
