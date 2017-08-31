@@ -361,8 +361,6 @@ class AddRecView(BrowserView):
                                              other_test_ordered=test_other_specify,
                                              symptoms_choice=symptoms_choice,
                                              symptoms_text=clin_other_specify,
-                                             diagnosis_code=diagnosis_code,
-                                             diagnosis_code_other=diag_other_specify,
                                              phlebotomist_name=phlebotomist_name,
                                              phlebotomist_signature_provided=draw_signed,
                                              collection_date=py_collection_date,
@@ -377,6 +375,14 @@ class AddRecView(BrowserView):
                                                title=a,
                                                assay_name=a)
             transition(assay_request, to_state='to_be_tested')
+
+            billing_request = api.content.create(container=assay_request,
+                                                 type='AssayBillingRequest',
+                                                 title=usn_from_form,
+                                                 assay_name=a,
+                                                 sample_id=usn_from_form,
+                                                 diagnosis_code=diagnosis_code,
+                                                 diagnosis_code_other=diag_other_specify)
 
 
         return clinical_sample_uid
@@ -535,3 +541,58 @@ class AddRecView(BrowserView):
         return site_is_sales_rep
 
 
+    # Data that is passed from the 'rec' when all fields are entered
+        # all_data:1
+        # usn_from_from:1000-12345
+        # site_id:10
+        # dob:1954-10-12
+        # patient_first_name:AllFieldsFirst
+        # patient_last_name:AllFieldsLast
+        # mrn:123123123-123123ERE
+        # ssn:223-23-1111
+        # gender:Male
+        # marital_status:Married
+        # ethnicity:African American or Black
+        # ethnicity_specify:
+        # p_add_street:113 Some Where Apt A
+        # p_add_city:CityTest
+        # p_state:KY
+        # p_add_zip:12312
+        # patient_phone:
+        # consent_acquired:Yes
+        # consent_signed:Yes
+        # consent_date:2017-08-30
+        # ana_testing:Positive
+        # clinical_impression:Yes
+        # test_xray:X-Ray
+        # test_other:Other
+        # test_other_specify:cpep, other test
+        # clin_rash:Rash
+        # clin_seiz_psych:Seizures or Psychosis
+        # clin_mouth_sores:Mouth Sores
+        # clin_hair_loss:Hair Loss
+        # clin_joint_pain:Joint Pain
+        # clin_inflam:Inflammation
+        # clin_other:Other Symptoms
+        # clin_other_specify:Other symptoms
+        # diag_D89_89:D89.89
+        # diag_M32_10:M32.10
+        # diag_D89_9:D89.9
+        # diag_M35_9:M35.9
+        # diag_L93_2:L93.2
+        # diag_other:Other, please specify
+        # diag_other_specify[]:other icd-10 code
+        # provider_nip_clean:1134234859
+        # provider_signed:True
+        # draw_location:SomeLab
+        # draw_tel:899-123-1234
+        # phlebotomist_name:SomeOneDraws
+        # draw_signed:True
+        # collection_date:2017-08-30
+        # shipment_date:2017-08-30
+        # ordering_provider_name:Alvin Wells
+        # billing_primary:
+        # billing_secondary:
+        # assay_choice[]:SLE-key RO V1 - Development
+        # assay_choice[]:DA Version 1.0 - Development
+        # assay_choice[]:SLE-key RO V2 - Commercial
