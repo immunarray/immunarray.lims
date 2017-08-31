@@ -29,12 +29,6 @@ class IClinicalAliquot(IAliquot):
                 _(u'Working')],
     )
 
-    volume = schema.Int(
-        title=_(u"Volume (in uL)"),
-        description=_(u"Volume (in uL)"),
-        required=False,
-    )
-
     pour_date = schema.Date(
         title=_(u"Aliquot Pour Date"),
         description=_(u"Aliquot Pour Date"),
