@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from immunarray.lims import messageFactory as _
 from plone.supermodel import model
 from zope import schema

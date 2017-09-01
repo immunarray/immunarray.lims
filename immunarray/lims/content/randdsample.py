@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims.content.abstractsample import AbstractSample
 from immunarray.lims.interfaces.sample import ISample
 from zope.interface import implements

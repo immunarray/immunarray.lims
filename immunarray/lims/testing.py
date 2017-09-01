@@ -1,20 +1,17 @@
+# -*- coding: utf-8 -*-
+import collective.js.jqueryui
+import plone.app.iterate
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.setuphandlers import setupPortalContent
+from Testing.makerequest import makerequest
 from plone.app.testing import FunctionalTesting
-from plone.app.testing import login
-from plone.app.testing import logout
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import applyProfile
+from plone.app.testing import login
+from plone.app.testing import logout
 from plone.testing import z2
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.setuphandlers import setupPortalContent
-from Testing.makerequest import makerequest
-
-import Products.ATExtensions
-import Products.PloneTestCase.setup
-import collective.js.jqueryui
-import plone.app.iterate
-
 
 
 class BikaTestLayer(PloneSandboxLayer):
@@ -23,7 +20,6 @@ class BikaTestLayer(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         import immunarray.lims
-        import archetypes.schemaextender
         # Load ZCML
         self.loadZCML(package=plone.app.iterate)
         self.loadZCML(package=collective.js.jqueryui)

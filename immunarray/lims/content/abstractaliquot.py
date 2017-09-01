@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims.interfaces import IWorkingAliquot, IBulkAliquot
 from zope.interface import alsoProvides
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims.content.abstractaliquot import AbstractAliquot
 from immunarray.lims.interfaces.sample import ISample
 

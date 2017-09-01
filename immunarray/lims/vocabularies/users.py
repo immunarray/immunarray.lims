@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.api.portal import get_tool
 from zope.interface import implementer
 from zope.schema.interfaces import IContextSourceBinder

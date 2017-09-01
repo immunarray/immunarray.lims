@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.ichipassay import IiChipAssay
 from immunarray.lims.interfaces.ichiplot import IiChipLot

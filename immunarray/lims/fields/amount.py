@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from decimal import Decimal as D, InvalidOperation
 
 from zope.schema import Decimal, ValidationError

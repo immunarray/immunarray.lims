@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
 from zope import schema

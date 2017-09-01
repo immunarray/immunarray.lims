@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Permission should be duplicated in permissions.py and permissions.zcml
 """
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.content.browser.contents import FolderContentsView
 
 

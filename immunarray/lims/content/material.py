@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from immunarray.lims.interfaces.solution import ISolution
 from zope.component import adapter
 from zope.interface import Interface, implementer

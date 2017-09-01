@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFCore.permissions import View, ListFolderContents, \
     AccessContentsInformation, ModifyPortalContent
 from Products.CMFPlone import permissions
