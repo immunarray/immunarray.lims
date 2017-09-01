@@ -183,19 +183,12 @@ class AddRecView(BrowserView):
                 # easy way
                 draw_tubes = ['A','B']
                 bulk_aliquotA = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[0])
-                print bulk_aliquotA
                 bulk_aliquotB = self.make_bulk_aliquots(sample_UID, usn_from_form, draw_tubes[1])
-                print  bulk_aliquotB
                 # make working aliquots
                 working_tubes = ['02','03','04']
                 working_aliquotA02 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[0])
-                print working_aliquotA02
                 working_aliquotA03 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[1])
-                print working_aliquotA03
                 working_aliquotA04 = self.make_working_aliquots(usn_from_form, bulk_aliquotA, working_tubes[2])
-                print working_aliquotA04
-
-
                 #make assay request(s)
                 #make billing request(s)
                 #for t in tubes:
@@ -218,12 +211,12 @@ class AddRecView(BrowserView):
         ''' Site ID to get practice names, and make list of provider NIP's at that
             practice
         '''
-        site_objects = api.content.find(context=api.portal.get(), portal_type='Site')
+        site_objects = api.content.find(portal_type='Site')
         site_uids = [i.UID for i in site_objects]
         site_name= "null"
         for j in site_uids:
             site = api.content.get(UID=j)
-            if site_id == str(site.title):
+            if site_id == str(site.therapak_id):
                 site_name = site.site_name
         return site_name
 
@@ -375,7 +368,6 @@ class AddRecView(BrowserView):
                                              inflammation_text =other_inflam,
                                              other_symptoms_text = other_clinical_symptoms,
                                             )
-        print ("Clinical Sample Made with id of " + usn_from_form)
         clinical_sample_uid = clinical_sample.UID()
         # Creates Assay Request Object on Sample Creation, on for each assay selected!
         for a in assay_selection:
@@ -501,7 +493,6 @@ class AddRecView(BrowserView):
         pt_record.physical_address_city = patient_city
         pt_record.physical_address_state = patient_state
         pt_record.physical_address_zipcode = patient_zip_code
-        print "Patient Record Updated UID: " + pt_UID
 
     def make_bulk_aliquots(self,sample_UID, usn_from_form, letter_to_add):
         """Make aliquot A based on USN and UID of the parent sample
@@ -516,7 +507,6 @@ class AddRecView(BrowserView):
                                                initial_volume = 2000,
                                                pour_date = today
                                               )
-        print "Clinical Bulk Aliquot with ID of "+clinical_aliquot.title +"made"
         clinical_aliquot_UID = clinical_aliquot.UID()
         return clinical_aliquot_UID
 
@@ -534,7 +524,6 @@ class AddRecView(BrowserView):
                                               initial_volume=12,
                                               pour_date=today
                                               )
-        print "Clinical Working Aliquot with ID of " + clinical_aliquot.title + " made"
         clinical_aliquot_UID = clinical_aliquot.UID()
         return clinical_aliquot_UID
 
@@ -549,61 +538,3 @@ class AddRecView(BrowserView):
             if site_id == str(site.title):
                 site_is_sales_rep=site.sales_rep
         return site_is_sales_rep
-
-
-    # Data that is passed from the 'rec' when all fields are entered
-        # all_data:1
-        # usn_from_from:1000-12345
-        # site_id:10
-        # dob:1954-10-12
-        # patient_first_name:AllFieldsFirst
-        # patient_last_name:AllFieldsLast
-        # mrn:123123123-123123ERE
-        # ssn:223-23-1111
-        # gender:Male
-        # marital_status:Married
-        # ethnicity:African American or Black
-        # ethnicity_specify:
-        # p_add_street:113 Some Where Apt A
-        # p_add_city:CityTest
-        # p_state:KY
-        # p_add_zip:12312
-        # patient_phone:
-        # consent_acquired:Yes
-        # consent_signed:Yes
-        # consent_date:2017-08-30
-        # ana_testing:Positive
-        # clinical_impression:Yes
-        # test_xray:X-Ray
-        # test_other:Other
-        # test_other_specify:cpep, other test
-        # clin_rash:Rash
-        # clin_seiz_psych:Seizures or Psychosis
-        # clin_mouth_sores:Mouth Sores
-        # clin_hair_loss:Hair Loss
-        # clin_joint_pain:Joint Pain
-        # clin_inflam:Inflammation
-        # clin_other:Other Symptoms
-        # clin_other_specify:Other symptoms
-        # diag_D89_89:D89.89
-        # diag_M32_10:M32.10
-        # diag_D89_9:D89.9
-        # diag_M35_9:M35.9
-        # diag_L93_2:L93.2
-        # diag_other:Other, please specify
-        # diag_other_specify[]:other icd-10 code
-        # provider_nip_clean:1134234859
-        # provider_signed:True
-        # draw_location:SomeLab
-        # draw_tel:899-123-1234
-        # phlebotomist_name:SomeOneDraws
-        # draw_signed:True
-        # collection_date:2017-08-30
-        # shipment_date:2017-08-30
-        # ordering_provider_name:Alvin Wells
-        # billing_primary:
-        # billing_secondary:
-        # assay_choice[]:SLE-key RO V1 - Development
-        # assay_choice[]:DA Version 1.0 - Development
-        # assay_choice[]:SLE-key RO V2 - Commercial
-
