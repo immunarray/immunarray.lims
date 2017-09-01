@@ -1,11 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:cmf="http://namespaces.zope.org/cmf"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
-    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="immunarray.lims">
 
   <browser:page
@@ -18,8 +13,16 @@
 
   <browser:page
       name="ctest"
-      class="immunarray.lims.browser.analysisrequest.commercial_run.AddCommercialEightFrameTestRunView"
       for="immunarray.lims.interfaces.ITestRuns"
+      class="immunarray.lims.browser.analysisrequest.commercial_run.AddEightFrameTestRunView"
+      template="templates/aliquot_testing/SLE-key_v_2_0_commercial.pt"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="view"
+      for="immunarray.lims.interfaces.ITestRuns"
+      class="immunarray.lims.browser.analysisrequest.commercial_run.AddEightFrameTestRunView"
       template="templates/aliquot_testing/SLE-key_v_2_0_commercial.pt"
       permission="zope2.View"
   />

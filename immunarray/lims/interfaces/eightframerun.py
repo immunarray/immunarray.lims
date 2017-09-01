@@ -5,7 +5,7 @@ from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from plone.autoform.interfaces import IFormFieldProvider
 from zope import schema
-from zope.interface import alsoProvides
+from zope.interface import alsoProvides, Attribute
 
 
 def currentTime():
@@ -17,65 +17,18 @@ def currentDate():
 
 
 class IEightFrameRun(IVeracisRunBase):
-    """Eight Frame Test Run
-     """
-    # All iChip_ids and aliquot ids for test run
-    ichipID_wells_to_aliquots = schema.Dict(
-        key_type=schema.TextLine(
-            title=_(u"iChip and Well ID"),
-            description=_(u"iChip and Well ID"),
-            required=False,
-        ),
-        value_type=schema.TextLine(
-            title=_(u"Aliquot ID"),
-            description=_(u"Aliquot ID"),
-            required=False,
-        ),
-    )
 
-    # Solutions
-    ten_x_pbs = schema.TextLine(
-        title=_(u"10X PBS Lot Used"),
-        description=_(u"10X PBS Lot Used"),
-        required=False,
-    )
+    plates = Attribute(""" """)
 
-    one_x_pbs = schema.TextLine(
-        title=_(u"1X PBS Lot Used"),
-        description=_(u"1X PBS Lot Used"),
-        required=False,
-    )
-
-    one_x_pbs_casein = schema.TextLine(
-        title=_(u"1X PBS 1% Casein Lot Used"),
-        description=_(u"1X PBS 1% Casein Lot Used"),
-        required=False,
-    )
-
-    one_x_pbs_22_tween20 = schema.TextLine(
-        title=_(u"1X PBS - 22% Tween 20 Lot Used"),
-        description=_(u"1X PBS - 22% Tween 20 Lot Used"),
-        required=False,
-    )
-
-    ethanol_70_percent = schema.TextLine(
-        title=_(u"70% Ethanol"),
-        description=_(u"70% Ethanol"),
-        required=False,
-    )
-
-    antibodies_used = schema.Dict(
-        key_type=schema.TextLine(title=u"Anitbody/Antigen Used", required=True),
-        value_type=schema.TextLine(title=u"Lot of Anitbody/Antigen Used",
-                                   required=True)
-    )
+    # XXX ichipassay <->
+    # solutions = Attribute("""Materials and/or solutions used.
+    # [{'uid': UID,
+    #   'lot': lot_number,
+    #   'exp.date': date}]""")
 
     # iChip Humidity
 
-    ichip_humidity = schema.Dict(
-        key_type=schema.TextLine(title=u"iChip Print Lot", required=True),
-        value_type=schema.TextLine(title=u"Humidity", required=True)
-    )
+    ichip_humidity = Attribute(""" ichiplot and humidity""")
 
     # Serum Addition
     serum_time_start = schema.Datetime(
@@ -114,7 +67,7 @@ class IEightFrameRun(IVeracisRunBase):
         required=False,
     )
 
-    # Choice of labtech/labmanager
+    # Choice of lab tech/lab manager
     serum_witness_name = schema.TextLine(
         title=_(u"Witness for Serum Addition"),
         description=_(u"Witness for Serum Addition"),

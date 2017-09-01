@@ -33,7 +33,7 @@ class IiChipAssay(BaseModel):
         default=2,
     )
 
-    number_of_same_lot_replication_needed_for_samples = schema.Int(
+    number_of_same_lot_replication_needed = schema.Int(
         title=_(u"Same Lot Replication Needed For Samples"),
         description=_(u"Same Lot Replication Needed For Samples"),
         required=True,

@@ -9,7 +9,8 @@
         type: 'POST',
         dataType: 'json',
         data: {
-          'assaySeleced': assaySelected,
+          'ctest_action': 'selected_an_assay',
+          'assaySelected': assaySelected,
           '_authenticator': authenticator
         },
         success: function(responseText, statusText, statusCode, xhr, $form) {
@@ -23,13 +24,13 @@
             plate = $("#blank-plate").clone()[0];
             plate.id = '#plate-' + plate_nr;
             $(plate).find(".plate-title").empty().append('Plate ' + plate_nr);
-            $(plate).find(".ichip-id").addClass("plate-" + plate_nr);
+            $(plate).find(".chip-id").addClass("plate-" + plate_nr);
             $.each(v, function(ii, vv) {
               var ichip_id, ichip_nr, samples;
               ichip_nr = String(ii + 1);
               ichip_id = vv[0];
               samples = vv[1];
-              $(plate).find(".ichip-id.ichip-" + ichip_nr + ".plate-" + plate_nr).val(ichip_id);
+              $(plate).find(".chip-id.ichip-" + ichip_nr + ".plate-" + plate_nr).val(ichip_id);
               $.each(samples, function(iii, vvv) {
                 var well_nr;
                 well_nr = String(iii + 1);
@@ -49,6 +50,24 @@
               $(plate).find(".plate-title").empty().append('Plate ' + plate_nr);
             });
           });
+        }
+      });
+    });
+    $("#saverun").click(function(ev) {
+      var data;
+      ev.preventDefault();
+      data = {
+        form_values: $("form#commercial_run").serializeArray(),
+        ctest_action: 'save_run',
+        assay_name: $('#assaySelected').val()
+      };
+      $.ajax({
+        url: 'ctest',
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        success: function(responseText, statusText, statusCode, xhr, $form) {
+          debugger;
         }
       });
     });

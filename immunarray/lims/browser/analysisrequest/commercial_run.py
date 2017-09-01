@@ -2,14 +2,19 @@
 import json
 from operator import itemgetter
 
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.resources import add_resource_on_request
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from immunarray.lims import logger
+from immunarray.lims.interfaces import ITestRuns
+from immunarray.lims.interfaces.aliquot import IAliquot
+from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from plone.api.content import get_state, find
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from zope.component import queryUtility
+from plone.api.content import create, find, get_state
+
+
+class SelectedAssayNotFound(Exception):
+    pass
 
 
 class NoIchipLotsFound(Exception):
@@ -23,6 +28,7 @@ class NotEnoughUniqueIChipLots(Exception):
 class QCSampleNotFound(Exception):
     pass
 
+
 class QCAliquotNotFound(Exception):
     pass
 
@@ -31,7 +37,7 @@ class NoWorkingAliquotsFound(Exception):
     pass
 
 
-class AddCommercialEightFrameTestRunView(BrowserView):
+class AddEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
         "templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
 
@@ -45,87 +51,46 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         add_resource_on_request(self.request, "static.js.test_run.js")
         request = self.request
 
-        if "assaySeleced" in request.form:
+        if request.form.get("ctest_action", "") == 'selected_an_assay':
             # gives me the assay value from the ctest form
-            assay = request.form.get("assaySeleced")
-            if assay == 'None':
-                return self.template()  # setup for "custom"
+            assay_name = request.form.get("assaySelected")
+            if assay_name == 'None':
+                return self.template()
+            elif assay_name == 'Custom':
+                pass
+            else:
+                assay = self.get_assay(assay_name)
+                if assay.desired_use == 'Commercial':
+                    plates = self.makeTestPlan(assay)
+                    return json.dumps({"TestRun": plates})
+                if assay.desired_use == 'Development':
+                    pass
 
-            assay_parameters = self.getInfoAboutSelectedAssay(assay)
-            if assay_parameters == 0:
-                return json.dumps({"TestRun": "No Assay Paramater Found"})
-
-            if assay_parameters['desired_use'] == 'Commercial':
-                plates = self.makeTestPlan(assay, assay_parameters)
-                return json.dumps({"TestRun": plates})
-
-            # if assay_parameters['desired_use'] == 'Development':
-            #     samples_to_get = 'RandDSample'
-            #     # make a development run
-            #     development_samples = {}
-            #     ichips_for_session = {}
-            #     solutions_for_session = {}
-
-            if assay == 'Custom':
-                all_samples_in_lims = {}
-                ichips_for_session = {}
-                solutions_for_session = {}
-                # button push
-                # commercial_samples_finial = []
-                # ichips_for_session_finial = []
+        elif request.form.get('ctest_action', '') == 'save_run':
+            self.save_run()
 
         return self.template()
 
-    def getInfoAboutSelectedAssay(self, assay):
-        """Use end user selection to pull needed number of working aliquots 
-        for assay
-        """
-        ichipassays = {}
-        variables_to_get = [
-            'creation_date',
-            'creators',
-            'description',
-            'desired_working_aliquot_volume',
-            'framecount',
-            'id',
-            'max_number_of_plates_per_test_run',
-            'minimum_working_aliquot_volume',
-            'modification_date',
-            'number_of_high_value_controls',
-            'number_of_low_value_controls',
-            'number_of_same_lot_replication_needed_for_samples',
-            'number_of_unique_ichips_lots_needed',
-            'number_of_working_aliquots_needed',
-            'portal_type',
-            'qc_high_choice',
-            'qc_low_choice',
-            'desired_use',
-            'sample_qc_dilution_factor',
-            'sample_qc_dilution_material',
-            'title',
-        ]
-        normalize = queryUtility(IIDNormalizer).normalize
-        brains = find(portal_type='iChipAssay', Title=assay)
-        if brains:
-            assay_obj = brains[0].getObject()
-            params = {t: assay_obj._get_request_var_or_attr(t, '')
-                      for t in variables_to_get}
-            return params
-        else:
-            return 0
+    def iChipAssayList(self):
+        vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
+        return vocab_keys
 
-    def maxNumberOfSamplesToRun(self, assay_parameters):
+    def get_assay(self, assay_name):
+        brains = find(portal_type='iChipAssay', Title=assay_name)
+        if not brains:
+            raise SelectedAssayNotFound
+        return brains[0].getObject()
+
+    def maxNumberOfSamplesToRun(self, assay):
         """take the assay parameters and determine the max number of samples
         that can be tested in a single run
         """
-        max_plates = assay_parameters['max_number_of_plates_per_test_run']
-        hqc = assay_parameters['number_of_high_value_controls']
-        lqc = assay_parameters['number_of_low_value_controls']
-        number_same_lot = assay_parameters[
-            'number_of_same_lot_replication_needed_for_samples']
-        number_unique_lot = assay_parameters[
-            'number_of_unique_ichips_lots_needed']
-        frame_count = assay_parameters['framecount']
+        max_plates = assay.max_number_of_plates_per_test_run
+        hqc = assay.number_of_high_value_controls
+        lqc = assay.number_of_low_value_controls
+        number_same_lot = assay.number_of_same_lot_replication_needed
+        number_unique_lot = assay.number_of_unique_ichips_lots_needed
+        frame_count = assay.framecount
         # update type to be frame type (int)
         wells_needed_per_sample = number_same_lot * number_unique_lot
         max_wells = max_plates * frame_count
@@ -136,27 +101,16 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         max_samples_to_test = sample_wells - wells_needed_per_sample
         return max_samples_to_test
 
-    def get_assay_request_from_sample(self, sample, assay_name):
-        """Return
-        """
-        wf = getToolByName(sample, 'portal_workflow')
-        for obj in sample.getObjectValues():
-            if obj.portal_type == 'AssayRequest' \
-                    and obj.title == assay_name \
-                    and get_state(obj) in ['re_run', 'to_be_tested']:
-                return obj
-
-    def queryClinicalSamples(self, assay, max_nr_samples):
+    def queryClinicalSamples(self, assay):
         """Get all the samples that are review_state='received', and which
         contain an "AssayRequest" who's title matches the assay_name, and who
         have a review_state of (re_run or to_be_tested).
         """
         sample_data = []
-
         for testable_state in ['re_run', 'to_be_tested']:
             # this does get Clinical Samples keep reading jp
             brains = find(portal_type="AssayRequest",
-                          Title=assay,
+                          Title=assay.title,
                           review_state=testable_state)
             tmp = []
             for brain in brains:
@@ -169,19 +123,22 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             tmp = sorted(tmp, key=itemgetter('draw_date'))
             sample_data.extend(tmp)
 
+        max_nr_samples = self.maxNumberOfSamplesToRun(assay)
         return sample_data[:max_nr_samples]
 
-    def queryClinicalWorkingAliquots(self, clinical_samples, assay_parameters):
+    def queryClinicalWorkingAliquots(self, assay):
         """Query to get QC and Clinical working aliquots to test with.
         """
         aliquot_objects_for_testing = []
         # loop over all the samples coming into search
+        clinical_samples = self.queryClinicalSamples(assay)
         for sample_dict in clinical_samples:
             # object passed in from full_set
             parent = sample_dict['sample']  # parent is sample object
-            aliquots = self.collectAliquots(parent, Type='Clinical Aliquot (Working)')
+            aliquots = self.collectAliquots(parent,
+                                            Type='Clinical Aliquot (Working)')
             for c in aliquots:
-                vol = assay_parameters['desired_working_aliquot_volume']
+                vol = assay.desired_working_aliquot_volume
                 if c.remaining_volume >= vol:
                     aliquot_objects_for_testing.append(c)
                     break
@@ -189,8 +146,6 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             raise NoWorkingAliquotsFound
         return aliquot_objects_for_testing
 
-
-    # noinspection PyPep8Naming
     def collectAliquots(self, sample_object, **kwargs):
         """Get in array of objects to see if they are the last in the chain
         and return a list of objects back.  Check if each is a working aliquot
@@ -204,50 +159,20 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         items = [b.getObject() for b in brains]
         return items
 
-
-
-    def iChipAssayList(self):
-        vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
-        return vocab_keys
-
-    def get_vocab_keys(self, vocab):
-        vocab_keys = vocab.__call__(self).by_value.keys()
-        return vocab_keys
-
-    def makeTestPlan(self, assay, assay_parameters):
+    def makeTestPlan(self, assay):
         """use ordered [ichiplot, [ichips]], assay parameters{},
         [working aliquots] to build test plan
-
-        XXX
-
-        # asdf = create(ichiplot)
-        # asdf1 = create(ichiplot)
-        # asdf2 = create(clinicals)
-        # asdf3 = create(qc hi)
-        # asdf4 = create(qc lo)
-        # asdf5 = create(assay)
-        # makeTestPlan(assay_params, ich, max)
-        [[id_of_x, [y,z,yy,zz], [...], ]]
-
 
         """
         slide_per_plate = 4  # constant that needs to be defined
 
-        max_plates = assay_parameters['max_number_of_plates_per_test_run']
-        number_same_lot = assay_parameters[
-            'number_of_same_lot_replication_needed_for_samples']
-        number_unique_lot = assay_parameters[
-            'number_of_unique_ichips_lots_needed']
-        frame_count = assay_parameters['framecount']
-        min_volume_per_sample = assay_parameters[
-            'minimum_working_aliquot_volume']
-        frames = assay_parameters['framecount']
+        max_plates = assay.max_number_of_plates_per_test_run
+        number_same_lot = assay.number_of_same_lot_replication_needed
+        number_unique_lot = assay.number_of_unique_ichips_lots_needed
+        frame_count = assay.framecount
 
-        max_nr_samples = self.maxNumberOfSamplesToRun(assay_parameters)
-        clinical_samples = self.queryClinicalSamples(assay, max_nr_samples)
-        sample_count = len(clinical_samples)
-        ichips_for_assay = self.getiChipsForTesting(assay, sample_count, frames)
-        working_aliquots = self.queryClinicalWorkingAliquots(clinical_samples, assay_parameters)
+        ichips_for_assay = self.getiChipsForTesting(assay)
+        working_aliquots = self.queryClinicalWorkingAliquots(assay)
 
         number_of_ichip_lots_available = len(ichips_for_assay)
         # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
@@ -265,7 +190,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         while plate_count <= max_plates and len(working_aliquots) > 0:
             # add QC to working_aliquots is no ichiplots have been used
             if not _used_ichiplots:
-                qc_list = self.getQCAliquots(assay_parameters)
+                qc_list = self.getQCAliquots(assay)
                 for qc in qc_list:
                     working_aliquots.insert(0, qc)
             active_lots = []
@@ -283,14 +208,13 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             active_lots.append(xx)
                             _used_ichiplots.append(ichiplot)
                         elif ichiplot in _used_ichiplots:
-                            running_chip_count_in_lot = 0
+                            lot_chip_count = 0  # Running chip count in this lot
                             for chip in _used_ichips:
                                 if chip.getParentNode() == ichiplot:
-                                    running_chip_count_in_lot += 1  # count
+                                    lot_chip_count += 1  # count
                                     # of how many ichips have been used from
                                     # current lot
-                            if len(
-                                    ichips) - running_chip_count_in_lot >= number_same_lot:
+                            if len(ichips) - lot_chip_count >= number_same_lot:
                                 active_lots.append(xx)
                 # Need to account for how many ichips are left in the lot and
                 # if len(list_of_ichip_objects)-len(_used_ichips from that lot)
@@ -304,7 +228,7 @@ class AddCommercialEightFrameTestRunView(BrowserView):
                             continue  # Using the same lot as in a previous
                             # run, no new qc needed
                         else:
-                            qc_list = self.getQCAliquots(assay_parameters)
+                            qc_list = self.getQCAliquots(assay)
                             for qc in qc_list:
                                 working_aliquots.insert(0, qc)
                             break  # we know at least one lot is new and as such
@@ -363,93 +287,41 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         """input veracis_id, get qc sample object
         """
         brains = find(portal_type='QCSample', review_state='in_use',
-                                  veracis_id=veracis_id)
+                      veracis_id=veracis_id)
         if not brains:
             raise QCSampleNotFound
         return brains[0].getObject()
 
-
-    # def queryQCWorkingAliquots(self, assay_parameters):
-    #     """Query to get QC and Clinical working aliquots to test with.
-    #     """
-    #     aliquot_objects_for_testing = []
-    #     # loop over all the samples coming into search
-    #     for sample_dict in full_set:
-    #         # object passed in from full_set
-    #         parent = sample_dict['sample']  # parent is sample object
-    #
-    #         aliquots = self.collectAliquots(parent, Type='QC Aliquot (Working)')
-    #         for c in aliquots:
-    #             vol = assay_parameters['desired_working_aliquot_volume']
-    #             if c.remaining_volume >= vol:
-    #                 aliquot_objects_for_testing.append(c)
-    #                 break
-    #     if not aliquot_objects_for_testing:
-    #         raise NoWorkingAliquotsFound
-    #     return aliquot_objects_for_testing
-
-
-    def getQCAliquots(self, assay_parameters):
+    def getQCAliquots(self, assay):
         """Get QC's aliquots
         """
-        hqc = assay_parameters['number_of_high_value_controls']
-        hqc_veracis_id = assay_parameters['qc_high_choice']
-        hqc_object = self.getQCSampleObject(hqc_veracis_id)
-        lqc = assay_parameters['number_of_low_value_controls']
-        lqc_veracis_id = assay_parameters['qc_low_choice']
-        lqc_object = self.getQCSampleObject(lqc_veracis_id)
-        max_plates = assay_parameters['max_number_of_plates_per_test_run']
-        number_same_lot = assay_parameters[
-            'number_of_same_lot_replication_needed_for_samples']
-        number_unique_lot = assay_parameters[
-            'number_of_unique_ichips_lots_needed']
-        frame_count = assay_parameters['framecount']
-        min_volume_per_sample = assay_parameters[
-            'minimum_working_aliquot_volume']
+        hqc_sample = self.getQCSampleObject(assay.qc_high_choice)
+        lqc_sample = self.getQCSampleObject(assay.qc_low_choice)
 
-        hqc_aliquots = self.collectAliquots(
-            hqc_object,
-            Type='QC Aliquot (Working)',
-            remaining_volume = {'query':min_volume_per_sample,'range':'min'})
-        if not hqc_aliquots:
+        aliquots = self.collectAliquots(
+            hqc_sample, Type='QC Aliquot (Working)',
+            remaining_volume={'query': assay.minimum_working_aliquot_volume,
+                              'range': 'min'})
+        if not aliquots:
             raise QCAliquotNotFound(
-                "%s has no aliquots that meet assay parameters"%hqc_object)
-        hqc_aliquot_to_add_to_plate = hqc_aliquots[0]
+                "%s has no aliquots that meet assay parameters" % hqc_sample)
+        hqc_aliquot = aliquots[0]
 
-        lqc_aliquots = self.collectAliquots(
-            lqc_object,
-            Type='QC Aliquot (Working)',
-            remaining_volume = {'query':min_volume_per_sample,'range':'min'})
-        if not lqc_aliquots:
+        aliquots = self.collectAliquots(
+            lqc_sample, Type='QC Aliquot (Working)',
+            remaining_volume={'query': assay.minimum_working_aliquot_volume,
+                              'range': 'min'})
+        if not aliquots:
             raise QCAliquotNotFound(
-                "%s has no aliquots that meet assay parameters"%lqc_object)
-        lqc_aliquot_to_add_to_plate = lqc_aliquots[0]
+                "%s has no aliquots that meet assay parameters" % lqc_sample)
+        lqc_aliquot = aliquots[0]
 
-        qc_to_add_to_plate = [hqc_aliquot_to_add_to_plate] * hqc
-        qc_to_add_to_plate += [lqc_aliquot_to_add_to_plate] * lqc
+        qc_to_add_to_plate = [hqc_aliquot] * assay.number_of_high_value_controls
+        qc_to_add_to_plate += [lqc_aliquot] * assay.number_of_low_value_controls
         print qc_to_add_to_plate
         return qc_to_add_to_plate
 
-    def makePullList(self):
-        """Make a simple pull list of box location number and sample IDs to pull
-        for test run
-        """
-        pass
-
-    def makePlateHTML(self, plates, frame_count):
-        """Get in the Plate Number from AJAX request, build HTML code,
-        pass back to be inserted into form
-        """
-        # thinks to know plates[0] = plate 1 for assay
-        # plates[0][0] is plate1 chip 1
-        # plates[0][0][0] is ichip id as a string
-        # plates[0][0][1] is aliquot ids as strings in a list
-        for index, plate in enumerate(plates):
-            plate_number = index + 1
-            for ichips in plate:
-                pass
-
-    def getiChipsForTesting(self, assay, sample_count, frame):
+    def getiChipsForTesting(self, assay):
         """Get ALL iChips that can be used for the selected assay
         [[<iChipLotID>,[<iChip>,<iChip>,<iChip>]]]
         """
@@ -464,8 +336,8 @@ class AddCommercialEightFrameTestRunView(BrowserView):
         ichiplots = []
         for brain in brains:
             ichiplot = brain.getObject()
-            if assay in ichiplot.intended_assay \
-                    and int(ichiplot.frames) == int(frame):
+            if assay.title in ichiplot.intended_assay \
+                    and int(ichiplot.frames) == int(assay.framecount):
                 # commercial needs, correct assay
                 # want to order the ichiplots in this list by exp date
                 ichiplots.append(ichiplot)
@@ -474,3 +346,96 @@ class AddCommercialEightFrameTestRunView(BrowserView):
             ichips_for_assay.append([ichiplot, ichiplot.objectValues()])
 
         return ichips_for_assay
+
+    def save_run(self):
+        """
+        """
+        form_values = self.get_serializeArray_form_values()
+        testruns = find(object_provides=ITestRuns.__identifier__)[0].getObject()
+        plates = self.transmogrify_plate_inputs(form_values['plates'])
+
+        create(
+            testruns,
+            'EightFrameRun',
+            title=form_values['selected_assay'],
+            plates=plates,
+        )
+
+        # transition all aliquots and chips
+
+    def get_serializeArray_form_values(self):
+        """Parse the form_values list into a single dictionary.  The plates
+        are taken care of particularly, like this:
+
+        {'thing1': 'value1',
+         'thing2': 'value2'...
+         'plates': [
+             {plate1-stuff}, 
+             {plate2-stuff}
+         ]
+        }
+        """
+        raw = self.request.form
+        count = len([x for x in raw if 'form_values' in x])
+        nr_plates = 0
+
+        # gather intermediate data dictionary
+        intermediate = {}
+        for x in range(0, count / 2):
+            name = raw['form_values[%s][name]' % x]
+            value = raw['form_values[%s][value]' % x]
+            if name in intermediate:
+                if type(intermediate[name]) == list:
+                    intermediate[name].append(value)
+                else:
+                    intermediate[name] = [intermediate[name], value]
+                nr_plates = len(intermediate[name])
+            else:
+                intermediate[name] = value
+
+        # Separate the plates from the rest of the form values, and convert
+        # them to a single list of dictionaries.
+        form_values = {}
+        # noinspection PyUnusedLocal
+        plates = [{} for x in range(nr_plates)]
+        for k, v in intermediate.items():
+            if type(v) == list:
+                for nr in range(nr_plates):
+                    plates[nr][k] = v[nr]
+            else:
+                form_values[k] = v
+
+        # Ignore plates that have no values
+        form_values['plates'] = [p for p in plates if any(p.values())]
+        return form_values
+
+    def transmogrify_plate_inputs(self, plates):
+        """Verify that all the chips and samples mentioned in the plate
+        configuration sent to us, are still available and in correct workflow
+        states.
+        
+        If so, return a copy of the input plates, with all Titles replaced by
+        UIDs.
+        """
+        for plate in plates:
+            for chip_nr in range(1, 5):
+                for well_nr in range(1, 9):
+                    key = "chip-{}_well-{}".format(chip_nr, well_nr)
+                    if plate[key]:
+                        brains = find(object_provides=IAliquot.__identifier__,
+                                      Title=plate[key])
+                        if brains:
+                            plate[key] = brains[0].UID
+                        else:
+                            logger.info('{}: {}, not found, what do.'.format(
+                                key, plate[key]))
+                key = "chip-id-{}".format(chip_nr)
+                if plate[key]:
+                    brains = find(object_provides=IiChip.__identifier__,
+                                  Title=plate[key])
+                    if brains:
+                        plate[key] = brains[0].UID
+                    else:
+                        logger.info('{} {}, not found, what do.'.format(
+                            key, plate[key]))
+        return plates

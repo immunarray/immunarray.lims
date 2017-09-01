@@ -1,4 +1,5 @@
 require ['jquery'], ($) ->
+
     $('#assay_selection').change ->
         assaySelected = $(this).val()
         authenticator = $('input[name="_authenticator"]').val()
@@ -7,7 +8,8 @@ require ['jquery'], ($) ->
             type: 'POST'
             dataType: 'json',
             data:
-                'assaySeleced': assaySelected
+                'ctest_action': 'selected_an_assay'
+                'assaySelected': assaySelected
                 '_authenticator': authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->
                 if statusCode.status == 210
@@ -19,13 +21,13 @@ require ['jquery'], ($) ->
                     plate = $("#blank-plate").clone()[0]
                     plate.id = '#plate-'+plate_nr
                     $(plate).find(".plate-title").empty().append('Plate '+plate_nr)
-                    $(plate).find(".ichip-id").addClass("plate-"+plate_nr)
+                    $(plate).find(".chip-id").addClass("plate-"+plate_nr)
                     # Loop the incoming sample data and populate the table
                     $.each v, (ii, vv) ->
                         ichip_nr = String(ii+1)
                         ichip_id = vv[0]
                         samples = vv[1]
-                        $(plate).find(".ichip-id.ichip-"+ichip_nr+".plate-"+plate_nr).val ichip_id
+                        $(plate).find(".chip-id.ichip-"+ichip_nr+".plate-"+plate_nr).val ichip_id
                         $.each samples, (iii, vvv) ->
                             well_nr = String(iii+1)
                             $(plate).find(".chip-"+ichip_nr+".well-"+well_nr).val vvv
@@ -45,6 +47,23 @@ require ['jquery'], ($) ->
                         $(plate).find(".plate-title").empty().append('Plate '+plate_nr)
                         return
                     return
+                return
+        return
+
+
+    $("#saverun").click (ev) ->
+        ev.preventDefault()
+        data =
+            form_values: $("form#commercial_run").serializeArray()
+            ctest_action: 'save_run'
+            assay_name: $('#assaySelected').val()
+        $.ajax
+            url: 'ctest'
+            type: 'POST'
+            dataType: 'json',
+            data: data
+            success: (responseText, statusText, statusCode, xhr, $form) ->
+                debugger;
                 return
         return
 
