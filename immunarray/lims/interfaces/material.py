@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
@@ -51,16 +52,22 @@ class IMaterial(BaseModel):
         required=False
     )
 
-    arrival_amount = schema.TextLine(
-        title=_(u"Amount of material at time of arrival"),
-        description=_(u"Specify with SI units, eg: 1uL, 1', 20g, or 1 kg."),
+    initial_amount = Amount(
+        title=_(u"Initial amount made"),
+        description=_(u"Enter a decimal number"),
         required=True,
     )
 
-    current_amount = schema.TextLine(
-        title=_(u"Amount of material currently remaining"),
-        description=_(u"Specify with SI units, eg: 1uL, 1', 20g, or 1 kg."),
-        required=False
+    remaining_amount = Amount(
+        title=_(u"Amount remaining"),
+        description=_(u"You should not need to edit this value"),
+        readonly=True,
+    )
+
+    unit = schema.TextLine(
+        title=_(u"Unit"),
+        description=_("Enter the unit in which the amounts are measured"),
+        required=True,
     )
 
     received_by = schema.Choice(
