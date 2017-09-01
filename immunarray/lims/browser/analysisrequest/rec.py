@@ -131,6 +131,12 @@ class AddRecView(BrowserView):
             billable_primary = request.form.get('billing_primary')
             billable_secondary = request.form.get('billing_secondary')
             assay_selection_raw = request.form.get('assay_choice[]')
+            other_clinical_symptoms= request.form.get('clin_other_specify')
+            other_inflam = request.form.get('clin_inflam_specify')
+            other_joint_pain = request.form.get('clin_joint_pain_specify')
+
+
+
             # case for single assay selected
             assay_selection = []
             if isinstance(assay_selection_raw, basestring):
@@ -171,7 +177,7 @@ class AddRecView(BrowserView):
                                           diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                                           provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                                           draw_signed, collection_date, shipment_date, test_other_specify,
-                                          clinical_impression, ordering_provider_name, site_id, assay_selection)
+                                          clinical_impression, ordering_provider_name, site_id, assay_selection,other_clinical_symptoms, other_inflam, other_joint_pain)
                 # make bulk aliquots
                 # fancy way to have multiple tubes in the system, update letter list as more tubes are added
                 # easy way
@@ -287,7 +293,7 @@ class AddRecView(BrowserView):
                              diag_M35_9, diag_L93_2, diag_other, diag_other_specify,
                              provider_nip_clean, provider_signed, draw_location, draw_tel, phlebotomist_name,
                              draw_signed, collection_date, shipment_date, test_other_specify,
-                             clinical_impression, ordering_provider_name, site_id, assay_selection):
+                             clinical_impression, ordering_provider_name, site_id, assay_selection,other_clinical_symptoms, other_inflam, other_joint_pain):
         """Make a clinical sample via api, set serial number
             Need to add option for assay choice at a later date
         """
@@ -365,6 +371,9 @@ class AddRecView(BrowserView):
                                              phlebotomist_signature_provided=draw_signed,
                                              collection_date=py_collection_date,
                                              received_date=py_shipment_date,
+                                             joint_pain_text = other_joint_pain,
+                                             inflammation_text =other_inflam,
+                                             other_symptoms_text = other_clinical_symptoms,
                                             )
         print ("Clinical Sample Made with id of " + usn_from_form)
         clinical_sample_uid = clinical_sample.UID()
@@ -597,3 +606,4 @@ class AddRecView(BrowserView):
         # assay_choice[]:SLE-key RO V1 - Development
         # assay_choice[]:DA Version 1.0 - Development
         # assay_choice[]:SLE-key RO V2 - Commercial
+
