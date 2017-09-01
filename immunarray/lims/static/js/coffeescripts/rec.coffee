@@ -228,6 +228,9 @@ require [ 'jquery' ], ($) ->
         'billing_primary': billable_primary
         'billing_secondary': billable_secondary
         'assay_choice': testsOrdered
+        'clin_other_specify':clin_other_specify
+        'clin_inflam_specify':clin_inflam_specify
+        'clin_joint_pain_specify':clin_joint_pain_specify
         '_authenticator': authenticator
       success: (responseText, statusText, xhr, $form) ->
         fullSubmitFeedback = JSON.parse(responseText)
