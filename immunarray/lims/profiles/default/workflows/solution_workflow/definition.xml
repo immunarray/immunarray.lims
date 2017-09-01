@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="material_workflow"
-             title="Material Workflow"
+<dc-workflow workflow_id="solution_workflow"
+             title="Solution Workflow"
              description=""
              state_variable="review_state"
              initial_state="quarantined"
@@ -23,18 +23,18 @@
   </state>
 
   <state state_id="closed" title="Closed">
-    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="quarantine"/>
   </state>
 
   <transition transition_id="quarantine"
-              title="Quarantine Material"
+              title="Quarantine Solution"
               new_state="quarantined"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=quarantine"
             category="workflow"
-            icon="">Quarantine Material
+            icon="">Quarantine Solution
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -43,14 +43,14 @@
   </transition>
 
   <transition transition_id="release"
-              title="Release Material"
+              title="Release Solution"
               new_state="released"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=release"
             category="workflow"
-            icon="">Release Material
+            icon="">Release Solution
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -59,14 +59,14 @@
   </transition>
 
   <transition transition_id="put_in_use"
-              title="Put Material In Use"
+              title="Put Solution In Use"
               new_state="in_use"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=put_in_use"
             category="workflow"
-            icon="">Put Material In Use
+            icon="">Put Solution In Use
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -75,14 +75,14 @@
   </transition>
 
   <transition transition_id="close"
-              title="Close Material"
+              title="Close Solution"
               new_state="closed"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=close"
             category="workflow"
-            icon="">Close Material
+            icon="">Close Solution
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
