@@ -80,6 +80,11 @@
       provides="zope.schema.interfaces.IContextSourceBinder"/>
 
   <utility
+      name="immunarray.lims.vocabularies.qc.InUseQCListVocabulary"
+      component="immunarray.lims.vocabularies.qc.InUseQCListVocabulary"
+      provides="zope.schema.interfaces.IContextSourceBinder"/>
+
+  <utility
       name="immunarray.lims.vocabularies.users.UserVocabulary"
       component="immunarray.lims.vocabularies.users.UserVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
