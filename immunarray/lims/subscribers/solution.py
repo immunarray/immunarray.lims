@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
-from immunarray.lims.permissions import AddClinicalAliquot, AddClinicalSample, \
-    AddRandDSample, AddRandDAliquot, AddQCAliquot, AddQCSample
-from bika.lims.permissions import disallow_default_contenttypes
-from bika.lims.utils.limsroot import getLims
+from immunarray.lims.interfaces.solution import ISolution
+from immunarray.lims.permissions import AddSolution
 
-def SolutionAdded(clinicalaliquot, event):
-    """A new Solution Type has been added!
+
+def SolutionFTIModified(instance, event):
+    """The ISolution behaviour has been applied to a Dexterity FTI!
     """
-    clinicalaliquot.manage_permission(AddClinicalAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    # Don't allow samples to be nested in each other!
-    clinicalaliquot.manage_permission(AddQCSample, [], 0)
-    clinicalaliquot.manage_permission(AddRandDSample, [], 0)
-    clinicalaliquot.manage_permission(AddClinicalSample, [], 0)
-    # Don't allow other aliquots to be added (only R&D Aliquots should be added)
-    clinicalaliquot.manage_permission(AddRandDAliquot, [], 0)
-    clinicalaliquot.manage_permission(AddQCAliquot, [], 0)
-    disallow_default_contenttypes(clinicalaliquot)
+    if ISolution.__identifier__ in instance.behaviors:  # [sic]
+        # Set some FTI fields to "Solution" defaults
+        instance.add_permission = 'immunarray.lims.permissions.AddSolution'
+        instance.klass = 'immunarray.lims.content.solution.Solution'
+        descr = instance.description if instance.description else instance.title
+        descr = 'Solution: ' + descr.replace('Solution: ', '')
+        instance.description = descr
 
+
+def SolutionModified(instance, event):
+    """A new solution has been created!
+    """
+    instance.manage_permission(AddSolution, [], 0)

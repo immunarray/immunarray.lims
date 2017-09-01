@@ -69,8 +69,6 @@
       handler="immunarray.lims.subscribers.aliquot.RandDAliquotAdded"
   />
 
-
-
   <subscriber
       for="immunarray.lims.interfaces.assayrequest.IAssayRequest
            zope.lifecycleevent.IObjectAddedEvent"
@@ -82,4 +80,35 @@
            zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.assaybillingrequest.AssayBillingRequest"
   />
+
+  <subscriber
+      for="immunarray.lims.interfaces.qcaliquot.IQCAliquot
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.aliquot.QCAliquotAdded"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.material.IMaterial
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler="immunarray.lims.subscribers.material.MaterialModified"
+  />
+
+  <subscriber
+      for="plone.dexterity.interfaces.IDexterityFTI
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler="immunarray.lims.subscribers.material.MaterialFTIModified"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.solution.ISolution
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler="immunarray.lims.subscribers.solution.SolutionModified"
+  />
+
+  <subscriber
+      for="plone.dexterity.interfaces.IDexterityFTI
+           zope.lifecycleevent.IObjectModifiedEvent"
+      handler="immunarray.lims.subscribers.solution.SolutionFTIModified"
+  />
+
 </configure>

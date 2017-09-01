@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.permissions import AccessContentsInformation, \
     ListFolderContents, ModifyPortalContent, View
-from bika.lims.permissions import disallow_default_contenttypes
-from immunarray.lims.interfaces import ISites, ISamples, IMaterials, \
-    ISolutions, IiChipLots, ITestRuns, INonConformanceEvents, IInventory, \
-    IPatients, IProviders, IiChipAssays, IConfiguration
-from immunarray.lims.permissions import AddEightFrameRun, AddMaterial, AddNCE, \
-    AddNoFrameRun, AddPatient, AddProvider, AddRack, AddSite, \
-    AddSolution, AddTestRun, AddThreeFrameRun, AddiChipAssay, AddiChipLot, \
-    AddClinicalSample, AddQCSample, AddRandDSample
+from bika.lims.permissions import AddLIMSRoot, disallow_default_contenttypes
+from immunarray.lims.interfaces import IConfiguration, IInventory, IMaterials, \
+    INonConformanceEvents, IPatients, IProviders, ISamples, ISites, \
+    ISolutions, ITestRuns, IiChipAssays, IiChipLots
+from immunarray.lims.permissions import AddClinicalSample, AddEightFrameRun, \
+    AddMaterial, AddNCE, AddNoFrameRun, AddPatient, AddProvider, AddQCSample, \
+    AddRack, AddRandDSample, AddSite, AddSolution, AddTestRun, \
+    AddThreeFrameRun, AddiChipAssay, AddiChipLot
 from pkg_resources import resource_filename
 from plone.api.content import create
 from plone.app.contenttypes import permissions
-from plone.dexterity.fti import DexterityFTI
-from zope.component.hooks import getSite
 from zope.interface import alsoProvides
 
 
@@ -26,12 +24,9 @@ def LIMSCreated(event):
     Here we will add the ImmunArray specific objects and configuration.
     """
     lims = event.lims
-    portal = getSite()
 
     create_structure(lims)
     structure_permissions(lims)
-    create_material_types(portal)
-    create_solution_types(portal)
 
 
 def create_structure(lims):
@@ -42,8 +37,7 @@ def create_structure(lims):
         [lims, 'Folder', 'solutions', 'Solutions', ISolutions],
         [lims, 'Folder', 'ichiplots', 'iChip Lots', IiChipLots],
         [lims, 'Folder', 'testruns', 'Test Runs', ITestRuns],
-        [lims, 'Folder', 'nce', 'Non Conformance Events',
-         INonConformanceEvents],
+        [lims, 'Folder', 'nce', 'Non Conformance Events', INonConformanceEvents],
         [lims, 'Folder', 'inventory', 'Inventory', IInventory],
         [lims, 'Folder', 'patients', 'Patients', IPatients],
         [lims, 'Folder', 'providers', 'Providers', IProviders],
@@ -72,6 +66,14 @@ def create_structure(lims):
 
 
 def structure_permissions(lims):
+    # @formatter:off
+
+    # Prevent anyone from adding a LIMSRoot inside of a LIMSRoot Allow for
+    # all users to see folder
+    lims.manage_permission(AddLIMSRoot, [], 0)
+    lims.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner', 'Administrator', 'Member', 'RandDLabClerk', 'RandDLabManager'], 0)
+    lims.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner', 'Administrator', 'Member', 'RandDLabClerk', 'RandDLabManager'], 0)
+
     # Remove option to add folder to structure locations
     lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)
     lims.ichiplots.manage_permission(permissions.AddFolder, [], 0)
@@ -85,7 +87,6 @@ def structure_permissions(lims):
     lims.solutions.manage_permission(permissions.AddFolder, [], 0)
     lims.testruns.manage_permission(permissions.AddFolder, [], 0)
 
-    # @formatter:off
     # View permission
     lims.ichipassay.manage_permission(View, ['LabManager', 'LabClerk'], 0)
     lims.ichiplots.manage_permission(View, ['LabManager', 'LabClerk'], 0)
@@ -97,7 +98,7 @@ def structure_permissions(lims):
     lims.sites.manage_permission(View, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(View, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(View, ['LabManager', 'LabClerk'], 0)
-    lims.samples.manage_permission(View,['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.samples.manage_permission(View, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
 
     # Access Contents Information
     lims.ichipassay.manage_permission(AccessContentsInformation, ['LabManager', 'LabClerk'], 0)
@@ -139,9 +140,9 @@ def structure_permissions(lims):
     lims.testruns.manage_permission(AddNoFrameRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddTestRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager', 'LabClerk'], 0)
-    lims.samples.manage_permission(AddClinicalSample,['LabManager', 'LabClerk'], 0)
-    lims.samples.manage_permission(AddRandDSample,['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
-    lims.samples.manage_permission(AddQCSample,['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(AddClinicalSample, ['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(AddRandDSample, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.samples.manage_permission(AddQCSample, ['LabManager', 'LabClerk'], 0)
 
     # Modify portal content
     lims.ichipassay.manage_permission(ModifyPortalContent, ['LabManager'], 0)
@@ -154,81 +155,7 @@ def structure_permissions(lims):
     lims.sites.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(ModifyPortalContent, ['LabManager'], 0)
     lims.testruns.manage_permission(ModifyPortalContent, ['Manager'], 0)
-    lims.samples.manage_permission(ModifyPortalContent,['LabManager', 'LabClerk'], 0)
-    lims.samples.manage_permission(ModifyPortalContent,['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
-    lims.samples.manage_permission(ModifyPortalContent,['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.samples.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk'], 0)
     # @formatter:on
-
-
-def create_material_types(portal):
-    materials = [
-        ("caseinsalt", u"Casein Salt"),
-        ("ethylalcohol", u"Ethyl Alcohol Denatured"),
-        ("glycerol", u"Glycerol"),
-        ("nacl", u"Sodium Chloride (NaCl)"),
-        ("kcl", u"Potassium Chloride (KCl)"),
-        ("kh2po4", u"Potassium Phosphatemonobasic (KH2PO4)"),
-        ("na2hpo4", u"Sodium Phosphatedibasic (Na2HPO4)"),
-        ("naoh", u"Sodium Hydroxide 2.5N (NaOH)"),
-        ("tween20", u"Tween 20"),
-        ("hcl37", u"Hydrochloricacid 37%"),
-        ("iggcy3", u"IgG-Cy3"),
-        ("igmaf647", u"IgM-AF647"),
-    ]
-    for tid, title in materials:
-        fti = DexterityFTI(tid)
-        fti.manage_changeProperties(
-            factory=tid,
-            title=title.encode('utf8'),
-            description=u"Material: {0}".format(title.encode()),
-            i18n_domain='immunarray.lims',
-            klass='immunarray.lims.content.material.Material',
-            model_file=get_schema_filename('materials', tid),
-            immediate_view='view',
-            icon_expr='string:document_icon.png',
-            filter_content_types=True,
-            allowed_content_types=[],
-            global_allow=True,
-            schema="immunarray.lims.interfaces.material.IMaterial",
-            behaviors=[],
-            add_permission='immunarray.lims.permissions.AddMaterial',
-        )
-        if tid in portal.portal_types:
-            del portal.portal_types[tid]
-        portal.portal_types._setObject(tid, fti)
-
-
-def create_solution_types(portal):
-    solutions = [
-        ("1xpbs", u"PBS (1X)"),
-        ("10xpbs", u"PBS (10X)"),
-        ("1percentcasein", u"1% Casein in PBS"),
-        ("70percentethanol", u"70% Ethanol (Cleaning Solution)"),
-        ("tween22_4percentinpbs", u"22.4% Tween in PBS"),
-        ("50percentglycerol", u"50% Glycerol"),
-        ("10percenthcl", u"10% HCl"),
-        ("3mkcl", u"3M KCl"),
-        ("1mgpermligm_af647", u"1 mg/mL IgM-AF647"),
-        ("1mgpermligg_cy3", u"1 mg/mL IgG-Cy3"),
-    ]
-    for tid, title in solutions:
-        fti = DexterityFTI(tid)
-        fti.manage_changeProperties(
-            factory=tid,
-            title=title.encode('utf8'),
-            description=u"Solution: {0}".format(title.encode()),
-            i18n_domain='immunarray.lims',
-            klass='immunarray.lims.content.solution.Solution',
-            model_file=get_schema_filename('solutions', tid),
-            immediate_view='view',
-            icon_expr='string:document_icon.png',
-            filter_content_types=True,
-            allowed_content_types=[],
-            global_allow=True,
-            schema="immunarray.lims.interfaces.solution.ISolution",
-            behaviors=[],
-            add_permission='immunarray.lims.permissions.AddSolution',
-        )
-        if tid in portal.portal_types:
-            del portal.portal_types[tid]
-        portal.portal_types._setObject(tid, fti)
