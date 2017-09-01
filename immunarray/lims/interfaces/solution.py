@@ -11,7 +11,6 @@ from zope.interface import alsoProvides
 class ISolution(BaseModel):
     """Base Solution schema fields
     """
-
     batch_number = schema.TextLine(
         title=_(u"Batch Number"),
         description=_(u""),

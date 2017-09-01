@@ -15,6 +15,12 @@ class IMaterial(BaseModel):
     IMaterial behaviour for it.
     """
 
+    product_name = schema.TextLine(
+        title=_(u"Product Name"),
+        description=_(u"Product Name"),
+        required=True
+    )
+
     lot_number = schema.TextLine(
         title=_(u"Lot"),
         description=_(u"The lot number"),
@@ -84,16 +90,12 @@ class IMaterial(BaseModel):
         required=False  # value will be completed by workflow transition
     )
 
-    product_name = schema.TextLine(
-        title=_(u"Product Name"),
-        description=_(u"Product Name"),
-        required=True
-    )
     purchase_order = schema.TextLine(
         title=_(u"Purchase Order"),
         description=_(u"Purchase Order"),
         required=False
     )
+
     shipping_tracking_number = schema.TextLine(
         title=_(u"Shipping Tracking Number"),
         description=_(u"Shipping Tracking Number"),
@@ -115,7 +117,7 @@ class IMaterial(BaseModel):
     )
 
     shipping_box_integrity_maintained = schema.Choice(
-        title=_(u"Raw Materail Box Integrity Maintained"),
+        title=_(u"Raw Material Box Integrity Maintained"),
         description=_(u"Raw Material Box Integrity Maintained"),
         values=[_(u"Yes"), _(u"No")],
         required=False,
@@ -141,10 +143,10 @@ class IMaterial(BaseModel):
     )
 
     temp_on_arrival_acceptable_limit = schema.Choice(
-        title=_(
-            u"Temerature of Raw Material on Arrival Within Acceptable Limit"),
-        description=_(
-            u"Temerature of Raw Materail on Arrival Within Acceptable Limit"),
+        title=_(u"Temerature of Raw Material on Arrival "
+                u"Within Acceptable Limit"),
+        description=_(u"Temerature of Raw Material on Arrival "
+                      u"Within Acceptable Limit"),
         values=[_(u"Yes"), _(u"No")],
         required=False,
     )

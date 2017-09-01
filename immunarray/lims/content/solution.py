@@ -12,6 +12,24 @@ class Solution(BaseContainer):
         super(Solution, self).__init__(*args, **kwargs)
 
     @property
+    def solution_name(self):
+        return getattr(self, "_solution_name", "")
+
+    @solution_name.setter
+    def solution_name(self, value):
+        self._solution_name = value
+        self.setTitle(value + " - " + self.lot_number)
+
+    @property
+    def lot_number(self):
+        return getattr(self, "_lot_number", "")
+
+    @lot_number.setter
+    def lot_number(self, value):
+        self._lot_number = value
+        self.setTitle(self.solution_name + " - " + value)
+
+    @property
     def initial_amount(self):
         # no default value, because we do not want to guess the unit.
         return getattr(self, "_initial_amount", "")
@@ -23,12 +41,3 @@ class Solution(BaseContainer):
         self._initial_amount = value
         if not already_set:
             self.remaining_amount = value
-
-    @property
-    def batch_number(self):
-        return getattr(self, "_batch_number", "")
-
-    @batch_number.setter
-    def batch_number(self, value):
-        self._batch_number = value
-        self.setTitle("{} ({})".format(self.Type(), value))
