@@ -19,7 +19,7 @@
   <browser:page
       name="ctest"
       class="immunarray.lims.browser.analysisrequest.commercial_run.AddCommercialEightFrameTestRunView"
-      for="*"
+      for="immunarray.lims.interfaces.ITestRuns"
       template="templates/aliquot_testing/SLE-key_v_2_0_commercial.pt"
       permission="zope2.View"
   />

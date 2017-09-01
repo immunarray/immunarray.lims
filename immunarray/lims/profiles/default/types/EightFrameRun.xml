@@ -6,7 +6,7 @@
   <property name="description" i18n:translate=""/>
   <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
   <property name="factory">EightFrameRun</property>
-  <property name="add_view_expr">string:${folder_url}/++add++EightFrameRun</property>
+  <property name="add_view_expr">string:${folder_url}/ctest</property>
   <property name="link_target"/>
   <property name="immediate_view">folder_listing</property>
   <property name="global_allow">True</property>
