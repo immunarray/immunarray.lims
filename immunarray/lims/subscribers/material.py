@@ -6,7 +6,7 @@ from immunarray.lims.permissions import AddMaterial
 def MaterialFTIModified(instance, event):
     """The IMaterial behaviour has been applied to a Dexterity FTI!
     """
-    if IMaterial.__identifier__ in instance.behaviors:  # [sic]
+    if IMaterial.__identifier__ in instance.behaviors:  # [american spelling]
         # Set some FTI fields to "Material" defaults
         instance.add_permission = 'immunarray.lims.permissions.AddMaterial'
         instance.klass = 'immunarray.lims.content.material.Material'

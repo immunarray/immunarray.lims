@@ -6,7 +6,7 @@ from immunarray.lims.permissions import AddSolution
 def SolutionFTIModified(instance, event):
     """The ISolution behaviour has been applied to a Dexterity FTI!
     """
-    if ISolution.__identifier__ in instance.behaviors:  # [sic]
+    if ISolution.__identifier__ in instance.behaviors:  # [american spelling]
         # Set some FTI fields to "Solution" defaults
         instance.add_permission = 'immunarray.lims.permissions.AddSolution'
         instance.klass = 'immunarray.lims.content.solution.Solution'
