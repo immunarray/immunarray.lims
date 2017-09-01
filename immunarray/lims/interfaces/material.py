@@ -60,13 +60,13 @@ class IMaterial(BaseModel):
     )
 
     initial_amount = Amount(
-        title=_(u"Initial amount made"),
+        title=_(u"Initial Amount"),
         description=_(u"Enter a decimal number"),
         required=True,
     )
 
     remaining_amount = Amount(
-        title=_(u"Amount remaining"),
+        title=_(u"Amount Remaining"),
         description=_(u"You should not need to edit this value"),
         readonly=True,
     )
@@ -78,14 +78,14 @@ class IMaterial(BaseModel):
     )
 
     received_by = schema.Choice(
-        title=_(u"Received by"),
+        title=_(u"Received By"),
         description=_(u"The operator that received the material lot"),
         source=UserVocabulary,
         required=False  # value will be completed by workflow transition
     )
 
     opened_by = schema.Choice(
-        title=_(u"Opened by"),
+        title=_(u"Opened By"),
         description=_(u"The operator that Opened the material lot"),
         source=UserVocabulary,
         required=False  # value will be completed by workflow transition
