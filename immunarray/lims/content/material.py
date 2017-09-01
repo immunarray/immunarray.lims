@@ -29,16 +29,3 @@ class Material(BaseContainer):
     def lot_number(self, value):
         self._lot_number = value
         self.setTitle(self.product_name + " - " + value)
-
-    @property
-    def initial_amount(self):
-        # no default value, because we do not want to guess the unit.
-        return getattr(self, "_initial_amount", "")
-
-    @initial_amount.setter
-    def initial_amount(self, value):
-        # if there's already an _initial_amount, do NOT update remaining_amount.
-        already_set = getattr(self, '_initial_amount', False)
-        self._initial_amount = value
-        if not already_set:
-            self.remaining_amount = value

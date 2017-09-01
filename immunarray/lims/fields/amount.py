@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from decimal import Decimal as D, InvalidOperation
-
-from zope.schema import Decimal, ValidationError
-from zope.schema.interfaces import IDecimal
+from zope.schema import Float, ValidationError
+from zope.schema.interfaces import IFloat
 
 
-class IAmount(IDecimal):
+class IAmount(IFloat):
     """Field containing a unicode string representing a Magnitude value.
     """
 
@@ -18,13 +16,13 @@ class NonNegativeValueRequired(ValidationError):
     __doc__ = "A non-negative value is required."
 
 
-class Amount(Decimal):
+class Amount(Float):
     def validate(self, value):
 
         if value:
             try:
-                D(value)
-            except InvalidOperation:
+                float(value)
+            except (TypeError, ValueError):
                 raise DecimalRequired
             if value < 0:
                 raise NonNegativeValueRequired

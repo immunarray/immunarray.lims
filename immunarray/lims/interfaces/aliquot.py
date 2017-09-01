@@ -18,5 +18,4 @@ class IAliquot(BaseModel):
         title=_(u"Remaining Volume"),
         description=_(u"Remaining aliquot volume in micro liters (uL)"),
         required=True,
-        readonly=True,
     )
