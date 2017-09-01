@@ -51,7 +51,7 @@ class ISolution(BaseModel):
     made_by = schema.Choice(
         title=_(u"Made by"),
         description=_(u"The operator created the material lot"),
-        vocabulary=UserVocabulary,
+        source=UserVocabulary,
         required=True
     )
 

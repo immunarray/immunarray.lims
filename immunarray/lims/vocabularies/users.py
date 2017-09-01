@@ -1,10 +1,10 @@
 from plone.api.portal import get_tool
-from zope.interface import implementer, implements
-from zope.schema.interfaces import IContextSourceBinder, IVocabularyFactory
+from zope.interface import implementer
+from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 
-@implementer(IVocabularyFactory, IContextSourceBinder)
+@implementer(IContextSourceBinder)
 class Users(object):
     """ Present a vocabulary containing users in the specified list of roles
     """

@@ -14,76 +14,18 @@
   <include file="permissions.zcml"/>
   <include file="behaviours.zcml"/>
   <include file="profiles.zcml"/>
+
   <include package=".adapters"/>
   <include package=".browser"/>
   <include package=".static"/>
   <include package=".subscribers"/>
-  <include package=".workflow"/>
   <include package=".utils"/>
+  <include package=".vocabularies"/>
+  <include package=".workflow"/>
 
   <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
 
   <browser:resourceDirectory name="immunarray.lims" directory="static"/>
-  <utility
-      name="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"
-      component="immunarray.lims.vocabularies.nce.PrimaryNCEVocabulary"/>
-  <utility
-      name="immunarray.lims.vocabularies.nce.SecondaryNCEVocabulary"
-      component="immunarray.lims.vocabularies.nce.SecondaryNCEVocabulary"/>
-  <utility
-      name="immunarray.lims.vocabularies.nce.TertiaryNCEVocabulary"
-      component="immunarray.lims.vocabularies.nce.TertiaryNCEVocabulary"/>
-  <utility
-      name="immunarray.lims.vocabularies.diagnostic_codes.BillingCodeVocabulary"
-      component="immunarray.lims.vocabularies.diagnostic_codes.BillingCodeVocabulary"/>
-  <utility
-      name="immunarray.lims.vocabularies.test_list.TestListVocabulary"
-      component="immunarray.lims.vocabularies.test_list.TestListVocabulary"/>
-  <utility
-      name="immunarray.lims.vocabularies.provider.ProvidersVocabulary"
-      component="immunarray.lims.vocabularies.provider.ProvidersVocabulary"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
-      component="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.ICommercailThreeFrameChipWellsVocabulary"
-      component="immunarray.lims.vocabularies.ichip.ICommercailThreeFrameChipWellsVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.INoFrameChipsInUSVocabulary"
-      component="immunarray.lims.vocabularies.ichip.INoFrameChipsInUSVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IEightFrameChipsInUSVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IEightFrameChipsInUSVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.ICommercailEightFrameChipWellsVocabulary"
-      component="immunarray.lims.vocabularies.ichip.ICommercailEightFrameChipWellsVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IThreeFrameChipWellsAllVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IThreeFrameChipWellsAllVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IEightFrameChipWellsAllVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IEightFrameChipWellsAllVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IChipsAllBrokenVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IChipsAllBrokenVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.ichip.ICommercialNoFrameChipsVocabulary"
-      component="immunarray.lims.vocabularies.ichip.ICommercialNoFrameChipsVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-  <utility
-      name="immunarray.lims.vocabularies.qc.QCListVocabulary"
-      component="immunarray.lims.vocabularies.qc.QCListVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
+
+
 </configure>
