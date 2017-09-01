@@ -55,8 +55,11 @@ def _load_wf_module(modrelname):
     for part in tokens:
         modname = '.'.join([modname, part]) if modname else part
         import importlib
-        _module = importlib.import_module('.' + modname, package=rootmodname)
-        if not _module:
+        try:
+            _mod = importlib.import_module('.' + modname, package=rootmodname)
+        except ImportError:
+            return None
+        if not _mod:
             return None
     return sys.modules.get(modulekey, None)
 
