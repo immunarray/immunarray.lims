@@ -68,7 +68,6 @@ class IMaterial(BaseModel):
     remaining_amount = Amount(
         title=_(u"Amount Remaining"),
         description=_(u"You should not need to edit this value"),
-        readonly=True,
     )
 
     unit = schema.TextLine(
