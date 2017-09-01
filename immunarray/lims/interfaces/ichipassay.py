@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
-from immunarray.lims.vocabularies.qc import QCListVocabulary
+from immunarray.lims.vocabularies.qc import QCListVocabulary, \
+    InUseQCListVocabulary
 from plone.app.textfield import RichText
 from zope import schema
 
@@ -49,7 +50,7 @@ class IiChipAssay(BaseModel):
     qc_high_choice = schema.Choice(
         title=_(u"Select High/Positive QC Veracis ID"),
         description=_(u"Select High/Positive QC Veracis ID"),
-        source=QCListVocabulary,
+        source=InUseQCListVocabulary,
         required=False,
     )
 
@@ -63,7 +64,7 @@ class IiChipAssay(BaseModel):
     qc_low_choice = schema.Choice(
         title=_(u"Select Low/Negative QC Veracis ID"),
         description=_(u"Select Low/Negative QC Veracis ID"),
-        source=QCListVocabulary,
+        source=InUseQCListVocabulary,
         required=False,
     )
 
