@@ -12,8 +12,7 @@ class Patient(BaseContainer):
     @first_name.setter
     def first_name(self, value):
         self._first_name = value
-        lastname = getattr(self, "_last_name", "")
-        self.setTitle(value + " " + lastname)
+        self.setTitle(value + " " + self.last_name)
 
     @property
     def last_name(self):
@@ -22,5 +21,4 @@ class Patient(BaseContainer):
     @last_name.setter
     def last_name(self, value):
         self._last_name = value
-        firstname = getattr(self, "_first_name", "")
-        self.setTitle(firstname + " " + value)
+        self.setTitle(self.first_name + " " + value)

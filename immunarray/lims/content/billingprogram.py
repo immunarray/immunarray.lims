@@ -12,8 +12,7 @@ class BillingProgram(BaseContainer):
     @assay_name.setter
     def assay_name(self, value):
         self._assay_name = value
-        temp = getattr(self, "_program_name", "")
-        self.setTitle(value + " - " + temp)
+        self.setTitle(value + " - " + self.program_name)
 
     @property
     def program_name(self):
@@ -22,5 +21,4 @@ class BillingProgram(BaseContainer):
     @program_name.setter
     def program_name(self, value):
         self._program_name = value
-        temp = getattr(self, "_assay_name", "")
-        self.setTitle(temp + " - " + value)
+        self.setTitle(self.assay_name + " - " + value)

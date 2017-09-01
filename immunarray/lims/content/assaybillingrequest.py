@@ -12,8 +12,7 @@ class AssayBillingRequest(BaseContainer):
     @assay_name.setter
     def assay_name(self, value):
         self._assay_name = value
-        temp = self.sample_id
-        self.setTitle(value + " - " + temp)
+        self.setTitle(value + " - " + self.sample_id)
 
     @property
     def sample_id(self):
@@ -22,5 +21,4 @@ class AssayBillingRequest(BaseContainer):
     @sample_id.setter
     def sample_id(self, value):
         self._sample_id = value
-        temp = self.assay_name
-        self.setTitle(temp + " - " + value)
+        self.setTitle(self.assay_name + " - " + value)

@@ -12,9 +12,8 @@ class iChipAssay(BaseContainer):
     @name.setter
     def name(self, value):
         self._name = value
-        temp = getattr(self, "_desired_use", "")
-        self.setTitle(value + " - " + temp)
-        self.id = '{}-{}'.format(value, temp)
+        self.setTitle(value + " - " + self.desired_use)
+        self.id = '{}-{}'.format(value, self.desired_use)
 
     @property
     def desired_use(self):
@@ -23,6 +22,5 @@ class iChipAssay(BaseContainer):
     @desired_use.setter
     def desired_use(self, value):
         self._desired_use = value
-        temp = getattr(self, "_name", "")
-        self.setTitle(temp + " - " + value)
-        self.id = '{}-{}'.format(temp, value)
+        self.setTitle(self.name + " - " + value)
+        self.id = '{}-{}'.format(self.name, value)

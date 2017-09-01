@@ -16,9 +16,8 @@ class QCSample(AbstractSample):
     @veracis_id.setter
     def veracis_id(self, value):
         self._veracis_id = value
-        temp = getattr(self, "_source_id_one", "")
         self.setTitle(value + " - " + temp)
-        self.id = '{}-{}'.format(value, temp)
+        self.id = '{}-{}'.format(value, self.source_id_one)
 
     @property
     def source_id_one(self):
@@ -27,6 +26,5 @@ class QCSample(AbstractSample):
     @source_id_one.setter
     def source_id_one(self, value):
         self._source_id_one = value
-        temp = getattr(self, "_veracis_id", "")
         self.setTitle(temp + " - " + value)
-        self.id = '{}-{}'.format(temp, value)
+        self.id = '{}-{}'.format(self.veracis_id, value)
