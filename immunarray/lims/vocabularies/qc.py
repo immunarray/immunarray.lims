@@ -20,3 +20,19 @@ class QCList (object):
         return SimpleVocabulary(items)
 
 QCListVocabulary = QCList()
+
+
+class InUseQCList (object):
+    """Returns a vocab of qc samples that will be used by iChipAssay to assign high and low qc samples to be used in testing
+    """
+    implements(IVocabularyFactory, IContextSourceBinder)
+    def __call__(self, context):
+        values = api.content.find(portal_type='QCSample',review_state='in_use')
+        qcsample_ids = [v.UID for v in values]
+        items = []
+        for i in qcsample_ids:
+            a = api.content.get(UID=i)
+            items.append(SimpleVocabulary.createTerm(a.veracis_id))
+        return SimpleVocabulary(items)
+
+InUseQCListVocabulary = InUseQCList()
