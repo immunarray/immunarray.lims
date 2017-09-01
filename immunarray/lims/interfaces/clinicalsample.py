@@ -91,8 +91,8 @@ class IClinicalSample(ISample):
     )
 
     xray_ordered = schema.Bool(
-        title=_(u"Other Test(s) Ordered"),
-        description=_(u"Other Test(s) Ordered Enter One Per Line"),
+        title=_(u"X-Ray Ordered"),
+        description=_(u"X-Ray Ordered"),
     )
     other_test_ordered = schema.TextLine(
         title=_(u"Other Test(s) Ordered"),
