@@ -1,13 +1,13 @@
 from plone.api.portal import get_tool
-from zope.interface import implements
-from zope.schema.interfaces import IVocabularyFactory
+from zope.interface import implementer, implements
+from zope.schema.interfaces import IContextSourceBinder, IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 
+@implementer(IVocabularyFactory, IContextSourceBinder)
 class Users(object):
     """ Present a vocabulary containing users in the specified list of roles
     """
-    implements(IVocabularyFactory)
 
     def __init__(self, roles=None):
         if roles:
