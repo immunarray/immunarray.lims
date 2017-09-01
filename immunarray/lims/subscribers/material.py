@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims.interfaces.material import IMaterial
 from immunarray.lims.permissions import AddMaterial
+from plone.api.portal import get_tool
 
 
 def MaterialFTIModified(instance, event):
@@ -8,6 +9,8 @@ def MaterialFTIModified(instance, event):
     """
     if IMaterial.__identifier__ in instance.behaviors:  # [american spelling]
         # Set some FTI fields to "Material" defaults
+        wf = get_tool("portal_workflow")
+        wf._chains_by_type[instance.id] = ('material_workflow',)
         instance.add_permission = 'immunarray.lims.permissions.AddMaterial'
         instance.klass = 'immunarray.lims.content.material.Material'
         descr = instance.description if instance.description else instance.title
