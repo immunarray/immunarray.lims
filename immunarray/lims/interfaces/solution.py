@@ -3,6 +3,7 @@ from immunarray.lims import messageFactory as _
 from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.material import MaterialsVocabulary
+from immunarray.lims.vocabularies.users import UserVocabulary
 from plone.autoform.interfaces import IFormFieldProvider
 from zope import schema
 from zope.interface import alsoProvides
@@ -45,6 +46,13 @@ class ISolution(BaseModel):
         title=_(u"Unit"),
         description=_("Enter the unit in which the amounts are measured"),
         required=True,
+    )
+
+    made_by = schema.Choice(
+        title=_(u"Made by"),
+        description=_(u"The operator created the material lot"),
+        vocabulary=UserVocabulary,
+        required=True
     )
 
     materials_used = schema.Dict(

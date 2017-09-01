@@ -2,6 +2,7 @@
 from immunarray.lims import messageFactory as _
 from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
+from immunarray.lims.vocabularies.users import UserVocabulary
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
 from zope import schema
@@ -79,14 +80,14 @@ class IMaterial(BaseModel):
     received_by = schema.Choice(
         title=_(u"Received by"),
         description=_(u"The operator that received the material lot"),
-        vocabulary=u"plone.principalsource.Users",
+        vocabulary=UserVocabulary,
         required=False  # value will be completed by workflow transition
     )
 
     opened_by = schema.Choice(
         title=_(u"Opened by"),
         description=_(u"The operator that Opened the material lot"),
-        vocabulary=u"plone.principalsource.Users",
+        vocabulary=UserVocabulary,
         required=False  # value will be completed by workflow transition
     )
 
