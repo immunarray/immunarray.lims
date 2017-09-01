@@ -15,6 +15,7 @@
   <object name="billingprogram_workflow" meta_type="Workflow"/>
   <object name="assaybillingrequest_workflow" meta_type="Workflow"/>
   <object name="ichipassay_workflow" meta_type="Workflow"/>
+  <object name="site_workflow" meta_type="Workflow"/>
 
   <bindings>
 
@@ -64,6 +65,10 @@
 
     <type type_id="iChipAssay">
       <bound-workflow workflow_id="ichipassay_workflow"/>
+    </type>
+
+    <type type_id="Site">
+      <bound-workflow workflow_id="site_workflow"/>
     </type>
 
 
