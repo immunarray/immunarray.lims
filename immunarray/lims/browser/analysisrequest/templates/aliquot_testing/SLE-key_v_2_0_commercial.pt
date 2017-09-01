@@ -97,19 +97,20 @@
           background-color:lightgrey;
       }
 </style>
-<form action="buildtest" name="buildtest" method="post">
+<form name="commercial_run" method="post">
 <input type="hidden" name="submitted" value="1"/>
+
 <select id="assay_selection">
   <option name="None">None</option>
-  <tal:block repeat="assay object/@@ctest/iChipAssayList">
+  <tal:block repeat="assay view/iChipAssayList">
     <option tal:content="assay"></option>
   </tal:block>
   <option name="Custom">Custom</option>
 </select>
+
 <!-- Header PP-007.04-->
-<input type="button" id="buildselectedrun" value="Build Selected Run"/>
-<input type="button" id="saverun" value="Save Run"/>
-<input type="button" id="printrun" value="Print Run"/>
+<button id="saverun">Save Run</button>
+<button id="printrun">Print Run</button>
 <table id="table1" class="alpha">
   <tr>
     <td style="width:10%" rowspan="5">
@@ -148,26 +149,25 @@
   </tr>
   <tr>
     <td colspan="4">
-      <p><strong>FILE NAME:</strong> SLE-key &reg; v2.0 Test <input type="text" id="veracistestcount"> (Veracis Test Run
-        <input type="text" id="veracisrunnumber">)</p>
+      <strong>FILE NAME:</strong>
+      SLE-key &reg; v2.0 Test <input type="text" name="veracistestcount" class="veracistestcount">
+      (Veracis Test Run<input type="text" name="veracisrunnumber" class="veracisrunnumber">)
     </td>
   </tr>
   <tr>
     <td colspan="4">
-      <p><strong>PURPOSE:</strong> Clinical Testing</p>
+      <strong>PURPOSE:</strong> Clinical Testing
     </td>
   </tr>
   <tr>
     <td>
-      <p><strong>Date:&nbsp;
-        <input type="date" id="testingdate">
-      </strong></p>
+      <strong>Date: <input type="date" name="testingdate" class="testingdate"> </strong>
     </td>
     <td>
-      <p><strong>PLANNED BY: <input type="text" id="testplanner"></strong></p>
+      <p><strong>PLANNED BY: <input type="text" name="testplanner" class="testplanner"></strong></p>
     </td>
     <td colspan="2">
-      <p><strong>PERFORMED BY: <input type="text" id="testoperator"></strong></p>
+      <p><strong>PERFORMED BY: <input type="text" name="testoperator" class="testoperator"></strong></p>
     </td>
   </tr>
   <tr>
@@ -202,121 +202,121 @@
   </tr>
   <tr>
     <td><p>1</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-1"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-1"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-1"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-1"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-1" class="sampleid-aliquot chip-3 well-1"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-1" class="sampleid-aliquot chip-4 well-1"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>2</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-2"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-2"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-2"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-2"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-2" class="sampleid-aliquot chip-1 well-2"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-2" class="sampleid-aliquot chip-2 well-2"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-2" class="sampleid-aliquot chip-3 well-2"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-2" class="sampleid-aliquot chip-4 well-2"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>3</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-3"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-3"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-3"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-3"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-3" class="sampleid-aliquot chip-1 well-3"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-3" class="sampleid-aliquot chip-2 well-3"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-3" class="sampleid-aliquot chip-3 well-3"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-3" class="sampleid-aliquot chip-4 well-3"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>4</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-4"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-4"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-4"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-4"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-4" class="sampleid-aliquot chip-1 well-4"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-4" class="sampleid-aliquot chip-2 well-4"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-4" class="sampleid-aliquot chip-3 well-4"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-4" class="sampleid-aliquot chip-4 well-4"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>5</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-5"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-5"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-5"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-5"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-5" class="sampleid-aliquot chip-1 well-5"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-5" class="sampleid-aliquot chip-2 well-5"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-5" class="sampleid-aliquot chip-3 well-5"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-5" class="sampleid-aliquot chip-4 well-5"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>6</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-6"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-6"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-6"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-6"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-6" class="sampleid-aliquot chip-1 well-6"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-6" class="sampleid-aliquot chip-2 well-6"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-6" class="sampleid-aliquot chip-3 well-6"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-6" class="sampleid-aliquot chip-4 well-6"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>7</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-7"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-7"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-7"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-7"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-7" class="sampleid-aliquot chip-1 well-7"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-7" class="sampleid-aliquot chip-2 well-7"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-7" class="sampleid-aliquot chip-3 well-7"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-7" class="sampleid-aliquot chip-4 well-7"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td><p>8</p></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-1 well-8"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-2 well-8"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-3 well-8"/></td>
-    <td colspan="2"><input type="text" class="sampleid-aliquot chip-4 well-8"/></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td colspan="2"><input type="text" name="chip-1_well-8" class="sampleid-aliquot chip-1 well-8"/></td>
+    <td colspan="2"><input type="text" name="chip-2_well-8" class="sampleid-aliquot chip-2 well-8"/></td>
+    <td colspan="2"><input type="text" name="chip-3_well-8" class="sampleid-aliquot chip-3 well-8"/></td>
+    <td colspan="2"><input type="text" name="chip-4_well-8" class="sampleid-aliquot chip-4 well-8"/></td>
+    <td/>
+    <td/>
+    <td/>
   </tr>
   <tr>
     <td rowspan="4"></td>
     <td>iChip 1 ID</td>
-    <td><input type="text" class="ichip-id ichip-1"></td>
+    <td><input type="text" name="ichip-id-1" class="ichip-id ichip-1"></td>
     <td>iChip 2 ID</td>
-    <td><input type="text" class="ichip-id ichip-2"></td>
+    <td><input type="text" name="ichip-id-2" class="ichip-id ichip-2"></td>
     <td>iChip 3 ID</td>
-    <td><input type="text" class="ichip-id ichip-3"></td>
+    <td><input type="text" name="ichip-id-3" class="ichip-id ichip-3"></td>
     <td>iChip 4 ID</td>
-    <td><input type="text" class="ichip-id ichip-4"></td>
+    <td><input type="text" name="ichip-id-4" class="ichip-id ichip-4"></td>
     <td style="vertical-align:top;" rowspan="3" colspan="3">
-      <p style="text-align:left;">Comments: <textarea size="5" class="plate-comments"/>
+      <p style="text-align:left;">Comments: <textarea size="5" name="comments" class="plate-comments"/>
       </p>
     </td>
   </tr>
   <tr>
     <td><p>Scan Slot</p></td>
-    <td><p><input type="text" class="scan-slot ichip-1"></p></td>
+    <td><p><input type="text" name="scan-slot-1" class="scan-slot-1"></p></td>
     <td><p>Scan Slot</p></td>
-    <td><p><input type="text" class="scan-slot ichip-2"></p></td>
+    <td><p><input type="text" name="scan-slot-2" class="scan-slot-2"></p></td>
     <td><p>Scan Slot</p></td>
-    <td><p><input type="text" class="scan-slot ichip-3"></p></td>
+    <td><p><input type="text" name="scan-slot-3" class="scan-slot-3"></p></td>
     <td><p>Scan Slot</p></td>
-    <td><p><input type="text" class="scan-slot ichip-4"></p></td>
+    <td><p><input type="text" name="scan-slot-4" class="scan-slot-4"></p></td>
   </tr>
   <tr>
     <td style="height:50px;vertical-align:top;" colspan="2">
-      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-1"></p>
+      <p style="text-align:left;">Comments:<input type="text" name="comments-ichip-1" class="comments ichip-1"></p>
     </td>
     <td style="height:50px;vertical-align:top;" colspan="2">
-      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-2"></p>
+      <p style="text-align:left;">Comments:<input type="text" name="comments-ichip-2" class="comments ichip-2"></p>
     </td>
     <td style="height:50px;vertical-align:top;" colspan="2">
-      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-3"></p>
+      <p style="text-align:left;">Comments:<input type="text" name="comments-ichip-3" class="comments ichip-3"></p>
     </td>
     <td style="height:50px;vertical-align:top;" colspan="2">
-      <p style="text-align:left;">Comments:<input type="text" id="comments ichip-4"></p>
+      <p style="text-align:left;">Comments:<input type="text" name="comments-ichip-4" class="comments ichip-4"></p>
     </td>
   </tr>
 </table>
@@ -328,304 +328,148 @@
       <div class="SLE-key_image"><img tal:attributes="src string:++resource++immunarray.lims/images/SLE-keylogo-Registered_1-88in_x_1-11in.jpg"/></div>
       <p style="text-align:center;font-size:5pt"><br>737 N. Fifth St., Suite 304<br>Richmond, VA 23219 USA</p>
     </td>
-    <td colspan="3" style="text-align: center;">
-      <p>CONFIDENTIAL</p>
-    </td>
+    <td colspan="3" style="text-align: center;">CONFIDENTIAL</td>
   </tr>
   <tr>
-    <td colspan="3" style="text-align: left;">
-      <p>Chapter:&nbsp;&nbsp;Processes & Procedures</p>
-    </td>
+    <td colspan="3" style="text-align: left;">Chapter:&nbsp;&nbsp;Processes & Procedures</td>
   </tr>
   <tr>
-    <td colspan="3" style="text-align: left;">
-      <p>Title:&nbsp;&nbsp;Serum Testing ImmunKey Procedure with Frames Checklist</p>
-    </td>
+    <td colspan="3" style="text-align: left;">Title:&nbsp;&nbsp;Serum Testing ImmunKey Procedure with Frames Checklist</td>
   </tr>
   <tr>
-    <td>
-      <p>Document No. PP-007.02</p>
-    </td>
-    <td>
-      <p>Version: 01</p>
-    </td>
-    <td>
-      <p>Page: 1 of 4</p>
-    </td>
+    <td>Document No. PP-007.02</td>
+    <td>Version: 01</td>
+    <td>Page: 1 of 4</td>
   </tr>
   <tr>
-    <td colspan="3" style="text-align: left;">
-      <p>Effective Date:</p>
-    </td>
+    <td colspan="3" style="text-align: left;">Effective Date:</td>
   </tr>
 </table>
-<!--  Checklist Run Summary Data  -->
+<!-- Checklist Run Summary Data  -->
 <table id="table8" class="delta">
   <tr>
-    <td>
-      <p><strong>Assay (File Name)</strong></p>
-    </td>
-    <td>
-      <p>SLE-key&reg; v2.0 Test ###(Veracis Test Run ####)</p>
-    </td>
-    <td>
-      <p><strong>Test Date</strong>
-      <p>
-    </td>
-    <td>
-      <p>mm/dd/yyyy</p>
-    </td>
+    <td><strong>Assay (File Name)</strong></td>
+    <td>SLE-key&reg; v2.0 Test ###(Veracis Test Run ####)</td>
+    <td><strong>Test Date</strong></td>
+    <td>mm/dd/yyyy</td>
   </tr>
   <tr>
-    <td>
-      <p><strong>Purpose</strong></p>
-    </td>
-    <td>
-      <p>Clinical Testing</p>
-    </td>
-    <td>
-      <p><strong>Scan Date</strong>
-      <p>
-    </td>
-    <td>
-      <p>mm/dd/yyyy</p>
-    </td>
+    <td><strong>Purpose</strong></td>
+    <td>Clinical Testing</td>
+    <td><strong>Scan Date</strong></td>
+    <td>mm/dd/yyyy</td>
   </tr>
   <tr>
-    <td>
-      <p><strong>Performer</strong></p>
-    </td>
-    <td>
-      <p>Operator</p>
-    </td>
-    <td>
-      <p><strong>Witness</strong></p>
-    </td>
-    <td>
-      <p>Witness Name</p>
-    </td>
+    <td><strong>Performer</strong></td>
+    <td>Operator</td>
+    <td><strong>Witness</strong></td>
+    <td>Witness Name</td>
   </tr>
   <tr>
-    <td>
-      <p><strong>QC Reviewer</strong>
-      <p>
-    </td>
-    <td>
-      <p>QC Reviewer</p>
-    </td>
-    <td>
-      <p><strong>Scan PMT</strong>
-      <p>
-    </td>
-    <td>
-      <p>50 (Agilent D Scanner G4900DA)</p>
-    </td>
+    <td><strong>QC Reviewer</strong></td>
+    <td>QC Reviewer</td>
+    <td><strong>Scan PMT</strong></td>
+    <td>50 (Agilent D Scanner G4900DA)</td>
   </tr>
 </table>
 <!-- Solution Summary Table -->
 <table id="table9" class="delta">
   <tr style="background-color:lightgrey;">
-    <td style="text-align:center;width:250px">
-      <p><strong>Solutions</strong></p>
-    </td>
-    <td style="text-align:center">
-      <p><strong>Batch #</strong></p>
-    </td>
-    <td style="text-align:center;width:250px">
-      <p><strong>Expiration Date</strong></p>
-    </td>
+    <td style="text-align:center;width:250px"><strong>Solutions</strong></td>
+    <td style="text-align:center"><strong>Batch #</strong></td>
+    <td style="text-align:center;width:250px"><strong>Expiration Date</strong></td>
   </tr>
   <tr>
-    <td>
-      <p>Reverse Osmosis Water (ROW)</p>
-    </td>
-    <td style="text-align:center">
-      <p>N/A</p>
-    </td>
-    <td style="text-align:center">
-      <p>N/A</p>
-    </td>
+    <td>Reverse Osmosis Water (ROW)</td>
+    <td style="text-align:center">N/A</td>
+    <td style="text-align:center">N/A</td>
   </tr>
   <tr>
-    <td>
-      <p>10X PBS</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>10X PBS</td>
+    <td/>
+    <td/>
   </tr>
   <tr>
-    <td>
-      <p>1X PBS</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>1X PBS</td>
+    <td/>
+    <td/>
   </tr>
   <tr>
-    <td>
-      <p>1X PBS - 22.4% Tween 20</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>1X PBS - 22.4% Tween 20</td>
+    <td/>
+    <td/>
   </tr>
   <tr>
-    <td>
-      <p>1X PBS - 1% Casein</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>1X PBS - 1% Casein</td>
+    <td/>
+    <td/>
   </tr>
   <tr>
-    <td>
-      <p>G&alpha;hulgG-Cy5 in 50% Glycerol</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>G&alpha;hulgG-Cy5 in 50% Glycerol</td>
+    <td/>
+    <td/>
   </tr>
   <tr>
-    <td>
-      <p>G&alpha;hulgM-AF647 in 50% Glycerol</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>G&alpha;hulgM-AF647 in 50% Glycerol</td>
+    <td/>
+    <td/>
   </tr>
   <tr>
-    <td>
-      <p>70% Ethanol</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td>70% Ethanol</td>
+    <td/>
+    <td/>
   </tr>
 </table>
 <!-- Test Preparation -->
 <br>
 <table id="table10" class="delta">
   <tr>
-    <td style="width:35px;background-color:lightgrey;text-align:center;">
-      <p><strong>Step</strong></p>
-    </td>
-    <td style="text-align:center;background-color:lightgrey;">
-      <p><strong>Test Preparation</strong></p>
-    </td>
-    <td style="width:30px;background-color:lightgrey;text-align:center;">
-      <p><strong>&#10004</strong></p>
-    </td>
+    <td style="width:35px;background-color:lightgrey;text-align:center;"><strong>Step</strong></td>
+    <td style="text-align:center;background-color:lightgrey;"><strong>Test Preparation</strong></td>
+    <td style="width:30px;background-color:lightgrey;text-align:center;"><strong>&#10004</strong></td>
   </tr>
   <tr>
-    <td style="width:35px;text-align:center;">
-      <p><strong>1</strong></p>
-    </td>
-    <td>
-      <p>Turn on Incubator at 37.0&deg;C at least 2 hours before testing</p>
-    </td>
-    <td style="width:30px;">
-      <p></p>
-    </td>
+    <td style="width:35px;text-align:center;"><strong>1</strong></td>
+    <td>Turn on Incubator at 37.0&deg;C at least 2 hours before testing</td>
+    <td style="width:30px;"></td>
   </tr>
   <tr>
-    <td style="text-align:center;">
-      <p><strong>2</strong></p>
-    </td>
-    <td>
-      <p>Take out slides and equilibrate to room temperature for 1 hour</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td style="text-align:center;"><strong>2</strong></td>
+    <td>Take out slides and equilibrate to room temperature for 1 hour</td>
+    <td/>
   </tr>
   <tr>
-    <td style="text-align:center;">
-      <p><strong>3</strong></p>
-    </td>
-    <td>
-      <p>Take out slides according to the Test Form and place in secondary slide box</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td style="text-align:center;"><strong>3</strong></td>
+    <td>Take out slides according to the Test Form and place in secondary slide box</td>
+    <td/>
   </tr>
   <tr>
-    <td style="text-align:center;">
-      <p><strong>4</strong></p>
-    </td>
-    <td>
-      <p>Record % humidity of the slide package using the humidity indicating card (lavender spot indicates the humidity)</p>
-    </td>
-    <td>
-      <p></p>
-    </td>
+    <td style="text-align:center;"><strong>4</strong></td>
+    <td>Record % humidity of the slide package using the humidity indicating card (lavender spot indicates the humidity)</td>
+    <td/>
   </tr>
 </table>
 <!--  Humidy data input for iChips used -->
 <table id="table11" class="delta">
   <tr>
-    <td>
-      <p>iCHIP Print Lot:</p>
-    </td>
-    <td>
-      <p>iCHIP Print Lot:</p>
-    </td>
-    <td>
-      <p>iCHIP Print Lot:</p>
-    </td>
-    <td>
-      <p>iCHIP Print Lot:</p>
-    </td>
+    <td>iCHIP Print Lot:</td>
+    <td>iCHIP Print Lot:</td>
+    <td>iCHIP Print Lot:</td>
+    <td>iCHIP Print Lot:</td>
   </tr>
   <tr>
-    <td>
-      <p>Humidity:</p>
-    </td>
-    <td>
-      <p>Humidity:</p>
-    </td>
-    <td>
-      <p>Humidity:</p>
-    </td>
-    <td>
-      <p>Humidity:</p>
-    </td>
+    <td>Humidity:</td>
+    <td>Humidity:</td>
+    <td>Humidity:</td>
+    <td>Humidity:</td>
   </tr>
 </table>
 <!--  Test Preparation Cont. -->
 <table id="table12" class="delta">
   <tr>
-    <td style="width:35px;text-align:center;">
-      <p><strong>5</strong></p>
-    </td>
-    <td>
-      <p>Filter 1X PBS - 1% Casein solution using a 0.22&upsilon;m filter</p>
-    </td>
-    <td style="width:30px;text-align:center;">
-      <p></p>
-    </td>
+    <td style="width:35px;text-align:center;"><strong>5</strong></td>
+    <td>Filter 1X PBS - 1% Casein solution using a 0.22&upsilon;m filter</td>
+    <td style="width:30px;text-align:center;"/>
   </tr>
   <tr>
     <td style="width:35px;text-align:center;">
