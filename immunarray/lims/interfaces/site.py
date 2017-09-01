@@ -7,23 +7,23 @@ from zope import schema
 class ISite(IOrganisation):
     """ Commercial Site
     """
-    title = schema.TextLine(
+    therapak_id = schema.TextLine(
         title=_(u"Therapak ID"),
         description=_(u"Therapak ID"),
+        default=u'',
         required=False,
     )
 
     site_name = schema.TextLine(
         title=_(u"Site Name"),
         description=_(u"Site Name"),
-        required=False,
+        required=True,
     )
 
     sales_rep = schema.Bool(
         title=_(u"Sales Representative"),
         description=_(u"Site is a Sales Representative"),
         default=False,
-        required=True,
     )
 
     setup_by = schema.TextLine(
