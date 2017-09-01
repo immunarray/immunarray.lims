@@ -1,6 +1,12 @@
+from immunarray.lims.interfaces.solution import ISolution
+from zope.component import adapter
+from zope.interface import Interface, implementer
+
 from . import BaseContainer
 
 
+@implementer(ISolution)
+@adapter(Interface)
 class Material(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(Material, self).__init__(*args, **kwargs)
@@ -12,8 +18,7 @@ class Material(BaseContainer):
     @product_name.setter
     def product_name(self, value):
         self._product_name = value
-        temp = getattr(self, "_lot_number", "")
-        self.setTitle(value + " - " + temp)
+        self.setTitle(value + " - " + self.lot_number)
 
     @property
     def lot_number(self):
@@ -22,5 +27,17 @@ class Material(BaseContainer):
     @lot_number.setter
     def lot_number(self, value):
         self._lot_number = value
-        temp = getattr(self, "_product_name", "")
-        self.setTitle(temp + " - " + value)
+        self.setTitle(self.product_name + " - " + value)
+
+    @property
+    def initial_amount(self):
+        # no default value, because we do not want to guess the unit.
+        return getattr(self, "_initial_amount", "")
+
+    @initial_amount.setter
+    def initial_amount(self, value):
+        # if there's already an _initial_amount, do NOT update remaining_amount.
+        already_set = getattr(self, '_initial_amount', False)
+        self._initial_amount = value
+        if not already_set:
+            self.remaining_amount = value
