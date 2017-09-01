@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from immunarray.lims.interfaces.solution import ISolution
+from immunarray.lims.interfaces.material import IMaterial
 from zope.component import adapter
 from zope.interface import Interface, implementer
 
 from . import BaseContainer
 
 
-@implementer(ISolution)
+@implementer(IMaterial)
 @adapter(Interface)
 class Material(BaseContainer):
     def __init__(self, *args, **kwargs):

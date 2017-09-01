@@ -19,15 +19,15 @@ class Solution(BaseContainer):
     @solution_name.setter
     def solution_name(self, value):
         self._solution_name = value
-        self.setTitle(value + " - " + self.lot_number)
+        self.setTitle(value + " - " + self.batch_number)
 
     @property
-    def lot_number(self):
-        return getattr(self, "_lot_number", "")
+    def batch_number(self):
+        return getattr(self, "_batch_number", "")
 
-    @lot_number.setter
-    def lot_number(self, value):
-        self._lot_number = value
+    @batch_number.setter
+    def batch_number(self, value):
+        self._batch_number = value
         self.setTitle(self.solution_name + " - " + value)
 
     @property
