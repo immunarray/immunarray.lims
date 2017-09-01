@@ -1,7 +1,7 @@
+from plone.api.content import find
 from zope.interface import implements
-
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 class Materials(object):
@@ -11,16 +11,13 @@ class Materials(object):
 
     implements(IContextSourceBinder)
 
-    def __init__(self, material_type):
-        self.material_type = material_type
-
     def __call__(self, context):
-        catalog = context.portal_catalog
-        proxies = catalog({
-            'object_provides': 'immunarray.lims.interfaces.material.IMaterial',
-            'sort_on': 'sortable_title',
-        })
-        terms = [SimpleTerm(proxy.id, title=proxy.Title)
-                 for proxy in proxies]
-        return SimpleVocabulary(terms)
+        brains = find(
+            object_provides='immunarray.lims.interfaces.material.IMaterial',
+            review_state='in_use',
+            remaining_amount={'query': 1, 'range': 'min'},
+            sort_on='sortable_title')
+        return SimpleVocabulary.fromValues([brain.Title for brain in brains])
 
+
+MaterialsVocabulary = Materials()
