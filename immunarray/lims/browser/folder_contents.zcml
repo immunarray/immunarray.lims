@@ -1,0 +1,93 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      for="immunarray.lims.interfaces.ISamples"
+      class="immunarray.lims.browser.folder_contents.Samples"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.ISites"
+      class="immunarray.lims.browser.folder_contents.Sites"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.IMaterials"
+      class="immunarray.lims.browser.folder_contents.Materials"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.ISolutions"
+      class="immunarray.lims.browser.folder_contents.Solutions"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.IiChipLots"
+      class="immunarray.lims.browser.folder_contents.iChipLots"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.ITestRuns"
+      class="immunarray.lims.browser.folder_contents.TestRuns"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.INonConformanceEvents"
+      class="immunarray.lims.browser.folder_contents.NonConformanceEvents"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.IInventory"
+      class="immunarray.lims.browser.folder_contents.Inventory"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.IPatients"
+      class="immunarray.lims.browser.folder_contents.Patients"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.IProviders"
+      class="immunarray.lims.browser.folder_contents.Providers"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.IiChipAssays"
+      class="immunarray.lims.browser.folder_contents.iChipAssays"
+      name="folder_contents"
+      template="templates/folder_contents.pt"
+      permission="cmf.ListFolderContents"
+  />
+
+</configure>
