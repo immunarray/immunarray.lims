@@ -29,7 +29,7 @@
   </state>
 
   <state state_id="closed" title="Closed">
-    <exit-transition transition_id="release"/>
+    <exit-transition transition_id="quarantine"/>
   </state>
 
   <transition transition_id="quarantine"
