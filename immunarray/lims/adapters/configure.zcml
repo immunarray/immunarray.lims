@@ -7,5 +7,7 @@
   <adapter name="Type" factory=".indexers.aliquot_Type"/>
   <adapter name="Type" factory=".indexers.ichipassay_Type"/>
   <adapter name="expires" factory=".indexers.ichiplot_expires"/>
+  <adapter name="remaining_volume" factory=".indexers.material_remaining_volume"/>
+  <adapter name="remaining_volume" factory=".indexers.solution_remaining_volume"/>
 
 </configure>
