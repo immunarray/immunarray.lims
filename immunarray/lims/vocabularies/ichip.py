@@ -148,26 +148,6 @@ class ICommercialThreeFrameChipWells (object):
         return SimpleVocabulary.fromItems(items)
 ICommercailThreeFrameChipWellsVocabulary = ICommercialThreeFrameChipWells()
 
-class ICommercialEightFrameChipWells (object):
-    """Produces full list of all iChip well options for eight frame iChip
-    """
-    implements(IVocabularyFactory, IContextSourceBinder)
-    def __call__(self, context):
-        wells = ["-A","-B","-C","-D","-E","-F","-H"]
-        values = api.content.find(context=api.portal.get(), portal_type='iChip')
-        ichips = [v.Title for v in values
-                  if "released" in v.status.lower()]
-        unique_ichip_wells=[]
-        for o in ichips:
-            for w in wells:
-                well_location = o + w
-                unique_ichip_wells.append(well_location)
-
-        normalizer = queryUtility(IIDNormalizer)
-        items = [(i, normalizer.normalize(i).upper()) for i in unique_ichip_wells]
-        return SimpleVocabulary.fromItems(items)
-ICommercailEightFrameChipWellsVocabulary = ICommercialEightFrameChipWells()
-
 #Vocabs for ALL iChip well ID in the US (R&D use)
 class IThreeFrameChipWellsAll (object):
     """Produces full list of all iChip well options for three frame iChip

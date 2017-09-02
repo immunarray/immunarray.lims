@@ -50,11 +50,6 @@
       provides="zope.schema.interfaces.IContextSourceBinder"/>
 
   <utility
-      name="immunarray.lims.vocabularies.ichip.ICommercailEightFrameChipWellsVocabulary"
-      component="immunarray.lims.vocabularies.ichip.ICommercailEightFrameChipWellsVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-
-  <utility
       name="immunarray.lims.vocabularies.ichip.IThreeFrameChipWellsAllVocabulary"
       component="immunarray.lims.vocabularies.ichip.IThreeFrameChipWellsAllVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
