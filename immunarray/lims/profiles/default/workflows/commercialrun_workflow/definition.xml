@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="commercialrun_workflow"
+             title="Commercial Run Workflow"
+             description=""
+             state_variable="review_state"
+             initial_state="in_queue"
+             manager_bypass="False">
+
+  <state state_id="in_queue" title="In Queue">
+  </state>
+
+  <state state_id="in_process" title="In Process">
+  </state>
+
+  <state state_id="wet_work_done" title="Wet Work Done">
+  </state>
+
+  <state state_id="scanning" title="Scanning">
+  </state>
+
+  <state state_id="resulted" title="Resulted">
+  </state>
+
+  <transition transition_id="xyz"
+              title="XYZ"
+              new_state="xyz_a"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=xyz"
+            category="workflow"
+            icon="">XYZ
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="queue"
+              title="Queue"
+              new_state="in_queue"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=queue"
+            category="workflow"
+            icon="">Queue
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('queue')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="re_run"
+              title="Re Run"
+              new_state="re_run"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=re_run"
+            category="workflow"
+            icon="">Re Run
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('re_run')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="result"
+              title="Result"
+              new_state="resulted"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=result"
+            category="workflow"
+            icon="">Result
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('result')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="report"
+              title="Report"
+              new_state="reported"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=report"
+            category="workflow"
+            icon="">Report
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('report')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="reject"
+              title="Reject"
+              new_state="rejected"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+            category="workflow"
+            icon="">Reject
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('reject')</guard-expression>
+    </guard>
+  </transition>
+
+
+</dc-workflow>
