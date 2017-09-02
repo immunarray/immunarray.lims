@@ -12,13 +12,18 @@ class Materials(object):
 
     implements(IContextSourceBinder)
 
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
     def __call__(self, context):
         brains = find(
             object_provides='immunarray.lims.interfaces.material.IMaterial',
-            review_state='in_use',
             remaining_amount={'query': 1, 'range': 'min'},
-            sort_on='sortable_title')
-        return SimpleVocabulary.fromValues([brain.Title for brain in brains])
+            sort_on='sortable_title',
+            **self.kwargs)
+        return SimpleVocabulary.fromValues(
+            [brain.product_name for brain in brains])
 
 
 MaterialsVocabulary = Materials()
+
