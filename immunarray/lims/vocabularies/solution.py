@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+from immunarray.lims.interfaces.solution import ISolution
 from zope.interface import implements
-
 from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 
 class Solutions(object):
@@ -12,16 +12,28 @@ class Solutions(object):
 
     implements(IContextSourceBinder)
 
-    def __init__(self, solution_type):
-        self.solution_type = solution_type
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
 
     def __call__(self, context):
         catalog = context.portal_catalog
-        proxies = catalog({
-            'object_provides': 'immunarray.lims.interfaces.solution.ISolution',
-            'sort_on': 'sortable_title',
-        })
-        terms = [SimpleTerm(proxy.id, title=proxy.Title)
-                 for proxy in proxies]
-        return SimpleVocabulary(terms)
+        brains = catalog(
+            object_provides=ISolution.__identifier__,
+            sort_on='sortable_title',
+        )
+        return SimpleVocabulary.fromValues([brain.title for brain in brains])
 
+class SolutionTypes(object):
+    """Context source binder to provide a vocabulary of available lots of
+    different solution types.
+    """
+
+    implements(IContextSourceBinder)
+
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
+    def __call__(self, context):
+        # portal_types walker XXX for ichipassay definitions
+        return SimpleVocabulary.fromValues(
+            [brain.title for brain in brains])

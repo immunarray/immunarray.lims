@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
-from immunarray.lims.vocabularies.qc import QCListVocabulary, \
-    InUseQCListVocabulary
+from immunarray.lims.vocabularies.qc import InUseQCListVocabulary
 from plone.app.textfield import RichText
 from zope import schema
 
@@ -75,11 +74,12 @@ class IiChipAssay(BaseModel):
         default=75,
     )
 
-    sample_qc_dilution_material = schema.TextLine(
-        title=_(u"Sample QC Diluation Material"),
-        description=_(u"Sample QC Diluiton Material"),
-        required=True,
-    )
+    # THere's a vocab for this in vocabs/solutions.  XXX showing Types only.
+
+    # solutions = schema.List(
+    #     value_type=schema.Choice(
+    #         title=
+    #         source=, required=False)
 
     max_number_of_plates_per_test_run = schema.Int(
         title=_(u"Max Number of Plates per Test Run"),
@@ -113,7 +113,7 @@ class IiChipAssay(BaseModel):
         title=_(u"iChip Assay Status"),
         description=_(u"iChip Layout"),
         values=[_(u"Development"),
-                _(u"Commercial"),],
+                _(u"Commercial"), ],
         required=True,
     )
 
