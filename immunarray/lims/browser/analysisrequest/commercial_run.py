@@ -350,18 +350,22 @@ class AddEightFrameTestRunView(BrowserView):
     def save_run(self):
         """
         """
-        form_values = self.get_serializeArray_form_values()
+        values = self.get_serializeArray_form_values()
         testruns = find(object_provides=ITestRuns.__identifier__)[0].getObject()
-        plates = self.transmogrify_plate_inputs(form_values['plates'])
+        plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
+
+        # transition all aliquots and chips
+
+        import pdb;pdb.set_trace();pass
 
         create(
             testruns,
             'EightFrameRun',
-            title=form_values['selected_assay'],
+            title=values['selected_assay'],
             plates=plates,
         )
 
-        # transition all aliquots and chips
+
 
     def get_serializeArray_form_values(self):
         """Parse the form_values list into a single dictionary.  The plates
@@ -409,14 +413,10 @@ class AddEightFrameTestRunView(BrowserView):
         form_values['plates'] = [p for p in plates if any(p.values())]
         return form_values
 
-    def transmogrify_plate_inputs(self, plates):
-        """Verify that all the chips and samples mentioned in the plate
-        configuration sent to us, are still available and in correct workflow
-        states.
-        
-        If so, return a copy of the input plates, with all Titles replaced by
-        UIDs.
+    def transmogrify_inputs(self, plates):
         """
+        """
+        ichips, aliquots = [], []
         for plate in plates:
             for chip_nr in range(1, 5):
                 for well_nr in range(1, 9):
@@ -426,6 +426,7 @@ class AddEightFrameTestRunView(BrowserView):
                                       Title=plate[key])
                         if brains:
                             plate[key] = brains[0].UID
+                            aliquots.append(brains[0].getObject())
                         else:
                             logger.info('{}: {}, not found, what do.'.format(
                                 key, plate[key]))
@@ -435,7 +436,8 @@ class AddEightFrameTestRunView(BrowserView):
                                   Title=plate[key])
                     if brains:
                         plate[key] = brains[0].UID
+                        ichips.append(brains[0].getObject())
                     else:
                         logger.info('{} {}, not found, what do.'.format(
                             key, plate[key]))
-        return plates
+        return plates, ichips, aliquots

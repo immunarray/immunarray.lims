@@ -21,7 +21,7 @@
 
   <browser:page
       name="view"
-      for="immunarray.lims.interfaces.ITestRuns"
+      for="immunarray.lims.interfaces.eightframerun.IEightFrameRun"
       class="immunarray.lims.browser.analysisrequest.commercial_run.AddEightFrameTestRunView"
       template="templates/aliquot_testing/SLE-key_v_2_0_commercial.pt"
       permission="zope2.View"
