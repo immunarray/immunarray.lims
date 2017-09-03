@@ -6,7 +6,7 @@ from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.material import Materials
 from immunarray.lims.vocabularies.solution import \
-    SolutionBatchesForMakingSolutionsVocabulary
+    SolutionBatchesForTestRunsVocabulary
 from immunarray.lims.vocabularies.users import UserVocabulary
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile import NamedFile
@@ -19,6 +19,12 @@ MaterialsVocabulary = Materials(review_state='in_use')
 class ISolution(BaseModel):
     """Base Solution schema fields
     """
+    solution_name = schema.TextLine(
+        title=_(u"Solution Name"),
+        description=_(u"Solution Name"),
+        required=True,
+    )
+
     batch_number = schema.TextLine(
         title=_(u"Batch Number"),
         description=_(u"Batch Number"),
@@ -75,7 +81,7 @@ class ISolution(BaseModel):
         title=_(u"Solution(s) Used"),
         key_type=schema.Choice(
             title=_(u"Solution"),
-            source=SolutionBatchesForMakingSolutionsVocabulary,
+            source=SolutionBatchesForTestRunsVocabulary,
             required=False),
         value_type=Amount(
             title=u"Amount Used",
@@ -91,15 +97,11 @@ class ISolution(BaseModel):
         required=False,
     )
 
-    blank_solution_prep_form = NamedFile(
-        title=_(u"Soluiton Preperation Form"),
-        required=False,
-    )
-
     completed_solution_prep_form = NamedFile(
         title=_(u"Completed Solution Preperation Form"),
         required=False,
     )
 
+    ####comments =
 
 alsoProvides(ISolution, IFormFieldProvider)
