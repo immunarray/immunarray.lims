@@ -7,7 +7,7 @@
              manager_bypass="False">
 
   <state state_id="in_queue" title="In Queue">
-    <exit-transition transition_id="cancell_run"/>
+    <exit-transition transition_id="cancel_run"/>
     <exit-transition transition_id="in_process"/>
   </state>
 
@@ -147,13 +147,13 @@
     </guard>
   </transition>
 
-  <transition transition_id="cancell_run"
+  <transition transition_id="cancel_run"
               title="Cancel Run"
               new_state="cancelled"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=cancell_run"
+    <action url="%(content_url)s/content_status_modify?workflow_action=cancel_run"
             category="workflow"
             icon="">Cancel Run
     </action>

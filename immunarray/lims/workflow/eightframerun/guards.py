@@ -29,7 +29,7 @@ def gurard_abort_run(instance):
     """
     """
     return True
-def gurard_cancell_run(instance):
+def gurard_cancel_run(instance):
     """
     """
     return True

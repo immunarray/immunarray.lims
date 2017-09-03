@@ -22,7 +22,7 @@ def after_scanning(instance):
 def after_abort_run(instance):
     """
     """
-def after_cancell_run(instance):
+def after_cancel_run(instance):
     """
     """
 
