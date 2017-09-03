@@ -45,4 +45,5 @@
     <indexed_attr value="remaining_volume"/>
   </index>
   <column value="remaining_volume"/>
+  <column value="product_name"/>
 </object>
