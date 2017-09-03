@@ -11,7 +11,7 @@ from bika.lims.permissions import disallow_default_contenttypes
 from immunarray.lims.vocabularies.billingprogrmas import \
     BillingProgramsVocabulary
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from plone.api.content import transition
+from plone.api.content import transition, find
 
 
 class AddRecView(BrowserView):
@@ -517,13 +517,15 @@ class AddRecView(BrowserView):
     def update_kit_count(self, site_id):
         """Update site kits on hand count to be reduced by 1
         """
-        site_objects = api.content.find(context=api.portal.get(),
-                                        portal_type='Site')
+        site_objects = find(portal_type='Site')
         for i in site_objects:
             if i.Title == site_id:
                 uid = i.UID
                 site = api.content.get(UID=uid)
                 site.kits_on_site -= 1
+                # Account for free kits, so that number counts down
+                if site.free_kits_left > 0:
+                    site.free_kits_left -= 1
                 # make alert if kits_on_site value is at or below desired level?
 
     def pull_previous_patient_data(self, pt_UID):
