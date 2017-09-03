@@ -23,12 +23,6 @@
     <indexed_attr value="veracis_run_purpose"/>
   </index>
   <column value="veracis_run_purpose"/>
-  <!-- Running count of all test sessions, want to have this on surface of
-  objects to allow for ease of assignment for new test runs-->
-  <index name="veracis_run_serial_number" meta_type="FieldIndex">
-    <indexed_attr value="veracis_run_serial_number"/>
-  </index>
-  <column value="veracis_run_serial_number"/>
   <!-- Reworking this as billing is evolving -->
   <index name="billable_code" meta_type="FieldIndex">
     <indexed_attr value="billable_code"/>

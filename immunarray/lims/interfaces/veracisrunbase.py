@@ -3,10 +3,8 @@ from datetime import date
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
-from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
 from zope import schema
-from zope.interface import alsoProvides
 
 
 class IVeracisRunBase(BaseModel):
@@ -17,13 +15,17 @@ class IVeracisRunBase(BaseModel):
         description=_(u"Veracis Run Number"),
         required=True,
     )
-    veracis_run_purpose = schema.TextLine(
-        title=_(u"Veracis Test Run Purpose"),
-        description=_(u"Veracis Test Run Purpose"),
-    )
-    veracis_run_serial_number = schema.Int(
-        title=_(u"Veracis Run Serial Number"),
-        description=_(u"Veracis Run Serial Number"),
+
+    # deprecated?
+    # veracis_run_purpose = schema.TextLine(
+    #     title=_(u"Veracis Test Run Purpose"),
+    #     description=_(u"Veracis Test Run Purpose"),
+    # )
+
+    veracis_run_planner = schema.TextLine(
+        title=_(u"Veracis Run Planner"),
+        description=_(u"Veracis Run Operator"),
+        required=True,
     )
     veracis_run_operator = schema.TextLine(
         title=_(u"Veracis Run Operator"),
@@ -45,6 +47,3 @@ class IVeracisRunBase(BaseModel):
         description=_(u"PDF Upload of Test Form"),
         required=False,
     )
-
-
-alsoProvides(IVeracisRunBase, IFormFieldProvider)
