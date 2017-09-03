@@ -7,35 +7,33 @@
              manager_bypass="False">
 
   <state state_id="in_queue" title="In Queue">
+    <exit-transition transition_id="cancell_run"/>
+    <exit-transition transition_id="in_process"/>
   </state>
 
   <state state_id="in_process" title="In Process">
+    <exit-transition transition_id="wet_work_done"/>
+    <exit-transition transition_id="abort_run"/>
   </state>
 
   <state state_id="wet_work_done" title="Wet Work Done">
+    <exit-transition transition_id="scanning"/>
+    <exit-transition transition_id="abort_run"/>
   </state>
 
   <state state_id="scanning" title="Scanning">
+    <exit-transition transition_id="resulted"/>
+    <exit-transition transition_id="abort_run"/>
   </state>
 
   <state state_id="resulted" title="Resulted">
   </state>
 
-  <transition transition_id="xyz"
-              title="XYZ"
-              new_state="xyz_a"
-              before_script=""
-              after_script=""
-              trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=xyz"
-            category="workflow"
-            icon="">XYZ
-    </action>
-    <guard>
-      <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
-    </guard>
-  </transition>
+  <state state_id="cancelled" title="Cancel Run">
+  </state>
+
+  <state state_id="abborted" title="Abort Run">
+  </state>
 
   <transition transition_id="queue"
               title="Queue"
@@ -53,15 +51,15 @@
     </guard>
   </transition>
 
-  <transition transition_id="re_run"
-              title="Re Run"
-              new_state="re_run"
+  <transition transition_id="in_process"
+              title="In Process"
+              new_state="in_process"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=re_run"
+    <action url="%(content_url)s/content_status_modify?workflow_action=in_process"
             category="workflow"
-            icon="">Re Run
+            icon="">In Process
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -101,15 +99,15 @@
     </guard>
   </transition>
 
-  <transition transition_id="reject"
-              title="Reject"
-              new_state="rejected"
+  <transition transition_id="wet_work_done"
+              title="Wet Work Done"
+              new_state="wet_work_done"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+    <action url="%(content_url)s/content_status_modify?workflow_action=wet_work_done"
             category="workflow"
-            icon="">Reject
+            icon="">Wet Work Done
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
@@ -117,5 +115,52 @@
     </guard>
   </transition>
 
+  <transition transition_id="scanning"
+              title="Scan Run"
+              new_state="scanning"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=scanning"
+            category="workflow"
+            icon="">Scan Run
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="abort_run"
+              title="Abort Run"
+              new_state="abborted"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=abort_run"
+            category="workflow"
+            icon="">Abort Run
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="cancell_run"
+              title="Cancel Run"
+              new_state="cancelled"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=cancell_run"
+            category="workflow"
+            icon="">Cancel Run
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+    </guard>
+  </transition>
 
 </dc-workflow>
