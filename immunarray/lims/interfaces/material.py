@@ -2,7 +2,8 @@
 from immunarray.lims import messageFactory as _
 from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
-from immunarray.lims.vocabularies.users import UserVocabulary
+from immunarray.lims.vocabularies.users import UserVocabulary, \
+    LabUsersUserVocabulary
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.namedfile.field import NamedBlobImage
 from zope import schema
