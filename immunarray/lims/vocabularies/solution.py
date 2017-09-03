@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from immunarray.lims.interfaces.solution import ISolution
+
 from zope.interface import implements
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
@@ -53,6 +53,8 @@ class SolutionBatchesForTestRuns(object):
         self.kwargs = kwargs
 
     def __call__(self, context):
+        # This is a local import
+        from immunarray.lims.interfaces.solution import ISolution
         # portal_types walker XXX for ichipassay definitions
         catalog = context.portal_catalog
         brains = catalog(
@@ -77,6 +79,8 @@ class SolutionBatchesForMakingSolutions(object):
 
     def __call__(self, context):
         # portal_types walker XXX for ichipassay definitions
+        # This is a local import
+        from immunarray.lims.interfaces.solution import ISolution
         catalog = context.portal_catalog
         brains = catalog(
             object_provides=ISolution.__identifier__,

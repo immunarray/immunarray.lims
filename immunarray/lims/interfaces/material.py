@@ -79,14 +79,14 @@ class IMaterial(BaseModel):
     received_by = schema.Choice(
         title=_(u"Received By"),
         description=_(u"The operator that received the material lot"),
-        source=UserVocabulary,
+        source=LabUsersUserVocabulary,
         required=False  # value will be completed by workflow transition
     )
 
     opened_by = schema.Choice(
         title=_(u"Opened By"),
         description=_(u"The operator that Opened the material lot"),
-        source=UserVocabulary,
+        source=LabUsersUserVocabulary,
         required=False  # value will be completed by workflow transition
     )
 
