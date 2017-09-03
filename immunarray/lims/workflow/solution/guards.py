@@ -1,3 +1,5 @@
+from datetime import datetime
+
 def guard_quarantine(instance):
     """
     """
@@ -13,6 +15,8 @@ def guard_release(instance):
 def guard_put_in_use(instance):
     """
     """
+    if instance.expiration_date < datetime.today().date():
+        return False
     return True
 
 
