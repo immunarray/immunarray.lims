@@ -24,7 +24,7 @@ class IBillingProgram(BaseModel):
         description=_(u"Assay to be Billed"),
         source=IChipAssayListVocabulary,
         required=True
-    ),
+    )
 
     cost_of_assay = schema.Float(
         title=_(u"Full Cost of Assay"),
@@ -39,13 +39,16 @@ class IBillingProgram(BaseModel):
     )
 
     discount_to_patient = schema.Float(
-        title=_(u"Max Cost to Patient"),
-        description=_(u"Max Cost to Patient"),
+        title=_(u"Discout to Patient"),
+        description=_(u"Discout to Patient"),
         default=0.0,
         required=True,
     )
 
-    allow_balance_bill = schema.Bool()
+    allow_balance_bill = schema.Bool(
+        title=_(u"Allow Balance Billing"),
+        description=_(u"Allow Balance Billing")
+    )
 
 
 alsoProvides(IBillingProgram, IFormFieldProvider)
