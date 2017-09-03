@@ -62,7 +62,7 @@
         assay_name: $('#assaySelected').val()
       };
       $.ajax({
-        url: 'ctest',
+        url: 'view',
         type: 'POST',
         dataType: 'json',
         data: data,
@@ -70,6 +70,9 @@
           debugger;
         }
       });
+    });
+    portalMessage(function(message) {
+      $(".outer-wrapper>.container .row").prepend("<aside id='global_statusmessage'><div class='portalMessage error'><strong>Error</strong>" + message + " </div></aside>");
     });
   });
 

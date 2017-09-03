@@ -50,7 +50,6 @@ require ['jquery'], ($) ->
                 return
         return
 
-
     $("#saverun").click (ev) ->
         ev.preventDefault()
         data =
@@ -58,7 +57,7 @@ require ['jquery'], ($) ->
             ctest_action: 'save_run'
             assay_name: $('#assaySelected').val()
         $.ajax
-            url: 'ctest'
+            url: 'view'
             type: 'POST'
             dataType: 'json',
             data: data
@@ -66,5 +65,12 @@ require ['jquery'], ($) ->
                 debugger;
                 return
         return
+
+    portalMessage (message) ->
+        $(".outer-wrapper>.container .row").prepend("<aside id='global_statusmessage'><div class='portalMessage error'><strong>Error</strong>"+message+" </div></aside>")
+        return
+
+
+
 
     return
