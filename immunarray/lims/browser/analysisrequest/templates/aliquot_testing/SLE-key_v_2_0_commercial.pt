@@ -99,7 +99,9 @@
 </style>
       <form id="commercial_run" method="post">
 
-        <select id="assay_selection" name="selected_assay">
+        <select id="assay_selection"
+                name="selected_assay"
+                tal:condition="python: view.add_or_edit == 'add'">
           <option name="None">None</option>
           <tal:block repeat="assay view/iChipAssayList">
             <option tal:content="assay"></option>

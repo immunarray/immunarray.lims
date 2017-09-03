@@ -2,7 +2,6 @@
 import json
 from operator import itemgetter
 
-from Products.CMFPlone.resources import add_resource_on_request
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims import logger
@@ -10,31 +9,40 @@ from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
-from plone.api.content import create, find, get_state
+from plone.api.content import create, find, get_state, transition
+from plone.api.exc import InvalidParameterError
 
 
 class SelectedAssayNotFound(Exception):
-    pass
+    __doc__ = 'Selected iChip Assay not found'
 
 
 class NoIchipLotsFound(Exception):
-    pass
+    __doc__ = 'No iChipLots Found'
 
 
 class NotEnoughUniqueIChipLots(Exception):
-    pass
+    __doc__ = 'Not enougn unique iChipLots found'
 
 
 class QCSampleNotFound(Exception):
-    pass
+    __doc__ = 'QC Sample not found'
 
 
 class QCAliquotNotFound(Exception):
-    pass
+    __doc__ = 'QC Aliquot not found'
 
 
 class NoWorkingAliquotsFound(Exception):
-    pass
+    __doc__ = ''
+
+
+class AliquotInInvalidState(Exception):
+    __doc__ = 'At least one aliquot is in an invalid state.  Re-create the run.'
+
+
+class IChipInInvalidState(Exception):
+    __doc__ = 'At least one iChip is in an invalid state.  Re-create the run.'
 
 
 class AddEightFrameTestRunView(BrowserView):
@@ -48,32 +56,38 @@ class AddEightFrameTestRunView(BrowserView):
         self.errors = []
 
     def __call__(self):
-        add_resource_on_request(self.request, "static.js.test_run.js")
         request = self.request
 
         if request.form.get("ctest_action", "") == 'selected_an_assay':
-            # gives me the assay value from the ctest form
-            assay_name = request.form.get("assaySelected")
-            if assay_name == 'None':
-                return self.template()
-            elif assay_name == 'Custom':
-                pass
-            else:
-                assay = self.get_assay(assay_name)
-                if assay.desired_use == 'Commercial':
-                    plates = self.makeTestPlan(assay)
-                    return json.dumps({"TestRun": plates})
-                if assay.desired_use == 'Development':
-                    pass
-
+            self.selected_an_assay()
         elif request.form.get('ctest_action', '') == 'save_run':
             self.save_run()
 
         return self.template()
 
+    @property
+    def add_or_edit(self):
+        return 'add' if ITestRuns.providedBy(self.context) else 'edit'
+
     def iChipAssayList(self):
         vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
         return vocab_keys
+
+    def selected_an_assay(self):
+        # gives me the assay value from the ctest form
+        request = self.request
+        assay_name = self.request.form.get("assaySelected")
+        if assay_name == 'None':
+            return self.template()
+        elif assay_name == 'Custom':
+            pass
+        else:
+            assay = self.get_assay(assay_name)
+            if assay.desired_use == 'Commercial':
+                plates = self.makeTestPlan(assay)
+                return json.dumps({"TestRun": plates})
+            if assay.desired_use == 'Development':
+                pass
 
     def get_assay(self, assay_name):
         brains = find(portal_type='iChipAssay', Title=assay_name)
@@ -351,21 +365,18 @@ class AddEightFrameTestRunView(BrowserView):
         """
         """
         values = self.get_serializeArray_form_values()
-        testruns = find(object_provides=ITestRuns.__identifier__)[0].getObject()
+        folder = find(object_provides=ITestRuns.__identifier__)[0].getObject()
         plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
+        self.transition_plate_contents(ichips, aliquots)
 
-        # transition all aliquots and chips
-
-        import pdb;pdb.set_trace();pass
-
-        create(
-            testruns,
+        run = create(
+            folder,
             'EightFrameRun',
             title=values['selected_assay'],
             plates=plates,
         )
 
-
+        transition(run, 'queue')
 
     def get_serializeArray_form_values(self):
         """Parse the form_values list into a single dictionary.  The plates
@@ -414,7 +425,7 @@ class AddEightFrameTestRunView(BrowserView):
         return form_values
 
     def transmogrify_inputs(self, plates):
-        """
+        """Convert titles to UIDs for all ichips and aliquots
         """
         ichips, aliquots = [], []
         for plate in plates:
@@ -441,3 +452,18 @@ class AddEightFrameTestRunView(BrowserView):
                         logger.info('{} {}, not found, what do.'.format(
                             key, plate[key]))
         return plates, ichips, aliquots
+
+    def transition_plate_contents(self, ichips, aliquots):
+        """Verify that all ichip and aliquot states are valid.
+        """
+        try:
+            for ichip in ichips:
+                transition(ichip, 'queue')
+        except InvalidParameterError:
+            raise IChipInInvalidState
+
+        try:
+            for aliquot in aliquots:
+                transition(aliquot, 'queue')
+        except InvalidParameterError:
+            raise AliquotInInvalidState
