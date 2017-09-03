@@ -12,6 +12,8 @@ def guard_release(instance):
     """
     if instance.expiration_date < datetime.today().date():
         return False
+    if not instance.coa:
+        return False
     return True
 
 
