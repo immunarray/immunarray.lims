@@ -4,13 +4,18 @@ from operator import itemgetter
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from immunarray.lims import logger
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
+from immunarray.lims.interfaces.assayrequest import IAssayRequest
+from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.ichip import IiChip
+from immunarray.lims.interfaces.sample import ISample
+from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
 from plone.api.content import create, find, get_state, transition
 from plone.api.exc import InvalidParameterError
+from plone.api.portal import get_tool
 
 
 class SelectedAssayNotFound(Exception):
@@ -30,19 +35,15 @@ class QCSampleNotFound(Exception):
 
 
 class QCAliquotNotFound(Exception):
-    __doc__ = 'QC Aliquot not found'
+    __doc__ = 'Available QC Aliquots meeting assay parameters not found'
 
 
 class NoWorkingAliquotsFound(Exception):
-    __doc__ = ''
+    __doc__ = 'No working aliquots found'
 
 
-class AliquotInInvalidState(Exception):
-    __doc__ = 'At least one aliquot is in an invalid state.  Re-create the run.'
-
-
-class IChipInInvalidState(Exception):
-    __doc__ = 'At least one iChip is in an invalid state.  Re-create the run.'
+class ObjectInInvalidState(Exception):
+    __doc__ = 'At least one object is in an invalid state.  Re-create the run.'
 
 
 class AddEightFrameTestRunView(BrowserView):
@@ -58,16 +59,45 @@ class AddEightFrameTestRunView(BrowserView):
     def __call__(self):
         request = self.request
 
+        result = {'success': False, 'message': 'Unspecified Error.'}
+
         if request.form.get("ctest_action", "") == 'selected_an_assay':
-            self.selected_an_assay()
+            try:
+                self.selected_an_assay()
+            except Exception as e:
+                result['message']
+
+            return
+
         elif request.form.get('ctest_action', '') == 'save_run':
-            self.save_run()
+            run = self.save_run()
+
 
         return self.template()
 
     @property
     def add_or_edit(self):
+        """The same form is used for add and edit purposes, this informs the
+        template which context we're currently in.
+        """
         return 'add' if ITestRuns.providedBy(self.context) else 'edit'
+
+    def next_veracis_run_number(self):
+        """Get the highest veracis_run_number of all runs (of all types of run),
+        increment it and return.
+        """
+        catalog = get_tool('portal_catalog')
+        try:
+            return catalog(object_provides=IVeracisRunBase.__identifier__,
+                           sort_on='veracis_run_number',
+                           sort_order='reverse',
+                           limit=1)[0].veracis_run_number
+        except IndexError:
+            return '1'
+
+    def lab_users(self):
+        items = LabUsersUserVocabulary(self).by_value.values()
+        return [(i.value, i.title) for i in items]
 
     def iChipAssayList(self):
         vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
@@ -75,7 +105,6 @@ class AddEightFrameTestRunView(BrowserView):
 
     def selected_an_assay(self):
         # gives me the assay value from the ctest form
-        request = self.request
         assay_name = self.request.form.get("assaySelected")
         if assay_name == 'None':
             return self.template()
@@ -143,22 +172,25 @@ class AddEightFrameTestRunView(BrowserView):
     def queryClinicalWorkingAliquots(self, assay):
         """Query to get QC and Clinical working aliquots to test with.
         """
-        aliquot_objects_for_testing = []
+        aliquots = []
         # loop over all the samples coming into search
         clinical_samples = self.queryClinicalSamples(assay)
         for sample_dict in clinical_samples:
-            # object passed in from full_set
             parent = sample_dict['sample']  # parent is sample object
-            aliquots = self.collectAliquots(parent,
-                                            Type='Clinical Aliquot (Working)')
-            for c in aliquots:
-                vol = assay.desired_working_aliquot_volume
-                if c.remaining_volume >= vol:
-                    aliquot_objects_for_testing.append(c)
-                    break
-        if not aliquot_objects_for_testing:
+            tmp = self.collectAliquots(
+                parent,
+                Type='Clinical Aliquot (Working)',
+                review_state='available',
+                remaining_volume={
+                    'query': assay.desired_working_aliquot_volume,
+                    'range': 'min'},
+            )
+            # we only want a single aliquot from those found.
+            if tmp:
+                aliquots.append(tmp[0])
+        if not aliquots:
             raise NoWorkingAliquotsFound
-        return aliquot_objects_for_testing
+        return aliquots
 
     def collectAliquots(self, sample_object, **kwargs):
         """Get in array of objects to see if they are the last in the chain
@@ -169,7 +201,9 @@ class AddEightFrameTestRunView(BrowserView):
         in the adapters/indexers.py.
         """
         path = '/'.join(sample_object.getPhysicalPath())
-        brains = find(path={'query': path, 'depth': -1}, sort_on='id', **kwargs)
+        brains = find(path={'query': path, 'depth': -1},
+                      sort_on='id',
+                      **kwargs)
         items = [b.getObject() for b in brains]
         return items
 
@@ -187,9 +221,7 @@ class AddEightFrameTestRunView(BrowserView):
 
         ichips_for_assay = self.getiChipsForTesting(assay)
         working_aliquots = self.queryClinicalWorkingAliquots(assay)
-
         number_of_ichip_lots_available = len(ichips_for_assay)
-        # [[<ichiplot>,[<ichip>,<ichip>]],[<ichiplot>,[<ichip>,<ichip>]]]
 
         if not number_of_ichip_lots_available >= number_unique_lot:
             raise NotEnoughUniqueIChipLots
@@ -280,7 +312,7 @@ class AddEightFrameTestRunView(BrowserView):
             # 1:frame_count)
             # wrap this in an if statement
             sample_slots = []
-            for i in range(frame_count - len(sample_slots)):
+            for i in range(frame_count):
                 if working_aliquots:
                     sample_slots.append(working_aliquots[0])
                     working_aliquots = working_aliquots[1:]
@@ -313,21 +345,25 @@ class AddEightFrameTestRunView(BrowserView):
         lqc_sample = self.getQCSampleObject(assay.qc_low_choice)
 
         aliquots = self.collectAliquots(
-            hqc_sample, Type='QC Aliquot (Working)',
+            hqc_sample,
+            Type='QC Aliquot (Working)',
             remaining_volume={'query': assay.minimum_working_aliquot_volume,
-                              'range': 'min'})
+                              'range': 'min'},
+            review_state='available'
+        )
         if not aliquots:
-            raise QCAliquotNotFound(
-                "%s has no aliquots that meet assay parameters" % hqc_sample)
+            raise QCAliquotNotFound
         hqc_aliquot = aliquots[0]
 
         aliquots = self.collectAliquots(
-            lqc_sample, Type='QC Aliquot (Working)',
+            lqc_sample,
+            Type='QC Aliquot (Working)',
             remaining_volume={'query': assay.minimum_working_aliquot_volume,
-                              'range': 'min'})
+                              'range': 'min'},
+            review_state='available'
+        )
         if not aliquots:
-            raise QCAliquotNotFound(
-                "%s has no aliquots that meet assay parameters" % lqc_sample)
+            raise QCAliquotNotFound
         lqc_aliquot = aliquots[0]
 
         qc_to_add_to_plate = [hqc_aliquot] * assay.number_of_high_value_controls
@@ -357,7 +393,9 @@ class AddEightFrameTestRunView(BrowserView):
                 ichiplots.append(ichiplot)
 
         for ichiplot in ichiplots:
-            ichips_for_assay.append([ichiplot, ichiplot.objectValues()])
+            ichips = ichiplot.objectValues()
+            filtered = [ic for ic in ichips if get_state(ic) == 'released']
+            ichips_for_assay.append([ichiplot, filtered])
 
         return ichips_for_assay
 
@@ -367,16 +405,18 @@ class AddEightFrameTestRunView(BrowserView):
         values = self.get_serializeArray_form_values()
         folder = find(object_provides=ITestRuns.__identifier__)[0].getObject()
         plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
-        self.transition_plate_contents(ichips, aliquots)
+        self.transition_plate_contents(ichips, aliquots, 'queue')
 
         run = create(
             folder,
             'EightFrameRun',
             title=values['selected_assay'],
+            veracis_run_number=values['veracis_run_number'],
+            veracis_test_run_date=values['veracis_test_run_date'],
+            veracis_run_planner=values['veracis_run_planner'],
+            veracis_run_operator=values['veracis_run_operator'],
             plates=plates,
         )
-
-        transition(run, 'queue')
 
     def get_serializeArray_form_values(self):
         """Parse the form_values list into a single dictionary.  The plates
@@ -435,35 +475,62 @@ class AddEightFrameTestRunView(BrowserView):
                     if plate[key]:
                         brains = find(object_provides=IAliquot.__identifier__,
                                       Title=plate[key])
-                        if brains:
-                            plate[key] = brains[0].UID
-                            aliquots.append(brains[0].getObject())
-                        else:
-                            logger.info('{}: {}, not found, what do.'.format(
-                                key, plate[key]))
+                        plate[key] = brains[0].UID
+                        aliquots.append(brains[0].getObject())
                 key = "chip-id-{}".format(chip_nr)
                 if plate[key]:
                     brains = find(object_provides=IiChip.__identifier__,
                                   Title=plate[key])
-                    if brains:
-                        plate[key] = brains[0].UID
-                        ichips.append(brains[0].getObject())
-                    else:
-                        logger.info('{} {}, not found, what do.'.format(
-                            key, plate[key]))
-        return plates, ichips, aliquots
+                    plate[key] = brains[0].UID
+                    ichips.append(brains[0].getObject())
+        # Re-order the well-numbers of aliquots according to the "well-number"
+        # This allows analyst to re-order wells if aliquots were transposed
+        newplates = []
+        for plate in plates:
+            newplate = plate.copy()
+            for w in range(1, 9):
+                nw = plate['well-number-%s' % w]
+                newplate['chip-1_well-%s' % nw] = plate['chip-1_well-%s' % w]
+            newplates.append(newplate)
+        return newplates, ichips, aliquots
 
-    def transition_plate_contents(self, ichips, aliquots):
-        """Verify that all ichip and aliquot states are valid.
+    def transition_plate_contents(self, ichips, aliquots, action_id):
+        """Chips, aliquots, and assay requests move together through
+        identical states during the test run.
         """
+        transitioned = []
         try:
             for ichip in ichips:
-                transition(ichip, 'queue')
+                if ichip not in transitioned:
+                    transition(ichip, action_id)
+                    transitioned.append(ichip)
         except InvalidParameterError:
-            raise IChipInInvalidState
+            raise ObjectInInvalidState
 
         try:
             for aliquot in aliquots:
-                transition(aliquot, 'queue')
+                if aliquot not in transitioned:
+                    transition(aliquot, action_id)
+                    transitioned.append(aliquot)
         except InvalidParameterError:
-            raise AliquotInInvalidState
+            raise ObjectInInvalidState
+
+        # get AssayRequests associated with all aliquots, and queue them.
+        for aliquot in aliquots:
+            sample = self.get_parent_sample_from_aliquot(aliquot)
+            if IClinicalSample.providedBy(sample):
+                assayrequest = self.get_assay_request_from_sample(sample)
+                if assayrequest not in transitioned:
+                    transition(assayrequest, action_id)
+                    transitioned.append(assayrequest)
+
+    def get_parent_sample_from_aliquot(self, aliquot):
+        parent = aliquot.aq_parent
+        while not ISample.providedBy(parent):
+            parent = parent.aq_parent
+        return parent
+
+    def get_assay_request_from_sample(self, sample):
+        for child in sample.objectValues():
+            if IAssayRequest.providedBy(child):
+                return child

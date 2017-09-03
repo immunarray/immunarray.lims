@@ -73,24 +73,13 @@
       .hidden {
         display:none;
       }
-      /*This is Plone's style for inputs; I just want to apply the same to input[type="date"] */
-      input[type="date"] {
-        display: block;
-        width: 100%;
-        height: 34px;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        color: #696969;
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      .pattern-pickadate-wrapper {
+         padding-bottom:0px !important;
+      }
+      .plate-header-row {
+          text-align: center;
+          background-color:lightgrey;
+          font-size:11pt;
       }
       .delete-plate{
           cursor: pointer;
@@ -99,6 +88,7 @@
 </style>
       <form id="commercial_run" method="post">
 
+        <!-- Creating a new test run, list possible iChipAssays -->
         <select id="assay_selection"
                 name="selected_assay"
                 tal:condition="python: view.add_or_edit == 'add'">
@@ -109,9 +99,75 @@
           <option name="Custom">Custom</option>
         </select>
 
-        <!-- Header PP-007.04-->
+        <h3 tal:condition="python: view.add_or_edit == 'edit'">
+          <span tal:replace="context.title"/>
+          <span tal:replace="context.veracis_run_number"/>
+        </h3>
+
         <input type="button" id="saverun" value="Save Run">
         <input type="button" id="printrun" value="Print Run">
+
+        <table class="run-info">
+          <tr>
+            <td colspan="2" class="plate-header-row">
+              <strong><span class="plate-title">Run Configuration</span></strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Veracis Run Number:</td>
+            <td tal:condition="python:view.add_or_edit == 'add'">
+              <input type="text"
+                     name="veracis_run_number"
+                     tal:attributes="value view/next_veracis_run_number"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit == 'edit'">
+              <span tal:replace="context/veracis_run_number"/>
+            </td>
+          </tr>
+          <tr>
+            <td>Veracis Test Run Date (DD-MMM-YYYY):</td>
+            <td tal:condition="python:view.add_or_edit == 'add'">
+              <input class="pat-pickadate"
+                     name="veracis_test_run_date"
+                     data-pat-pickadate='{"date": {"format": "dd-mmm-yyyy"}, "time": false}'>
+            </td>
+            <td tal:condition="python:view.add_or_edit == 'edit'">
+              <input class="pat-pickadate" name="veracis_test_run_date"
+                     tal:attributes="value python:context.veracis_test_run_date"
+                     data-pat-pickadate='{"date": {"format": "dd-mmm-yyyy"}, "time": false}'>
+            </td>
+          </tr>
+          <tr>
+            <td>Veracis Run Planner:</td>
+            <td tal:condition="python:view.add_or_edit == 'add'">
+              <select name="veracis_run_planner" tal:define="users python:view.lab_users()">
+                <tal:users tal:repeat="user users">
+                  <option value="python:user[0]">
+                    <tal:user tal:replace="python:user[1]"/>
+                  </option>
+                </tal:users>
+              </select>
+            </td>
+            <td tal:condition="python:view.add_or_edit == 'edit'">
+              <span tal:replace="context/veracis_run_planner"/>
+            </td>
+          </tr>
+          <tr>
+            <td>Veracis Run Operator:</td>
+            <td tal:condition="python:view.add_or_edit == 'add'">
+              <select name="veracis_run_operator" tal:define="users python:view.lab_users()">
+                <tal:users tal:repeat="user users">
+                  <option value="python:user[0]">
+                    <tal:user tal:replace="python:user[1]"/>
+                  </option>
+                </tal:users>
+              </select>
+            </td>
+            <td tal:condition="python:view.add_or_edit == 'edit'">
+              <span tal:replace="context/veracis_run_operator"/>
+            </td>
+          </tr>
+        </table>
 
         <div id="plates"> <!-- Plate tables are inserted here. -->
 
@@ -137,7 +193,17 @@
             <td><strong>Box</strong></td>
           </tr>
           <tr>
-            <td>1</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              1
+              <input type="hidden" name="well-number-1" value="1"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-1">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-1" class="sampleid-aliquot chip-3 well-1"/></td>
@@ -147,7 +213,17 @@
             <td/>
           </tr>
           <tr>
-            <td>2</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              2
+              <input type="hidden" name="well-number-2" value="2"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-2">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-2" class="sampleid-aliquot chip-1 well-2"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-2" class="sampleid-aliquot chip-2 well-2"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-2" class="sampleid-aliquot chip-3 well-2"/></td>
@@ -157,7 +233,17 @@
             <td/>
           </tr>
           <tr>
-            <td>3</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              3
+              <input type="hidden" name="well-number-3" value="3"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-3">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-3" class="sampleid-aliquot chip-1 well-3"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-3" class="sampleid-aliquot chip-2 well-3"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-3" class="sampleid-aliquot chip-3 well-3"/></td>
@@ -167,7 +253,17 @@
             <td/>
           </tr>
           <tr>
-            <td>4</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              4
+              <input type="hidden" name="well-number-4" value="4"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-4">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-4" class="sampleid-aliquot chip-1 well-4"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-4" class="sampleid-aliquot chip-2 well-4"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-4" class="sampleid-aliquot chip-3 well-4"/></td>
@@ -177,7 +273,17 @@
             <td/>
           </tr>
           <tr>
-            <td>5</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              5
+              <input type="hidden" name="well-number-5" value="5"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-5">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-5" class="sampleid-aliquot chip-1 well-5"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-5" class="sampleid-aliquot chip-2 well-5"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-5" class="sampleid-aliquot chip-3 well-5"/></td>
@@ -187,7 +293,17 @@
             <td/>
           </tr>
           <tr>
-            <td>6</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              6
+              <input type="hidden" name="well-number-6" value="6"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-6">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-6" class="sampleid-aliquot chip-1 well-6"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-6" class="sampleid-aliquot chip-2 well-6"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-6" class="sampleid-aliquot chip-3 well-6"/></td>
@@ -197,7 +313,17 @@
             <td/>
           </tr>
           <tr>
-            <td>7</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              7
+              <input type="hidden" name="well-number-7" value="7"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-7">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-7" class="sampleid-aliquot chip-1 well-7"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-7" class="sampleid-aliquot chip-2 well-7"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-7" class="sampleid-aliquot chip-3 well-7"/></td>
@@ -207,7 +333,17 @@
             <td/>
           </tr>
           <tr>
-            <td>8</td>
+            <td tal:condition="python:view.add_or_edit=='add'">
+              8
+              <input type="hidden" name="well-number-8" value="8"/>
+            </td>
+            <td tal:condition="python:view.add_or_edit=='edit'">
+              <select name="well-number-8">
+                <tal:options repeat="x python: range(1, 9)">
+                  <option value="x"><tal:option tal:replace="x"/>
+                </tal:options>
+              </select>
+            </td>
             <td colspan="2"><input type="text" name="chip-1_well-8" class="sampleid-aliquot chip-1 well-8"/></td>
             <td colspan="2"><input type="text" name="chip-2_well-8" class="sampleid-aliquot chip-2 well-8"/></td>
             <td colspan="2"><input type="text" name="chip-3_well-8" class="sampleid-aliquot chip-3 well-8"/></td>
