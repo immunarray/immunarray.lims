@@ -32,3 +32,9 @@ def guard_reject(instance):
     """
     """
     return True
+
+
+def guard_in_process(instance):
+    """
+    """
+    return True
