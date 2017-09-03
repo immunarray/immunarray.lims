@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
+from zope import schema
+
 from immunarray.lims import messageFactory as _
 from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.material import Materials
+from immunarray.lims.vocabularies.solution import \
+    SolutionBatchesForMakingSolutionsVocabulary
 from immunarray.lims.vocabularies.users import UserVocabulary
 from plone.autoform.interfaces import IFormFieldProvider
-from zope import schema
+from plone.namedfile import NamedFile
+from plone.namedfile.field import NamedFile
 from zope.interface import alsoProvides
 
 MaterialsVocabulary = Materials(review_state='in_use')
@@ -16,19 +21,19 @@ class ISolution(BaseModel):
     """
     batch_number = schema.TextLine(
         title=_(u"Batch Number"),
-        description=_(u""),
+        description=_(u"Batch Number"),
         required=True,
     )
 
     make_date = schema.Date(
         title=_(u"Date Made"),
-        description=_(u""),
+        description=_(u"Date Made"),
         required=True,
     )
 
     expiration_date = schema.Date(
         title=_(u"Expiration Date"),
-        description=_(u""),
+        description=_(u"Expiration Date"),
         required=True,
     )
 
@@ -41,7 +46,6 @@ class ISolution(BaseModel):
     remaining_amount = Amount(
         title=_(u"Amount remaining"),
         description=_(u"You should not need to edit this value"),
-        readonly=True,
     )
 
     unit = schema.TextLine(
@@ -51,19 +55,31 @@ class ISolution(BaseModel):
     )
 
     made_by = schema.Choice(
-        title=_(u"Made by"),
+        title=_(u"Made By"),
         description=_(u"The operator created the material lot"),
         source=UserVocabulary,
         required=True
     )
 
     materials_used = schema.Dict(
-        title=_(u"Materials used"),
+        title=_(u"Materials Used"),
         key_type=schema.Choice(title=_(u"Material"),
                                source=MaterialsVocabulary,
                                required=False),
-        value_type=Amount(title=u"Amount used",
+        value_type=Amount(title=u"Amount Used",
                           required=False),
+        required=False
+    )
+
+    solution_used = schema.Dict(
+        title=_(u"Solution(s) Used"),
+        key_type=schema.Choice(
+            title=_(u"Solution"),
+            source=SolutionBatchesForMakingSolutionsVocabulary,
+            required=False),
+        value_type=Amount(
+            title=u"Amount Used",
+            required=False),
         required=False
     )
 
@@ -72,6 +88,16 @@ class ISolution(BaseModel):
         description=_(
             u"Viability of solution in hours. "
             u"Leave blank if solution does not expire."),
+        required=False,
+    )
+
+    blank_solution_prep_form = NamedFile(
+        title=_(u"Soluiton Preperation Form"),
+        required=False,
+    )
+
+    completed_solution_prep_form = NamedFile(
+        title=_(u"Completed Solution Preperation Form"),
         required=False,
     )
 
