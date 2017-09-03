@@ -2,6 +2,7 @@
 import json
 from operator import itemgetter
 
+import transaction
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces import ITestRuns
@@ -19,32 +20,42 @@ from plone.api.portal import get_tool
 
 
 class SelectedAssayNotFound(Exception):
-    __doc__ = 'Selected iChip Assay not found'
+    """Selected iChip Assay not found
+    """
 
 
 class NoIchipLotsFound(Exception):
-    __doc__ = 'No iChipLots Found'
+    """No iChipLots Found
+    """
 
 
 class NotEnoughUniqueIChipLots(Exception):
-    __doc__ = 'Not enougn unique iChipLots found'
+    """Not enougn unique iChipLots found
+    """
 
 
 class QCSampleNotFound(Exception):
-    __doc__ = 'QC Sample not found'
+    """QC Sample not found
+    """
 
 
 class QCAliquotNotFound(Exception):
-    __doc__ = 'Available QC Aliquots meeting assay parameters not found'
+    """Available QC Aliquots meeting assay parameters not found
+    """
 
 
 class NoWorkingAliquotsFound(Exception):
-    __doc__ = 'No working aliquots found'
+    """No working aliquots found
+    """
 
 
 class ObjectInInvalidState(Exception):
-    __doc__ = 'At least one object is in an invalid state.  Re-create the run.'
+    """At least one object is in an invalid state.  Re-create the run.
+    """
 
+class DuplicateWellSelected(Exception):
+    """You cannot use the same well number twice on a single plate!
+    """
 
 class AddEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
@@ -59,21 +70,26 @@ class AddEightFrameTestRunView(BrowserView):
     def __call__(self):
         request = self.request
 
-        result = {'success': False, 'message': 'Unspecified Error.'}
-
-        if request.form.get("ctest_action", "") == 'selected_an_assay':
-            try:
-                self.selected_an_assay()
-            except Exception as e:
-                result['message']
-
-            return
-
-        elif request.form.get('ctest_action', '') == 'save_run':
-            run = self.save_run()
-
+        try:
+            raise Exception("Waaaaaaaaaaaaaaaaaaaaaa!")
+            if request.form.get("ctest_action", "") == 'selected_an_assay':
+                plates = self.selected_an_assay()
+                return json.dumps({'success': True,
+                                   'TestRun': plates})
+            elif request.form.get('ctest_action', '') == 'save_run':
+                run = self.save_run()
+                return json.dumps({'success': True,
+                                   'run_url': run.absolute_url()})
+        except Exception as e:
+            transaction.abort()
+            return json.dumps({'success': False, 'message': self.error(e)})
 
         return self.template()
+
+    def error(self, e):
+        """Make a nice string from a traceback, to print in the browser
+        """
+        return "{}: {}".format(e.__class__.__name__, e.message)
 
     @property
     def add_or_edit(self):
@@ -114,14 +130,14 @@ class AddEightFrameTestRunView(BrowserView):
             assay = self.get_assay(assay_name)
             if assay.desired_use == 'Commercial':
                 plates = self.makeTestPlan(assay)
-                return json.dumps({"TestRun": plates})
+                return plates
             if assay.desired_use == 'Development':
                 pass
 
     def get_assay(self, assay_name):
         brains = find(portal_type='iChipAssay', Title=assay_name)
         if not brains:
-            raise SelectedAssayNotFound
+            raise SelectedAssayNotFound("title: %s" % assay_name)
         return brains[0].getObject()
 
     def maxNumberOfSamplesToRun(self, assay):
@@ -189,14 +205,16 @@ class AddEightFrameTestRunView(BrowserView):
             if tmp:
                 aliquots.append(tmp[0])
         if not aliquots:
-            raise NoWorkingAliquotsFound
+            samples = [sd['sample'] for sd in clinical_samples]
+            msg = "Searched in clinical samples: {}".format(",".join(samples))
+            raise NoWorkingAliquotsFound(msg)
         return aliquots
 
     def collectAliquots(self, sample_object, **kwargs):
         """Get in array of objects to see if they are the last in the chain
         and return a list of objects back.  Check if each is a working aliquot
         that meets the needs of the assay
-
+    
         Type is the value of the index called 'Type'.  It's set (for aliquots)
         in the adapters/indexers.py.
         """
@@ -210,7 +228,7 @@ class AddEightFrameTestRunView(BrowserView):
     def makeTestPlan(self, assay):
         """use ordered [ichiplot, [ichips]], assay parameters{},
         [working aliquots] to build test plan
-
+    
         """
         slide_per_plate = 4  # constant that needs to be defined
 
@@ -224,7 +242,8 @@ class AddEightFrameTestRunView(BrowserView):
         number_of_ichip_lots_available = len(ichips_for_assay)
 
         if not number_of_ichip_lots_available >= number_unique_lot:
-            raise NotEnoughUniqueIChipLots
+            msg = "Assay requires %s unique lots" % number_unique_lot
+            raise NotEnoughUniqueIChipLots(msg)
 
         plate_count = 0
         _used_ichiplots = []
@@ -332,10 +351,11 @@ class AddEightFrameTestRunView(BrowserView):
     def getQCSampleObject(self, veracis_id):
         """input veracis_id, get qc sample object
         """
-        brains = find(portal_type='QCSample', review_state='in_use',
+        brains = find(portal_type='QCSample',
+                      review_state='in_use',
                       veracis_id=veracis_id)
         if not brains:
-            raise QCSampleNotFound
+            raise QCSampleNotFound("Veracis ID: %s" % veracis_id)
         return brains[0].getObject()
 
     def getQCAliquots(self, assay):
@@ -352,7 +372,7 @@ class AddEightFrameTestRunView(BrowserView):
             review_state='available'
         )
         if not aliquots:
-            raise QCAliquotNotFound
+            raise QCAliquotNotFound("HQC Sample: %s" % hqc_sample)
         hqc_aliquot = aliquots[0]
 
         aliquots = self.collectAliquots(
@@ -403,25 +423,39 @@ class AddEightFrameTestRunView(BrowserView):
         """
         """
         values = self.get_serializeArray_form_values()
-        folder = find(object_provides=ITestRuns.__identifier__)[0].getObject()
         plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
-        self.transition_plate_contents(ichips, aliquots, 'queue')
+        plates = self.remove_empty_plates(plates)
 
-        run = create(
-            folder,
-            'EightFrameRun',
-            title=values['selected_assay'],
-            veracis_run_number=values['veracis_run_number'],
-            veracis_test_run_date=values['veracis_test_run_date'],
-            veracis_run_planner=values['veracis_run_planner'],
-            veracis_run_operator=values['veracis_run_operator'],
-            plates=plates,
-        )
+        if values['came_from'] == 'add':
+            self.transition_plate_contents(ichips, aliquots, 'queue')
+            lab_users = LabUsersUserVocabulary(self).by_value
+            planner = lab_users.get(values['veracis_run_planner'], '')
+            operator = lab_users.get(values['veracis_run_planner'], '')
+
+            brain = find(object_provides=ITestRuns.__identifier__)[0]
+            folder = brain.getObject()
+            run = create(
+                folder,
+                'EightFrameRun',
+                title=values['selected_assay'],
+                veracis_run_number=values['veracis_run_number'],
+                veracis_test_run_date=values['veracis_test_run_date'],
+                veracis_run_planner=planner.title if planner else '',
+                veracis_run_operator=operator.title if operator else '',
+                plates=plates,
+            )
+        else:
+            form = self.request.form
+            run = self.context
+            run.plates = plates
+            run.veracis_test_run_date = form.get(
+                'veracis_test_run_date', run.veracis_test_run_date)
+        return run
 
     def get_serializeArray_form_values(self):
-        """Parse the form_values list into a single dictionary.  The plates
-        are taken care of particularly, like this:
-
+        """Parse the form_values list into a single dictionary.
+        The plates are taken care of particularly, like this:
+    
         {'thing1': 'value1',
          'thing2': 'value2'...
          'plates': [
@@ -460,8 +494,7 @@ class AddEightFrameTestRunView(BrowserView):
             else:
                 form_values[k] = v
 
-        # Ignore plates that have no values
-        form_values['plates'] = [p for p in plates if any(p.values())]
+        form_values['plates'] = plates
         return form_values
 
     def transmogrify_inputs(self, plates):
@@ -483,16 +516,38 @@ class AddEightFrameTestRunView(BrowserView):
                                   Title=plate[key])
                     plate[key] = brains[0].UID
                     ichips.append(brains[0].getObject())
+
         # Re-order the well-numbers of aliquots according to the "well-number"
         # This allows analyst to re-order wells if aliquots were transposed
         newplates = []
         for plate in plates:
             newplate = plate.copy()
+            # a list to check for used well numbers, to prevent user from
+            # setting the same well-number twice on a plate when re-ordering
+            _used_wells = []
             for w in range(1, 9):
                 nw = plate['well-number-%s' % w]
-                newplate['chip-1_well-%s' % nw] = plate['chip-1_well-%s' % w]
+                if nw in _used_wells:
+                    msg = "Duplicated well number %s" % nw
+                    raise DuplicateWellSelected(msg)
+                for c in range(1, 5):
+                    key = 'chip-1_well-%s'
+                    newplate[key % (c, nw)] = plate[key % (c, w)]
             newplates.append(newplate)
         return newplates, ichips, aliquots
+
+    def remove_empty_plates(self, plates):
+        """Remove all plates that don't have (meaningful) values.
+        """
+        newplates = []
+        # First remove the well-number-X keys, we've already used
+        # them for re-ordering wells and we don't need them anymore
+        for plate in plates:
+            for w in range(1, 9):
+                del (plate['well-number-%s' % w])
+            if any(plate.values()):
+                newplates.append(plate)
+        return newplates
 
     def transition_plate_contents(self, ichips, aliquots, action_id):
         """Chips, aliquots, and assay requests move together through
@@ -505,7 +560,9 @@ class AddEightFrameTestRunView(BrowserView):
                     transition(ichip, action_id)
                     transitioned.append(ichip)
         except InvalidParameterError:
-            raise ObjectInInvalidState
+            # noinspection PyUnboundLocalVariable
+            msg = "Can't invoke '%s' transition on %s" % (action_id, ichip)
+            raise ObjectInInvalidState(msg)
 
         try:
             for aliquot in aliquots:
@@ -513,7 +570,9 @@ class AddEightFrameTestRunView(BrowserView):
                     transition(aliquot, action_id)
                     transitioned.append(aliquot)
         except InvalidParameterError:
-            raise ObjectInInvalidState
+            # noinspection PyUnboundLocalVariable
+            msg = "Can't invoke '%s' transition on %s" % (action_id, aliquot)
+            raise ObjectInInvalidState(msg)
 
         # get AssayRequests associated with all aliquots, and queue them.
         for aliquot in aliquots:
@@ -534,3 +593,10 @@ class AddEightFrameTestRunView(BrowserView):
         for child in sample.objectValues():
             if IAssayRequest.providedBy(child):
                 return child
+
+    def render_title(self, uid):
+        obj = find(UID=uid)
+        if obj:
+            return obj[0].Title
+        else:
+            return ''
