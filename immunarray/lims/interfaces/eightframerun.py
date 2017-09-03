@@ -3,9 +3,8 @@ import datetime
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
-from plone.autoform.interfaces import IFormFieldProvider
 from zope import schema
-from zope.interface import alsoProvides, Attribute
+from zope.interface import Attribute
 
 
 def currentTime():
@@ -17,18 +16,6 @@ def currentDate():
 
 
 class IEightFrameRun(IVeracisRunBase):
-
-    plates = Attribute(""" """)
-
-    # XXX ichipassay <->
-    # solutions = Attribute("""Materials and/or solutions used.
-    # [{'uid': UID,
-    #   'lot': lot_number,
-    #   'exp.date': date}]""")
-
-    # iChip Humidity
-
-    ichip_humidity = Attribute(""" ichiplot and humidity""")
 
     # Serum Addition
     serum_time_start = schema.Datetime(
@@ -132,42 +119,16 @@ class IEightFrameRun(IVeracisRunBase):
         required=False,
     )
 
+    assay_name = Attribute("""Assay Name
+    Assay name is stored here so that the edit form has an exact copy.
+    """)
 
-alsoProvides(IFormFieldProvider)
+    plates = Attribute("""Plates
+    A map of aliquots/ichips/wells per plate is stored here as a list
+    of dictionaries. The format matches what is excpected by the form,
+    which is the same as the data returned when creating a new test run.
+    """)
 
-"""
-from base run!
-veracis_run_number = schema.Int(
-        title=_(u"Veracis Run Number"),
-        description=_(u"Veracis Run Number"),
-        required=True,
-    )
-    veracis_run_purpose = schema.TextLine(
-        title=_(u"Veracis Test Run Purpose"),
-        description=_(u"Veracis Test Run Purpose"),
-    )
-    veracis_run_serial_number = schema.Int(
-        title=_(u"Veracis Run Serial Number"),
-        description=_(u"Veracis Run Serial Number"),
-    )
-    veracis_run_operator = schema.TextLine(
-        title=_(u"Veracis Run Operator"),
-        description=_(u"Veracis Run Operator"),
-        required=True,
-    )
-    veracis_test_run_date = schema.Date(
-        title=_(u"Veracis Test Run Date"),
-        description=_(u"Veracis Test Run Date (MM/DD/YYYY)"),
-        default=date.today(),
-    )
-    veracis_test_scan_date = schema.Date(
-        title=_(u"Veracis Test Scan Date"),
-        description=_(u"Veracis Test Scan Date (MM/DD/YYYYY)"),
-        default=date.today(),
-    )
-    pdf_veracis_run = NamedBlobImage(
-        title=_(u"PDF Upload of Test Form"),
-        description=_(u"PDF Upload of Test Form"),
-        required=False,
-    )
-"""
+    ichip_humidity = Attribute("""iChip Humidity
+    Humidity is logged before and after each ichip is prepared.
+    """)
