@@ -22,7 +22,7 @@ class Materials(object):
             sort_on='sortable_title',
             **self.kwargs)
         return SimpleVocabulary.fromValues(
-            [brain.product_name for brain in brains])
+            [brain.Title for brain in brains])
 
 
 MaterialsVocabulary = Materials()
