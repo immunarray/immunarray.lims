@@ -3,13 +3,12 @@ import csv
 from cStringIO import StringIO
 
 from Products.Five import BrowserView
+from immunarray.lims import normalize
 from immunarray.lims.browser.analysisrequest.commercial_run import \
     InvalidSample, MissingIChipForSlide
 from immunarray.lims.interfaces.clinicalaliquot import IClinicalAliquot
 from immunarray.lims.interfaces.sample import ISample
 from plone.api.content import find
-from plone.i18n.normalizer import IIDNormalizer
-from zope.component import queryUtility
 
 
 class DownloadCSV(BrowserView):
@@ -82,9 +81,8 @@ class DownloadCSV(BrowserView):
                         'Aliqout_ID': Aliquot_ID,
                     })
 
-        normalizer = queryUtility(IIDNormalizer)
         fn = self.context.assay_name + "-" + self.context.run_number
-        fn = normalizer.normalize(fn).upper() + ".csv"
+        fn = normalize(fn) + ".csv"
         setheader = self.request.RESPONSE.setHeader
         setheader('Content-Type', 'text/csv')
         setheader("Content-Disposition", 'attachment;filename="%s"' % fn)

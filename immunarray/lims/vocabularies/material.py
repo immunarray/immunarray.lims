@@ -21,9 +21,7 @@ class Materials(object):
             remaining_amount={'query': 1, 'range': 'min'},
             sort_on='sortable_title',
             **self.kwargs)
-        return SimpleVocabulary.fromValues(
-            [brain.Title for brain in brains])
+        return SimpleVocabulary.fromValues([brain.Title for brain in brains])
 
 
 MaterialsVocabulary = Materials()
-

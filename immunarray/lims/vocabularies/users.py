@@ -28,5 +28,7 @@ class Users(object):
 
 
 UserVocabulary = Users()
-LabUsersUserVocabulary = Users(['LabManager','LabClerk','RandDLabClerk', 'RandDLabManager'])
-ClinicalUserVocabulary = Users(['LabManager','LabClerk','RandDLabClerk', 'RandDLabManager'])
+LabUsersUserVocabulary = Users(
+    ['LabManager', 'LabClerk', 'RandDLabClerk', 'RandDLabManager'])
+ClinicalUserVocabulary = Users(
+    ['LabManager', 'LabClerk', 'RandDLabClerk', 'RandDLabManager'])
