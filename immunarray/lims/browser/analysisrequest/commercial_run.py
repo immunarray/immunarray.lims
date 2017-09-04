@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import csv
 import json
 from operator import itemgetter
 
@@ -11,6 +10,7 @@ from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.ichip import IiChip
+from immunarray.lims.interfaces.ichipassay import IiChipAssay
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
@@ -20,7 +20,7 @@ from plone.api.exc import InvalidParameterError
 from plone.api.portal import get_tool
 
 
-class SelectedAssayNotFound(Exception):
+class InvalidAssaySelected(Exception):
     """Selected iChip Assay not found
     """
 
@@ -51,12 +51,22 @@ class NoWorkingAliquotsFound(Exception):
 
 
 class ObjectInInvalidState(Exception):
-    """At least one object is in an invalid state.  Re-create the run.
+    """At least one object is in an invalid state!  Re-create the run
     """
 
 
 class DuplicateWellSelected(Exception):
-    """You cannot use the same well number twice on a single plate!
+    """You cannot use the same well number twice on a single plate
+    """
+
+
+class InvalidSample(Exception):
+    """The sample is not Clinical, HQC, or LQC, so we cannot use it
+    """
+
+
+class MissingIChipForSlide(Exception):
+    """The IChip ID is invalid, or blank, but aliquots exist
     """
 
 
@@ -74,10 +84,13 @@ class AddEightFrameTestRunView(BrowserView):
         request = self.request
 
         try:
+
             if request.form.get("ctest_action", "") == 'selected_an_assay':
                 plates = self.selected_an_assay()
                 return json.dumps({'success': True, 'TestRun': plates})
+
             elif request.form.get('ctest_action', '') == 'save_run':
+
                 run = self.save_run()
                 data = {'success': True}
                 if ITestRuns.providedBy(self.context):
@@ -85,11 +98,7 @@ class AddEightFrameTestRunView(BrowserView):
                 else:
                     data['message'] = 'Run saved successfully.'
                 return json.dumps(data)
-            elif request.form.get('ctest_action', '') == 'csv':
-                csv_data = self.make_csv()
-                return json.dumps({
-                    'success': True,
-                    'csv_data': csv_data})
+
         except Exception as e:
             transaction.abort()
             return json.dumps({'success': False, 'message': self.error(e)})
@@ -115,6 +124,17 @@ class AddEightFrameTestRunView(BrowserView):
         else:
             return ''
 
+    @property
+    def assay_name(self):
+        """get assay name from the form, or from self.context for edit views
+        """
+        assay_name = self.request.get('assay_name', None)
+        if not assay_name and not ITestRuns.providedBy(self.context):
+            assay_name = self.context.assay_name
+        if not assay_name:
+            raise InvalidAssaySelected(self.assay_name)
+        return assay_name
+
     def next_veracis_run_number(self):
         """Get the highest run_number of all runs (of all types of run),
         increment it and return.
@@ -137,24 +157,22 @@ class AddEightFrameTestRunView(BrowserView):
         return vocab_keys
 
     def selected_an_assay(self):
-        # gives me the assay value from the ctest form
-        assay_name = self.request.form.get("assaySelected")
-        if assay_name == 'None':
+        if self.assay_name == 'None':
             return self.template()
-        elif assay_name == 'Custom':
+        elif self.assay_name == 'Custom':
             pass
         else:
-            assay = self.get_assay(assay_name)
+            assay = self.get_assay()
             if assay.desired_use == 'Commercial':
                 plates = self.makeTestPlan(assay)
                 return plates
             if assay.desired_use == 'Development':
                 pass
 
-    def get_assay(self, assay_name):
-        brains = find(portal_type='iChipAssay', Title=assay_name)
+    def get_assay(self):
+        brains = find(portal_type='iChipAssay', Title=self.assay_name)
         if not brains:
-            raise SelectedAssayNotFound("title: %s" % assay_name)
+            raise InvalidAssaySelected(self.assay_name)
         return brains[0].getObject()
 
     def maxNumberOfSamplesToRun(self, assay):
@@ -247,8 +265,6 @@ class AddEightFrameTestRunView(BrowserView):
         [working aliquots] to build test plan
     
         """
-        slide_per_plate = 4  # constant that needs to be defined
-
         max_plates = assay.max_number_of_plates_per_test_run
         number_same_lot = assay.number_of_same_lot_replication_needed
         number_unique_lot = assay.number_of_unique_ichips_lots_needed
@@ -319,7 +335,7 @@ class AddEightFrameTestRunView(BrowserView):
             # Code section to select iChips
             # number_same_lot
             for a in active_lots:
-                ichiplot = a[0]
+                # ichiplot = a[0]
                 ichips = a[1]
                 j = []
                 # active_lots has the needed number of ichiplots, and has
@@ -441,6 +457,12 @@ class AddEightFrameTestRunView(BrowserView):
         """
         values = self.get_serializeArray_form_values()
 
+        try:
+            assay = find(object_provides=IiChipAssay.__identifier__,
+                         Title=values['assay_name'])[0].getObject()
+        except IndexError:
+            raise InvalidAssaySelected(values['assay_name'])
+
         plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
         plates = self.remove_empty_plates(plates)
         plates = self.reorder_plates(plates)
@@ -456,7 +478,9 @@ class AddEightFrameTestRunView(BrowserView):
             run = create(
                 folder,
                 'EightFrameRun',
-                title=values['selected_assay'],
+                title=values['assay_name'],
+                assay_name=assay.title,
+                assay_uid=assay.UID(),
                 run_number=values['run_number'],
                 run_date=values['run_date'],
                 run_planner=planner.title if planner else '',
@@ -566,13 +590,9 @@ class AddEightFrameTestRunView(BrowserView):
         """
         newplates = []
         for plate in plates:
-            # First remove the well-number-X keys, we've already used
-            # them for re-ordering wells and we don't need them anymore
-            for w_nr in range(1, 9):
-                if 'well-number-%s' % w_nr in plate:
-                    del (plate['well-number-%s' % w_nr])
-            # Keep the plate if any values remain
-            if any(plate.values()):
+            values = [plate[x] for x in plate.keys()
+                      if not x.startswith('well-number-')]
+            if any(values):
                 newplates.append(plate)
         return newplates
 
@@ -620,6 +640,3 @@ class AddEightFrameTestRunView(BrowserView):
         for child in sample.objectValues():
             if IAssayRequest.providedBy(child):
                 return child
-
-    def make_csv(self):
-        pass

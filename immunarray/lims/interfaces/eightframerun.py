@@ -119,8 +119,15 @@ class IEightFrameRun(IVeracisRunBase):
         required=False,
     )
 
+    assay_uid = Attribute("""Assay UID
+    Link directly back to the iChipAssay so that the edit form has a copy
+    when required.  Also used to link QC aliquots back to the HQC and LQC
+    of the selected Assay.
+    """)
+
     assay_name = Attribute("""Assay Name
-    Assay name is stored here so that the edit form has an exact copy.
+    For convenience, I'll store the assay_name too, but it should not be used
+    for lookup.
     """)
 
     plates = Attribute("""Plates

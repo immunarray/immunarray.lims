@@ -3,8 +3,11 @@
   <include file="ichip.zcml"/>
   <include file="ichiplot.zcml"/>
   <include file="controlpanel.zcml"/>
-  <include file="analysisrequest/configure.zcml"/>
   <include file="folder_contents.zcml"/>
+
+  <include package=".analysisrequest"/>
+  <include package=".commercial_run"/>
+
   <include package=".viewlets"/>
 
 </configure>

@@ -1,7 +1,7 @@
 require ['jquery'], ($) ->
 
     $('#assay_selection').change ->
-        assaySelected = $(this).val()
+        assay_name = $(this).val()
         authenticator = $('input[name="_authenticator"]').val()
         $.ajax
             url: 'ctest'
@@ -9,7 +9,7 @@ require ['jquery'], ($) ->
             dataType: 'json',
             data:
                 'ctest_action': 'selected_an_assay'
-                'assaySelected': assaySelected
+                'assay_name': assay_name
                 '_authenticator': authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->
                 if !responseText.success
@@ -71,38 +71,12 @@ require ['jquery'], ($) ->
 
     $("#csv").click (ev) ->
         ev.preventDefault()
-        data =
-        $.ajax
-            url: window.location.href
-            type: 'POST'
-            dataType: 'json',
-            data:
-                form_values: $("form#commercial_run").serializeArray()
-                ctest_action: 'get_csv'
-            success: (responseText, statusText, statusCode, xhr, $form) ->
-                if !responseText.success
-                    portalMessage responseText.message
-                    return
-                debugger
-                return
+        window.location.href = "csv"
         return
 
     $("#xlsx").click (ev) ->
         ev.preventDefault()
-        $.ajax
-            url: window.location.href
-            type: 'POST'
-            dataType: 'json',
-            data:
-                form_values: $("form#commercial_run").serializeArray()
-                ctest_action: 'get_xlsx'
-            success: (responseText, statusText, statusCode, xhr, $form) ->
-                if !responseText.success
-                    portalMessage responseText.message
-                    return
-                if responseText.redirect_url
-                    window.location.href = responseText.redirect_url
-                return
+        window.location.href = "xlsx"
         return
 
     portalMessage = (message) ->

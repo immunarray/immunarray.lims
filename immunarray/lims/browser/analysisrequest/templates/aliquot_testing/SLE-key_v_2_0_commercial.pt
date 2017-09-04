@@ -93,7 +93,7 @@
 
         <!-- Creating a new test run, list possible iChipAssays -->
         <select id="assay_selection"
-                name="selected_assay"
+                name="assay_name"
                 tal:condition="python: view.add_or_edit == 'add'">
           <option name="None">None</option>
           <tal:block repeat="assay view/iChipAssayList">

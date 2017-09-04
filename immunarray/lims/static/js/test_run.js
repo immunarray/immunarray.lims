@@ -2,8 +2,8 @@
   require(['jquery'], function($) {
     var portalMessage;
     $('#assay_selection').change(function() {
-      var assaySelected, authenticator;
-      assaySelected = $(this).val();
+      var assay_name, authenticator;
+      assay_name = $(this).val();
       authenticator = $('input[name="_authenticator"]').val();
       $.ajax({
         url: 'ctest',
@@ -11,7 +11,7 @@
         dataType: 'json',
         data: {
           'ctest_action': 'selected_an_assay',
-          'assaySelected': assaySelected,
+          'assay_name': assay_name,
           '_authenticator': authenticator
         },
         success: function(responseText, statusText, statusCode, xhr, $form) {
@@ -77,45 +77,12 @@
       });
     });
     $("#csv").click(function(ev) {
-      var data;
       ev.preventDefault();
-      data = $.ajax({
-        url: window.location.href,
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          form_values: $("form#commercial_run").serializeArray(),
-          ctest_action: 'get_csv'
-        },
-        success: function(responseText, statusText, statusCode, xhr, $form) {
-          if (!responseText.success) {
-            portalMessage(responseText.message);
-            return;
-          }
-          debugger;
-        }
-      });
+      window.location.href = "csv";
     });
     $("#xlsx").click(function(ev) {
       ev.preventDefault();
-      $.ajax({
-        url: window.location.href,
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          form_values: $("form#commercial_run").serializeArray(),
-          ctest_action: 'get_xlsx'
-        },
-        success: function(responseText, statusText, statusCode, xhr, $form) {
-          if (!responseText.success) {
-            portalMessage(responseText.message);
-            return;
-          }
-          if (responseText.redirect_url) {
-            window.location.href = responseText.redirect_url;
-          }
-        }
-      });
+      window.location.href = "xlsx";
     });
     portalMessage = function(message) {
       $("#global_statusmessage").empty().append("<div class='portalMessage error'><strong>Error</strong>" + message + "</div>");
