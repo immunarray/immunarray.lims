@@ -18,11 +18,6 @@
     <indexed_attr value="run_number"/>
   </index>
   <column value="run_number"/>
-  <!-- Categorize the different test run types of the lab-->
-  <index name="veracis_run_purpose" meta_type="FieldIndex">
-    <indexed_attr value="veracis_run_purpose"/>
-  </index>
-  <column value="veracis_run_purpose"/>
   <!-- Reworking this as billing is evolving -->
   <index name="billable_code" meta_type="FieldIndex">
     <indexed_attr value="billable_code"/>

@@ -15,13 +15,6 @@ class IVeracisRunBase(BaseModel):
         description=_(u"Veracis Run Number"),
         required=True,
     )
-
-    # deprecated?
-    # veracis_run_purpose = schema.TextLine(
-    #     title=_(u"Veracis Test Run Purpose"),
-    #     description=_(u"Veracis Test Run Purpose"),
-    # )
-
     run_planner = schema.TextLine(
         title=_(u"Veracis Run Planner"),
         description=_(u"Veracis Run Operator"),
