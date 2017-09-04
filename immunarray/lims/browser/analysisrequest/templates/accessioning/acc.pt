@@ -562,9 +562,9 @@
                 <input type='checkbox' class='test-choice'
                        tal:content ="assay"
                        tal:attributes="id assay;value assay; name assay"/>
-                       <select>
+                       <select name="billing-program">
                          <tal:x tal:repeat = "b view/BillingPrograms">
-                          <option value ='b' tal:content='b'/>
+                          <option tal:attributes="value b" tal:content='b'/>
                          </tal:x>
                        </select>
               </tal:block>
