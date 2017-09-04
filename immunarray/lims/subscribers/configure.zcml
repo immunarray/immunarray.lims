@@ -111,4 +111,10 @@
       handler="immunarray.lims.subscribers.site.SiteAdded"
   />
 
+  <subscriber
+      for="immunarray.lims.interfaces.provider.IProvider
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.provider.ProviderAdded"
+  />
+
 </configure>
