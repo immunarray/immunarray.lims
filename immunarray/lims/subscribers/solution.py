@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
+from decimal import Decimal
+
+from bika.lims.permissions import disallow_default_contenttypes
+from immunarray.lims.interfaces.material import IMaterial
 from immunarray.lims.interfaces.solution import ISolution
 from immunarray.lims.permissions import AddSolution
+from plone.api.content import find
 from plone.api.portal import get_tool
 
 
@@ -22,3 +27,31 @@ def SolutionModified(instance, event):
     """A new solution has been created!
     """
     instance.manage_permission(AddSolution, [], 0)
+    disallow_default_contenttypes(instance)
+    UpdateSourceMaterials(instance, event)
+
+
+def UpdateSourceMaterials(instance, event):
+    """Update remaining material for anything that was used in the solution
+    """
+    mu = instance.materials_used
+    if mu:
+
+        for x in mu:  # {'material title (key)':'mass/volume'(value),}
+            brains = find(object_provides=IMaterial.__identifier__,
+                          Title=x
+                          )
+            material = brains[0].getObject()
+            temp = Decimal(material.remaining_amount) - Decimal(mu[x])
+            material.remaining_amount = float(temp)
+
+    su = instance.solutions_used
+    if su:
+        for x in su:  # {'material title (key)':'mass/volume'(value),}
+            brains = find(object_provides=ISolution.__identifier__,
+                          Title=x
+                          )
+            solution = brains[0].getObject()
+            temp = Decimal(solution.remaining_amount) - Decimal(su[x])
+            solution.remaining_amount = float(temp)
+
