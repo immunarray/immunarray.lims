@@ -5,6 +5,8 @@ from zope import schema
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
+from immunarray.lims.vocabularies.billingprogrmas import \
+    BillingProgramsVocabulary
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
@@ -27,6 +29,13 @@ class IAssayBillingRequest(BaseModel):
         description=_(u"Assay to be Billed"),
         source=IChipAssayListVocabulary,
         required=True
+    )
+
+    billing_program = schema.Choice(
+        title=_(u"Billing Program"),
+        description=_(u"Billing Program"),
+        source=BillingProgramsVocabulary,
+        required=False
     )
     # Need to make content file and title from sampleid and assay name
     sample_id = schema.TextLine(
