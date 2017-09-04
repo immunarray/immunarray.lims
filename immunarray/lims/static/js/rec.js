@@ -167,6 +167,7 @@
       billable_primary = $('input[id=\'billable_code\']').val();
       billable_secondary = $('input[id=\'billable_code_designation\']').val();
       testsOrdered = [];
+      billingProgram=$("select[name='billing-program']").val();
       $('.test-choice').each(function(i) {
         if (this.checked) {
           testsOrdered.push($(this).val());
@@ -232,6 +233,7 @@
           'clin_other_specify': clin_other_specify,
           'clin_inflam_specify': clin_inflam_specify,
           'clin_joint_pain_specify': clin_joint_pain_specify,
+          'billing_program':billingProgram,
           '_authenticator': authenticator
         },
         success: function(responseText, statusText, xhr, $form) {
