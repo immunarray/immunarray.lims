@@ -6,7 +6,7 @@ from plone.api.portal import get_tool
 
 
 
-def MaterialModified(instance, event):
+def SiteAdded(instance, event):
     """A new material has been created!
     """
     instance.manage_permission(AddSite, [], 0)
