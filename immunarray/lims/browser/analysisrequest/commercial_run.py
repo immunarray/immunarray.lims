@@ -109,15 +109,15 @@ class AddEightFrameTestRunView(BrowserView):
         return 'add' if ITestRuns.providedBy(self.context) else 'edit'
 
     def next_veracis_run_number(self):
-        """Get the highest veracis_run_number of all runs (of all types of run),
+        """Get the highest run_number of all runs (of all types of run),
         increment it and return.
         """
         catalog = get_tool('portal_catalog')
         try:
             return catalog(object_provides=IVeracisRunBase.__identifier__,
-                           sort_on='veracis_run_number',
+                           sort_on='run_number',
                            sort_order='reverse',
-                           limit=1)[0].veracis_run_number
+                           limit=1)[0].run_number
         except IndexError:
             return '1'
 
@@ -441,8 +441,8 @@ class AddEightFrameTestRunView(BrowserView):
         if values['came_from'] == 'add':
             self.transition_plate_contents(ichips, aliquots, 'queue')
             lab_users = LabUsersUserVocabulary(self).by_value
-            planner = lab_users.get(values['veracis_run_planner'], '')
-            operator = lab_users.get(values['veracis_run_planner'], '')
+            planner = lab_users.get(values['run_planner'], '')
+            operator = lab_users.get(values['run_planner'], '')
 
             brain = find(object_provides=ITestRuns.__identifier__)[0]
             folder = brain.getObject()
@@ -450,17 +450,16 @@ class AddEightFrameTestRunView(BrowserView):
                 folder,
                 'EightFrameRun',
                 title=values['selected_assay'],
-                veracis_run_number=values['veracis_run_number'],
-                veracis_test_run_date=values['veracis_test_run_date'],
-                veracis_run_planner=planner.title if planner else '',
-                veracis_run_operator=operator.title if operator else '',
+                run_number=values['run_number'],
+                run_date=values['run_date'],
+                run_planner=planner.title if planner else '',
+                run_operator=operator.title if operator else '',
                 plates=plates,
             )
         else:
             run = self.context
             run.plates = plates
-            run.veracis_test_run_date = \
-                values.get('veracis_test_run_date', run.veracis_test_run_date)
+            run.run_date = values.get('run_date', run.run_date)
         return run
 
     def get_serializeArray_form_values(self):

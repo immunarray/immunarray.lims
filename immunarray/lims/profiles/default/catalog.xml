@@ -14,10 +14,10 @@
   <column value="ichip_lot_expiration_date"/>
   <!-- Running count of select run purpose sessions, want to have this on
   surface of objects to allow for ease of assignment for new test runs-->
-  <index name="veracis_run_number" meta_type="FieldIndex">
-    <indexed_attr value="veracis_run_number"/>
+  <index name="run_number" meta_type="FieldIndex">
+    <indexed_attr value="run_number"/>
   </index>
-  <column value="veracis_run_number"/>
+  <column value="run_number"/>
   <!-- Categorize the different test run types of the lab-->
   <index name="veracis_run_purpose" meta_type="FieldIndex">
     <indexed_attr value="veracis_run_purpose"/>

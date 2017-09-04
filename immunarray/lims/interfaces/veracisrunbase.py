@@ -10,7 +10,7 @@ from zope import schema
 class IVeracisRunBase(BaseModel):
     """Object that will be the base of all veracis runs
     """
-    veracis_run_number = schema.Int(
+    run_number = schema.Int(
         title=_(u"Veracis Run Number"),
         description=_(u"Veracis Run Number"),
         required=True,
@@ -22,22 +22,22 @@ class IVeracisRunBase(BaseModel):
     #     description=_(u"Veracis Test Run Purpose"),
     # )
 
-    veracis_run_planner = schema.TextLine(
+    run_planner = schema.TextLine(
         title=_(u"Veracis Run Planner"),
         description=_(u"Veracis Run Operator"),
         required=True,
     )
-    veracis_run_operator = schema.TextLine(
+    run_operator = schema.TextLine(
         title=_(u"Veracis Run Operator"),
         description=_(u"Veracis Run Operator"),
         required=True,
     )
-    veracis_test_run_date = schema.Date(
+    run_date = schema.Date(
         title=_(u"Veracis Test Run Date"),
         description=_(u"Veracis Test Run Date (MM/DD/YYYY)"),
         default=date.today(),
     )
-    veracis_test_scan_date = schema.Date(
+    test_scan_date = schema.Date(
         title=_(u"Veracis Test Scan Date"),
         description=_(u"Veracis Test Scan Date (MM/DD/YYYYY)"),
         default=date.today(),
