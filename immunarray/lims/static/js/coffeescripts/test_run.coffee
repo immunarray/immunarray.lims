@@ -53,15 +53,13 @@ require ['jquery'], ($) ->
 
     $("#saverun").click (ev) ->
         ev.preventDefault()
-        data =
-            form_values: $("form#commercial_run").serializeArray()
-            ctest_action: 'save_run'
-            assay_name: $('#assaySelected').val()
         $.ajax
             url: window.location.href
             type: 'POST'
             dataType: 'json',
-            data: data
+            data:
+                form_values: $("form#commercial_run").serializeArray()
+                ctest_action: 'save_run'
             success: (responseText, statusText, statusCode, xhr, $form) ->
                 if !responseText.success
                     portalMessage responseText.message
@@ -71,17 +69,33 @@ require ['jquery'], ($) ->
                 return
         return
 
-    $("#xlsx").click (ev) ->
+    $("#csv").click (ev) ->
         ev.preventDefault()
         data =
-            form_values: $("form#commercial_run").serializeArray()
-            ctest_action: 'get_xlsx'
-            assay_name: $('#assaySelected').val()
         $.ajax
             url: window.location.href
             type: 'POST'
             dataType: 'json',
-            data: data
+            data:
+                form_values: $("form#commercial_run").serializeArray()
+                ctest_action: 'get_csv'
+            success: (responseText, statusText, statusCode, xhr, $form) ->
+                if !responseText.success
+                    portalMessage responseText.message
+                    return
+                debugger
+                return
+        return
+
+    $("#xlsx").click (ev) ->
+        ev.preventDefault()
+        $.ajax
+            url: window.location.href
+            type: 'POST'
+            dataType: 'json',
+            data:
+                form_values: $("form#commercial_run").serializeArray()
+                ctest_action: 'get_xlsx'
             success: (responseText, statusText, statusCode, xhr, $form) ->
                 if !responseText.success
                     portalMessage responseText.message

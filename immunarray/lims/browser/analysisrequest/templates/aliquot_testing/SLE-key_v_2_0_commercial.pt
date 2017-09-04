@@ -108,8 +108,10 @@
         </h3>
 
         <input type="button" id="saverun" value="Save Run">
-        <input type="button" id="xlsx" value="Excel Workbook">
-        <input type="button" id="csv" value="CSV File">
+        <input tal:condition="python:view.add_or_edit=='edit'"
+               type="button" id="xlsx" value="Excel Workbook">
+        <input tal:condition="python:view.add_or_edit=='edit'"
+               type="button" id="csv" value="CSV File">
 
         <table class="run-info">
           <tr>

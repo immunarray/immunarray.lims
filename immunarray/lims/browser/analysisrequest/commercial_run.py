@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import csv
 import json
 from operator import itemgetter
 
@@ -78,9 +79,17 @@ class AddEightFrameTestRunView(BrowserView):
                 return json.dumps({'success': True, 'TestRun': plates})
             elif request.form.get('ctest_action', '') == 'save_run':
                 run = self.save_run()
+                data = {'success': True}
+                if ITestRuns.providedBy(self.context):
+                    data['redirect_url'] = run.absolute_url() + '/view'
+                else:
+                    data['message'] = 'Run saved successfully.'
+                return json.dumps(data)
+            elif request.form.get('ctest_action', '') == 'csv':
+                csv_data = self.make_csv()
                 return json.dumps({
                     'success': True,
-                    'redirect_url': run.absolute_url() + '/view'})
+                    'csv_data': csv_data})
         except Exception as e:
             transaction.abort()
             return json.dumps({'success': False, 'message': self.error(e)})
@@ -424,6 +433,7 @@ class AddEightFrameTestRunView(BrowserView):
         """
         """
         values = self.get_serializeArray_form_values()
+
         plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
         plates = self.remove_empty_plates(plates)
         plates = self.reorder_plates(plates)
@@ -611,3 +621,6 @@ class AddEightFrameTestRunView(BrowserView):
             return obj[0].Title
         else:
             return ''
+
+    def make_csv(self):
+        pass
