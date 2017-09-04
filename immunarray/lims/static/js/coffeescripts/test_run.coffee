@@ -12,8 +12,9 @@ require ['jquery'], ($) ->
                 'assaySelected': assaySelected
                 '_authenticator': authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->
-                if statusCode.status == 210
-                    alert 'No Samples Require this Assay Choice!!!'
+                if !responseText.success
+                    portalMessage responseText.message
+                    return
                 $("div#plates").empty()
                 $.each responseText['TestRun'], (i, v) ->
                     plate_nr = String(i+1)
@@ -57,20 +58,41 @@ require ['jquery'], ($) ->
             ctest_action: 'save_run'
             assay_name: $('#assaySelected').val()
         $.ajax
-            url: 'view'
+            url: window.location.href
             type: 'POST'
             dataType: 'json',
             data: data
             success: (responseText, statusText, statusCode, xhr, $form) ->
-                debugger;
+                if !responseText.success
+                    portalMessage responseText.message
+                    return
+                if responseText.redirect_url
+                    window.location.href = responseText.redirect_url
                 return
         return
 
-    portalMessage (message) ->
-        $(".outer-wrapper>.container .row").prepend("<aside id='global_statusmessage'><div class='portalMessage error'><strong>Error</strong>"+message+" </div></aside>")
+    $("#xlsx").click (ev) ->
+        ev.preventDefault()
+        data =
+            form_values: $("form#commercial_run").serializeArray()
+            ctest_action: 'get_xlsx'
+            assay_name: $('#assaySelected').val()
+        $.ajax
+            url: window.location.href
+            type: 'POST'
+            dataType: 'json',
+            data: data
+            success: (responseText, statusText, statusCode, xhr, $form) ->
+                if !responseText.success
+                    portalMessage responseText.message
+                    return
+                if responseText.redirect_url
+                    window.location.href = responseText.redirect_url
+                return
         return
 
-
-
+    portalMessage = (message) ->
+        $("#global_statusmessage").empty().append("<div class='portalMessage error'><strong>Error</strong>"+message+"</div>")
+        return
 
     return

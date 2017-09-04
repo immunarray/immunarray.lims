@@ -108,7 +108,8 @@
         </h3>
 
         <input type="button" id="saverun" value="Save Run">
-        <input type="button" id="printrun" value="Print Run">
+        <input type="button" id="xlsx" value="Excel Workbook">
+        <input type="button" id="csv" value="CSV File">
 
         <table class="run-info">
           <tr>
@@ -135,7 +136,7 @@
                      data-pat-pickadate='{"date": {"format": "dd-mmm-yyyy"}, "time": false}'>
             </td>
             <td tal:condition="python:view.add_or_edit == 'edit'">
-              <input class="pat-pickadate" name="veracis_test_run_date"
+              <input class="pat-pickadate"
                      name="veracis_test_run_date"
                      tal:attributes="value python:context.veracis_test_run_date"
                      data-pat-pickadate='{"date": {"format": "dd-mmm-yyyy"}, "time": false}'>
@@ -466,22 +467,22 @@
               </tr>
               <tr>
                 <td rowspan="4"></td>
-                <td>iChip 1 ID</td>
+                <td>iChip 1</td>
                 <td>
                   <input type="hidden" name="chip-id-1" class="chip-id ichip-1" tal:attributes="value python:view.render_title(plate['chip-id-1'])">
                   <span tal:replace="python:view.render_title(plate['chip-id-1'])"/>
                 </td>
-                <td>iChip 2 ID</td>
+                <td>iChip 2</td>
                 <td>
                   <input type="hidden" name="chip-id-2" class="chip-id ichip-2" tal:attributes="value python:view.render_title(plate['chip-id-2'])">
                   <span tal:replace="python:view.render_title(plate['chip-id-2'])"/>
                 </td>
-                <td>iChip 3 ID</td>
+                <td>iChip 3</td>
                 <td>
                   <input type="hidden" name="chip-id-3" class="chip-id ichip-3" tal:attributes="value python:view.render_title(plate['chip-id-3'])">
                   <span tal:replace="python:view.render_title(plate['chip-id-3'])"/>
                 </td>
-                <td>iChip 4 ID</td>
+                <td>iChip 4</td>
                 <td>
                   <input type="hidden" name="chip-id-4" class="chip-id ichip-4" tal:attributes="value python:view.render_title(plate['chip-id-4'])">
                   <span tal:replace="python:view.render_title(plate['chip-id-4'])"/>
@@ -533,226 +534,6 @@
             </table>
           </tal:existing_plates>
         </div>
-
-        <-- The plate template here contains a very similar structure as the loop in div#plates above! If you modify one, you must modify the other. -->
-        <table id="blank-plate" class="plate-container beta hidden">
-          <tr>
-            <td colspan="11" class="header-row">
-              <strong><span class="plate-title">Plate</span></strong>
-            </td>
-            <td>
-              <button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Well</strong></td>
-            <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
-            <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
-            <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
-            <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
-            <td><strong>&#10004 1<br>(serum)</strong></td>
-            <td><strong>Sample<br>class</strong></td>
-            <td><strong>Box</strong></td>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              1
-              <input type="hidden" name="well-number-1" value="1"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-1">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-1" class="sampleid-aliquot chip-3 well-1"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-1" class="sampleid-aliquot chip-4 well-1"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              2
-              <input type="hidden" name="well-number-2" value="2"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-2">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-2" class="sampleid-aliquot chip-1 well-2"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-2" class="sampleid-aliquot chip-2 well-2"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-2" class="sampleid-aliquot chip-3 well-2"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-2" class="sampleid-aliquot chip-4 well-2"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              3
-              <input type="hidden" name="well-number-3" value="3"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-3">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-3" class="sampleid-aliquot chip-1 well-3"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-3" class="sampleid-aliquot chip-2 well-3"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-3" class="sampleid-aliquot chip-3 well-3"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-3" class="sampleid-aliquot chip-4 well-3"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              4
-              <input type="hidden" name="well-number-4" value="4"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-4">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-4" class="sampleid-aliquot chip-1 well-4"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-4" class="sampleid-aliquot chip-2 well-4"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-4" class="sampleid-aliquot chip-3 well-4"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-4" class="sampleid-aliquot chip-4 well-4"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              5
-              <input type="hidden" name="well-number-5" value="5"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-5">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-5" class="sampleid-aliquot chip-1 well-5"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-5" class="sampleid-aliquot chip-2 well-5"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-5" class="sampleid-aliquot chip-3 well-5"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-5" class="sampleid-aliquot chip-4 well-5"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              6
-              <input type="hidden" name="well-number-6" value="6"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-6">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-6" class="sampleid-aliquot chip-1 well-6"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-6" class="sampleid-aliquot chip-2 well-6"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-6" class="sampleid-aliquot chip-3 well-6"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-6" class="sampleid-aliquot chip-4 well-6"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              7
-              <input type="hidden" name="well-number-7" value="7"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-7">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-7" class="sampleid-aliquot chip-1 well-7"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-7" class="sampleid-aliquot chip-2 well-7"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-7" class="sampleid-aliquot chip-3 well-7"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-7" class="sampleid-aliquot chip-4 well-7"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td tal:condition="python:view.add_or_edit=='add'">
-              8
-              <input type="hidden" name="well-number-8" value="8"/>
-            </td>
-            <td tal:condition="python:view.add_or_edit=='edit'">
-              <select name="well-number-8">
-                <tal:options repeat="x python: range(1, 9)">
-                  <option tal:attributes="value x" tal:content="x"/>
-                </tal:options>
-              </select>
-            </td>
-            <td colspan="2"><input type="text" name="chip-1_well-8" class="sampleid-aliquot chip-1 well-8"/></td>
-            <td colspan="2"><input type="text" name="chip-2_well-8" class="sampleid-aliquot chip-2 well-8"/></td>
-            <td colspan="2"><input type="text" name="chip-3_well-8" class="sampleid-aliquot chip-3 well-8"/></td>
-            <td colspan="2"><input type="text" name="chip-4_well-8" class="sampleid-aliquot chip-4 well-8"/></td>
-            <td/>
-            <td/>
-            <td/>
-          </tr>
-          <tr>
-            <td rowspan="4"></td>
-            <td>iChip 1 ID</td>
-            <td><input type="text" name="chip-id-1" class="chip-id ichip-1"></td>
-            <td>iChip 2 ID</td>
-            <td><input type="text" name="chip-id-2" class="chip-id ichip-2"></td>
-            <td>iChip 3 ID</td>
-            <td><input type="text" name="chip-id-3" class="chip-id ichip-3"></td>
-            <td>iChip 4 ID</td>
-            <td><input type="text" name="chip-id-4" class="chip-id ichip-4"></td>
-            <td style="text-align:left;vertical-align:top;" rowspan="3" colspan="3">
-              Comments: <textarea size="5" name="comments" class="plate-comments"/>
-            </td>
-          </tr>
-          <tr>
-            <td><p>Scan Slot</p></td>
-            <td><p><input type="text" name="scan-slot-1" class="scan-slot-1"></p></td>
-            <td><p>Scan Slot</p></td>
-            <td><p><input type="text" name="scan-slot-2" class="scan-slot-2"></p></td>
-            <td><p>Scan Slot</p></td>
-            <td><p><input type="text" name="scan-slot-3" class="scan-slot-3"></p></td>
-            <td><p>Scan Slot</p></td>
-            <td><p><input type="text" name="scan-slot-4" class="scan-slot-4"></p></td>
-          </tr>
-          <tr>
-            <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
-              Comments:<input type="text" name="comments-ichip-1" class="comments ichip-1">
-            </td>
-            <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
-              Comments:<input type="text" name="comments-ichip-2" class="comments ichip-2">
-            </td>
-            <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
-              Comments:<input type="text" name="comments-ichip-3" class="comments ichip-3">
-            </td>
-            <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
-              Comments:<input type="text" name="comments-ichip-4" class="comments ichip-4">
-            </td>
-          </tr>
-        </table>
 
         <!-- Solution Summary Table -->
         <table id="table9" class="delta">
@@ -829,7 +610,6 @@
           </tr>
         </table>
 
-
         <!--  Serum start time point table -->
         <table id="table13" class="delta">
           <tr>
@@ -862,7 +642,6 @@
               <p>Date:</p>
             </td>
         </table>
-
 
         <!-- Header secondary antibody section -->
         <table id="table17" class="delta">
@@ -916,6 +695,234 @@
 
       </form>
       <script src="++resource++immunarray.lims/js/test_run.js"></script>
+
+      <-- The plate template here contains a very similar structure as the loop in div#plates above! If you modify one, you must modify the other. -->
+      <table id="blank-plate" class="plate-container beta hidden">
+        <tr>
+          <td colspan="11" class="header-row">
+            <strong><span class="plate-title">Plate</span></strong>
+          </td>
+          <td>
+            <button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Well</strong></td>
+          <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+          <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+          <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+          <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+          <td><strong>&#10004 1<br>(serum)</strong></td>
+          <td><strong>Sample<br>class</strong></td>
+          <td><strong>Box</strong></td>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            1
+            <input type="hidden" name="well-number-1" value="1"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-1">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-1" class="sampleid-aliquot chip-3 well-1"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-1" class="sampleid-aliquot chip-4 well-1"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            2
+            <input type="hidden" name="well-number-2" value="2"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-2">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-2" class="sampleid-aliquot chip-1 well-2"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-2" class="sampleid-aliquot chip-2 well-2"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-2" class="sampleid-aliquot chip-3 well-2"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-2" class="sampleid-aliquot chip-4 well-2"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            3
+            <input type="hidden" name="well-number-3" value="3"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-3">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-3" class="sampleid-aliquot chip-1 well-3"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-3" class="sampleid-aliquot chip-2 well-3"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-3" class="sampleid-aliquot chip-3 well-3"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-3" class="sampleid-aliquot chip-4 well-3"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            4
+            <input type="hidden" name="well-number-4" value="4"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-4">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-4" class="sampleid-aliquot chip-1 well-4"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-4" class="sampleid-aliquot chip-2 well-4"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-4" class="sampleid-aliquot chip-3 well-4"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-4" class="sampleid-aliquot chip-4 well-4"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            5
+            <input type="hidden" name="well-number-5" value="5"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-5">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-5" class="sampleid-aliquot chip-1 well-5"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-5" class="sampleid-aliquot chip-2 well-5"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-5" class="sampleid-aliquot chip-3 well-5"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-5" class="sampleid-aliquot chip-4 well-5"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            6
+            <input type="hidden" name="well-number-6" value="6"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-6">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-6" class="sampleid-aliquot chip-1 well-6"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-6" class="sampleid-aliquot chip-2 well-6"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-6" class="sampleid-aliquot chip-3 well-6"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-6" class="sampleid-aliquot chip-4 well-6"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            7
+            <input type="hidden" name="well-number-7" value="7"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-7">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-7" class="sampleid-aliquot chip-1 well-7"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-7" class="sampleid-aliquot chip-2 well-7"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-7" class="sampleid-aliquot chip-3 well-7"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-7" class="sampleid-aliquot chip-4 well-7"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td tal:condition="python:view.add_or_edit=='add'">
+            8
+            <input type="hidden" name="well-number-8" value="8"/>
+          </td>
+          <td tal:condition="python:view.add_or_edit=='edit'">
+            <select name="well-number-8">
+              <tal:options repeat="x python: range(1, 9)">
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x==7" selected="selected"/>
+                <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=7"/>
+              </tal:options>
+            </select>
+          </td>
+          <td colspan="2"><input type="text" name="chip-1_well-8" class="sampleid-aliquot chip-1 well-8"/></td>
+          <td colspan="2"><input type="text" name="chip-2_well-8" class="sampleid-aliquot chip-2 well-8"/></td>
+          <td colspan="2"><input type="text" name="chip-3_well-8" class="sampleid-aliquot chip-3 well-8"/></td>
+          <td colspan="2"><input type="text" name="chip-4_well-8" class="sampleid-aliquot chip-4 well-8"/></td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+        <tr>
+          <td rowspan="4"></td>
+          <td>iChip 1</td>
+          <td><input type="text" name="chip-id-1" class="chip-id ichip-1"></td>
+          <td>iChip 2</td>
+          <td><input type="text" name="chip-id-2" class="chip-id ichip-2"></td>
+          <td>iChip 3</td>
+          <td><input type="text" name="chip-id-3" class="chip-id ichip-3"></td>
+          <td>iChip 4</td>
+          <td><input type="text" name="chip-id-4" class="chip-id ichip-4"></td>
+          <td style="text-align:left;vertical-align:top;" rowspan="3" colspan="3">
+            Comments: <textarea size="5" name="comments" class="plate-comments"/>
+          </td>
+        </tr>
+        <tr>
+          <td><p>Scan Slot</p></td>
+          <td><p><input type="text" name="scan-slot-1" class="scan-slot-1"></p></td>
+          <td><p>Scan Slot</p></td>
+          <td><p><input type="text" name="scan-slot-2" class="scan-slot-2"></p></td>
+          <td><p>Scan Slot</p></td>
+          <td><p><input type="text" name="scan-slot-3" class="scan-slot-3"></p></td>
+          <td><p>Scan Slot</p></td>
+          <td><p><input type="text" name="scan-slot-4" class="scan-slot-4"></p></td>
+        </tr>
+        <tr>
+          <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+            Comments:<input type="text" name="comments-ichip-1" class="comments ichip-1">
+          </td>
+          <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+            Comments:<input type="text" name="comments-ichip-2" class="comments ichip-2">
+          </td>
+          <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+            Comments:<input type="text" name="comments-ichip-3" class="comments ichip-3">
+          </td>
+          <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+            Comments:<input type="text" name="comments-ichip-4" class="comments ichip-4">
+          </td>
+        </tr>
+      </table>
 
     </metal:main>
   </body>

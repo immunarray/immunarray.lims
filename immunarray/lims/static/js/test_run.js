@@ -1,5 +1,6 @@
 (function() {
   require(['jquery'], function($) {
+    var portalMessage;
     $('#assay_selection').change(function() {
       var assaySelected, authenticator;
       assaySelected = $(this).val();
@@ -14,8 +15,9 @@
           '_authenticator': authenticator
         },
         success: function(responseText, statusText, statusCode, xhr, $form) {
-          if (statusCode.status === 210) {
-            alert('No Samples Require this Assay Choice!!!');
+          if (!responseText.success) {
+            portalMessage(responseText.message);
+            return;
           }
           $("div#plates").empty();
           $.each(responseText['TestRun'], function(i, v) {
@@ -62,15 +64,48 @@
         assay_name: $('#assaySelected').val()
       };
       $.ajax({
-        url: 'ctest',
+        url: window.location.href,
         type: 'POST',
         dataType: 'json',
         data: data,
         success: function(responseText, statusText, statusCode, xhr, $form) {
-          debugger;
+          if (!responseText.success) {
+            portalMessage(responseText.message);
+            return;
+          }
+          if (responseText.redirect_url) {
+            window.location.href = responseText.redirect_url;
+          }
         }
       });
     });
+    $("#xlsx").click(function(ev) {
+      var data;
+      ev.preventDefault();
+      data = {
+        form_values: $("form#commercial_run").serializeArray(),
+        ctest_action: 'get_xlsx',
+        assay_name: $('#assaySelected').val()
+      };
+      $.ajax({
+        url: window.location.href,
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        success: function(responseText, statusText, statusCode, xhr, $form) {
+          if (!responseText.success) {
+            portalMessage(responseText.message);
+            return;
+          }
+          if (responseText.redirect_url) {
+            window.location.href = responseText.redirect_url;
+          }
+        }
+      });
+    });
+    portalMessage = function(message) {
+      $("#global_statusmessage").empty().append("<div class='portalMessage error'><strong>Error</strong>" + message + "</div>");
+    };
   });
 
 }).call(this);

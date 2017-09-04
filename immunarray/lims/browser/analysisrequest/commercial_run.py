@@ -53,9 +53,11 @@ class ObjectInInvalidState(Exception):
     """At least one object is in an invalid state.  Re-create the run.
     """
 
+
 class DuplicateWellSelected(Exception):
     """You cannot use the same well number twice on a single plate!
     """
+
 
 class AddEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
@@ -71,15 +73,14 @@ class AddEightFrameTestRunView(BrowserView):
         request = self.request
 
         try:
-            raise Exception("Waaaaaaaaaaaaaaaaaaaaaa!")
             if request.form.get("ctest_action", "") == 'selected_an_assay':
                 plates = self.selected_an_assay()
-                return json.dumps({'success': True,
-                                   'TestRun': plates})
+                return json.dumps({'success': True, 'TestRun': plates})
             elif request.form.get('ctest_action', '') == 'save_run':
                 run = self.save_run()
-                return json.dumps({'success': True,
-                                   'run_url': run.absolute_url()})
+                return json.dumps({
+                    'success': True,
+                    'redirect_url': run.absolute_url() + '/view'})
         except Exception as e:
             transaction.abort()
             return json.dumps({'success': False, 'message': self.error(e)})
@@ -89,7 +90,7 @@ class AddEightFrameTestRunView(BrowserView):
     def error(self, e):
         """Make a nice string from a traceback, to print in the browser
         """
-        return "{}: {}".format(e.__class__.__name__, e.message)
+        return "{}: {} ({})".format(e.__class__.__name__, e.__doc__, e.message)
 
     @property
     def add_or_edit(self):
@@ -425,6 +426,7 @@ class AddEightFrameTestRunView(BrowserView):
         values = self.get_serializeArray_form_values()
         plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
         plates = self.remove_empty_plates(plates)
+        plates = self.reorder_plates(plates)
 
         if values['came_from'] == 'add':
             self.transition_plate_contents(ichips, aliquots, 'queue')
@@ -448,8 +450,8 @@ class AddEightFrameTestRunView(BrowserView):
             form = self.request.form
             run = self.context
             run.plates = plates
-            run.veracis_test_run_date = form.get(
-                'veracis_test_run_date', run.veracis_test_run_date)
+            run.veracis_test_run_date = \
+                form.get('veracis_test_run_date', run.veracis_test_run_date)
         return run
 
     def get_serializeArray_form_values(self):
@@ -517,34 +519,44 @@ class AddEightFrameTestRunView(BrowserView):
                     plate[key] = brains[0].UID
                     ichips.append(brains[0].getObject())
 
+        return plates, ichips, aliquots
+
+    def reorder_plates(self, plates):
+        """Maybe user selected new well numbers for existing plate.
+        This changes the order of the plates, and passes them back.
+        """
         # Re-order the well-numbers of aliquots according to the "well-number"
         # This allows analyst to re-order wells if aliquots were transposed
         newplates = []
-        for plate in plates:
+        for plate_nr, plate in enumerate(plates):
             newplate = plate.copy()
             # a list to check for used well numbers, to prevent user from
             # setting the same well-number twice on a plate when re-ordering
             _used_wells = []
-            for w in range(1, 9):
-                nw = plate['well-number-%s' % w]
+            for w_nr in range(1, 9):
+                w_nr = str(w_nr)
+                nw = plate['well-number-%s' % w_nr]
                 if nw in _used_wells:
-                    msg = "Duplicated well number %s" % nw
+                    msg = "Well number %s on plate %s" % (nw, plate_nr+1)
                     raise DuplicateWellSelected(msg)
-                for c in range(1, 5):
-                    key = 'chip-1_well-%s'
-                    newplate[key % (c, nw)] = plate[key % (c, w)]
+                _used_wells.append(nw)
+                for c_nr in range(1, 5):
+                    key = 'chip-%s_well-%s'
+                    newplate[key % (c_nr, nw)] = plate[key % (c_nr, w_nr)]
             newplates.append(newplate)
-        return newplates, ichips, aliquots
+        return newplates
 
     def remove_empty_plates(self, plates):
         """Remove all plates that don't have (meaningful) values.
         """
         newplates = []
-        # First remove the well-number-X keys, we've already used
-        # them for re-ordering wells and we don't need them anymore
         for plate in plates:
-            for w in range(1, 9):
-                del (plate['well-number-%s' % w])
+            # First remove the well-number-X keys, we've already used
+            # them for re-ordering wells and we don't need them anymore
+            for w_nr in range(1, 9):
+                if 'well-numbber-%s'%w_nr in plate:
+                    del (plate['well-number-%s' % w_nr])
+            # Keep the plate if any values remain
             if any(plate.values()):
                 newplates.append(plate)
         return newplates
