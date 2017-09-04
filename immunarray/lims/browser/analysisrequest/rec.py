@@ -452,6 +452,7 @@ class AddRecView(BrowserView):
                                                assay_name=a)
             transition(assay_request, to_state='to_be_tested')
 
+            # add billing program from rec to object
             billing_request = api.content.create(container=assay_request,
                                                  type='AssayBillingRequest',
                                                  title=usn_from_form,
@@ -590,6 +591,7 @@ class AddRecView(BrowserView):
                                               pour_date=today
                                               )
         clinical_aliquot_UID = clinical_aliquot.UID()
+        #add aliquots to bulk box
         return clinical_aliquot_UID
 
     def make_working_aliquots(self, usn_from_form, bulk_aliquot_UID,
@@ -607,6 +609,7 @@ class AddRecView(BrowserView):
                                               pour_date=today
                                               )
         clinical_aliquot_UID = clinical_aliquot.UID()
+        #add aliquots to working box
         return clinical_aliquot_UID
 
     def check_if_site_is_sales_rep(self, site_id):
