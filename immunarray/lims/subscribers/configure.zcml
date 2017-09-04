@@ -108,7 +108,7 @@
   <subscriber
       for="immunarray.lims.interfaces.site.ISite
            zope.lifecycleevent.IObjectAddedEvent"
-      handler="immunarray.lims.subscribers.site.iSiteAdded"
+      handler="immunarray.lims.subscribers.site.SiteAdded"
   />
 
 </configure>
