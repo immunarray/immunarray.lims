@@ -447,11 +447,10 @@ class AddEightFrameTestRunView(BrowserView):
                 plates=plates,
             )
         else:
-            form = self.request.form
             run = self.context
             run.plates = plates
             run.veracis_test_run_date = \
-                form.get('veracis_test_run_date', run.veracis_test_run_date)
+                values.get('veracis_test_run_date', run.veracis_test_run_date)
         return run
 
     def get_serializeArray_form_values(self):
