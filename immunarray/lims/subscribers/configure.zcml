@@ -5,12 +5,6 @@
     i18n_domain="immunarray.lims">
 
   <subscriber
-      for="immunarray.lims.interfaces.testrequisition.ITestRequisition
-           Products.DCWorkflow.interfaces.IAfterTransitionEvent"
-      handler="immunarray.lims.subscribers.testrequisition.Received"
-  />
-
-  <subscriber
       for="bika.lims.events.LIMSCreatedEvent"
       handler="immunarray.lims.subscribers.limsroot.LIMSCreated"
   />
@@ -89,7 +83,7 @@
 
   <subscriber
       for="immunarray.lims.interfaces.material.IMaterial
-           zope.lifecycleevent.IObjectModifiedEvent"
+           zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.material.MaterialModified"
   />
 
@@ -101,7 +95,7 @@
 
   <subscriber
       for="immunarray.lims.interfaces.solution.ISolution
-           zope.lifecycleevent.IObjectModifiedEvent"
+           zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.solution.SolutionModified"
   />
 
@@ -109,6 +103,12 @@
       for="plone.dexterity.interfaces.IDexterityFTI
            zope.lifecycleevent.IObjectModifiedEvent"
       handler="immunarray.lims.subscribers.solution.SolutionFTIModified"
+  />
+
+  <subscriber
+      for="immunarray.lims.interfaces.site.ISite
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.site.iSiteAdded"
   />
 
 </configure>
