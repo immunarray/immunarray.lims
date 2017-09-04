@@ -35,7 +35,7 @@ class IAssayBillingRequest(BaseModel):
         title=_(u"Billing Program"),
         description=_(u"Billing Program"),
         source=BillingProgramsVocabulary,
-        required=False
+        required=True
     )
     # Need to make content file and title from sampleid and assay name
     sample_id = schema.TextLine(
