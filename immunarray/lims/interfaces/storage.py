@@ -21,7 +21,7 @@ class IRack(BaseModel):
     it will hold.  (5x4=20 boxes, or 4x4=16 boxes)
     """
 
-    title = schema.TextLine(
+    rack_name = schema.TextLine(
         title=_(u"Rack ID"),
         description=_(u"Rack ID"),
         required=True,
@@ -35,6 +35,12 @@ class IRack(BaseModel):
     freezer = schema.TextLine(
         title=_(u"Freezer"),
         description=_(u"Freezer where rack is stored"),
+        required=True,
+    )
+
+    remaining_volume = schema.Int(
+        title=_(u"Remaining Volume"),
+        description=_(u"Remaining aliquot volume in micro liters (uL)"),
         required=True,
     )
 
@@ -59,6 +65,11 @@ class ICommercialBox(BaseModel):
         description=_(u'Max Number of Samples'),
         default=81,
     )
+    remaining_volume = schema.Int(
+        title=_(u"Remaining Volume"),
+        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        required=True,
+    )
 
 
 class IRandDBox(BaseModel):
@@ -73,6 +84,12 @@ class IRandDBox(BaseModel):
         title=_(u'Max Number of Samples'),
         description=_(u'Max Number of Samples'),
         default=81,
+    )
+
+    remaining_volume = schema.Int(
+        title=_(u"Remaining Volume"),
+        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        required=True,
     )
 
 
