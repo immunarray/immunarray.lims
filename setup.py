@@ -26,6 +26,7 @@ setup(name='immunarray.lims',
           'setuptools',
           'plone.api',
           'bika.lims',
+          'openpyxl'
       ],
       extras_require={
           'test': [
