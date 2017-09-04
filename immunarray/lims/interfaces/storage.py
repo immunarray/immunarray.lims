@@ -39,7 +39,7 @@ class IRack(BaseModel):
     )
 
     remaining_volume = schema.Int(
-        title=_(u"Remaining Volume"),
+        title=_(u"Remaining "),
         description=_(u"Remaining aliquot volume in micro liters (uL)"),
         required=True,
     )
@@ -71,6 +71,20 @@ class ICommercialBox(BaseModel):
         required=True,
     )
 
+    aliquto_dic = schema.Dict(
+        title=_(u'Box Count to Aliquot ID'),
+        key_type=schema.TextLine(
+            title=_(u"Box Count"),
+            description=_(u"Box Count"),
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=_(u"Aliquot ID"),
+            description=_(u"Aliquot ID"),
+            required=False,
+        )
+    )
+
 
 class IRandDBox(BaseModel):
     """Boxes can hold either 100 sampels or 81 samples"""
@@ -90,6 +104,19 @@ class IRandDBox(BaseModel):
         title=_(u"Remaining Volume"),
         description=_(u"Remaining aliquot volume in micro liters (uL)"),
         required=True,
+    )
+    aliquto_dic = schema.Dict(
+        title=_(u'Box Count to Aliquot ID'),
+        key_type=schema.TextLine(
+            title=_(u"Box Count"),
+            description=_(u"Box Count"),
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=_(u"Aliquot ID"),
+            description=_(u"Aliquot ID"),
+            required=False,
+        )
     )
 
 
