@@ -77,7 +77,7 @@ class ISolution(BaseModel):
         required=False
     )
 
-    solution_used = schema.Dict(
+    solutions_used = schema.Dict(
         title=_(u"Solution(s) Used"),
         key_type=schema.Choice(
             title=_(u"Solution"),
