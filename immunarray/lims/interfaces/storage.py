@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from zope import schema
+
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
-from zope import schema
 
 
 class IFreezer(BaseModel):
@@ -40,9 +41,16 @@ class IRack(BaseModel):
 
 class ICommercialBox(BaseModel):
     """Boxes can hold either 100 sampels or 81 samples"""
-    title = schema.TextLine(
+    box_number = schema.TextLine(
         title=_(u'Box Number'),
         description=_(u'Box Number'),
+        required=True,
+    )
+
+    box_type = schema.Choice(
+        title=_(u"Sample Type"),
+        description=_(u"Sample Type"),
+        values=[_(u"Bulk"), _(u"Working")],
         required=True,
     )
 
@@ -55,7 +63,7 @@ class ICommercialBox(BaseModel):
 
 class IRandDBox(BaseModel):
     """Boxes can hold either 100 sampels or 81 samples"""
-    title = schema.TextLine(
+    box_number = schema.TextLine(
         title=_(u'R&D Box Number'),
         description=_(u'R&D Box Number'),
         required=True,
