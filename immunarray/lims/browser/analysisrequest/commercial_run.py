@@ -108,6 +108,13 @@ class AddEightFrameTestRunView(BrowserView):
         """
         return 'add' if ITestRuns.providedBy(self.context) else 'edit'
 
+    def render_title(self, uid):
+        obj = find(UID=uid)
+        if obj:
+            return obj[0].Title
+        else:
+            return ''
+
     def next_veracis_run_number(self):
         """Get the highest run_number of all runs (of all types of run),
         increment it and return.
@@ -393,7 +400,7 @@ class AddEightFrameTestRunView(BrowserView):
             review_state='available'
         )
         if not aliquots:
-            raise QCAliquotNotFound
+            raise QCAliquotNotFound("HQC Sample: %s" % hqc_sample)
         lqc_aliquot = aliquots[0]
 
         qc_to_add_to_plate = [hqc_aliquot] * assay.number_of_high_value_controls
@@ -545,7 +552,7 @@ class AddEightFrameTestRunView(BrowserView):
                 w_nr = str(w_nr)
                 nw = plate['well-number-%s' % w_nr]
                 if nw in _used_wells:
-                    msg = "Well number %s on plate %s" % (nw, plate_nr+1)
+                    msg = "Well number %s on plate %s" % (nw, plate_nr + 1)
                     raise DuplicateWellSelected(msg)
                 _used_wells.append(nw)
                 for c_nr in range(1, 5):
@@ -562,7 +569,7 @@ class AddEightFrameTestRunView(BrowserView):
             # First remove the well-number-X keys, we've already used
             # them for re-ordering wells and we don't need them anymore
             for w_nr in range(1, 9):
-                if 'well-numbber-%s'%w_nr in plate:
+                if 'well-number-%s' % w_nr in plate:
                     del (plate['well-number-%s' % w_nr])
             # Keep the plate if any values remain
             if any(plate.values()):
@@ -613,13 +620,6 @@ class AddEightFrameTestRunView(BrowserView):
         for child in sample.objectValues():
             if IAssayRequest.providedBy(child):
                 return child
-
-    def render_title(self, uid):
-        obj = find(UID=uid)
-        if obj:
-            return obj[0].Title
-        else:
-            return ''
 
     def make_csv(self):
         pass
