@@ -43,15 +43,28 @@ class SolutionTypes(object):
             [brain.title for brain in brains])
 
 
-class SolutionBatchesForTestRuns(object):
-    """Context source binder to provide vocabulary of availabe soluiton batches
-    that can be used in test runs
+class SolutionsForiChipAssay(object):
+    """Context source binder to provide vocabulary of availabe soluiton types
+    that can be used iChip Assays
     """
     implements(IContextSourceBinder)
 
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
+    def __call__(self, context):
+        # This is a local import
+        from immunarray.lims.interfaces.solution import ISolution
+        tt = get_tool('portal_types')
+        all_portal_types = tt.objectValues()
+        temp = []
+        for pt in all_portal_types:
+            if hasattr(pt, 'behaviors'):
+                if ISolution.__identifier__ in pt.behaviors:
+                    temp.append(pt.Title())
+        return SimpleVocabulary.fromValues(temp)
+
+SolutionsForiChipAssayVocabulary = SolutionsForiChipAssay()
 
 class SolutionBatchesForTestRuns(object):
     """Context source binder to provide vocabulary of availabe soluiton batches
