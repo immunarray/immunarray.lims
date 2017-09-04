@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from zope import schema
+
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.qc import InUseQCListVocabulary
+from immunarray.lims.vocabularies.solution import \
+    SolutionsForiChipAssayVocabulary
 from plone.app.textfield import RichText
-from zope import schema
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from plone.autoform import directives as form
 
 
 class IiChipAssay(BaseModel):
@@ -115,6 +120,13 @@ class IiChipAssay(BaseModel):
         values=[_(u"Development"),
                 _(u"Commercial"), ],
         required=True,
+    )
+    form.widget(needed_solutions=CheckBoxFieldWidget)
+    needed_solutions = schema.List(
+        title=_(u"Solutions Needed for Assay"),
+        description=_(u"Solutions Needed for Assay"),
+        required=False,
+        value_type=schema.Choice(source=SolutionsForiChipAssayVocabulary),
     )
 
     comments = RichText(
