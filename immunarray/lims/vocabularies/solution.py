@@ -74,7 +74,7 @@ class SolutionBatchesForTestRuns(object):
         )
 
         return SimpleVocabulary.fromValues(
-            [brain.title for brain in brains])
+            [brain.Title for brain in brains])
 
 
 SolutionBatchesForTestRunsVocabulary = SolutionBatchesForTestRuns()
