@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
+from datetime import datetime
 from operator import itemgetter
 
-import transaction
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.interfaces import ITestRuns
@@ -31,7 +31,7 @@ class NoIchipLotsFound(Exception):
 
 
 class NotEnoughUniqueIChipLots(Exception):
-    """Not enougn unique iChipLots found
+    """Not enough unique iChipLots found
     """
 
 
@@ -70,6 +70,11 @@ class MissingIChipForSlide(Exception):
     """
 
 
+class NoValidSolutionBatches(Exception):
+    """"There are no valid batches of a required solution type"
+    """
+
+
 class AddEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
         "templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
@@ -83,25 +88,27 @@ class AddEightFrameTestRunView(BrowserView):
     def __call__(self):
         request = self.request
 
-        try:
+        # try:
 
-            if request.form.get("ctest_action", "") == 'selected_an_assay':
-                plates = self.selected_an_assay()
-                return json.dumps({'success': True, 'TestRun': plates})
+        if request.form.get("ctest_action", "") == 'selected_an_assay':
+            plates = self.selected_an_assay()
+            solution_batches = self.get_assay_solutions()
+            return json.dumps({'success': True,
+                               'TestRun': plates,
+                               'solution_batches': solution_batches})
 
-            elif request.form.get('ctest_action', '') == 'save_run':
+        elif request.form.get('ctest_action', '') == 'save_run':
+            run = self.save_run()
+            data = {'success': True}
+            if ITestRuns.providedBy(self.context):
+                data['redirect_url'] = run.absolute_url() + '/view'
+            else:
+                data['message'] = 'Run saved successfully.'
+            return json.dumps(data)
 
-                run = self.save_run()
-                data = {'success': True}
-                if ITestRuns.providedBy(self.context):
-                    data['redirect_url'] = run.absolute_url() + '/view'
-                else:
-                    data['message'] = 'Run saved successfully.'
-                return json.dumps(data)
-
-        except Exception as e:
-            transaction.abort()
-            return json.dumps({'success': False, 'message': self.error(e)})
+        # except Exception as e:
+        #     transaction.abort()
+        #     return json.dumps({'success': False, 'message': self.error(e)})
 
         return self.template()
 
@@ -128,6 +135,10 @@ class AddEightFrameTestRunView(BrowserView):
     def assay_name(self):
         """get assay name from the form, or from self.context for edit views
         """
+        if 'assay_name' not in self.request \
+                and not hasattr(self.context, 'assay_name'):
+            return None
+
         assay_name = self.request.get('assay_name', None)
         if not assay_name and not ITestRuns.providedBy(self.context):
             assay_name = self.context.assay_name
@@ -156,6 +167,31 @@ class AddEightFrameTestRunView(BrowserView):
         vocab_keys = IChipAssayListVocabulary.__call__(self).by_value.keys()
         return vocab_keys
 
+    def get_assay_solutions(self):
+        """Dynamically return a list of possible batches, for each type of
+        solution required by the assay
+        """
+        vocabs = []
+        assay = self.get_assay()
+        if not assay:
+            return vocabs
+        for solution_type_name in assay.needed_solutions:
+            type_batches = find(Type=solution_type_name,
+                                expires={'query': datetime.today().date(),
+                                         'range': 'min'},
+                                sort_on='expires')
+
+            if not type_batches:
+                raise NoValidSolutionBatches(solution_type_name)
+
+            tmp = []
+            for batch in type_batches:
+                tmp.append([batch.id,
+                            batch.Title,
+                            batch.expires.strftime('%Y-%m-%d')])
+            vocabs.append([solution_type_name, tmp])
+        return vocabs
+
     def selected_an_assay(self):
         if self.assay_name == 'None':
             return self.template()
@@ -170,10 +206,12 @@ class AddEightFrameTestRunView(BrowserView):
                 pass
 
     def get_assay(self):
-        brains = find(portal_type='iChipAssay', Title=self.assay_name)
-        if not brains:
-            raise InvalidAssaySelected(self.assay_name)
-        return brains[0].getObject()
+        assay_name = self.assay_name
+        if assay_name:
+            brains = find(portal_type='iChipAssay', Title=assay_name)
+            if not brains:
+                raise InvalidAssaySelected(self.assay_name)
+            return brains[0].getObject()
 
     def maxNumberOfSamplesToRun(self, assay):
         """take the assay parameters and determine the max number of samples
@@ -467,6 +505,8 @@ class AddEightFrameTestRunView(BrowserView):
         plates = self.remove_empty_plates(plates)
         plates = self.reorder_plates(plates)
 
+        solutions = [values[x] for x in values if x.startswith('solution-')]
+
         if values['came_from'] == 'add':
             self.transition_plate_contents(ichips, aliquots, 'queue')
             lab_users = LabUsersUserVocabulary(self).by_value
@@ -486,11 +526,13 @@ class AddEightFrameTestRunView(BrowserView):
                 run_planner=planner.title if planner else '',
                 run_operator=operator.title if operator else '',
                 plates=plates,
+                solutions=solutions
             )
         else:
             run = self.context
             run.plates = plates
             run.run_date = values.get('run_date', run.run_date)
+            run.solutions = solutions
         return run
 
     def get_serializeArray_form_values(self):
