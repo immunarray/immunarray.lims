@@ -1,0 +1,12 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+  <!-- overridden to stop "missing input" on required date fields -->
+  <browser:page
+      name="z3cform_validate_field"
+      for="*"
+      class=".inline_validation.InlineValidationView"
+      permission="zope.Public"
+  />
+
+</configure>
