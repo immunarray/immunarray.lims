@@ -64,7 +64,9 @@ class SolutionsForiChipAssay(object):
                     temp.append(pt.Title())
         return SimpleVocabulary.fromValues(temp)
 
+
 SolutionsForiChipAssayVocabulary = SolutionsForiChipAssay()
+
 
 class SolutionBatchesForTestRuns(object):
     """Context source binder to provide vocabulary of availabe soluiton batches
@@ -76,14 +78,14 @@ class SolutionBatchesForTestRuns(object):
         self.kwargs = kwargs
 
     def __call__(self, context):
-        # portal_types walker XXX for ichipassay definitions
         # This is a local import
         from immunarray.lims.interfaces.solution import ISolution
         catalog = get_tool('portal_catalog')
         brains = catalog(
             object_provides=ISolution.__identifier__,
             expiration_date={'query': datetime.today().date(), 'range': 'min'},
-            sort_on='sortable_title'
+            sort_on='sortable_title',
+            **self.kwargs
         )
 
         return SimpleVocabulary.fromValues(
