@@ -1,15 +1,19 @@
 import logging
 import os
 from os.path import exists, join
-from time import time
+from time import strptime, time
 
 import openpyxl
 from Products.Five import BrowserView
+from immunarray.lims.interfaces.assayrequest import IAssayRequest
+from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
-from plone.api.content import find
+from plone.api.content import find, transition
 
 logger = logging.getLogger('ImportDataAnalysis')
+
+all_cols = [chr(x) for x in range(65, 91)]  # A..Z
 
 
 class ImportDataAnalysis(BrowserView):
@@ -119,45 +123,134 @@ class ImportDataAnalysis(BrowserView):
         wb = openpyxl.load_workbook(filename)
         ws = wb.get_sheet_by_name('Sheet1')
 
-        # Collect QC info
-        run_number = ws['I13'].value
-        qc_final_status = ws['F13'].value
+        # header rows for blocks containg QC and Clinical aliquot/sample info
+        qc_head_row = self.findnextSerial_Numberrow(ws, 1)
+        clin_head_row = self.findnextSerial_Numberrow(ws, qc_head_row)
 
-        # Transition QC Aliquots
-        test_run = self.get_test_run(run_number)
-        aliquots = self.get_qc_aliquots_from_run(test_run)
-        # for aliquot in aliquots:
-        #     transition(aliquot, qc_final_status.lower())
+        # get the run nr so we can loop the plates
+        for col in all_cols:
+            if 'session' in ws["%s%s" % (col, qc_head_row)].value.lower():
+                run_number = int(ws["%s%s" % (col, qc_head_row + 1)].value)
+        # noinspection PyUnboundLocalVariable
+        run = self.get_test_run(run_number)
 
-        # Edit and transition clinical samples.
-        # info is in row 19+:
-        #     - sample ID is in B
-        #     - qc state is in F
-        #     - numeric_result is in C
-        row = 19
-        while 1:
+        # get column letters of all qc headers that start with "ichip*"
+        qc_ichip_cols = []
+        for col in all_cols:
+            coord = "%s%s" % (col, qc_head_row)
+            if ws[coord].value.lower().startswith("fina"):
+                passfail_col = coord
+            if ws[coord].value.lower().startswith("ichip"):
+                qc_ichip_cols.append(col)
 
-            SLE_key_Score = ws['C%s' % row].value
-            SLE_key_Classification = ws['E%s' % row].value
-            if not all([SLE_key_Score, SLE_key_Classification]):
-                break
+        ichip_passfail_combos = []
+        for row in range(qc_head_row + 1, clin_head_row):
+            # noinspection PyUnboundLocalVariable
+            passfail = ws["%s%s" % (passfail_col, row)].value
+            ichip_titles = []
+            for col in qc_ichip_cols:
+                ichip_titles.append(ws["%s%s" % (col, row)].value)
+            ichip_passfail_combos.append([ichip_titles, passfail])
 
-            sample_id = ws['B%s' % row].value
-            assay_qc_status = ws['F%s' % row].value
+        # for each plate
+        for plate in run.plates:
+            plate_ichips = []
+            plate_ichiplot_titles = []
+            # get all unique ichip lot numbers in a list
+            for key, uid in plate.items():
+                if key.startswith('ichip-id'):
+                    ichip = find(UID=uid)[0].getObject()
+                    plate_ichips.append(ichip)
+                    ichiplot_title = ichip.title.upper().split('-')[0]
+                    if ichiplot_title not in plate_ichiplot_titles:
+                        plate_ichiplot_titles.append(ichiplot_title)
 
-            from commands import getoutput as go
-            go("/usr/bin/play /home/rockfruit/pdb.wav")
-            import pdb
-            pdb.set_trace()
-            pass
+            for combo in ichip_passfail_combos:
+                if sorted(plate_ichiplot_titles) == sorted(combo[0]):
+                    for ichip in plate_ichips:
+                        transition(ichip, 'qc_' + combo[1].lower())
 
-            # # Add results
-            # aliquot.numeric_result = SLE_key_Score
-            # aliquot.text_result = SLE_key_Classification
-            # # Transition aliquot
-            # transition(aliquot, qc_final_status.lower())
+            # 'consume' qc aliquots.
+            for uid in plate.values():
+                brains = find(object_provides=IQCAliquot.__identifier__,
+                              UID=uid, review_state='in_process')
+                if brains:
+                    transition(brains[0].getObject(), 'done')
 
-            row += 1
+        # find the column at which the following headers are located:
+        cols = {'Sample_ID': '',
+                'SLE_key_Score': '',
+                'SLE_key_Classification': '',
+                'Assay_QC_Status': ''}
+        for col in all_cols:
+            coord = "%s%s" % (col, clin_head_row)
+            value = ws[coord].value
+            if value in cols:
+                cols[value] = col
+
+        # get values from each row and colum into aliquot_results.
+        # aliquot results is:
+        # key=sample_id: [SLE_key_Score,
+        #                 SLE_key_Classification,
+        #                 Assay_QC_Status]
+        aliquot_results = {}
+        first_empty = self.get_first_empty_row(ws, clin_head_row)
+        for row in range(clin_head_row + 1, first_empty):
+            sample_id = ws["%s%s" % (cols['Sample_ID'], row)].value
+            aliquot_results[sample_id] = {
+                'SLE_key_Score':
+                    ws["%s%s" % (cols['SLE_key_Score'], row)].value,
+                'SLE_key_Classification':
+                    ws["%s%s" % (cols['SLE_key_Classification'], row)].value,
+                'Assay_QC_Status':
+                    ws["%s%s" % (cols['Assay_QC_Status'], row)].value
+            }
+
+        _used_uids = []
+        for plate in run.plates:
+            for uid in plate.values():
+                if uid in _used_uids:
+                    continue
+                _used_uids.append(uid)
+                brains = find(UID=uid)
+                if brains:
+                    aliquot = brains[0].getObject()
+                    sample = aliquot.aq_parent
+                    if IClinicalSample.providedBy(sample):
+                        if sample.title not in aliquot_results:
+                            raise Exception("What do.")
+                        ar = self.get_ar_from_sample(sample, run.assay_name)
+                        state = aliquot_results['Assay_QC_Status'].lower()
+                        ar.aliquot_evaluated = aliquot.title
+                        ar.date_resulted = self.get_date(ws)
+                        transition(ar, 'qc_' + state)
+                    numeric_result = aliquot_results['SLE_key_Score']
+                    aliquot.numeric_result = numeric_result
+                    text_result = aliquot_results['SLE_key_Classification']
+                    aliquot.text_result = text_result
+
+    def get_ar_from_sample(self, sample, assay_name):
+        for y in sample.objectValues():
+            if IAssayRequest.providedBy(y) and y.assay_name == assay_name:
+                return y
+
+    def get_first_empty_row(self, ws, start):
+        for y in range(start, 999):
+            if not ws['A%s' % y].value:
+                return y
+
+    def findnextSerial_Numberrow(self, ws, start_row):
+        """Dig up the next row who's first column contains 'Serial_Number'
+        """
+        for i in range(start_row, 999):
+            if ws['A%s' % i].value.lower() == 'serial_number':
+                return i
+
+    def get_date(self, ws):
+        for y in range(1, 999):
+            if ws['A%s' % y].value.lower() == 'analysis date':
+                val = ws['B%s' % y].value
+                return strptime(val, '%d-%b-%y')
 
     def get_test_run(self, run_number):
         """get test run object
