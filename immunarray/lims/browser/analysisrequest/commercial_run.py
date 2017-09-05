@@ -70,11 +70,6 @@ class MissingIChipForSlide(Exception):
     """
 
 
-class NoValidSolutionBatches(Exception):
-    """"There are no valid batches of a required solution type"
-    """
-
-
 class AddEightFrameTestRunView(BrowserView):
     template = ViewPageTemplateFile(
         "templates/aliquot_testing/SLE-key_v_2_0_commercial.pt")
@@ -180,9 +175,6 @@ class AddEightFrameTestRunView(BrowserView):
                                 expires={'query': datetime.today().date(),
                                          'range': 'min'},
                                 sort_on='expires')
-
-            if not type_batches:
-                raise NoValidSolutionBatches(solution_type_name)
 
             tmp = []
             for batch in type_batches:
@@ -515,13 +507,19 @@ class AddEightFrameTestRunView(BrowserView):
 
             brain = find(object_provides=ITestRuns.__identifier__)[0]
             folder = brain.getObject()
+
+            try:
+                run_number = int(values['run_number'])
+            except (ValueError, TypeError):
+                raise TypeError("Run number must be a number.")
+
             run = create(
                 folder,
                 'EightFrameRun',
                 title=values['assay_name'],
                 assay_name=assay.title,
                 assay_uid=assay.UID(),
-                run_number=values['run_number'],
+                run_number=run_number,
                 run_date=values['run_date'],
                 run_planner=planner.title if planner else '',
                 run_operator=operator.title if operator else '',
