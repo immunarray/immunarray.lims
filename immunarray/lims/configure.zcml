@@ -17,6 +17,7 @@
 
   <include package=".adapters"/>
   <include package=".browser"/>
+  <include package=".clocks"/>
   <include package=".static"/>
   <include package=".subscribers"/>
   <include package=".utils"/>

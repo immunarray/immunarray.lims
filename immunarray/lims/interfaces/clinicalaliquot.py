@@ -44,17 +44,14 @@ class IClinicalAliquot(IAliquot):
         required=False,
     )
 
-    result = Attribute(
-        """results go here
-        """
+    numeric_result = schema.Float(
+        title=_(u"Numeric Result"),
+        description=_(u"SLE_key_Score"),
+        required=False,
     )
 
-    images = schema.Dict(
-        key_type=schema.TextLine(title=_(u"Image Name"),
-                                 description=_(u"Image Name"),
-                                 required=False, ),
-        value_type=NamedBlobImage(title=_(u"Image File"),
-                                  description=_(u"Image File"),
-                                  required=False, ),
+    text_result = schema.TextLine(
+        title=_(u"Text Result"),
+        description=_(u"SLE_key_Classification"),
         required=False,
     )
