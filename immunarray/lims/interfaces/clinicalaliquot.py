@@ -7,6 +7,8 @@ from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from plone.namedfile.field import NamedBlobImage
 from zope import schema
 
+from zope.interface import Attribute
+
 
 class IClinicalAliquot(IAliquot):
     title = schema.TextLine(
@@ -42,12 +44,9 @@ class IClinicalAliquot(IAliquot):
         required=False,
     )
 
-    result = schema.Dict(
-        key_type=schema.Choice(source=IChipAssayListVocabulary, required=False),
-        value_type=schema.TextLine(title=_(u"Result Value"),
-                                   description=_(u"Result Value"),
-                                   required=False, ),
-        required=False,
+    result = Attribute(
+        """results go here
+        """
     )
 
     images = schema.Dict(
