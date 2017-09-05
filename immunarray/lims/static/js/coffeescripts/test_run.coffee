@@ -95,6 +95,24 @@ require ['jquery'], ($) ->
         window.location.href = "xlsx"
         return
 
+    $("#import_data").click (ev) ->
+        ev.preventDefault()
+        $.ajax
+            url: window.location.href
+            type: 'POST'
+            dataType: 'json'
+            data:
+                ctest_action: 'import_data'
+                _authenticator: authenticator
+            success: (responseText, statusText, statusCode, xhr, $form) ->
+                if !responseText.success
+                    portalMessage responseText.message
+                    return
+                if responseText.redirect_url
+                    window.location.href = responseText.redirect_url
+                return
+        return
+
     portalMessage = (message) ->
         $("#global_statusmessage").empty().append("<div class='portalMessage error'><strong>Error</strong>"+message+"</div>")
         return
