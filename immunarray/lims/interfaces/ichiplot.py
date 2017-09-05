@@ -131,9 +131,9 @@ class IiChipLot(BaseModel):
     )
 
     temp_on_arrival_acceptable_limit = schema.Choice(
-        title=_(u"Temerature of iChips on Arrival Within Acceptable Limit"),
+        title=_(u"Temperature of iChips on Arrival Within Acceptable Limit"),
         description=_(
-            u"Temerature of iChips on Arrival Within Acceptable Limit"),
+            u"Temperature of iChips on Arrival Within Acceptable Limit"),
         values=[_(u"Yes"), _(u"No")],
         required=True,
     )

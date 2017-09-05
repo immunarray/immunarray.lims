@@ -144,9 +144,9 @@ class IMaterial(BaseModel):
     )
 
     temp_on_arrival_acceptable_limit = schema.Choice(
-        title=_(u"Temerature of Raw Material on Arrival "
+        title=_(u"Temperature of Raw Material on Arrival "
                 u"Within Acceptable Limit"),
-        description=_(u"Temerature of Raw Material on Arrival "
+        description=_(u"Temperature of Raw Material on Arrival "
                       u"Within Acceptable Limit"),
         values=[_(u"Yes"), _(u"No")],
         required=False,
