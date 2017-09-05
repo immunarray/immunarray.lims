@@ -91,6 +91,7 @@
 
 
 
+
   </style>
   <form id="commercial_run" method="post">
 
@@ -121,7 +122,11 @@
            type="button" id="xlsx" value="Excel Workbook">
     <input tal:condition="python:view.add_or_edit=='edit'"
            type="button" id="csv" value="CSV File">
-
+    <div style="float:right">
+      <file name="file">
+      <input tal:condition="python:view.add_or_edit=='edit'"
+             type="button" id="import_data" value="Import Data">
+    </div>
     <table class="run-info">
       <tr>
         <td colspan="2" class="header-row">
