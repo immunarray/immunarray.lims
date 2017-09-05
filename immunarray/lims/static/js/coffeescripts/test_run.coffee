@@ -1,16 +1,16 @@
 require ['jquery'], ($) ->
 
+    authenticator = $('input[name="_authenticator"]').val()
     $('#assay_selection').change ->
         assay_name = $(this).val()
-        authenticator = $('input[name="_authenticator"]').val()
         $.ajax
             url: 'ctest'
             type: 'POST'
-            dataType: 'json',
+            dataType: 'json'
             data:
-                'ctest_action': 'selected_an_assay'
-                'assay_name': assay_name
-                '_authenticator': authenticator
+                ctest_action: 'selected_an_assay'
+                assay_name: assay_name
+                _authenticator: authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->
                 if !responseText.success
                     portalMessage responseText.message
@@ -48,6 +48,21 @@ require ['jquery'], ($) ->
                         $(plate).find(".plate-title").empty().append('Plate '+plate_nr)
                         return
                     return
+                batches = responseText['solution_batches']
+                $('tr.solution_batch').remove()
+                $.each batches, (i, v) ->
+                    html = '<tr class="solution_batch">'
+                    html += '<td>' + v[0] + '</td>'
+                    html += '<td>'
+                    html += '<select name ="solution-' + v[0] + '">'
+                    $.each v[1], (ii, bb) ->
+                        html += '<option value="'+bb[0]+'">'+bb[1] + ' ('+ bb[2]+')</option>'
+                        return
+                    html += '</select>'
+                    html += '</td>'
+                    html += '</tr>'
+                    $("table#assay_solutions").append(html)
+                    return
                 return
         return
 
@@ -56,10 +71,11 @@ require ['jquery'], ($) ->
         $.ajax
             url: window.location.href
             type: 'POST'
-            dataType: 'json',
+            dataType: 'json'
             data:
                 form_values: $("form#commercial_run").serializeArray()
                 ctest_action: 'save_run'
+                _authenticator: authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->
                 if !responseText.success
                     portalMessage responseText.message
