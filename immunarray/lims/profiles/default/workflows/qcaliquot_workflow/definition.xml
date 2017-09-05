@@ -16,14 +16,10 @@
   </state>
 
   <state state_id="in_process" title="In Process">
-    <exit-transition transition_id="pass"/>
-    <exit-transition transition_id="fail"/>
+    <exit-transition transition_id="done"/>
   </state>
 
-  <state state_id="qc_passed" title="QC Passed">
-  </state>
-
-  <state state_id="qc_failed" title="QC Failed">
+  <state state_id="consumed" title="Consumed">
   </state>
 
   <transition transition_id="make_available"
@@ -76,35 +72,19 @@
     </guard>
   </transition>
 
-  <transition transition_id="pass"
-              title="QC Pass"
-              new_state="qc_passed"
+  <transition transition_id="done"
+              title="QC Consumed"
+              new_state="consumed"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=pass"
+    <action url="%(content_url)s/content_status_modify?workflow_action=done"
             category="workflow"
-            icon="">QC Pass
+            icon="">QC Consumed
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('pass')</guard-expression>
-    </guard>
-  </transition>
-
-  <transition transition_id="fail"
-              title="QC Fail"
-              new_state="qc_failed"
-              before_script=""
-              after_script=""
-              trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=fail"
-            category="workflow"
-            icon="">QC Fail
-    </action>
-    <guard>
-      <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('fail')</guard-expression>
+      <guard-expression>python:here.guard_handler('done')</guard-expression>
     </guard>
   </transition>
 
