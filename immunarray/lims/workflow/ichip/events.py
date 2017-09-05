@@ -46,6 +46,12 @@ def after_release(instance):
     pass
 
 
+def after_cancel_run(instance):
+    """
+    """
+    pass
+
+
 def after_reserve_for_stability_testing(instance):
     """
     """

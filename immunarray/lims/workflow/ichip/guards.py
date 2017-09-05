@@ -51,6 +51,12 @@ def guard_release(instance):
     return True
 
 
+def guard_cancel_run(instance):
+    """
+    """
+    return True
+
+
 def guard_reserve_for_stability_testing(instance):
     """
     """

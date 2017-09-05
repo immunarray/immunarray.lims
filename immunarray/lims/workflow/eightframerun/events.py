@@ -1,7 +1,6 @@
 from immunarray.lims.browser.analysisrequest.commercial_run import \
     ObjectInInvalidState
-from immunarray.lims.interfaces.clinicalsample import IClinicalSample
-from plone.api.content import transition, get_state
+from plone.api.content import transition, find
 from plone.api.exc import InvalidParameterError
 
 
@@ -40,31 +39,26 @@ def after_abort_run(instance):
     """
 
 
+def get_object(uid):
+    brains = find(UID=uid)
+    if brains:
+        return brains[0].getObject()
+
+
 def after_cancel_run(instance):
     """
     """
     action_id = "available"
+    transitioned = []
     try:
-        for ichip in instance.objectValues():
-            if get_state(ichip) == "in_queue":
-                transition(ichip, action_id)
-
+        for plate in instance.plates:
+            for key, value in plate.items():
+                if value in transitioned:
+                    continue
+                transitioned.append(value)
+                obj = get_object(value)
+                if obj:
+                    transition(obj, action_id)
     except InvalidParameterError:  # noinspection PyUnboundLocalVariable
-        msg = "Can't invoke '%s' transition on %s" % (action_id, ichip)
-
+        msg = "Can't invoke '%s' transition on %s" % (action_id, obj)
         raise ObjectInInvalidState(msg)
-
-    try:
-        for aliquot in aliquots:
-            if get_state(aliquot) == "in_queue":
-                transition(aliquot, action_id)
-
-    except InvalidParameterError:  # noinspection PyUnboundLocalVariable
-        msg = "Can't invoke '%s' transition on %s" % (action_id, aliquot)
-        raise ObjectInInvalidState(msg)
-
-    sample = instance.get_parent_sample_from_aliquot(aliquot)
-    if IClinicalSample.providedBy(sample):
-        assayrequest = instance.get_assay_request_from_sample(sample)
-        if assayrequest == "in_queue":
-            transition(assayrequest, action_id)
