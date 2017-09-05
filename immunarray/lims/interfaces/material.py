@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from immunarray.lims import messageFactory as _
+from immunarray.lims.content import AssignBottleNumber
 from immunarray.lims.fields.amount import Amount
 from immunarray.lims.interfaces import BaseModel
 from immunarray.lims.vocabularies.users import UserVocabulary, \
@@ -27,6 +28,13 @@ class IMaterial(BaseModel):
         title=_(u"Lot"),
         description=_(u"The lot number"),
         required=True
+    )
+
+    bottle_number = schema.Int(
+        title=_(u"Bottle Number"),
+        description=_(u"Bottle Number"),
+        defaultFactory=AssignBottleNumber(),
+        required=True,
     )
 
     vendor = schema.TextLine(
