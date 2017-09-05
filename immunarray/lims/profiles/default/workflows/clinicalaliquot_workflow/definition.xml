@@ -11,6 +11,7 @@
   </state>
 
   <state state_id="in_queue" title="In Queue">
+    <exit-transition transition_id="cancel_run"/>
     <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="begin_process"/>
   </state>
@@ -39,6 +40,22 @@
     <guard>
       <guard-permission>Modify portal content</guard-permission>
       <guard-expression>python:here.guard_handler('make_available')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="cancel_run"
+              title="Cancel Run"
+              new_state="available"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=cancel_run"
+            category="workflow"
+            icon="">Cancel Run
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('cancel_run')</guard-expression>
     </guard>
   </transition>
 
