@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
+from zope import schema
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
-from zope import schema
 from zope.interface import Attribute
 
 
@@ -16,7 +16,6 @@ def currentDate():
 
 
 class IEightFrameRun(IVeracisRunBase):
-
     # Serum Addition
     serum_time_start = schema.Datetime(
         title=_(u"Start Time of Serum Addition"),
@@ -134,6 +133,38 @@ class IEightFrameRun(IVeracisRunBase):
     A map of aliquots/ichips/wells per plate is stored here as a list
     of dictionaries. The format matches what is excpected by the form,
     which is the same as the data returned when creating a new test run.
+    
+    The format of each plate looks like this:
+      {'chip-1_well-1': UID,
+       'chip-1_well-X': UID,
+       'chip-2_well-1': UID,
+       'chip-2_well-X': UID,
+       'chip-3_well-1': UID,
+       'chip-3_well-X': UID,
+       'chip-4_well-1': UID,
+       'chip-4_well-X': UID,
+       'chip-id-1': UID,
+       'chip-id-2': UID,
+       'chip-id-3': UID,
+       'chip-id-4': UID,
+       'comments-ichip-1': '',
+       'comments-ichip-2': '',
+       'comments-ichip-3': '',
+       'comments-ichip-4': '',
+       'scan-slot-1': '',
+       'scan-slot-2': '',
+       'scan-slot-3': '',
+       'scan-slot-4': '',
+       'comments': ''
+       }
+    """)
+
+    solutions = Attribute("""Solution batches in use
+    Details of all solution batches selected for use in this run, stored
+    as a list of lists like this:
+    
+    [list of solution batch ids]
+    
     """)
 
     ichip_humidity = Attribute("""iChip Humidity
