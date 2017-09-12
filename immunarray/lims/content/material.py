@@ -19,7 +19,9 @@ class Material(BaseContainer):
     @product_name.setter
     def product_name(self, value):
         self._product_name = value
-        self.setTitle(value + " - " + self.lot_number)
+        self.setTitle(value + " - " +
+                      self.lot_number + " - " +
+                      self.bottle_number)
 
     @property
     def lot_number(self):
@@ -28,4 +30,17 @@ class Material(BaseContainer):
     @lot_number.setter
     def lot_number(self, value):
         self._lot_number = value
-        self.setTitle(self.product_name + " - " + value)
+        self.setTitle(self.product_name + " - " +
+                      value + " - " +
+                      self.bottle_number)
+
+    @property
+    def bottle_number(self):
+        return getattr(self, "_bottle_number", "")
+
+    @bottle_number.setter
+    def bottle_number(self, value):
+        self._bottle_number = value
+        self.setTitle(self.product_name + " - " +
+                      self.lot_number + " - " +
+                      value)
