@@ -27,10 +27,10 @@ class AbstractAliquot(BaseContainer):
 
     @id.setter
     def id(self, value):
-        """The title is set the same as the ID, but has spaces in it.
+        """The title must be identical to the ID.
         """
         self._id = value
-        self.setTitle(' - '.join(value.split('-')))
+        self.setTitle(self._id)
 
     @property
     def initial_volume(self):
