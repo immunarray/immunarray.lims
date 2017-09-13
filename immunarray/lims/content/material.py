@@ -43,4 +43,4 @@ class Material(BaseContainer):
         self._bottle_number = value
         self.setTitle(self.product_name + " - " +
                       self.lot_number + " - " +
-                      value)
+                      str(value))
