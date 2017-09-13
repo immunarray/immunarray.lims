@@ -73,7 +73,7 @@ require ['jquery'], ($) ->
             type: 'POST'
             dataType: 'json'
             data:
-                form_values: $("form#commercial_run").serializeArray()
+                form_values: $("form#test_run").serializeArray()
                 ctest_action: 'save_run'
                 _authenticator: authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->

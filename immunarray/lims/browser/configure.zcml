@@ -6,7 +6,7 @@
   <include file="folder_contents.zcml"/>
 
   <include package=".analysisrequest"/>
-  <include package=".commercial_run"/>
+  <include package=".testrun"/>
 
   <include package=".viewlets"/>
 

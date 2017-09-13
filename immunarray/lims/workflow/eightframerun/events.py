@@ -1,5 +1,4 @@
-from immunarray.lims.browser.analysisrequest.commercial_run import \
-    ObjectInInvalidState
+from immunarray.lims.browser.testrun import ObjectInInvalidState
 from plone.api.content import transition, find
 from plone.api.exc import InvalidParameterError
 
