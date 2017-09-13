@@ -49,3 +49,49 @@ class InvalidSample(Exception):
 class MissingIChipForSlide(Exception):
     """The IChip ID is invalid, or blank, but aliquots exist
     """
+
+
+def get_serializeArray_form_values(request):
+    """Parse the form_values list into a single dictionary.
+    The plates are taken care of particularly, like this:
+
+    {'thing1': 'value1',
+     'thing2': 'value2'...
+     'plates': [
+         {plate1-stuff}, 
+         {plate2-stuff}
+     ]
+    }
+    """
+    raw = request.form
+    count = len([x for x in raw if 'form_values' in x])
+    nr_plates = 0
+
+    # gather intermediate data dictionary
+    intermediate = {}
+    for x in range(0, count / 2):
+        name = raw['form_values[%s][name]' % x]
+        value = raw['form_values[%s][value]' % x]
+        if name in intermediate:
+            if type(intermediate[name]) == list:
+                intermediate[name].append(value)
+            else:
+                intermediate[name] = [intermediate[name], value]
+            nr_plates = len(intermediate[name])
+        else:
+            intermediate[name] = value
+
+    # Separate the plates from the rest of the form values, and convert
+    # them to a single list of dictionaries.
+    form_values = {}
+    # noinspection PyUnusedLocal
+    plates = [{} for x in range(nr_plates)]
+    for k, v in intermediate.items():
+        if type(v) == list:
+            for nr in range(nr_plates):
+                plates[nr][k] = v[nr]
+        else:
+            form_values[k] = v
+
+    form_values['plates'] = plates
+    return form_values

@@ -63,13 +63,6 @@ class CreateTestRunView(BrowserView):
         """
         return "{}: {} ({})".format(e.__class__.__name__, e.__doc__, e.message)
 
-    def render_title(self, uid):
-        obj = find(UID=uid)
-        if obj:
-            return obj[0].Title
-        else:
-            return ''
-
     @property
     def assay_name(self):
         """get assay name from the form, or from self.context for edit views
@@ -427,9 +420,9 @@ class CreateTestRunView(BrowserView):
         return ichips_for_assay
 
     def save_run(self):
+        """Create initial run
         """
-        """
-        values = self.get_serializeArray_form_values()
+        values = self.get_serializeArray_form_values(self.request)
 
         try:
             assay = find(object_provides=IiChipAssay.__identifier__,
@@ -471,51 +464,6 @@ class CreateTestRunView(BrowserView):
         )
 
         return run
-
-    def get_serializeArray_form_values(self):
-        """Parse the form_values list into a single dictionary.
-        The plates are taken care of particularly, like this:
-    
-        {'thing1': 'value1',
-         'thing2': 'value2'...
-         'plates': [
-             {plate1-stuff}, 
-             {plate2-stuff}
-         ]
-        }
-        """
-        raw = self.request.form
-        count = len([x for x in raw if 'form_values' in x])
-        nr_plates = 0
-
-        # gather intermediate data dictionary
-        intermediate = {}
-        for x in range(0, count / 2):
-            name = raw['form_values[%s][name]' % x]
-            value = raw['form_values[%s][value]' % x]
-            if name in intermediate:
-                if type(intermediate[name]) == list:
-                    intermediate[name].append(value)
-                else:
-                    intermediate[name] = [intermediate[name], value]
-                nr_plates = len(intermediate[name])
-            else:
-                intermediate[name] = value
-
-        # Separate the plates from the rest of the form values, and convert
-        # them to a single list of dictionaries.
-        form_values = {}
-        # noinspection PyUnusedLocal
-        plates = [{} for x in range(nr_plates)]
-        for k, v in intermediate.items():
-            if type(v) == list:
-                for nr in range(nr_plates):
-                    plates[nr][k] = v[nr]
-            else:
-                form_values[k] = v
-
-        form_values['plates'] = plates
-        return form_values
 
     def transmogrify_inputs(self, plates):
         """Convert titles to UIDs for all ichips and aliquots
