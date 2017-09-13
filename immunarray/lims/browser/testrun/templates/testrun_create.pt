@@ -1,0 +1,435 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="immunarray">
+
+<head>
+  <meta charset="UTF-8">
+  <title>SLE-key v2.0</title>
+</head>
+<body>
+<metal:main fill-slot="main">
+  <style media="all" type="text/css">
+      @page{
+        margin:0cm;
+      }
+      table {
+        width:100%;
+        border-collapse:collapse;
+      }
+      .alpha p{
+        font-family:Helvetica;
+        font-size:10pt;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+      }
+      .alpha table, tr, td {
+        border:0.5px solid black;
+      }
+      .alpha tr, td{
+        padding-top: 0px 2px 0px 2px;
+      }
+      .beta p{
+        font-family:Helvetica;
+        font-size:10pt;
+        margin: 0px;
+      }
+      .beta p{
+        font-family:Helvetica;
+        font-size:9pt;
+      }
+      .beta td{
+        text-align:center;
+      }
+      .gama p{
+        font-family:Helvetica;
+        font-size:10pt;
+        margin: 0px;
+      }
+      .delta p{
+        font-family:Helvetica;
+        font-size:9pt;
+      }
+      .gama p{
+        font-family:Helvetica;
+        font-size:9pt;
+        margin: 0px;
+      }
+      .delta p{
+        font-family:Helvetica;
+        font-size:9pt;
+        margin: 0px;
+      }
+      .delta th{
+        background-color:lightgrey;
+        text-align:center;
+      }
+      .hidden {
+        display:none;
+      }
+      .pattern-pickadate-wrapper {
+         padding-bottom:0px !important;
+      }
+      .header-row {
+          text-align: center;
+          background-color:lightgrey;
+          font-size:11pt;
+      }
+      .delete-plate{
+          cursor: pointer;
+          background-color:lightgrey;
+      }
+  </style>
+  <form id="test_run" method="post">
+
+    <!-- Creating a new test run, list possible iChipAssays -->
+    <select id="assay_selection" name="assay_name">
+      <option name="None">None</option>
+      <tal:block repeat="assay view/iChipAssayList">
+        <option tal:content="assay"></option>
+      </tal:block>
+      <option name="Custom">Custom</option>
+    </select>
+
+    <input type="button" id="saverun" value="Save Run">
+
+    <table class="run-info">
+      <tr>
+        <td colspan="2" class="header-row">
+          <strong><span class="plate-title">Run Configuration</span></strong>
+        </td>
+      </tr>
+      <tr>
+        <td>Veracis Run Number:</td>
+        <td>
+          <input type="text"
+                 name="run_number"
+                 tal:attributes="value view/next_veracis_run_number"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Veracis Test Run Date (DD-MMM-YYYY):</td>
+        <td>
+          <input class="pat-pickadate"
+                 name="run_date"
+                 data-pat-pickadate='{"date": {"format": "dd-mmm-yyyy"}, "time": false}'>
+        </td>
+      </tr>
+      <tr>
+        <td>Veracis Run Planner:</td>
+        <td>
+          <select name="run_planner" tal:define="users python:view.lab_users()">
+            <tal:users tal:repeat="user users">
+              <option tal:attributes="value python:user[0]">
+                <tal:user tal:replace="python:user[1]"/>
+              </option>
+            </tal:users>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Veracis Run Operator:</td>
+        <td>
+          <select name="run_operator" tal:define="users python:view.lab_users()">
+            <tal:users tal:repeat="user users">
+              <option tal:attributes="value python:user[0]">
+                <tal:user tal:replace="python:user[1]"/>
+              </option>
+            </tal:users>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Plate tables are inserted here. -->
+    <div id="plates">
+    </div>
+
+    <!-- Solution Summary Table -->
+    <table id="assay_solutions" class="delta">
+      <tr style="background-color:lightgrey;">
+        <td style="text-align:center;width:250px"><strong>Solutions</strong>
+        </td>
+        <td style="text-align:center"><strong>Batch #</strong></td>
+      </tr>
+      <tr tal:repeat="solution view/get_assay_solutions">
+        <td><span tal:content="python:solution[0]"/></td>
+        <td tal:define="batches python:solution[1]">
+          <select tal:attributes="name python:'solution-'+solution[0]">
+            <tal:batch tal:repeat="batch batches">
+              <option tal:attributes="value python:batch[0]"
+                      tal:content="python:'%s (%s)'%(batch[1], batch[2])"
+                      tal:condition="python: batch[0] in context.solutions"
+                      selected='selected'
+              />
+              <option tal:attributes="value python:batch[0]"
+                      tal:content="python:'%s (%s)'%(batch[1], batch[2])"
+                      tal:condition="python: batch[0] not in context.solutions"
+              />
+            </tal:batch>
+          </select>
+        </td>
+      </tr>
+    </table>
+
+    <!--  Humidy data input for iChips used -->
+    <table id="table11" class="delta">
+      <tr style="background-color:lightgrey;">
+        <td><strong>iCHIP Print Lot</strong></td>
+        <td><strong>Humidity</strong></td>
+      </tr>
+      <tr class="ichip-print-lot-humidity" style="display:hidden">
+        <td></td>
+        <td><input class="ichip-print-lot-hunidity" type="text"></td>
+      </tr>
+    </table>
+
+    <table id="table12" class="delta">
+      <tr>
+        <td style="width:35px;background-color:lightgrey;">
+          <p><strong>Step</strong></p>
+        </td>
+        <td style="text-align:center;background-color:lightgrey;">
+          <p><strong>Serum Addition</strong></p>
+        </td>
+        <td style="width:30px;background-color:lightgrey;text-align:center;">
+          <p><strong>&#10004</strong></p>
+        </td>
+      </tr>
+    </table>
+
+    <!--  Serum start time point table -->
+    <table id="table13" class="delta">
+      <tr>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Start time for adding serum (hh:mm):</p>
+        </td>
+        <td style="height:50px;text-align:left;vertical-align:top">
+          <p>Humidity (%):</p>
+        </td>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Room Temperature (&deg;C)</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Finish time for adding specimens (hh:mm):</p>
+        </td>
+        <td style="height:50px;text-align:left;vertical-align:top">
+          <p>Humidity (%):</p>
+        </td>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Room Temperature (&deg;C):</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Witness Signature:</p>
+        </td>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Date:</p>
+        </td>
+    </table>
+
+    <!-- Header secondary antibody section -->
+    <table id="table17" class="delta">
+      <tr>
+        <td style="width:35px;background-color:lightgrey;">
+          <p><strong>Step</strong></p>
+        </td>
+        <td style="text-align:center;background-color:lightgrey;">
+          <p><strong>Secondary Antibody Preparation and Addition</strong></p>
+        </td>
+        <td style="width:30px;background-color:lightgrey;text-align:center;">
+          <p><strong>&#10004</strong></p>
+        </td>
+      </tr>
+    </table>
+    <!--  Secondary antibody start time point table -->
+    <table id="table18" class="delta">
+      <tr>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Start time for adding serum (hh:mm):</p>
+        </td>
+        <td style="height:50px;text-align:left;vertical-align:top">
+          <p>Humidity (%):</p>
+        </td>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Room Temperature (&deg;C):</p>
+        </td>
+      </tr>
+    </table>
+
+    <!--  Slide Scanning Procedure -->
+    <table id="table23" class="delta">
+      <tr>
+        <td style="width:35px;background-color:lightgrey;">
+          <p><strong>Step</strong></p>
+        </td>
+        <td style="text-align:center;background-color:lightgrey;">
+          <p><strong>Slide Scanning Procedure</strong></p>
+        </td>
+        <td style="text-align:center;background-color:lightgrey;"/>
+      </tr>
+      <tr>
+        <td colspan="2" style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Witness Signature:</p>
+        </td>
+        <td style="width:250px;height:50px;text-align:left;vertical-align:top">
+          <p>Date:</p>
+        </td>
+      </tr>
+    </table>
+
+  </form>
+  <script src="++resource++immunarray.lims/js/test_run.js"></script>
+  <-- The template is duplicated in testrun_create.pt and testrun_view.pt.  Both must be kept in sync
+  -->
+  <table id="blank-plate" class="plate-container beta hidden">
+    <tr>
+      <td colspan="11" class="header-row">
+        <strong><span class="plate-title">Plate</span></strong>
+      </td>
+      <td>
+        <button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Well</strong></td>
+      <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+      <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+      <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+      <td colspan="2"><strong>Sample ID-Aliquot</strong></td>
+      <td><strong>&#10004 1<br>(serum)</strong></td>
+      <td><strong>Sample<br>class</strong></td>
+      <td><strong>Box</strong></td>
+    </tr>
+    <tr>
+      <td> 1 <input type="hidden" name="well-number-1" value="1"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-1" class="sampleid-aliquot chip-3 well-1"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-1" class="sampleid-aliquot chip-4 well-1"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 2 <input type="hidden" name="well-number-2" value="2"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-2" class="sampleid-aliquot chip-1 well-2"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-2" class="sampleid-aliquot chip-2 well-2"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-2" class="sampleid-aliquot chip-3 well-2"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-2" class="sampleid-aliquot chip-4 well-2"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 3 <input type="hidden" name="well-number-3" value="3"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-3" class="sampleid-aliquot chip-1 well-3"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-3" class="sampleid-aliquot chip-2 well-3"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-3" class="sampleid-aliquot chip-3 well-3"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-3" class="sampleid-aliquot chip-4 well-3"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 4 <input type="hidden" name="well-number-4" value="4"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-4" class="sampleid-aliquot chip-1 well-4"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-4" class="sampleid-aliquot chip-2 well-4"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-4" class="sampleid-aliquot chip-3 well-4"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-4" class="sampleid-aliquot chip-4 well-4"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 5 <input type="hidden" name="well-number-5" value="5"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-5" class="sampleid-aliquot chip-1 well-5"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-5" class="sampleid-aliquot chip-2 well-5"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-5" class="sampleid-aliquot chip-3 well-5"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-5" class="sampleid-aliquot chip-4 well-5"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 6 <input type="hidden" name="well-number-6" value="6"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-6" class="sampleid-aliquot chip-1 well-6"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-6" class="sampleid-aliquot chip-2 well-6"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-6" class="sampleid-aliquot chip-3 well-6"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-6" class="sampleid-aliquot chip-4 well-6"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 7 <input type="hidden" name="well-number-7" value="7"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-7" class="sampleid-aliquot chip-1 well-7"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-7" class="sampleid-aliquot chip-2 well-7"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-7" class="sampleid-aliquot chip-3 well-7"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-7" class="sampleid-aliquot chip-4 well-7"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td> 8 <input type="hidden" name="well-number-8" value="8"/></td>
+      <td colspan="2"><input type="text" name="chip-1_well-8" class="sampleid-aliquot chip-1 well-8"/></td>
+      <td colspan="2"><input type="text" name="chip-2_well-8" class="sampleid-aliquot chip-2 well-8"/></td>
+      <td colspan="2"><input type="text" name="chip-3_well-8" class="sampleid-aliquot chip-3 well-8"/></td>
+      <td colspan="2"><input type="text" name="chip-4_well-8" class="sampleid-aliquot chip-4 well-8"/></td>
+      <td/>
+      <td/>
+      <td/>
+    </tr>
+    <tr>
+      <td rowspan="4"></td>
+      <td>iChip 1</td>
+      <td><input type="text" name="chip-id-1" class="chip-id ichip-1"></td>
+      <td>iChip 2</td>
+      <td><input type="text" name="chip-id-2" class="chip-id ichip-2"></td>
+      <td>iChip 3</td>
+      <td><input type="text" name="chip-id-3" class="chip-id ichip-3"></td>
+      <td>iChip 4</td>
+      <td><input type="text" name="chip-id-4" class="chip-id ichip-4"></td>
+      <td style="text-align:left;vertical-align:top;" rowspan="3" colspan="3">
+        Comments: <textarea size="5" name="comments" class="plate-comments"/>
+      </td>
+    </tr>
+    <tr>
+      <td><p>Scan Slot</p></td>
+      <td><p><input type="text" name="scan-slot-1" class="scan-slot-1"></p></td>
+      <td><p>Scan Slot</p></td>
+      <td><p><input type="text" name="scan-slot-2" class="scan-slot-2"></p></td>
+      <td><p>Scan Slot</p></td>
+      <td><p><input type="text" name="scan-slot-3" class="scan-slot-3"></p></td>
+      <td><p>Scan Slot</p></td>
+      <td><p><input type="text" name="scan-slot-4" class="scan-slot-4"></p></td>
+    </tr>
+    <tr>
+      <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+        Comments:<input type="text" name="comments-ichip-1" class="comments ichip-1">
+      </td>
+      <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+        Comments:<input type="text" name="comments-ichip-2" class="comments ichip-2">
+      </td>
+      <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+        Comments:<input type="text" name="comments-ichip-3" class="comments ichip-3">
+      </td>
+      <td style="height:50px;vertical-align:top;text-align:left;" colspan="2">
+        Comments:<input type="text" name="comments-ichip-4" class="comments ichip-4">
+      </td>
+    </tr>
+  </table>
+
+</metal:main>
+</body>
+</html>

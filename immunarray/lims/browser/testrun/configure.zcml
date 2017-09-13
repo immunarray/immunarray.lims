@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="immunarray.lims">
+
+  <browser:page
+      name="ctest"
+      for="immunarray.lims.interfaces.ITestRuns"
+      class="immunarray.lims.browser.testrun.create.CreateTestRunView"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="view"
+      for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
+      class="immunarray.lims.browser.testrun.view.ViewTestRunView"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
+      name="csv"
+      class=".download_csv.DownloadCSV"
+      permission="zope2.View"/>
+
+  <browser:page
+      for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
+      name="xlsx"
+      class=".download_xlsx.DownloadXLSX"
+      permission="zope2.View"/>
+
+</configure>
