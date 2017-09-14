@@ -9,7 +9,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.browser.testrun import DuplicateWellSelected, \
     InvalidAssaySelected, NoIchipLotsFound, NoWorkingAliquotsFound, \
     NotEnoughUniqueIChipLots, ObjectInInvalidState, QCAliquotNotFound, \
-    QCSampleNotFound
+    QCSampleNotFound, get_serializeArray_form_values
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
@@ -422,7 +422,7 @@ class CreateTestRunView(BrowserView):
     def save_run(self):
         """Create initial run
         """
-        values = self.get_serializeArray_form_values(self.request)
+        values = get_serializeArray_form_values(self.request)
 
         try:
             assay = find(object_provides=IiChipAssay.__identifier__,
