@@ -120,6 +120,40 @@ class IRandDBox(BaseModel):
     )
 
 
+class IQCBox(BaseModel):
+    """Boxes can hold either 100 sampels or 81 samples"""
+    box_number = schema.TextLine(
+        title=_(u'QC Box Number'),
+        description=_(u'QC Box Number'),
+        required=True,
+    )
+
+    max_samples = schema.Int(
+        title=_(u'Max Number of Samples'),
+        description=_(u'Max Number of Samples'),
+        default=81,
+    )
+
+    remaining_volume = schema.Int(
+        title=_(u"Remaining Volume"),
+        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        required=True,
+    )
+    aliquto_dic = schema.Dict(
+        title=_(u'Box Count to Aliquot ID'),
+        key_type=schema.TextLine(
+            title=_(u"Box Count"),
+            description=_(u"Box Count"),
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=_(u"Aliquot ID"),
+            description=_(u"Aliquot ID"),
+            required=False,
+        )
+    )
+
+
 class IAcidStorage(BaseModel):
     """Container that will hold all acidic items for the lab"""
     pass
