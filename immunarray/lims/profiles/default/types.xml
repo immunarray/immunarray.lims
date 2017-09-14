@@ -22,6 +22,7 @@
     <object name="Rack" meta_type="Dexterity FTI"/>
     <object name="RandDAliquot" meta_type="Dexterity FTI"/>
     <object name="RandDBox" meta_type="Dexterity FTI"/>
+    <object name="QCBox" meta_type="Dexterity FTI"/>
     <object name="RandDSample" meta_type="Dexterity FTI"/>
     <object name="Shelf" meta_type="Dexterity FTI"/>
     <object name="Site" meta_type="Dexterity FTI"/>
