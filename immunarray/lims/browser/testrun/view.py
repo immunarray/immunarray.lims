@@ -1,28 +1,22 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-from operator import itemgetter
 
 import transaction
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.browser.testrun import DuplicateWellSelected, \
-    InvalidAssaySelected, NoIchipLotsFound, NoWorkingAliquotsFound, \
-    NotEnoughUniqueIChipLots, ObjectInInvalidState, QCAliquotNotFound, \
-    QCSampleNotFound, get_serializeArray_form_values
+    InvalidAssaySelected, ObjectInInvalidState, get_serializeArray_form_values
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.ichip import IiChip
-from immunarray.lims.interfaces.ichipassay import IiChipAssay
 from immunarray.lims.interfaces.sample import ISample
-from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
-from plone.api.content import find, get_state, transition
+from plone.api.content import find, transition
 from plone.api.exc import InvalidParameterError
-from plone.api.portal import get_tool
 
 
 class ViewTestRunView(BrowserView):
@@ -41,8 +35,9 @@ class ViewTestRunView(BrowserView):
 
             if request.form.get('ctest_action', '') == 'save_run':
                 self.save_run()
-                return json.dumps({'success': True,
-                                   'message': 'Run saved successfully.'})
+                return json.dumps(
+                    {'success': True,
+                     'redirect_url': self.context.absolute_url() + '/view'})
 
         except Exception as e:
             transaction.abort()
