@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<object name="RandDBox" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="QCBox" meta_type="Dexterity FTI" i18n:domain="plone"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <property name="title" i18n:translate="">R&amp;D Box</property>
   <property name="description" i18n:translate=""/>
   <property name="icon_expr">string:${portal_url}/document_icon.png</property>
-  <property name="factory">RandDBox</property>
-  <property name="add_view_expr">string:${folder_url}/++add++RandDBox</property>
+  <property name="factory">QCBox</property>
+  <property name="add_view_expr">string:${folder_url}/++add++QCBox</property>
   <property name="link_target"/>
   <property name="immediate_view">view</property>
   <property name="global_allow">True</property>
@@ -18,11 +18,11 @@
     <element value="folder_contents"/>
   </property>
   <property name="default_view_fallback">False</property>
-  <property name="add_permission">immunarray.lims.permissions.AddRandDBox</property>
-  <property name="klass">immunarray.lims.content.randdbox.RandDBox</property>
+  <property name="add_permission">immunarray.lims.permissions.AddQCBox</property>
+  <property name="klass">immunarray.lims.content.qcbox.QCBox</property>
   <property name="behaviors">
   </property>
-  <property name="schema">immunarray.lims.interfaces.storage.IRandDBox</property>
+  <property name="schema">immunarray.lims.interfaces.storage.IQCBox</property>
   <property name="model_source"/>
   <property name="model_file"/>
   <property name="schema_policy">dexterity</property>
