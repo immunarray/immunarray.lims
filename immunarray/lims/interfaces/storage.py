@@ -66,8 +66,8 @@ class ICommercialBox(BaseModel):
         default=81,
     )
     remaining_volume = schema.Int(
-        title=_(u"Remaining Volume"),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Boxes"),
+        description=_(u"Remaining Boxes"),
         required=True,
     )
 
