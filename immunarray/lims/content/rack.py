@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Interface import Interface
+from zope.interface import Interface
 from immunarray.lims.interfaces.storage import IRack
 from zope.component import adapter
 from zope.interface import implementer
