@@ -42,3 +42,8 @@ def guard_fail(instance):
     if IBulkAliquot.providedBy(instance):
         return False
     return True
+
+def guard_throw_away(instance):
+    """
+    """
+    return True

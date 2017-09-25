@@ -24,3 +24,7 @@ def after_review(instance):
 def after_use(instance):
     """
     """
+
+def after_throw_away(instance):
+    """
+    """

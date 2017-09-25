@@ -8,19 +8,42 @@
 
   <state state_id="available" title="Available">
     <exit-transition transition_id="queue"/>
+    <exit-transition transition_id="throw_away"/>
   </state>
 
   <state state_id="in_queue" title="In Queue">
     <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="begin_process"/>
+    <exit-transition transition_id="throw_away"/>
   </state>
 
   <state state_id="in_process" title="In Process">
     <exit-transition transition_id="done"/>
+    <exit-transition transition_id="throw_away"/>
   </state>
 
   <state state_id="consumed" title="Consumed">
   </state>
+
+  <state state_id="discarded" title="Discarded">
+  </state>
+
+  <transition transition_id="throw_away"
+              title="Throw Away"
+              new_state="discarded"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=throw_away"
+            category="workflow"
+            icon="">Throw Away
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('throw_away')
+      </guard-expression>
+    </guard>
+  </transition>
 
   <transition transition_id="make_available"
               title="Make Available"

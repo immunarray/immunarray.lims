@@ -25,6 +25,9 @@ def after_fail(instance):
     """
     """
 
+def after_throw_away(instance):
+    """
+    """
 
 
 
