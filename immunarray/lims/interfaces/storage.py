@@ -39,8 +39,8 @@ class IRack(BaseModel):
     )
 
     remaining_volume = schema.Int(
-        title=_(u"Remaining "),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Rack Spaces"),
+        description=_(u"Remaining Rack Spaces"),
         required=True,
     )
 
@@ -66,8 +66,8 @@ class ICommercialBox(BaseModel):
         default=81,
     )
     remaining_volume = schema.Int(
-        title=_(u"Remaining Boxes"),
-        description=_(u"Remaining Boxes"),
+        title=_(u"Remaining Aliquot Spaces"),
+        description=_(u"Remaining Aliquot Spaces"),
         required=True,
     )
 
@@ -101,8 +101,8 @@ class IRandDBox(BaseModel):
     )
 
     remaining_volume = schema.Int(
-        title=_(u"Remaining Volume"),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Aliquot Spaces"),
+        description=_(u"Remaining Aliquot Spaces"),
         required=True,
     )
     aliquto_dic = schema.Dict(
@@ -135,8 +135,8 @@ class IQCBox(BaseModel):
     )
 
     remaining_volume = schema.Int(
-        title=_(u"Remaining Volume"),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Aliquot Spaces"),
+        description=_(u"Remaining Aliquot Spaces"),
         required=True,
     )
     aliquto_dic = schema.Dict(

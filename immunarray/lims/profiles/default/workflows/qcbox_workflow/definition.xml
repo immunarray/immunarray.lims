@@ -1,49 +1,69 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="billingprogram_workflow"
-             title="Billing Program Workflow"
+<dc-workflow workflow_id="qcbox_workflow"
+             title="QC Box Workflow"
              description=""
              state_variable="review_state"
              initial_state="active"
              manager_bypass="False">
 
   <state state_id="active" title="Active">
-    <exit-transition transition_id="retire"/>
-
+    <exit-transition transition_id="filled"/>
+    <exit-transition transition_id="discarded"/>
   </state>
 
-  <state state_id="retired" title="Retired">
+  <state state_id="filled" title="Full">
     <exit-transition transition_id="activate"/>
+    <exit-transition transition_id="discarded"/>
   </state>
 
-  <transition transition_id="activate"
-              title="Activate"
-              new_state="Active"
+  <state state_id="discarded" title="Discard">
+  </state>
+
+  <transition transition_id="active"
+              title="Active"
+              new_state="active"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=activate"
+    <action url="%(content_url)s/content_status_modify?workflow_action=active"
             category="workflow"
-            icon="">Activate
+            icon="">Active
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('activate')</guard-expression>
+      <guard-expression>python:here.guard_handler('active')</guard-expression>
     </guard>
   </transition>
 
-  <transition transition_id="retire"
-              title="Retire"
-              new_state="retired"
+  <transition transition_id="filled"
+              title="Full"
+              new_state="filled"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=retire"
+    <action url="%(content_url)s/content_status_modify?workflow_action=filled"
             category="workflow"
-            icon="">Retire
+            icon="">Full
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('retire')</guard-expression>
+      <guard-expression>python:here.guard_handler('filled')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="discarded"
+              title="Discard"
+              new_state="discarded"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=discarded"
+            category="workflow"
+            icon="">Discard
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('discarded')</guard-expression>
     </guard>
   </transition>
 

@@ -17,6 +17,9 @@
   <object name="ichipassay_workflow" meta_type="Workflow"/>
   <object name="site_workflow" meta_type="Workflow"/>
   <object name="commercialrun_workflow" meta_type="Workflow"/>
+  <object name="commercialbox" meta_type="Workflow"/>
+  <object name="qcbox" meta_type="Workflow"/>
+  <object name="randdbox" meta_type="Workflow"/>
 
   <bindings>
 
@@ -74,6 +77,18 @@
 
     <type type_id="EightFrameRun">
       <bound-workflow workflow_id="commercialrun_workflow"/>
+    </type>
+
+    <type type_id="CommercialBox">
+      <bound-workflow workflow_id="commercialbox_workflow"/>
+    </type>
+
+    <type type_id="QcBox">
+      <bound-workflow workflow_id="qcbox_workflow"/>
+    </type>
+
+    <type type_id="RandDBox">
+      <bound-workflow workflow_id="randdbox_workflow"/>
     </type>
 
 

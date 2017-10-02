@@ -1,9 +1,15 @@
-def guard_activate(instance):
+def guard_active(instance):
     """
     """
     return True
 
-def guard_retire(instance):
+def guard_filled(instance):
     """
     """
     return True
+
+def guard_discarded(instance):
+    """
+    """
+    return True
+
