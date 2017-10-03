@@ -83,7 +83,7 @@
       <bound-workflow workflow_id="commercialbox_workflow"/>
     </type>
 
-    <type type_id="QcBox">
+    <type type_id="QCBox">
       <bound-workflow workflow_id="qcbox_workflow"/>
     </type>
 
