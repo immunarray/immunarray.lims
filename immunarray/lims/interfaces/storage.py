@@ -65,7 +65,7 @@ class ICommercialBox(BaseModel):
         description=_(u'Max Number of Samples'),
         default=81,
     )
-    
+
     remaining_volume = schema.Int(
         title=_(u"Remaining Aliquot Spaces"),
         description=_(u"Remaining Aliquot Spaces"),
@@ -155,6 +155,7 @@ class IQCBox(BaseModel):
         description=_(u"Remaining Aliquot Spaces"),
         required=True,
     )
+
     aliquto_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
         key_type=schema.TextLine(
