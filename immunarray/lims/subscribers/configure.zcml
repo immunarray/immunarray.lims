@@ -4,17 +4,20 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="immunarray.lims">
 
+  <!-- LIMS Setup Subscriber-->
   <subscriber
       for="bika.lims.events.LIMSCreatedEvent"
       handler="immunarray.lims.subscribers.limsroot.LIMSCreated"
   />
 
+  <!-- iChipLot Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.ichiplot.IiChipLot
            zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.ichiplot.iChipLotAdded"
   />
 
+  <!-- Storage Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.storage.IRack
            zope.lifecycleevent.IObjectAddedEvent"
@@ -28,11 +31,18 @@
   />
 
   <subscriber
+      for="immunarray.lims.interfaces.storage.IQCBox
+           zope.lifecycleevent.IObjectAddedEvent"
+      handler="immunarray.lims.subscribers.storage.QCBoxAdded"
+  />
+
+  <subscriber
       for="immunarray.lims.interfaces.storage.IRandDBox
            zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.storage.RandDBoxAdded"
   />
 
+  <!-- Sample Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.clinicalsample.IClinicalSample
            zope.lifecycleevent.IObjectAddedEvent"
@@ -51,6 +61,7 @@
       handler="immunarray.lims.subscribers.sample.QCSampleAdded"
   />
 
+  <!-- Aliquot Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.clinicalaliquot.IClinicalAliquot
            zope.lifecycleevent.IObjectAddedEvent"
@@ -64,6 +75,13 @@
   />
 
   <subscriber
+    for="immunarray.lims.interfaces.qcaliquot.IQCAliquot
+           zope.lifecycleevent.IObjectAddedEvent"
+    handler="immunarray.lims.subscribers.aliquot.QCAliquotAdded"
+  />
+
+  <!-- Assay Request Subscribers-->
+  <subscriber
       for="immunarray.lims.interfaces.assayrequest.IAssayRequest
            zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.assayrequest.AssayRequest"
@@ -75,12 +93,7 @@
       handler="immunarray.lims.subscribers.assaybillingrequest.AssayBillingRequest"
   />
 
-  <subscriber
-      for="immunarray.lims.interfaces.qcaliquot.IQCAliquot
-           zope.lifecycleevent.IObjectAddedEvent"
-      handler="immunarray.lims.subscribers.aliquot.QCAliquotAdded"
-  />
-
+  <!-- Materail/Solution Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.material.IMaterial
            zope.lifecycleevent.IObjectAddedEvent"
@@ -105,12 +118,14 @@
       handler="immunarray.lims.subscribers.solution.SolutionFTIModified"
   />
 
+  <!-- Site Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.site.ISite
            zope.lifecycleevent.IObjectAddedEvent"
       handler="immunarray.lims.subscribers.site.SiteAdded"
   />
 
+  <!-- Provider Subscribers-->
   <subscriber
       for="immunarray.lims.interfaces.provider.IProvider
            zope.lifecycleevent.IObjectAddedEvent"
