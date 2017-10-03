@@ -20,7 +20,7 @@ class CommercialBox(BaseContainer):
     @box_number.setter
     def box_number(self, value):
         self._box_number = value
-        self.setTitle(value + " - " + self.box_type)
+        self.setTitle(value + " - " + self.box_type + " - " + self.Type())
 
     @property
     def box_type(self):
@@ -29,4 +29,5 @@ class CommercialBox(BaseContainer):
     @box_type.setter
     def box_type(self, value):
         self._box_type = value
-        self.setTitle(self.box_number + " - " + value)
+        self.setTitle(self.box_number + " - " + value + " - " + self.Type())
+
