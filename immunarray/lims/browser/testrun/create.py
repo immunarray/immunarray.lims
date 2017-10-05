@@ -469,6 +469,8 @@ class CreateTestRunView(BrowserView):
         """Convert titles to UIDs for all ichips and aliquots
         """
         ichips, aliquots = [], []
+        if isinstance(plates, dict):
+            plates = [plates]
         for plate in plates:
             for chip_nr in range(1, 5):
                 for well_nr in range(1, 9):

@@ -130,7 +130,7 @@
 
     <div id="plates"> <!-- Plate tables are inserted here. -->
 
-      <-- The plate loop here contains a very similar structure to the
+      <!-- The plate loop here contains a very similar structure to the
       blank-plate below! If you modify one, you must modify the other. -->
 
       <tal:existing_plates tal:repeat="enum python:enumerate(context.plates)">
@@ -413,7 +413,7 @@
             </td>
             <td style="text-align:left;vertical-align:top;" rowspan="3" colspan="3">
               Comments:
-              <textarea size="5" name="comments" class="plate-comments"/>
+              <textarea size="5" name="comments" class="plate-comments"></textarea>
             </td>
           </tr>
           <tr>

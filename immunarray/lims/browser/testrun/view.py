@@ -32,22 +32,17 @@ class ViewTestRunView(BrowserView):
         request = self.request
 
         try:
-
             if request.form.get('ctest_action', '') == 'save_run':
                 self.save_run()
                 return json.dumps(
                     {'success': True,
                      'redirect_url': self.context.absolute_url() + '/view'})
-
         except Exception as e:
+            exc = "<br/>" + traceback.format_exc().split("\n", 1)[-1]
+            exc = exc.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
+            msg = "{}".format(exc)
             transaction.abort()
-            return json.dumps({'success': False, 'message': self.error(e)})
-
-        import pdb, traceback
-        from commands import getoutput as go
-        go("/usr/bin/play /home/rockfruit/pdb.wav")
-        pdb.set_trace()
-        pass
+            return json.dumps({'success': False, 'message': msg})
 
         return self.template()
 
@@ -137,6 +132,8 @@ class ViewTestRunView(BrowserView):
         """Convert titles to UIDs for all ichips and aliquots
         """
         ichips, aliquots = [], []
+        if isinstance(plates, dict):
+            plates = [plates]
         for plate in plates:
             for chip_nr in range(1, 5):
                 for well_nr in range(1, 9):
