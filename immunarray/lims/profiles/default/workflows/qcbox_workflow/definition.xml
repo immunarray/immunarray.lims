@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="qcbox_workflow"
+             title="QC Box Workflow"
+             description=""
+             state_variable="review_state"
+             initial_state="active"
+             manager_bypass="False">
+
+  <state state_id="active" title="Active">
+  </state>
+
+  <state state_id="filled" title="Full">
+  </state>
+
+  <state state_id="discarded" title="Discard">
+  </state>
+
+  <transition transition_id="activate"
+              title="Activate"
+              new_state="active"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=activate"
+            category="workflow"
+            icon="">Activate
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('activate')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="box_filled"
+              title="Full"
+              new_state="filled"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=box_filled"
+            category="workflow"
+            icon="">Full
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('box_filled')</guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="discard"
+              title="Discard"
+              new_state="discarded"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=discard"
+            category="workflow"
+            icon="">Discard
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('discard')</guard-expression>
+    </guard>
+  </transition>
+
+</dc-workflow>

@@ -22,6 +22,7 @@
     <permission id="immunarray.lims.permissions.AddRack" title="LIMS: Add Rack"/>
     <permission id="immunarray.lims.permissions.AddRandDAliquot" title="LIMS: Add Research and Development Aliquot"/>
     <permission id="immunarray.lims.permissions.AddRandDBox" title="LIMS: Add RandD Box"/>
+    <permission id="immunarray.lims.permissions.AddQCBox" title="LIMS: Add QC Box"/>
     <permission id="immunarray.lims.permissions.AddRandDSample" title="LIMS: Add Research and Development Sample"/>
     <permission id="immunarray.lims.permissions.AddShelf" title="LIMS: Add Shelf"/>
     <permission id="immunarray.lims.permissions.AddSite" title="LIMS: Add Site"/>

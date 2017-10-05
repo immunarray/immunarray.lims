@@ -26,3 +26,9 @@ def guard_use(instance):
     """
     """
     return True
+
+
+def guard_throw_away(instance):
+    """
+    """
+    return True

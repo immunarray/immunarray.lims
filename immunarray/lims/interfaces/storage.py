@@ -39,8 +39,8 @@ class IRack(BaseModel):
     )
 
     remaining_volume = schema.Int(
-        title=_(u"Remaining "),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Rack Spaces"),
+        description=_(u"Remaining Rack Spaces"),
         required=True,
     )
 
@@ -65,9 +65,10 @@ class ICommercialBox(BaseModel):
         description=_(u'Max Number of Samples'),
         default=81,
     )
+
     remaining_volume = schema.Int(
-        title=_(u"Remaining Volume"),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Aliquot Spaces"),
+        description=_(u"Remaining Aliquot Spaces"),
         required=True,
     )
 
@@ -94,6 +95,13 @@ class IRandDBox(BaseModel):
         required=True,
     )
 
+    box_type = schema.Choice(
+        title=_(u"Sample Type"),
+        description=_(u"Sample Type"),
+        values=[_(u"Bulk"), _(u"Working")],
+        required=True,
+    )
+
     max_samples = schema.Int(
         title=_(u'Max Number of Samples'),
         description=_(u'Max Number of Samples'),
@@ -101,10 +109,53 @@ class IRandDBox(BaseModel):
     )
 
     remaining_volume = schema.Int(
-        title=_(u"Remaining Volume"),
-        description=_(u"Remaining aliquot volume in micro liters (uL)"),
+        title=_(u"Remaining Aliquot Spaces"),
+        description=_(u"Remaining Aliquot Spaces"),
         required=True,
     )
+
+    aliquto_dic = schema.Dict(
+        title=_(u'Box Count to Aliquot ID'),
+        key_type=schema.TextLine(
+            title=_(u"Box Count"),
+            description=_(u"Box Count"),
+            required=False,
+        ),
+        value_type=schema.TextLine(
+            title=_(u"Aliquot ID"),
+            description=_(u"Aliquot ID"),
+            required=False,
+        )
+    )
+
+
+class IQCBox(BaseModel):
+    """Boxes can hold either 100 sampels or 81 samples"""
+    box_number = schema.TextLine(
+        title=_(u'QC Box Number'),
+        description=_(u'QC Box Number'),
+        required=True,
+    )
+
+    box_type = schema.Choice(
+        title=_(u"Sample Type"),
+        description=_(u"Sample Type"),
+        values=[_(u"Bulk"), _(u"Working")],
+        required=True,
+    )
+
+    max_samples = schema.Int(
+        title=_(u'Max Number of Samples'),
+        description=_(u'Max Number of Samples'),
+        default=81,
+    )
+
+    remaining_volume = schema.Int(
+        title=_(u"Remaining Aliquot Spaces"),
+        description=_(u"Remaining Aliquot Spaces"),
+        required=True,
+    )
+
     aliquto_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
         key_type=schema.TextLine(

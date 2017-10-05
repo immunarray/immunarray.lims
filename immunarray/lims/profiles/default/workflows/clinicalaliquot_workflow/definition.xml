@@ -8,12 +8,14 @@
 
   <state state_id="available" title="Available">
     <exit-transition transition_id="queue"/>
+    <exit-transition transition_id="throw_away"/>
   </state>
 
   <state state_id="in_queue" title="In Queue">
     <exit-transition transition_id="cancel_run"/>
     <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="begin_process"/>
+    <exit-transition transition_id="throw_away"/>
   </state>
 
   <state state_id="in_process" title="In Process">
@@ -26,6 +28,26 @@
 
   <state state_id="qc_failed" title="QC Failed">
   </state>
+
+  <state state_id="discarded" title="Discarded">
+  </state>
+
+  <transition transition_id="throw_away"
+              title="Throw Away"
+              new_state="discarded"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <action url="%(content_url)s/content_status_modify?workflow_action=throw_away"
+            category="workflow"
+            icon="">Throw Away
+    </action>
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('throw_away')
+      </guard-expression>
+    </guard>
+  </transition>
 
   <transition transition_id="make_available"
               title="Make Available"

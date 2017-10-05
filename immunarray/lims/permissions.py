@@ -29,6 +29,7 @@ def setup_default_permissions(portal):
     mp(AddShelf, [], 0)
     mp(AddRack, [], 0)
     mp(AddRandDBox, [], 0)
+    mp(AddQCBox, [], 0)
     mp(AddCommercialBox, [], 0)
     mp(AddSite, [], 0)
     mp(AddAssayBillingRequest, [], 0)
@@ -56,6 +57,7 @@ AddQCSample = "LIMS: Add Quality Control Sample"
 AddRack = "LIMS: Add Rack"
 AddRandDAliquot = "LIMS: Add Research and Development Aliquot"
 AddRandDBox = "LIMS: Add RandD Box"
+AddQCBox = "LIMS: Add QC Box"
 AddRandDSample = "LIMS: Add Research and Development Sample"
 AddShelf = "LIMS: Add Shelf"
 AddSite = "LIMS: Add Site"
