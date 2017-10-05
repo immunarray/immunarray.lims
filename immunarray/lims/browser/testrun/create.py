@@ -2,6 +2,7 @@
 import json
 from datetime import datetime
 from operator import itemgetter
+import traceback
 
 import transaction
 from Products.Five.browser import BrowserView
@@ -23,7 +24,6 @@ from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
 from plone.api.content import create, find, get_state, transition
 from plone.api.exc import InvalidParameterError
 from plone.api.portal import get_tool
-
 
 class CreateTestRunView(BrowserView):
     template = ViewPageTemplateFile("templates/testrun_create.pt")
@@ -53,15 +53,14 @@ class CreateTestRunView(BrowserView):
                      'redirect_url': run.absolute_url() + '/view'})
 
         except Exception as e:
+
+            exc = "<br/>" + traceback.format_exc().split("\n",1)[-1]
+            exc = exc.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
+            msg = "{}".format(exc)
             transaction.abort()
-            return json.dumps({'success': False, 'message': self.error(e)})
+            return json.dumps({'success': False, 'message': msg})
 
         return self.template()
-
-    def error(self, e):
-        """Make a nice string from a traceback, to print in the browser
-        """
-        return "{}: {} ({})".format(e.__class__.__name__, e.__doc__, e.message)
 
     @property
     def assay_name(self):
@@ -107,18 +106,19 @@ class CreateTestRunView(BrowserView):
         assay = self.get_assay()
         if not assay:
             return vocabs
-        for solution_type_name in assay.needed_solutions:
-            type_batches = find(Type=solution_type_name,
-                                expires={'query': datetime.today().date(),
-                                         'range': 'min'},
-                                sort_on='expires')
+        if assay.needed_solutions:
+            for solution_type_name in assay.needed_solutions:
+                type_batches = find(Type=solution_type_name,
+                                    expires={'query': datetime.today().date(),
+                                             'range': 'min'},
+                                    sort_on='expires')
 
-            tmp = []
-            for batch in type_batches:
-                tmp.append([batch.id,
-                            batch.Title,
-                            batch.expires.strftime('%Y-%m-%d')])
-            vocabs.append([solution_type_name, tmp])
+                tmp = []
+                for batch in type_batches:
+                    tmp.append([batch.id,
+                                batch.Title,
+                                batch.expires.strftime('%Y-%m-%d')])
+                vocabs.append([solution_type_name, tmp])
         return vocabs
 
     def selected_an_assay(self):

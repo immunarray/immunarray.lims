@@ -43,6 +43,12 @@ class ViewTestRunView(BrowserView):
             transaction.abort()
             return json.dumps({'success': False, 'message': self.error(e)})
 
+        import pdb, traceback
+        from commands import getoutput as go
+        go("/usr/bin/play /home/rockfruit/pdb.wav")
+        pdb.set_trace()
+        pass
+
         return self.template()
 
     def error(self, e):

@@ -5,6 +5,7 @@
     $('#assay_selection').change(function() {
       var assay_name;
       assay_name = $(this).val();
+      $("#global_statusmessage").empty();
       $.ajax({
         url: 'ctest',
         type: 'POST',

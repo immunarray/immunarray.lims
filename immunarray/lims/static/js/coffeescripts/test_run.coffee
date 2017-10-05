@@ -3,6 +3,8 @@ require ['jquery'], ($) ->
     authenticator = $('input[name="_authenticator"]').val()
     $('#assay_selection').change ->
         assay_name = $(this).val()
+        # Clear any possible error messages from last actions
+        $("#global_statusmessage").empty()
         $.ajax
             url: 'ctest'
             type: 'POST'
