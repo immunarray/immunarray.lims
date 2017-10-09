@@ -39,6 +39,9 @@ def CommercialBoxAdded(instance, event):
     instance.manage_permission(AddQCBox, [], 0)
 
     disallow_default_contenttypes(instance)
+    # name box
+    instance.setTitle(
+        instance.box_number + " - " + instance.box_type + " - " + instance.Type())
 
 
 def RandDBoxAdded(instance, event):
@@ -50,6 +53,9 @@ def RandDBoxAdded(instance, event):
     instance.manage_permission(AddCommercialBox, [], 0)
     instance.manage_permission(AddRandDBox, [], 0)
     instance.manage_permission(AddQCBox, [], 0)
+    # name box
+    instance.setTitle(
+        instance.box_number + " - " + instance.box_type + " - " + instance.Type())
 
     disallow_default_contenttypes(instance)
 
@@ -63,5 +69,8 @@ def QCBoxAdded(instance, event):
     instance.manage_permission(AddCommercialBox, [], 0)
     instance.manage_permission(AddRandDBox, [], 0)
     instance.manage_permission(AddQCBox, [], 0)
+    # name box
+    instance.setTitle(
+        instance.box_number + " - " + instance.box_type + " - " + instance.Type())
 
     disallow_default_contenttypes(instance)
