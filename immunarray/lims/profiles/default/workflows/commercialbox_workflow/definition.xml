@@ -19,25 +19,25 @@
   <state state_id="discarded" title="Discard">
   </state>
 
-  <transition transition_id="active"
-              title="Active"
+  <transition transition_id="in_process"
+              title="Active Box"
               new_state="active"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=active"
+    <action url="%(content_url)s/content_status_modify?workflow_action=in_process"
             category="workflow"
             icon="">Active
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('active')</guard-expression>
+      <guard-expression>python:here.guard_handler('in_process')</guard-expression>
     </guard>
   </transition>
 
   <transition transition_id="filled"
               title="Full"
-              new_state="filledd"
+              new_state="filled"
               before_script=""
               after_script=""
               trigger="USER">
@@ -52,14 +52,14 @@
   </transition>
 
   <transition transition_id="discarded"
-              title="Discard"
+              title="Discard Box"
               new_state="discarded"
               before_script=""
               after_script=""
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=discarded"
             category="workflow"
-            icon="">Discard
+            icon="">Discard Box
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
