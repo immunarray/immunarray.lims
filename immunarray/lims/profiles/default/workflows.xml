@@ -17,9 +17,9 @@
   <object name="ichipassay_workflow" meta_type="Workflow"/>
   <object name="site_workflow" meta_type="Workflow"/>
   <object name="commercialrun_workflow" meta_type="Workflow"/>
-  <object name="commercialbox" meta_type="Workflow"/>
-  <object name="qcbox" meta_type="Workflow"/>
-  <object name="randdbox" meta_type="Workflow"/>
+  <object name="commercialbox_workflow" meta_type="Workflow"/>
+  <object name="qcbox_workflow" meta_type="Workflow"/>
+  <object name="randdbox_workflow" meta_type="Workflow"/>
 
   <bindings>
 
