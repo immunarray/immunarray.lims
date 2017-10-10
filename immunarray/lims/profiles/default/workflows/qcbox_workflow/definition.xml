@@ -7,59 +7,63 @@
              manager_bypass="False">
 
   <state state_id="active" title="Active">
+    <exit-transition transition_id="filled"/>
+    <exit-transition transition_id="discarded"/>
   </state>
 
   <state state_id="filled" title="Full">
+    <exit-transition transition_id="activate"/>
+    <exit-transition transition_id="discarded"/>
   </state>
 
   <state state_id="discarded" title="Discard">
   </state>
 
-  <transition transition_id="activate"
-              title="Activate"
+  <transition transition_id="in_process"
+              title="Active Box"
               new_state="active"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=activate"
+    <action url="%(content_url)s/content_status_modify?workflow_action=in_process"
             category="workflow"
-            icon="">Activate
+            icon="">Active
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('activate')</guard-expression>
+      <guard-expression>python:here.guard_handler('in_process')</guard-expression>
     </guard>
   </transition>
 
-  <transition transition_id="box_filled"
+  <transition transition_id="filled"
               title="Full"
               new_state="filled"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=box_filled"
+    <action url="%(content_url)s/content_status_modify?workflow_action=filled"
             category="workflow"
             icon="">Full
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('box_filled')</guard-expression>
+      <guard-expression>python:here.guard_handler('filled')</guard-expression>
     </guard>
   </transition>
 
-  <transition transition_id="discard"
-              title="Discard"
+  <transition transition_id="discarded"
+              title="Discard Box"
               new_state="discarded"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=discard"
+    <action url="%(content_url)s/content_status_modify?workflow_action=discarded"
             category="workflow"
-            icon="">Discard
+            icon="">Discard Box
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('discard')</guard-expression>
+      <guard-expression>python:here.guard_handler('discarded')</guard-expression>
     </guard>
   </transition>
 

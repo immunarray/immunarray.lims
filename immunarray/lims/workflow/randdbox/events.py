@@ -1,3 +1,5 @@
+from plone.api.content import transition, get_state
+
 def after_active(instance):
     """
     """
