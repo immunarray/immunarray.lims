@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import traceback
 from datetime import datetime
 
 import transaction
@@ -38,9 +39,8 @@ class ViewTestRunView(BrowserView):
                     {'success': True,
                      'redirect_url': self.context.absolute_url() + '/view'})
         except Exception as e:
-            exc = "<br/>" + traceback.format_exc().split("\n", 1)[-1]
-            exc = exc.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
-            msg = "{}".format(exc)
+            msg = "<br/>" + traceback.format_exc().split("\n", 1)[-1]
+            msg = msg.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
             transaction.abort()
             return json.dumps({'success': False, 'message': msg})
 
@@ -132,19 +132,20 @@ class ViewTestRunView(BrowserView):
         """Convert titles to UIDs for all ichips and aliquots
         """
         ichips, aliquots = [], []
+        # A single plate run must be converted to a list of plates
         if isinstance(plates, dict):
             plates = [plates]
         for plate in plates:
             for chip_nr in range(1, 5):
                 for well_nr in range(1, 9):
                     key = "chip-{}_well-{}".format(chip_nr, well_nr)
-                    if plate[key]:
+                    if plate.get(key, False):
                         brains = find(object_provides=IAliquot.__identifier__,
                                       Title=plate[key])
                         plate[key] = brains[0].UID
                         aliquots.append(brains[0].getObject())
                 key = "chip-id-{}".format(chip_nr)
-                if plate[key]:
+                if plate.get(key, False):
                     brains = find(object_provides=IiChip.__identifier__,
                                   Title=plate[key])
                     plate[key] = brains[0].UID

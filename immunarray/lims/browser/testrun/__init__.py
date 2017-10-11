@@ -82,13 +82,17 @@ def get_serializeArray_form_values(request):
             intermediate[name] = value
 
     # Separate the plates from the rest of the form values, and convert
-    # them to a single list of dictionaries.
+    # them to a single list of dictionaries. any key in the form who's
+    # name starts with one plate_keys, will be included in the "plates"
+    # element of the returned list
+    plate_keys = ['chip-', 'comments', 'scan-slot', 'well-number']
+    plates = [{} for x in range(nr_plates+1)]
     form_values = {}
-    # noinspection PyUnusedLocal
-    plates = [{} for x in range(nr_plates)]
     for k, v in intermediate.items():
-        if type(v) == list:
-            for nr in range(nr_plates):
+        if any([k.startswith(pk) for pk in plate_keys]):
+            if not isinstance(v, (list, tuple)):
+                v = [v]
+            for nr in range(nr_plates+1):
                 plates[nr][k] = v[nr]
         else:
             form_values[k] = v

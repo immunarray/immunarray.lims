@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
+import traceback
 from datetime import datetime
 from operator import itemgetter
-import traceback
 
 import transaction
 from Products.Five.browser import BrowserView
@@ -24,6 +24,7 @@ from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
 from plone.api.content import create, find, get_state, transition
 from plone.api.exc import InvalidParameterError
 from plone.api.portal import get_tool
+
 
 class CreateTestRunView(BrowserView):
     template = ViewPageTemplateFile("templates/testrun_create.pt")
@@ -54,9 +55,8 @@ class CreateTestRunView(BrowserView):
 
         except Exception as e:
 
-            exc = "<br/>" + traceback.format_exc().split("\n",1)[-1]
-            exc = exc.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
-            msg = "{}".format(exc)
+            msg = "<br/>" + traceback.format_exc().split("\n", 1)[-1]
+            msg = msg.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
             transaction.abort()
             return json.dumps({'success': False, 'message': msg})
 
@@ -86,7 +86,7 @@ class CreateTestRunView(BrowserView):
             return catalog(object_provides=IVeracisRunBase.__identifier__,
                            sort_on='run_number',
                            sort_order='reverse',
-                           limit=1)[0].run_number+1
+                           limit=1)[0].run_number + 1
         except IndexError:
             return '1'
 
@@ -469,19 +469,20 @@ class CreateTestRunView(BrowserView):
         """Convert titles to UIDs for all ichips and aliquots
         """
         ichips, aliquots = [], []
+        # A single plate run must be converted to a list of plates
         if isinstance(plates, dict):
             plates = [plates]
         for plate in plates:
             for chip_nr in range(1, 5):
                 for well_nr in range(1, 9):
                     key = "chip-{}_well-{}".format(chip_nr, well_nr)
-                    if plate[key]:
+                    if plate.get(key, False):
                         brains = find(object_provides=IAliquot.__identifier__,
                                       Title=plate[key])
                         plate[key] = brains[0].UID
                         aliquots.append(brains[0].getObject())
                 key = "chip-id-{}".format(chip_nr)
-                if plate[key]:
+                if plate.get(key, False):
                     brains = find(object_provides=IiChip.__identifier__,
                                   Title=plate[key])
                     plate[key] = brains[0].UID
