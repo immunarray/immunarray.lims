@@ -81,10 +81,6 @@
           background-color:lightgrey;
           font-size:11pt;
       }
-      .delete-plate{
-          cursor: pointer;
-          background-color:lightgrey;
-      }
 
   </style>
   <form id="test_run" method="post">
@@ -139,12 +135,8 @@
                                plate python:enum[1];"
                tal:attributes="id python:'plate-%s'%plate_nr;">
           <tr>
-            <td colspan="11" class="header-row">
+            <td colspan="12" class="header-row">
               <strong><span class="plate-title">Plate&nbsp;<span tal:replace="plate_nr"/></span></strong>
-            </td>
-            <td>
-              <button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;
-              </button>
             </td>
           </tr>
           <tr>
@@ -608,11 +600,8 @@
   -->
   <table id="blank-plate" class="plate-container beta hidden">
     <tr>
-      <td colspan="11" class="header-row">
+      <td colspan="12" class="header-row">
         <strong><span class="plate-title">Plate</span></strong>
-      </td>
-      <td>
-        <button class="delete-plate">&nbsp;&nbsp;&#9747;&nbsp;&nbsp;</button>
       </td>
     </tr>
     <tr>
