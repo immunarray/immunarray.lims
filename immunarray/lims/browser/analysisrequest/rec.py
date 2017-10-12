@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
-from plone import api
 
 import plone.protect
 from Products.CMFPlone.resources import add_resource_on_request
@@ -11,6 +10,7 @@ from bika.lims.permissions import disallow_default_contenttypes
 from immunarray.lims.vocabularies.billingprogrmas import \
     BillingProgramsVocabulary
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
+from plone import api
 from plone.api.content import transition, find
 
 
@@ -515,20 +515,6 @@ class AddRecView(BrowserView):
         pt_record = api.content.get(UID=pt_UID)
         pt_record.tested_unique_sample_ids.append(usn_from_form)
 
-    def update_kit_count(self, site_id):
-        """Update site kits on hand count to be reduced by 1
-        """
-        site_objects = find(portal_type='Site')
-        for i in site_objects:
-            if i.Title == site_id:
-                uid = i.UID
-                site = api.content.get(UID=uid)
-                site.kits_on_site -= 1
-                # Account for free kits, so that number counts down
-                if site.free_kits_left > 0:
-                    site.free_kits_left -= 1
-                # make alert if kits_on_site value is at or below desired level?
-
     def pull_previous_patient_data(self, pt_UID):
         """Take pt_UID and package up information to send back to end user
         """
@@ -592,7 +578,32 @@ class AddRecView(BrowserView):
                                               )
         clinical_aliquot_UID = clinical_aliquot.UID()
         #add aliquots to bulk box
+        self.store_clincal_bulk_aliquots(clinical_aliquot_UID)
         return clinical_aliquot_UID
+
+    def store_clincal_bulk_aliquots(self, uid):
+        # get active box from workflow state, if one doesn't exist make it,
+        # check for aliquot space in box, if none make a new box
+        sought_box_type = "Bulk"
+        brains = find(portal_type='CommercialBox', review_state='active')
+        if brains is not None:
+            for brain in brains:
+                cb = brain.getObject()
+                if cb.box_type == sought_box_type:
+                    if cb.remaining_volume > 0:
+                        box_to_use = cb.UID
+                    else:
+                        # change box workflow to full
+                        try:
+                            transition(cb, "filled")
+                        except:
+                            msg = "Could not change '%s' workflow state" % (
+                            cb.Title)
+                            raise ObjectInInvalidState(msg)
+                            # make a new sought_box_type, and return this UID
+                            new_box = api.content.create()
+        else:
+            pass
 
     def make_working_aliquots(self, usn_from_form, bulk_aliquot_UID,
                               tube_number):
@@ -611,6 +622,9 @@ class AddRecView(BrowserView):
         clinical_aliquot_UID = clinical_aliquot.UID()
         #add aliquots to working box
         return clinical_aliquot_UID
+
+    def store_clinical_working_aliquots(self):
+        pass
 
     def check_if_site_is_sales_rep(self, site_id):
         """See if kit came from a sales rep site
@@ -633,3 +647,17 @@ class AddRecView(BrowserView):
     def BillingPrograms(self):
         vocab_keys = BillingProgramsVocabulary.__call__(self).by_value.keys()
         return vocab_keys
+
+    def update_kit_count(self, site_id):
+        """Update site kits on hand count to be reduced by 1
+        """
+        site_objects = find(portal_type='Site')
+        for i in site_objects:
+            if i.Title == site_id:
+                uid = i.UID
+                site = api.content.get(UID=uid)
+                site.kits_on_site -= 1
+                # Account for free kits, so that number counts down
+                if site.free_kits_left > 0:
+                    site.free_kits_left -= 1
+                    # make alert if kits_on_site value is at or below desired level?
