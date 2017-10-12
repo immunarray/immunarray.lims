@@ -3,6 +3,15 @@ from zope import schema
 
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
+from zope.schema import List
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
+from z3c.form import field
+from z3c.form import form
+from z3c.form.form import extends
+from zope import interface
+from zope import component
+from zope import schema
 
 
 class IFreezer(BaseModel):
@@ -74,14 +83,15 @@ class ICommercialBox(BaseModel):
 
     aliquto_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
+        required=False,
         key_type=schema.TextLine(
             title=_(u"Box Count"),
             description=_(u"Box Count"),
             required=False,
         ),
-        value_type=schema.TextLine(
-            title=_(u"Aliquot ID"),
-            description=_(u"Aliquot ID"),
+        value_type=List(
+            title=_(u"Aliquot ID, UID"),
+            description=_(u"Aliquot ID, UID"),
             required=False,
         )
     )
@@ -116,14 +126,15 @@ class IRandDBox(BaseModel):
 
     aliquto_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
+        required=False,
         key_type=schema.TextLine(
             title=_(u"Box Count"),
             description=_(u"Box Count"),
             required=False,
         ),
-        value_type=schema.TextLine(
-            title=_(u"Aliquot ID"),
-            description=_(u"Aliquot ID"),
+        value_type=List(
+            title=_(u"Aliquot ID, UID"),
+            description=_(u"Aliquot ID, UID"),
             required=False,
         )
     )
@@ -158,14 +169,15 @@ class IQCBox(BaseModel):
 
     aliquto_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
+        required=False,
         key_type=schema.TextLine(
             title=_(u"Box Count"),
             description=_(u"Box Count"),
             required=False,
         ),
-        value_type=schema.TextLine(
-            title=_(u"Aliquot ID"),
-            description=_(u"Aliquot ID"),
+        value_type=List(
+            title=_(u"Aliquot ID, UID"),
+            description=_(u"Aliquot ID, UID"),
             required=False,
         )
     )
