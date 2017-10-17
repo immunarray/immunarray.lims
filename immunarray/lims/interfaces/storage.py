@@ -1,18 +1,36 @@
 # -*- coding: utf-8 -*-
+
 from zope import schema
 
+from immunarray.lims import logger
 from immunarray.lims import messageFactory as _
 from immunarray.lims.interfaces import BaseModel
+from plone.api.content import find
+from zope.interface import implements
 from zope.schema import List
-from collective.z3cform.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield import DictRow
-from z3c.form import field
-from z3c.form import form
-from z3c.form.form import extends
-from zope import interface
-from zope import component
-from zope import schema
+from zope.schema.interfaces import IContextAwareDefaultFactory
 
+
+class assignBoxNumber():
+    """All boxes use this as the default value of their
+    box_number fields, allows for a consistent number system.
+    """
+    implements(IContextAwareDefaultFactory)
+
+    def __init__(self):
+        pass
+
+    def __call__(self, context):
+        """Pull all box numbers and get the next one.
+        """
+        brains = find(portal_type=['CommercialBox', 'RandDBox', 'QCBox'],
+                      sort_on='box_number',
+                      sort_order='reverse', limit=1)
+        if brains:
+            _id = str(int(brains[0].box_number) + 1)
+            return unicode(_id)
+        logger.info("assignBoxNumber: No Boxes Exist: using ID '1'")
+        return u"1"
 
 class IFreezer(BaseModel):
     """Not desired for ImmunArray"""
@@ -59,6 +77,7 @@ class ICommercialBox(BaseModel):
     box_number = schema.TextLine(
         title=_(u'Box Number'),
         description=_(u'Box Number'),
+        defaultFactory=assignBoxNumber(),
         required=True,
     )
 
@@ -81,7 +100,7 @@ class ICommercialBox(BaseModel):
         required=True,
     )
 
-    aliquto_dic = schema.Dict(
+    aliquot_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
         required=False,
         key_type=schema.TextLine(
@@ -102,6 +121,7 @@ class IRandDBox(BaseModel):
     box_number = schema.TextLine(
         title=_(u'R&D Box Number'),
         description=_(u'R&D Box Number'),
+        defaultFactory=assignBoxNumber(),
         required=True,
     )
 
@@ -124,7 +144,7 @@ class IRandDBox(BaseModel):
         required=True,
     )
 
-    aliquto_dic = schema.Dict(
+    aliquot_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
         required=False,
         key_type=schema.TextLine(
@@ -145,6 +165,7 @@ class IQCBox(BaseModel):
     box_number = schema.TextLine(
         title=_(u'QC Box Number'),
         description=_(u'QC Box Number'),
+        defaultFactory=assignBoxNumber(),
         required=True,
     )
 
@@ -167,7 +188,7 @@ class IQCBox(BaseModel):
         required=True,
     )
 
-    aliquto_dic = schema.Dict(
+    aliquot_dic = schema.Dict(
         title=_(u'Box Count to Aliquot ID'),
         required=False,
         key_type=schema.TextLine(
@@ -212,3 +233,5 @@ def make100samplebox(self):
 
 def make90samplebox(self):
     pass
+
+
