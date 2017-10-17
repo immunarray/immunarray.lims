@@ -7,6 +7,7 @@ from Products.CMFPlone.resources import add_resource_on_request
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims.permissions import disallow_default_contenttypes
+from immunarray.lims.browser.testrun import ObjectInInvalidState
 from immunarray.lims.vocabularies.billingprogrmas import \
     BillingProgramsVocabulary
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
@@ -578,20 +579,25 @@ class AddRecView(BrowserView):
                                               )
         clinical_aliquot_UID = clinical_aliquot.UID()
         #add aliquots to bulk box
-        self.store_clincal_bulk_aliquots(clinical_aliquot_UID)
+        self.store_aliquot(clinical_aliquot_UID, usn_from_form, "Bulk", "CommercialBox")
         return clinical_aliquot_UID
 
-    def store_clincal_bulk_aliquots(self, uid):
+    def store_aliquot(self, uid, usn, aliquot_type, target_box_type):
         # get active box from workflow state, if one doesn't exist make it,
         # check for aliquot space in box, if none make a new box
-        sought_box_type = "Bulk"
-        brains = find(portal_type='CommercialBox', review_state='active')
+        aliquot_type = aliquot_type # Bulk or Working
+        target_box_type = target_box_type # CommercialBox, RandDBox, QCBox
+        # find the active box of the type we need,
+        brains = find(portal_type=target_box_type, review_state='active')
         if brains is not None:
             for brain in brains:
                 cb = brain.getObject()
-                if cb.box_type == sought_box_type:
+                if cb.box_type == aliquot_type:
                     if cb.remaining_volume > 0:
                         box_to_use = cb.UID
+                        entry_key = str(len(cb.aliquot.keys()) + 1) # number but need to string it
+                        entry_value = [usn, uid] # Aliquot ID, UID
+                        # thing to add it to cb.aliquot_dic
                     else:
                         # change box workflow to full
                         try:
@@ -600,10 +606,19 @@ class AddRecView(BrowserView):
                             msg = "Could not change '%s' workflow state" % (
                             cb.Title)
                             raise ObjectInInvalidState(msg)
-                            # make a new sought_box_type, and return this UID
-                            new_box = api.content.create()
+                            # see if rack has empty space, if not bail, and alert user
+                            # make a new aliquot_type, and return this UID
+                        rack = cb.aq_paretn
+                        new_box = api.content.create(container=rack,
+                                                     type=target_box_type,
+                                                     title="",
+                                                     box_type=aliquot_type,
+                                                     max_samples=81,
+                                                     remaining_volume=80,
+                                                     aliquot_dic={u'1',[usn, uid]})
         else:
-            pass
+            print "No Active Box for Parameters sent"
+
 
     def make_working_aliquots(self, usn_from_form, bulk_aliquot_UID,
                               tube_number):
@@ -623,8 +638,6 @@ class AddRecView(BrowserView):
         #add aliquots to working box
         return clinical_aliquot_UID
 
-    def store_clinical_working_aliquots(self):
-        pass
 
     def check_if_site_is_sales_rep(self, site_id):
         """See if kit came from a sales rep site
