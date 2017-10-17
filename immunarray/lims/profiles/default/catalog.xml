@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
-  <!-- Veracis Sample Serail number that is used as a running count of samples
+  <!-- Veracis Sample Serial number that is used as a running count of samples
   that have come into the lab, key lookup for samples pre LIMS-->
   <index name="sample_serial_number" meta_type="FieldIndex">
     <indexed_attr value="sample_serial_number"/>
@@ -35,4 +35,9 @@
   </index>
   <column value="remaining_volume"/>
   <column value="product_name"/>
+  <!-- Box Numbers for aliquots that are in the inventory system -->
+  <index name="box_number" meta_type="FieldIndex">
+    <indexed_attr value="box_number"/>
+  </index>
+  <column value="box_number"/>
 </object>
