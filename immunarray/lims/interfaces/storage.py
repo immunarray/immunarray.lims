@@ -43,7 +43,7 @@ class IShelf(BaseModel):
 
 
 class IRack(BaseModel):
-    """Letters of the alphabet singel letter to double letter to tripple
+    """Letters of the alphabet single letter to double letter to triple
     letter, have two types of racks and that determines the number of boxes
     it will hold.  (5x4=20 boxes, or 4x4=16 boxes)
     """
