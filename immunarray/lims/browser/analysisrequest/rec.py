@@ -424,7 +424,7 @@ class AddRecView(BrowserView):
         clinical_sample = api.content.create(container=sample,
                                              type='ClinicalSample',
                                              id=usn_from_form,
-                                             title=usn_from_form,
+                                             usn=usn_from_form,
                                              safe_id=True,
                                              sample_serial_number=serial_number,
                                              research_consent=consent_acquired,
@@ -579,7 +579,7 @@ class AddRecView(BrowserView):
                                               )
         clinical_aliquot_UID = clinical_aliquot.UID()
         #add aliquots to bulk box
-        self.store_aliquot(clinical_aliquot_UID, usn_from_form, "Bulk", "CommercialBox")
+        # self.store_aliquot(clinical_aliquot_UID, usn_from_form, "Bulk", "CommercialBox")
         return clinical_aliquot_UID
 
     def store_aliquot(self, uid, usn, aliquot_type, target_box_type):
