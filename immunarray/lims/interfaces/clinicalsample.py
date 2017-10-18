@@ -93,6 +93,7 @@ class IClinicalSample(ISample):
     xray_ordered = schema.Bool(
         title=_(u"X-Ray Ordered"),
         description=_(u"X-Ray Ordered"),
+        required=False,
     )
     other_test_ordered = schema.TextLine(
         title=_(u"Other Test(s) Ordered"),
@@ -118,16 +119,19 @@ class IClinicalSample(ISample):
     joint_pain_text = schema.TextLine(
         title=_(u"Joint Pain Specifics"),
         description=_(u"Joint Pain Specifics (Enter One Per Line)"),
+        required=False,
     )
 
     inflammation_text = schema.TextLine(
         title=_(u"Inflammation Specifics"),
         description=_(u"Inflammation Specifics (Enter One Per Line)"),
+        required=False,
     )
 
     other_symptoms_text = schema.TextLine(
         title=_(u"Other Symptom(s)"),
         description=_(u"Other Symptom(s) Enter One Per Line"),
+        required=False,
     )
 
     phlebotomist_name = schema.TextLine(
@@ -139,6 +143,7 @@ class IClinicalSample(ISample):
     phlebotomist_signature_provided = schema.Bool(
         title=_(u"Ordering Healthcare Provider Signature Provided"),
         description=_(u"Ordering Healthcare Provider Signature Provided"),
+        required=False,
     )
 
     collection_date = schema.Date(
