@@ -13,6 +13,7 @@
 
   <state state_id="to_be_tested" title="To Be Tested">
     <exit-transition transition_id="queue"/>
+    <!-- <exit-transition transition_id="ordered"/>? maybe a back step  -->
     <exit-transition transition_id="reject"/>
   </state>
 
