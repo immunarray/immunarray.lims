@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from immunarray.lims.interfaces.storage import ICommercialBox
+from zope import schema
+from immunarray.lims.interfaces.storage import ICommercialBox, assignBoxNumber
 from zope.component import adapter
 from zope.interface import Interface
 from zope.interface import implementer
+from immunarray.lims import messageFactory as _
 
 from . import BaseContainer
 
@@ -12,10 +14,3 @@ from . import BaseContainer
 class CommercialBox(BaseContainer):
     def __init__(self, *args, **kwargs):
         super(CommercialBox, self).__init__(*args, **kwargs)
-
-    box_number = schema.TextLine(
-        title=_(u'Box Number'),
-        description=_(u'Box Number'),
-        defaultFactory=assignBoxNumber(),
-        required=True,
-    )

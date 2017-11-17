@@ -74,7 +74,15 @@ class IRack(BaseModel):
 
 class ICommercialBox(BaseModel):
     """Boxes can hold either 100 sampels or 81 samples"""
+    #tmp_box_number = assignBoxNumber()
 
+    box_number = schema.TextLine(
+        title=_(u'R&D Box Number'),
+        description=_(u'R&D Box Number'),
+        defaultFactory=assignBoxNumber(),
+        #default=assignBoxNumber(),
+        required=True,
+    )
 
     box_type = schema.Choice(
         title=_(u"Sample Type"),

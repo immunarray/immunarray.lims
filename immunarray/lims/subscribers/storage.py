@@ -31,7 +31,7 @@ def RackAdded(instance, event):
 def CommercialBoxAdded(instance, event):
     """A new  commercial box has been created
     """
-    # Permit Aliqutos to be added here
+    # Permit Aliquots to be added here
     instance.manage_permission(AddAliquot, [], 0)
     # Prevent adding box in a box
     instance.manage_permission(AddCommercialBox, [], 0)
@@ -40,6 +40,7 @@ def CommercialBoxAdded(instance, event):
 
     disallow_default_contenttypes(instance)
     # name box
+    import pdb;pdb.set_trace()
     instance.setTitle(instance.box_number + " - " + instance.box_type + " - " + instance.Type())
     # reindex for title to work
     instance.reindexObject(idxs= ['Title','sortable_title','title'])
