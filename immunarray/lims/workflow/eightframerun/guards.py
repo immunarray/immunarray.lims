@@ -1,3 +1,5 @@
+from immunarray.lims.interfaces import eightframerun
+
 def gurard_queue(instance):
     """
     """
@@ -6,6 +8,8 @@ def gurard_queue(instance):
 
 def gurard_in_process(instance):
     """
+    if eightframerun.solutions(instance):
+        return False
     """
     return True
 
