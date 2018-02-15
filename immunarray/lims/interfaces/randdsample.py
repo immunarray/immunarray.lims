@@ -19,6 +19,13 @@ class IRandDSample(ISample):
     """R and D sample!
     """
 
+    department = schema.Choice(
+        title=_(u"Department"),
+        description=_(u"Department that controls material"),
+        values=[_(u"TBI"), _(u"Commercial"), _(u"BrainBox"), _(u"Other")],
+        required=False,
+    )
+
     source_id_one = schema.TextLine(
         title=_(u"Primary R&D Source Sample ID"),
         description=_(u"Primary R&D Source Sample ID"),
