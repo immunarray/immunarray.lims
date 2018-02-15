@@ -40,4 +40,19 @@
     <indexed_attr value="box_number"/>
   </index>
   <column value="box_number"/>
+  <!-- source_id_one for RandDSample  -->
+  <index name="source_id_one" meta_type="FieldIndex">
+    <indexed_attr value="source_id_one"/>
+  </index>
+  <column value="source_id_one"/>
+  <!-- source_id_two for RandDSample  -->
+  <index name="source_id_two" meta_type="FieldIndex">
+    <indexed_attr value="source_id_two"/>
+  </index>
+  <column value="source_id_two"/>
+  <!-- source_id_three for RandDSample  -->
+  <index name="source_id_three" meta_type="FieldIndex">
+    <indexed_attr value="source_id_three"/>
+  </index>
+  <column value="source_id_three"/>
 </object>
