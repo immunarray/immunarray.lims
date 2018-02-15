@@ -6,6 +6,9 @@ from immunarray.lims.content.abstractsample import assignVeracisId
 from immunarray.lims.interfaces.sample import ISample
 from zope import schema
 
+from plone.autoform.interfaces import IFormFieldProvider
+from zope.interface import alsoProvides
+
 
 def currentTime():
     return datetime.datetime.now()
@@ -102,23 +105,5 @@ class IRandDSample(ISample):
         required=False,
     )
 
-    # Should be on the aliquot object not the sample
-    """
-    status = schema.Choice(
-        title=_(
-            u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
-        description=_(
-            u"R&D Sample Status (Available, In Process, Retained, Consumed)"),
-        values=[_(u"Available"), _(u"In Process"), _(u"Retained"),
-                _(u"Quarantined"), _(u"Consumed")],
-        required=False,
-    )
-    """
-    # Should be on the aliquot object not the sample
-    """
-    date_disposed = schema.Date(
-        title=_(u"Date R&D Sample was Disposed"),
-        description=_(u"Date R&D Sample was Disposed"),
-        required=False,
-    )
-    """
+
+alsoProvides(IRandDSample, IFormFieldProvider)
