@@ -5,7 +5,7 @@
   <property name="title" i18n:translate="">Research and Development Sample</property>
   <property name="description" i18n:translate=""/>
   <property name="icon_expr">string:${portal_url}/document_icon.png</property>
-  <property name="factory">ClinicalSample</property>
+  <property name="factory">RandDSample</property>
   <property name="add_view_expr">string:${folder_url}/++add++RandDSample</property>
   <property name="link_target"/>
   <property name="immediate_view">view</property>
