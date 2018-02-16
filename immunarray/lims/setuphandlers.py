@@ -74,6 +74,7 @@ def make_billing(portal):
     b1.manage_permission(ModifyPortalContent, ['LabManager', 'BillingExec'], 0)
     b1.manage_permission(AddAssayBillingRequest,[],0)
     b1.manage_permission(AddBillingProgram,[],0)
+    b1.manage_permission(AddAliquotPlate,[],0)
 
     b2.manage_permission(AddLIMSRoot, [], 0)
     b2.manage_permission(permissions.AddFolder, [], 0)
@@ -83,6 +84,7 @@ def make_billing(portal):
     b2.manage_permission(ModifyPortalContent, ['LabManager', 'BillingExec'], 0)
     b2.manage_permission(AddAssayBillingRequest, ['LabManager', 'BillingExec'], 0)
     b2.manage_permission(AddBillingProgram,[],0)
+    b2.manage_permission(AddAliquotPlate,[],0)
 
     b2.manage_permission(AddLIMSRoot, [], 0)
     b3.manage_permission(permissions.AddFolder, [], 0)
@@ -92,6 +94,7 @@ def make_billing(portal):
     b3.manage_permission(AddBillingProgram, ['LabManager', 'BillingExec'], 0)
     b3.manage_permission(ModifyPortalContent, ['LabManager', 'BillingExec'], 0)
     b3.manage_permission(AddAssayBillingRequest, [],0)
+    b3.manage_permission(AddAliquotPlate,[],0)
     # @formatter:on
 
 

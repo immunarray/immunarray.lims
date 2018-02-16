@@ -35,6 +35,7 @@ def setup_default_permissions(portal):
     mp(AddAssayBillingRequest, [], 0)
     mp(AddAssayRequest, [], 0)
     mp(AddBillingProgram, [], 0)
+    mp(AddAliquotPlate, [], 0)
 
 
 AddClinicalAliquot = "LIMS: Add Clinical Aliquot"
@@ -68,3 +69,4 @@ AddVeracisRunBase = "LIMS: Add Veracis Run Base"
 AddAssayRequest = "LIMS: Add Assay Request"
 AddAssayBillingRequest = "Billing: Add Assay Billing Request"
 AddBillingProgram = "Billing: Add Billing Program"
+AddAliquotPlate = "LIMS: Add Aliquot Plate"
