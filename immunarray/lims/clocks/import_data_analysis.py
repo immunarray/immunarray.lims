@@ -62,11 +62,12 @@ class ImportDataAnalysis(BrowserView):
     """
 
     def __init__(self, context, request):
+        import pdb;pdb.set_trace()
         BrowserView.__init__(self, context, request)
         self.context = context
         self.request = request
         self.filepath = os.environ.get('DATA_ANALYSIS_PATH')
-        self.threshold = int(os.environ.get('DATA_ANALYSIS_AGE_THRESHOLD', 120))
+        self.threshold = int(os.environ.get('DATA_ANALYSIS_AGE_THRESHOLD', 12000))
 
     def __call__(self):
         if self.locked():
@@ -98,6 +99,7 @@ class ImportDataAnalysis(BrowserView):
         """Return a list of full paths, who's file mtimes are outisde
         the safety threshold.
         """
+        import pdb;pdb.set_trace()
         paths = []
         for fname in os.listdir(self.filepath):
             if fname == 'lock':
@@ -119,6 +121,7 @@ class ImportDataAnalysis(BrowserView):
         them to the database
         """
         # Get the first sheet
+        import pdb;pdb.set_trace()
         filename = join(path, 'Out', 'Results', 'SLEkey_Results.xlsx')
         wb = openpyxl.load_workbook(filename)
         ws = wb.get_sheet_by_name('Sheet1')
