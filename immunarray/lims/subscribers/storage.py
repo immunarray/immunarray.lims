@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from bika.lims.permissions import AddAliquot
 from bika.lims.permissions import disallow_default_contenttypes
-from immunarray.lims.permissions import AddCommercialBox, AddRack, AddRandDBox, \
-    AddQCBox
+from immunarray.lims.permissions import AddCommercialBox, AddQCBox, AddRack, \
+    AddRandDBox
 
 
 def RackAdded(instance, event):
@@ -10,18 +10,11 @@ def RackAdded(instance, event):
     """
 
     # Permit Commercial Boxes to be added here
-    instance.manage_permission(
-        AddCommercialBox,
-        ['Manager', 'LabManager', 'LabClerk', 'Owner'],
-        0)
-    instance.manage_permission(
-        AddRandDBox,
-        ['Manager', 'LabManager', 'RandDLabClerk', 'RandDLabManager', 'Owner'],
-        0)
-    instance.manage_permission(
-        AddQCBox,
-        ['Manager', 'LabManager', 'RandDLabClerk', 'RandDLabManager', 'Owner'],
-        0)
+    # @formatter:off
+    instance.manage_permission(AddCommercialBox, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    instance.manage_permission(AddRandDBox, ['Manager', 'LabManager', 'RandDLabClerk', 'RandDLabManager', 'Owner'], 0)
+    instance.manage_permission(AddQCBox, ['Manager', 'LabManager', 'RandDLabClerk', 'RandDLabManager', 'Owner'], 0)
+    # @formatter:on
     # Prevent adding Rack in a rack!
     instance.manage_permission(AddRack, [], 0)
 
@@ -40,9 +33,10 @@ def CommercialBoxAdded(instance, event):
 
     disallow_default_contenttypes(instance)
     # name box
-    instance.setTitle("%s - %s - %s" % (instance.box_number, instance.box_type, instance.Type()))
+    instance.setTitle("%s - %s - %s" % (
+        instance.box_number, instance.box_type, instance.Type()))
     # reindex for title to work
-    instance.reindexObject(idxs= ['Title','sortable_title','title'])
+    instance.reindexObject(idxs=['Title', 'sortable_title', 'title'])
 
 
 def RandDBoxAdded(instance, event):
@@ -58,9 +52,10 @@ def RandDBoxAdded(instance, event):
     disallow_default_contenttypes(instance)
 
     # name box
-    instance.setTitle("%s - %s - %s" % (instance.box_number, instance.box_type, instance.Type()))
+    instance.setTitle("%s - %s - %s" % (
+        instance.box_number, instance.box_type, instance.Type()))
     # reindex for title to work
-    instance.reindexObject(idxs= ['Title','sortable_title','title'])
+    instance.reindexObject(idxs=['Title', 'sortable_title', 'title'])
 
 
 def QCBoxAdded(instance, event):
@@ -73,10 +68,10 @@ def QCBoxAdded(instance, event):
     instance.manage_permission(AddRandDBox, [], 0)
     instance.manage_permission(AddQCBox, [], 0)
 
-
     disallow_default_contenttypes(instance)
 
     # name box
-    instance.setTitle("%s - %s - %s" % (instance.box_number, instance.box_type, instance.Type()))
+    instance.setTitle("%s - %s - %s" % (
+        instance.box_number, instance.box_type, instance.Type()))
     # reindex for title to work
-    instance.reindexObject(idxs= ['Title','sortable_title','title'])
+    instance.reindexObject(idxs=['Title', 'sortable_title', 'title'])
