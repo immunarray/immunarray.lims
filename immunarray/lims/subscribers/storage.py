@@ -40,8 +40,7 @@ def CommercialBoxAdded(instance, event):
 
     disallow_default_contenttypes(instance)
     # name box
-    import pdb;pdb.set_trace()
-    instance.setTitle(instance.box_number + " - " + instance.box_type + " - " + instance.Type())
+    instance.setTitle("%s - %s - %s" % (instance.box_number, instance.box_type, instance.Type()))
     # reindex for title to work
     instance.reindexObject(idxs= ['Title','sortable_title','title'])
 
@@ -59,7 +58,7 @@ def RandDBoxAdded(instance, event):
     disallow_default_contenttypes(instance)
 
     # name box
-    instance.setTitle(instance.box_number + " - " + instance.box_type + " - " + instance.Type())
+    instance.setTitle("%s - %s - %s" % (instance.box_number, instance.box_type, instance.Type()))
     # reindex for title to work
     instance.reindexObject(idxs= ['Title','sortable_title','title'])
 
@@ -78,6 +77,6 @@ def QCBoxAdded(instance, event):
     disallow_default_contenttypes(instance)
 
     # name box
-    instance.setTitle(instance.box_number + " - " + instance.box_type + " - " + instance.Type())
+    instance.setTitle("%s - %s - %s" % (instance.box_number, instance.box_type, instance.Type()))
     # reindex for title to work
     instance.reindexObject(idxs= ['Title','sortable_title','title'])
