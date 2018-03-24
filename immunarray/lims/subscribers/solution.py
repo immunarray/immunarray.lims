@@ -2,6 +2,7 @@
 from decimal import Decimal
 
 from bika.lims.permissions import disallow_default_contenttypes
+from immunarray.lims import logger
 from immunarray.lims.interfaces.material import IMaterial
 from immunarray.lims.interfaces.solution import ISolution
 from immunarray.lims.permissions import AddSolution
@@ -36,22 +37,26 @@ def UpdateSourceMaterials(instance, event):
     """
     mu = instance.materials_used
     if mu:
-
         for x in mu:  # {'material title (key)':'mass/volume'(value),}
-            brains = find(object_provides=IMaterial.__identifier__,
-                          Title=x
-                          )
-            material = brains[0].getObject()
-            temp = Decimal(material.remaining_amount) - Decimal(mu[x])
-            material.remaining_amount = float(temp)
+            brains = find(object_provides=IMaterial.__identifier__, Title=x)
+            if brains:
+                material = brains[0].getObject()
+                temp = Decimal(material.remaining_amount) - Decimal(mu[x])
+                material.remaining_amount = float(temp)
+            else:
+                logger.warn(
+                    "%s: Update source materials: material not found: %s" %
+                    (instance, x))
 
     su = instance.solutions_used
     if su:
-        for x in su:  # {'material title (key)':'mass/volume'(value),}
-            brains = find(object_provides=ISolution.__identifier__,
-                          Title=x
-                          )
-            solution = brains[0].getObject()
-            temp = Decimal(solution.remaining_amount) - Decimal(su[x])
-            solution.remaining_amount = float(temp)
-
+        for x in su:  # {'solution title (key)':'mass/volume'(value),}
+            brains = find(object_provides=ISolution.__identifier__, Title=x)
+            if brains:
+                solution = brains[0].getObject()
+                temp = Decimal(solution.remaining_amount) - Decimal(su[x])
+                solution.remaining_amount = float(temp)
+            else:
+                logger.warn(
+                    "%s: Update source materials: solution not found: %s" %
+                    (instance, x))
