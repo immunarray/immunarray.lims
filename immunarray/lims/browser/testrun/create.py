@@ -389,7 +389,6 @@ class CreateTestRunView(BrowserView):
 
         qc_to_add_to_plate = [hqc_aliquot] * assay.number_of_high_value_controls
         qc_to_add_to_plate += [lqc_aliquot] * assay.number_of_low_value_controls
-        print qc_to_add_to_plate
         return qc_to_add_to_plate
 
     def getiChipsForTesting(self, assay):
