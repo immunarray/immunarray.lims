@@ -83,10 +83,11 @@ class CreateTestRunView(BrowserView):
         """
         catalog = get_tool('portal_catalog')
         try:
-            return catalog(object_provides=IVeracisRunBase.__identifier__,
-                           sort_on='run_number',
-                           sort_order='reverse',
-                           limit=1)[0].run_number + 1
+            cur_nr = catalog(object_provides=IVeracisRunBase.__identifier__,
+                             sort_on='run_number',
+                             sort_order='reverse',
+                             limit=1)[0].run_number
+            return int(cur_nr) + 1
         except IndexError:
             return '1'
 
