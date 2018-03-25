@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="immunarray.lims">
+
+<body>
+    <metal:content-core fill-slot="content-core">
+        <style type="text/css">
+        </style>
+
+        <p>
+            Create new or import results for test run by clicking <a href="lims/testruns/ctest">here.</a>
+        </p>
+
+    </metal:content-core>
+</body>
+</html>

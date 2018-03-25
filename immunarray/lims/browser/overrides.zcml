@@ -9,4 +9,7 @@
       permission="zope.Public"
   />
 
+  <include file="limsroot.zcml"/>
+
+
 </configure>
