@@ -4,12 +4,6 @@
 
 <body>
     <metal:content-core fill-slot="content-core">
-        <style type="text/css">
-        </style>
-
-        <p>
-            Create new or import results for test run by clicking <a href="lims/testruns/ctest">here.</a>
-        </p>
 
     </metal:content-core>
 </body>
