@@ -422,6 +422,7 @@ class CreateTestRunView(BrowserView):
     def save_run(self):
         """Create initial run
         """
+
         values = get_serializeArray_form_values(self.request)
 
         try:

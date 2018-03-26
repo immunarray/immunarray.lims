@@ -311,6 +311,9 @@
       <td><strong>Box</strong></td>
     </tr>
     <tr>
+      <tal:comment tal:replace="nothing">
+        <!-- The number of times 'well-number-1' appears in the submitted form decides how many plates were submitted. -->
+      </tal:comment>
       <td> 1 <input type="hidden" name="well-number-1" value="1"/></td>
       <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
       <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>

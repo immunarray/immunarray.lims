@@ -65,7 +65,6 @@ def get_serializeArray_form_values(request):
     """
     raw = request.form
     count = len([x for x in raw if 'form_values' in x])
-    nr_plates = 0
 
     # gather intermediate data dictionary
     intermediate = {}
@@ -77,9 +76,11 @@ def get_serializeArray_form_values(request):
                 intermediate[name].append(value)
             else:
                 intermediate[name] = [intermediate[name], value]
-            nr_plates = len(intermediate[name])
         else:
             intermediate[name] = value
+
+    # The count of 'well-number-1' decides how many plates were submitted.
+    nr_plates = int(len([x for x in intermediate if x == 'well-number-1']))
 
     # Separate the plates from the rest of the form values, and convert
     # them to a single list of dictionaries. any key in the form who's
