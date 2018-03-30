@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from AccessControl.Permissions import copy_or_move, delete_objects
 from Products.CMFCore.permissions import AccessContentsInformation, \
     ListFolderContents, ModifyPortalContent, View
 from bika.lims.permissions import AddLIMSRoot, disallow_default_contenttypes
@@ -73,6 +74,34 @@ def structure_permissions(lims):
     lims.manage_permission(AddLIMSRoot, [], 0)
     lims.manage_permission(ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Owner', 'Administrator', 'Member', 'RandDLabClerk', 'RandDLabManager'], 0)
     lims.manage_permission(View, ['Manager', 'LabManager', 'LabClerk', 'Owner', 'Administrator', 'Member', 'RandDLabClerk', 'RandDLabManager'], 0)
+    lims.manage_permission(copy_or_move, [], 0)
+    lims.manage_permission(delete_objects, [], 0)
+
+    # Copy/Move
+    lims.ichipassay.manage_permission(copy_or_move, [], 0)
+    lims.ichiplots.manage_permission(copy_or_move, [], 0)
+    lims.inventory.manage_permission(copy_or_move, [], 0)
+    lims.materials.manage_permission(copy_or_move, [], 0)
+    lims.nce.manage_permission(copy_or_move, [], 0)
+    lims.patients.manage_permission(copy_or_move, [], 0)
+    lims.providers.manage_permission(copy_or_move, [], 0)
+    lims.samples.manage_permission(copy_or_move, [], 0)
+    lims.sites.manage_permission(copy_or_move, [], 0)
+    lims.solutions.manage_permission(copy_or_move, [], 0)
+    lims.testruns.manage_permission(copy_or_move, [], 0)
+
+    # Delete
+    lims.ichipassay.manage_permission(delete_objects, [], 0)
+    lims.ichiplots.manage_permission(delete_objects, [], 0)
+    lims.inventory.manage_permission(delete_objects, [], 0)
+    lims.materials.manage_permission(delete_objects, [], 0)
+    lims.nce.manage_permission(delete_objects, [], 0)
+    lims.patients.manage_permission(delete_objects, [], 0)
+    lims.providers.manage_permission(delete_objects, [], 0)
+    lims.samples.manage_permission(delete_objects, [], 0)
+    lims.sites.manage_permission(delete_objects, [], 0)
+    lims.solutions.manage_permission(delete_objects, [], 0)
+    lims.testruns.manage_permission(delete_objects, [], 0)
 
     # Remove option to add folder to structure locations
     lims.ichipassay.manage_permission(permissions.AddFolder, [], 0)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from AccessControl.Permissions import copy_or_move, delete_objects
 from bika.lims.permissions import disallow_default_contenttypes
 from immunarray.lims.permissions import AddiChip
 from plone.api.content import create
@@ -10,8 +11,9 @@ def iChipLotAdded(instance, event):
     """
 
     # Set default permissions for a new ichiplot
-    instance.manage_permission(
-        AddiChip, ['LabManager', 'LabClerk'], 0)
+    instance.manage_permission(copy_or_move, [], 0)
+    instance.manage_permission(delete_objects, [], 0)
+    instance.manage_permission(AddiChip, ['LabManager', 'LabClerk'], 0)
     disallow_default_contenttypes(instance)
 
     # I want to create X amount of iChips from form value.

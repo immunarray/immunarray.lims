@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 """Permission should be duplicated in permissions.py and permissions.zcml
 """
+from AccessControl.Permissions import copy_or_move, delete_objects
 
 
 def setup_default_permissions(portal):
+
+    # NOT in portal.lims do we want copy/move/delete etc.
+    mp = portal.lims.manage_permission
+    mp(copy_or_move, [], 0)
+    mp(delete_objects, [], 0)
+
     mp = portal.manage_permission
     mp(AddMaterial, [], 0)
     mp(AddSolution, [], 0)

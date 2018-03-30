@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from AccessControl.Permissions import copy_or_move, delete_objects
 from immunarray.lims.permissions import AddClinicalAliquot, AddClinicalSample, \
     AddRandDSample, AddRandDAliquot, AddQCAliquot, AddQCSample
 from bika.lims.permissions import disallow_default_contenttypes
@@ -7,6 +8,8 @@ from bika.lims.utils.limsroot import getLims
 def ClinicalAliquotAdded(clinicalaliquot, event):
     """A new Clinical Sample has been created!
     """
+    clinicalaliquot.manage_permission(copy_or_move, [], 0)
+    clinicalaliquot.manage_permission(delete_objects, [], 0)
     clinicalaliquot.manage_permission(AddClinicalAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     # Don't allow samples to be nested in each other!
     clinicalaliquot.manage_permission(AddQCSample, [], 0)
