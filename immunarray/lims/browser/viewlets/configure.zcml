@@ -4,6 +4,14 @@
     i18n_domain="immunarray.lims">
 
   <browser:viewlet
+      for="*"
+      name="cancelled-viewlet"
+      class=".cancelled.CancelledViewlet"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+      permission="zope2.View"
+  />
+
+  <browser:viewlet
       for="immunarray.lims.interfaces.qcsample.IQCSample"
       name="add-aliquots-viewlet"
       class=".add_aliquots.AddAliquotsViewlet"

@@ -6,7 +6,7 @@ from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from immunarray.lims.interfaces.qcsample import IQCSample
 from immunarray.lims.interfaces.randdaliquot import IRandDAliquot
 from immunarray.lims.interfaces.sample import ISample
-from plone.api.content import find, create
+from plone.api.content import create, find, get_state
 from plone.app.layout.viewlets import ViewletBase
 
 
@@ -14,9 +14,11 @@ class AddAliquotsViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/add-aliquots.pt")
 
     def render(self):
-        if self.context.remaining_volume > 0:
+        if get_state(self.context, 'cancelled'):
+            return ''
+        else:
+            # noinspection PyArgumentList
             return self.index()
-        return ''
 
 
 class AddAliquotsViewletSubmit(BrowserView):

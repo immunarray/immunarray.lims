@@ -9,4 +9,8 @@
         <viewlet name="widgetvalues-viewlet"/>
     </order>
 
+    <order manager="plone.abovecontentbody" skinname="*">
+        <viewlet name="cancelled-viewlet"/>
+    </order>
+
 </object>
