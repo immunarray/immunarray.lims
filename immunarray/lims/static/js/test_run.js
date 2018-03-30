@@ -4,6 +4,7 @@
     authenticator = $('input[name="_authenticator"]').val();
     $('#assay_selection').change(function() {
       var assay_name;
+      $(this).prop('disabled', true);
       assay_name = $(this).val();
       $("#global_statusmessage").empty();
       $.ajax({
@@ -17,6 +18,7 @@
         },
         success: function(responseText, statusText, statusCode, xhr, $form) {
           var batches;
+          $().prop('disabled', true);
           if (!responseText.success) {
             portalMessage(responseText.message);
             return;
