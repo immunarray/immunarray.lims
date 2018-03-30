@@ -30,4 +30,5 @@ class WidgetValuesView(WidgetsView):
         return getAdditionalSchemata(context=self.context)
 
     def render(self):
+        # noinspection PyArgumentList
         return self.template()
