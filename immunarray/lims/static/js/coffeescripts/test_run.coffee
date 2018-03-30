@@ -2,7 +2,6 @@ require ['jquery'], ($) ->
 
     authenticator = $('input[name="_authenticator"]').val()
     $('#assay_selection').change ->
-        $(this).prop 'disabled', true
         assay_name = $(this).val()
         # Clear any possible error messages from last actions
         $("#global_statusmessage").empty()
@@ -15,7 +14,6 @@ require ['jquery'], ($) ->
                 assay_name: assay_name
                 _authenticator: authenticator
             success: (responseText, statusText, statusCode, xhr, $form) ->
-                $().prop 'disabled', true
                 if !responseText.success
                     portalMessage responseText.message
                     return
