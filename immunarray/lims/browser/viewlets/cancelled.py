@@ -9,7 +9,11 @@ class CancelledViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/cancelled-viewlet.pt")
 
     def render(self):
-        if get_state(self.context) == 'cancelled':
+        try:
+            state = get_state(self.context)
+        except:
+            return''
+        if state == 'cancelled':
             # noinspection PyArgumentList
             return self.index()
         return ''
