@@ -18,6 +18,7 @@
         <!--disable_column_one python:request.set('disable_plone.leftcolumn', 1);-->
         <tal:insert tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1);
+                          disable_column_one python:request.set('disable_plone.leftcolumn', 1);
                           disable_column_two python:request.set('disable_plone.rightcolumn', 1);" />
       </metal:block>
   </head>
