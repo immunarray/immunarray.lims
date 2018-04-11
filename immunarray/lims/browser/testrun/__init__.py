@@ -80,7 +80,7 @@ def get_serializeArray_form_values(request):
             intermediate[name] = value
 
     # The count of 'well-number-1' decides how many plates were submitted.
-    nr_plates = int(len([x for x in intermediate if x == 'well-number-1']))
+    nr_plates = len(intermediate['well-number-1'])
 
     # Separate the plates from the rest of the form values, and convert
     # them to a single list of dictionaries. any key in the form who's
