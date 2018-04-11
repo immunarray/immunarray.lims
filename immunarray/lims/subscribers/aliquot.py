@@ -8,7 +8,6 @@ from bika.lims.utils.limsroot import getLims
 def ClinicalAliquotAdded(clinicalaliquot, event):
     """A new Clinical Sample has been created!
     """
-    clinicalaliquot.manage_permission(copy_or_move, [], 0)
     clinicalaliquot.manage_permission(delete_objects, [], 0)
     clinicalaliquot.manage_permission(AddClinicalAliquot, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     # Don't allow samples to be nested in each other!

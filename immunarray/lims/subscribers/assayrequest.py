@@ -8,7 +8,6 @@ from immunarray.lims.permissions import AddAssayBillingRequest, AddAssayRequest,
 def AssayRequest(assayrequest, event):
     """A new assay request been created!
     """
-    assayrequest.manage_permission(copy_or_move, [], 0)
     assayrequest.manage_permission(delete_objects, [], 0)
     assayrequest.manage_permission(AddAssayBillingRequest, ['LabManager', 'BillingExec'], 0)
     assayrequest.manage_permission(AddNCE, ['LabManager', 'BillingExec', 'LabClerk'], 0)

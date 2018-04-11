@@ -11,7 +11,6 @@ def iChipLotAdded(instance, event):
     """
 
     # Set default permissions for a new ichiplot
-    instance.manage_permission(copy_or_move, [], 0)
     instance.manage_permission(delete_objects, [], 0)
     instance.manage_permission(AddiChip, ['LabManager', 'LabClerk'], 0)
     disallow_default_contenttypes(instance)
