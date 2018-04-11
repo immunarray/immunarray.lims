@@ -127,7 +127,7 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+      <guard-expression>python:here.guard_handler('scanning')</guard-expression>
     </guard>
   </transition>
 
@@ -143,7 +143,7 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+      <guard-expression>python:here.guard_handler('abort_run')</guard-expression>
     </guard>
   </transition>
 
@@ -159,7 +159,7 @@
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('xyz')</guard-expression>
+      <guard-expression>python:here.guard_handler('cancel_run')</guard-expression>
     </guard>
   </transition>
 
