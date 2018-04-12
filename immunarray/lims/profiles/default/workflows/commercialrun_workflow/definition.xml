@@ -29,10 +29,10 @@
   <state state_id="resulted" title="Resulted">
   </state>
 
-  <state state_id="cancelled" title="Cancel Run">
+  <state state_id="cancelled" title="Cancelled">
   </state>
 
-  <state state_id="abborted" title="Abort Run">
+  <state state_id="aborted" title="Aborted">
   </state>
 
   <transition transition_id="queue"
@@ -133,7 +133,7 @@
 
   <transition transition_id="abort_run"
               title="Abort Run"
-              new_state="abborted"
+              new_state="aborted"
               before_script=""
               after_script=""
               trigger="USER">
