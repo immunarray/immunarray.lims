@@ -82,7 +82,7 @@
     <description>Queued</description>
     <exit-transition transition_id="in_process"/>
     <exit-transition transition_id="release"/>
-    <exit-transition transition_id="cancel_run"/>
+    <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="broken"/>
     <exit-transition transition_id="expire"/>
   </state>
@@ -124,19 +124,19 @@
     </guard>
   </transition>
 
-  <transition transition_id="cancel_run"
+  <transition transition_id="make_available"
               title="Cancel Run"
               new_state="released"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=cancel_run"
+    <action url="%(content_url)s/content_status_modify?workflow_action=make_available"
             category="workflow"
             icon="">Cancel Run
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('cancel_run')</guard-expression>
+      <guard-expression>python:here.guard_handler('make_available')</guard-expression>
     </guard>
   </transition>
 
