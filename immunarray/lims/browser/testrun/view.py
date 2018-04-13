@@ -189,40 +189,6 @@ class ViewTestRunView(BrowserView):
                 newplates.append(plate)
         return newplates
 
-    def transition_plate_contents(self, ichips, aliquots, action_id):
-        """Chips, aliquots, and assay requests move together through
-        identical states during the test run.
-        """
-        transitioned = []
-        try:
-            for ichip in ichips:
-                if ichip not in transitioned:
-                    transition(ichip, action_id)
-                    transitioned.append(ichip)
-        except InvalidParameterError:
-            # noinspection PyUnboundLocalVariable
-            msg = "Can't invoke '%s' transition on %s" % (action_id, ichip)
-            raise ObjectInInvalidState(msg)
-
-        try:
-            for aliquot in aliquots:
-                if aliquot not in transitioned:
-                    transition(aliquot, action_id)
-                    transitioned.append(aliquot)
-        except InvalidParameterError:
-            # noinspection PyUnboundLocalVariable
-            msg = "Can't invoke '%s' transition on %s" % (action_id, aliquot)
-            raise ObjectInInvalidState(msg)
-
-        # get AssayRequests associated with all aliquots, and queue them.
-        for aliquot in aliquots:
-            sample = self.get_parent_sample_from_aliquot(aliquot)
-            if IClinicalSample.providedBy(sample):
-                assayrequest = self.get_assay_request_from_sample(sample)
-                if assayrequest not in transitioned:
-                    transition(assayrequest, action_id)
-                    transitioned.append(assayrequest)
-
     def get_parent_sample_from_aliquot(self, aliquot):
         parent = aliquot.aq_parent
         while not ISample.providedBy(parent):
