@@ -30,7 +30,6 @@ Patient = workbookPP_014_03.sheet_by_name('Patient')
 
 start= timeit.default_timer()
 
-# import pdb;pdb.set_trace()
 # Make Patient Records
 # Watch for repeat patients and missing names/dobs
 # Make Sample Records
