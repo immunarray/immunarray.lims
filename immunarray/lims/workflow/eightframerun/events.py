@@ -1,6 +1,10 @@
-from immunarray.lims.browser.testrun import ObjectInInvalidState
+from immunarray.lims import logger
+from immunarray.lims.interfaces.assayrequest import IAssayRequest
+from immunarray.lims.interfaces.clinicalaliquot import IClinicalAliquot
+from immunarray.lims.interfaces.clinicalsample import IClinicalSample
+from immunarray.lims.interfaces.ichip import IiChip
+from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from plone.api.content import find, transition
-from plone.api.exc import InvalidParameterError
 
 
 def after_queue(instance):
@@ -33,26 +37,61 @@ def after_scanning(instance):
     """
 
 
+def get_assayrequest_from_aliquot(aliquot):
+    sample = aliquot.aq_parent
+    while not IClinicalSample.providedBy(sample):
+        if not hasattr(sample, 'aq_parent'):
+            return None
+        sample = sample.aq_parent
+    for child in sample.objectValues():
+        if IAssayRequest.providedBy(child):
+            return child
+
+
 def after_cancel_run(instance):
-    """When cancelling a test run, all objects that were linked here must
-    be freed for use in a future test run.  This should be logged in this
-    test run's attributes, and the widget's view should be printed on the
-    testrun's view page.
+    """When cancelling a test run, objects that were linked here must
+    be freed for use in a future test run, or cancelled.
+    - cancels iChip and Aliquot objects
+    - make_available on AssayRequest objects.
     """
-    action_id = "make_available"
-    transitioned = []
-    try:
-        for plate in instance.plates:
-            for key, value in plate.items():
-                if value in transitioned:
-                    continue
-                transitioned.append(value)
-                obj = get_object(value)
-                if obj:
-                    transition(obj, action_id)
-    except InvalidParameterError:  # noinspection PyUnboundLocalVariable
-        msg = "Can't invoke '%s' transition on %s" % (action_id, obj)
-        raise ObjectInInvalidState(msg)
+    clinicalaliquots = []
+    qcaliquots = []
+    ichips = []
+    assayrequests = []
+
+    for plate in instance.plates:
+        for key, value in plate.items():
+            obj = get_object(value)
+            _items = qcaliquots + clinicalaliquots + ichips + assayrequests
+            if not obj or obj in _items:
+                continue
+            # ichip
+            if IiChip.providedBy(obj):
+                ichips.append(obj)
+            # aliquot
+            elif IQCAliquot.providedBy(obj):
+                qcaliquots.append(obj)
+            elif IClinicalAliquot.providedBy(obj):
+                clinicalaliquots.append(obj)
+                # get assayrequest
+                ar = get_assayrequest_from_aliquot(obj)
+                assayrequests.append(ar)
+
+    for obj in set(qcaliquots):
+        logger.info("transitioning %s with make_available" % obj)
+        transition(obj, "make_available")
+
+    for obj in set(clinicalaliquots):
+        logger.info("transitioning %s with make_available" % obj)
+        transition(obj, "make_available")
+
+    for obj in set(ichips):
+        logger.info("transitioning %s with make_available" % obj)
+        transition(obj, "make_available")
+
+    for obj in set(assayrequests):
+        logger.info("transitioning %s with make_available" % obj)
+        transition(obj, "make_available")
 
 
 def after_abort_run(instance):
@@ -61,7 +100,6 @@ def after_abort_run(instance):
     the run is aborted.
     """
     # XXX: need a way to show aborted links in the UI
-
 
 
 def get_object(uid):
