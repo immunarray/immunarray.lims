@@ -450,9 +450,10 @@ class CreateTestRunView(BrowserView):
         except (ValueError, TypeError):
             raise TypeError("Run number must be a number.")
 
-        run = create(
+        try:
+            run = create(
             folder,
-            'EightFrameRun',
+            'TestRun',
             title=values['assay_name'],
             assay_name=assay.title,
             assay_uid=assay.UID(),
@@ -462,8 +463,24 @@ class CreateTestRunView(BrowserView):
             run_operator=operator.title if operator else '',
             plates=plates,
             solutions=solutions
-        )
-
+            )
+        except Exception as e:
+            import pdb
+            pdb.set_trace()
+            pass
+            run = create(
+                folder,
+                'TestRun',
+                title=values['assay_name'],
+                assay_name=assay.title,
+                assay_uid=assay.UID(),
+                run_number=run_number,
+                run_date=values['run_date'],
+                run_planner=planner.title if planner else '',
+                run_operator=operator.title if operator else '',
+                plates=plates,
+                solutions=solutions
+            )
         return run
 
     def transmogrify_inputs(self, plates):
@@ -557,7 +574,10 @@ class CreateTestRunView(BrowserView):
             sample = self.get_parent_sample_from_aliquot(aliquot)
             if IClinicalSample.providedBy(sample):
                 assayrequest = self.get_assay_request_from_sample(sample)
-                if assayrequest not in transitioned:
+                wf = get_tool('portal_workflow')
+                transitions = wf.getTransitionsFor(assayrequest)
+                if action_id in transitions \
+                        and assayrequest not in transitioned:
                     transition(assayrequest, action_id)
                     transitioned.append(assayrequest)
 
