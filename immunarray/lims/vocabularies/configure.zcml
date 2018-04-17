@@ -30,23 +30,8 @@
       provides="zope.schema.interfaces.IContextSourceBinder"/>
 
   <utility
-      name="immunarray.lims.vocabularies.ichip.ICommercailThreeFrameChipWellsVocabulary"
-      component="immunarray.lims.vocabularies.ichip.ICommercailThreeFrameChipWellsVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-
-  <utility
       name="immunarray.lims.vocabularies.ichip.IEightFrameChipsInUSVocabulary"
       component="immunarray.lims.vocabularies.ichip.IEightFrameChipsInUSVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-
-  <utility
-      name="immunarray.lims.vocabularies.ichip.IThreeFrameChipWellsAllVocabulary"
-      component="immunarray.lims.vocabularies.ichip.IThreeFrameChipWellsAllVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
 
   <utility

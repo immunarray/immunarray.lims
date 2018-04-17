@@ -16,7 +16,6 @@ def setup_default_permissions(portal):
     mp(AddiChipLot, [], 0)
     mp(AddiChip, [], 0)
     mp(AddTestRun, [], 0)
-    mp(AddThreeFrameRun, [], 0)
     mp(AddPlate, [], 0)
     mp(AddNCE, [], 0)
     mp(AddPatient, [], 0)
@@ -66,7 +65,6 @@ AddShelf = "LIMS: Add Shelf"
 AddSite = "LIMS: Add Site"
 AddSolution = "LIMS: Add Solution"
 AddTestRun = "LIMS: Add Test Run"
-AddThreeFrameRun = "LIMS: Add Three Frame Run"
 AddVeracisRunBase = "LIMS: Add Veracis Run Base"
 AddAssayRequest = "LIMS: Add Assay Request"
 AddAssayBillingRequest = "Billing: Add Assay Billing Request"

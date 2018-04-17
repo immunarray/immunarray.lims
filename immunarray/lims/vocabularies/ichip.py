@@ -28,33 +28,6 @@ IChipsAllBrokenVocabulary = IChipsAllBroken()
 alsoProvides(IChipsAllBroken, IFormFieldProvider)
 
 
-class IThreeFrameChipsInUS(object):
-    """Produces full list of all iChips
-    """
-    # get all IChipLots where iChipLot.acceptance_status = ("Quarantined"
-    # or"Passed")
-    # values = find(portal_type='iChip')
-    # get all iChipLots where iChipLot.frames = 3 Frame iChips (base
-    # iChipLots to use)
-    implements(IVocabularyFactory, IContextSourceBinder)
-
-    def __call__(self, context):
-        wells = []
-        values = find(portal_type='iChip')
-        ichips = [v.Title for v in values]
-        unique_ichip_wells = []
-        for o in ichips:
-            for w in wells:
-                well_location = o + w
-                unique_ichip_wells.append(well_location)
-
-        items = [(i, normalize(i)) for i in ichips]
-        return SimpleVocabulary.fromItems(items)
-
-
-IThreeFrameChipsInUSVocabulary = IThreeFrameChipsInUS()
-
-
 class IEightFrameChipsInUS(object):
     """Produces full list of all iChips
     """
@@ -79,61 +52,6 @@ IEightFrameChipsInUSVocabulary = IEightFrameChipsInUS()
 
 
 # Vocabs for Commercial Testable iChip well IDs in the US
-
-class ICommercialThreeFrameChipWells(object):
-    """Produces full list of all iChip well options for three frame iChip
-    """
-    implements(IContextSourceBinder)
-
-    # def __init__(self, ichip, frames):
-    #   self.i = ichip
-    #   self.f = frames
-
-    def __call__(self, context):
-        three_well = ["-A", "-B", "-C"]
-        values = find(portal_type='iChip')
-        # filter __parent__ to get only 3 frame iChips
-        ichips = []
-
-        for v in values:
-            ichip = v.getObject()
-            if get_state(ichip) == 'released':
-                ichips.append("{}-{}".format(ichip.title, get_state(ichip)))
-        unique_ichip_wells = []
-        for o in ichips:
-            for w in three_well:
-                well_location = o + w
-                unique_ichip_wells.append(well_location)
-
-        items = [(i, normalize(i)) for i in unique_ichip_wells]
-        return SimpleVocabulary.fromItems(items)
-
-
-ICommercailThreeFrameChipWellsVocabulary = ICommercialThreeFrameChipWells()
-
-
-# Vocabs for ALL iChip well ID in the US (R&D use)
-class IThreeFrameChipWellsAll(object):
-    """Produces full list of all iChip well options for three frame iChip
-    """
-    implements(IVocabularyFactory, IContextSourceBinder)
-
-    def __call__(self, context):
-        wells = ["-A", "-B", "-C"]
-        values = find(portal_type='iChip')
-        ichips = [v.Title for v in values]
-        unique_ichip_wells = []
-        for o in ichips:
-            for w in wells:
-                well_location = o + w
-                unique_ichip_wells.append(well_location)
-
-        items = [(i, normalize(i)) for i in unique_ichip_wells]
-        return SimpleVocabulary.fromItems(items)
-
-
-IThreeFrameChipWellsAllVocabulary = IThreeFrameChipWellsAll()
-
 
 class IEightFrameChipWellsAll(object):
     """Produces full list of all iChip well options for eight frame iChip

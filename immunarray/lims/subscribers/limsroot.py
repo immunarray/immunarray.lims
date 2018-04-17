@@ -8,7 +8,7 @@ from immunarray.lims.interfaces import IConfiguration, IInventory, IMaterials, \
     ISolutions, ITestRuns, IiChipAssays, IiChipLots
 from immunarray.lims.permissions import AddClinicalSample, AddMaterial, \
     AddNCE, AddPatient, AddProvider, AddQCSample, AddRack, \
-    AddRandDSample, AddSite, AddSolution, AddTestRun, AddThreeFrameRun, \
+    AddRandDSample, AddSite, AddSolution, AddTestRun, \
     AddiChipAssay, AddiChipLot
 from pkg_resources import resource_filename
 from plone.api.content import create
@@ -165,7 +165,6 @@ def structure_permissions(lims):
     lims.solutions.manage_permission(AddSolution, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.solutions.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
-    lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddTestRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
