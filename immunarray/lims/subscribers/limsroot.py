@@ -7,7 +7,7 @@ from immunarray.lims.interfaces import IConfiguration, IInventory, IMaterials, \
     INonConformanceEvents, IPatients, IProviders, ISamples, ISites, \
     ISolutions, ITestRuns, IiChipAssays, IiChipLots
 from immunarray.lims.permissions import AddClinicalSample, AddMaterial, \
-    AddNCE, AddNoFrameRun, AddPatient, AddProvider, AddQCSample, AddRack, \
+    AddNCE, AddPatient, AddProvider, AddQCSample, AddRack, \
     AddRandDSample, AddSite, AddSolution, AddTestRun, AddThreeFrameRun, \
     AddiChipAssay, AddiChipLot
 from pkg_resources import resource_filename
@@ -164,7 +164,6 @@ def structure_permissions(lims):
     lims.sites.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(AddSolution, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.solutions.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
-    lims.testruns.manage_permission(AddNoFrameRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)

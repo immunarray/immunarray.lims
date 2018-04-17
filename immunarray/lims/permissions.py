@@ -16,7 +16,6 @@ def setup_default_permissions(portal):
     mp(AddiChipLot, [], 0)
     mp(AddiChip, [], 0)
     mp(AddTestRun, [], 0)
-    mp(AddNoFrameRun, [], 0)
     mp(AddThreeFrameRun, [], 0)
     mp(AddPlate, [], 0)
     mp(AddNCE, [], 0)
@@ -53,7 +52,6 @@ AddiChipAssay = "LIMS: Add iChip Assay"
 AddiChipLot = "LIMS: Add iChip Lot"
 AddMaterial = "LIMS: Add Material"
 AddNCE = "LIMS: Add NCE"
-AddNoFrameRun = "LIMS: Add No Frame Run"
 AddPatient = "LIMS: Add Patient"
 AddPlate = "LIMS: Add Plate"
 AddProvider = "LIMS: Add Provider"

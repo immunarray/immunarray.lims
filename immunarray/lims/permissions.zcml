@@ -12,7 +12,6 @@
     <permission id="immunarray.lims.permissions.AddiChipLot" title="LIMS: Add iChip Lot"/>
     <permission id="immunarray.lims.permissions.AddMaterial" title="LIMS: Add Material"/>
     <permission id="immunarray.lims.permissions.AddNCE" title="LIMS: Add NCE"/>
-    <permission id="immunarray.lims.permissions.AddNoFrameRun" title="LIMS: Add No Frame Run"/>
     <permission id="immunarray.lims.permissions.AddPatient" title="LIMS: Add Patient"/>
     <permission id="immunarray.lims.permissions.AddPlate" title="LIMS: Add Plate"/>
     <permission id="immunarray.lims.permissions.AddProvider" title="LIMS: Add Provider"/>

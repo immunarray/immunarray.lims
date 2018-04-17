@@ -35,11 +35,6 @@
       provides="zope.schema.interfaces.IContextSourceBinder"/>
 
   <utility
-      name="immunarray.lims.vocabularies.ichip.INoFrameChipsInUSVocabulary"
-      component="immunarray.lims.vocabularies.ichip.INoFrameChipsInUSVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-
-  <utility
       name="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
       component="immunarray.lims.vocabularies.ichip.IThreeFrameChipsInUSVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
@@ -62,11 +57,6 @@
   <utility
       name="immunarray.lims.vocabularies.ichip.IChipsAllBrokenVocabulary"
       component="immunarray.lims.vocabularies.ichip.IChipsAllBrokenVocabulary"
-      provides="zope.schema.interfaces.IContextSourceBinder"/>
-
-  <utility
-      name="immunarray.lims.vocabularies.ichip.ICommercialNoFrameChipsVocabulary"
-      component="immunarray.lims.vocabularies.ichip.ICommercialNoFrameChipsVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
 
   <utility
