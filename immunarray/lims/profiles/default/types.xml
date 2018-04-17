@@ -7,7 +7,7 @@
     <object name="ClinicalSample" meta_type="Dexterity FTI"/>
     <object name="CommercialBox" meta_type="Dexterity FTI"/>
     <object name="CustomerServiceCall" meta_type="Dexterity FTI"/>
-    <object name="EightFrameRun" meta_type="Dexterity FTI"/>
+    <object name="TestRun" meta_type="Dexterity FTI"/>
     <object name="Freezer" meta_type="Dexterity FTI"/>
     <object name="iChip" meta_type="Dexterity FTI"/>
     <object name="iChipAssay" meta_type="Dexterity FTI"/>

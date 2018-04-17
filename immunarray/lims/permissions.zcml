@@ -6,7 +6,6 @@
     <permission id="immunarray.lims.permissions.AddClinicalSample" title="LIMS: Add Clinical Sample"/>
     <permission id="immunarray.lims.permissions.AddCommercialBox" title="LIMS: Add Commercial Box"/>
     <permission id="immunarray.lims.permissions.AddCustomerServiceCall" title="LIMS: Add Customer Service Call"/>
-    <permission id="immunarray.lims.permissions.AddEightFrameRun" title="LIMS: Add Eight Frame Run"/>
     <permission id="immunarray.lims.permissions.AddFreezer" title="LIMS: Add Freezer"/>
     <permission id="immunarray.lims.permissions.AddiChip" title="LIMS: Add iChip"/>
     <permission id="immunarray.lims.permissions.AddiChipAssay" title="LIMS: Add iChip Assay"/>

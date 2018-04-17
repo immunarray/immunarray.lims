@@ -6,9 +6,8 @@ from AccessControl.Permissions import copy_or_move, delete_objects
 
 def setup_default_permissions(portal):
 
-    # NOT in portal.lims do we want copy/move/delete etc.
+    # NOT in portal.lims do we want delete permission
     mp = portal.lims.manage_permission
-    mp(copy_or_move, [], 0)
     mp(delete_objects, [], 0)
 
     mp = portal.manage_permission
@@ -18,7 +17,6 @@ def setup_default_permissions(portal):
     mp(AddiChip, [], 0)
     mp(AddTestRun, [], 0)
     mp(AddNoFrameRun, [], 0)
-    mp(AddEightFrameRun, [], 0)
     mp(AddThreeFrameRun, [], 0)
     mp(AddPlate, [], 0)
     mp(AddNCE, [], 0)
@@ -49,7 +47,6 @@ AddClinicalAliquot = "LIMS: Add Clinical Aliquot"
 AddClinicalSample = "LIMS: Add Clinical Sample"
 AddCommercialBox = "LIMS: Add Commercial Box"
 AddCustomerServiceCall = "LIMS: Add Customer Service Call"
-AddEightFrameRun = "LIMS: Add Eight Frame Run"
 AddFreezer = "LIMS: Add Freezer"
 AddiChip = "LIMS: Add iChip"
 AddiChipAssay = "LIMS: Add iChip Assay"

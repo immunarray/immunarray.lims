@@ -15,7 +15,7 @@ def currentDate():
     return datetime.datetime.now().date()
 
 
-class IEightFrameRun(IVeracisRunBase):
+class ITestRun(IVeracisRunBase):
     # Serum Addition
     serum_time_start = schema.Datetime(
         title=_(u"Start Time of Serum Addition"),

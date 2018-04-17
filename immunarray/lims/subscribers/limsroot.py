@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from AccessControl.Permissions import copy_or_move, delete_objects
+from AccessControl.Permissions import delete_objects, copy_or_move
 from Products.CMFCore.permissions import AccessContentsInformation, \
     ListFolderContents, ModifyPortalContent, View
 from bika.lims.permissions import AddLIMSRoot, disallow_default_contenttypes
 from immunarray.lims.interfaces import IConfiguration, IInventory, IMaterials, \
     INonConformanceEvents, IPatients, IProviders, ISamples, ISites, \
     ISolutions, ITestRuns, IiChipAssays, IiChipLots
-from immunarray.lims.permissions import AddClinicalSample, AddEightFrameRun, \
-    AddMaterial, AddNCE, AddNoFrameRun, AddPatient, AddProvider, AddQCSample, \
-    AddRack, AddRandDSample, AddSite, AddSolution, AddTestRun, \
-    AddThreeFrameRun, AddiChipAssay, AddiChipLot
+from immunarray.lims.permissions import AddClinicalSample, AddMaterial, \
+    AddNCE, AddNoFrameRun, AddPatient, AddProvider, AddQCSample, AddRack, \
+    AddRandDSample, AddSite, AddSolution, AddTestRun, AddThreeFrameRun, \
+    AddiChipAssay, AddiChipLot
 from pkg_resources import resource_filename
 from plone.api.content import create
 from plone.app.contenttypes import permissions
@@ -141,23 +141,41 @@ def structure_permissions(lims):
     lims.solutions.manage_permission(ListFolderContents, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(ListFolderContents, ['LabManager', 'LabClerk'], 0)
 
-    # Custom Add Permission
+    # Custom Add Permissions
+    # Include copy_or_move, it's required to insert new content.
+    import pdb
+    pdb.set_trace()
+    pass
     lims.ichipassay.manage_permission(AddiChipAssay, ['LabManager'], 0)
+    lims.ichipassay.manage_permission(copy_or_move, ['LabManager'], 0)
     lims.ichiplots.manage_permission(AddiChipLot, ['LabManager', 'LabClerk'], 0)
+    lims.ichiplots.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.inventory.manage_permission(AddRack, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.inventory.manage_permission(copy_or_move, ['LabManager'], 0)
     lims.materials.manage_permission(AddMaterial, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.materials.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.nce.manage_permission(AddNCE, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk', 'RandDAnalyst', 'Executive', 'SalesRep', 'BillingExec'], 0)
+    lims.nce.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk', 'RandDAnalyst', 'Executive', 'SalesRep', 'BillingExec'], 0)
     lims.patients.manage_permission(AddPatient, ['LabManager', 'LabClerk'], 0)
+    lims.patients.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.providers.manage_permission(AddProvider, ['LabManager', 'LabClerk', 'SalesRep'], 0)
+    lims.providers.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.sites.manage_permission(AddSite, ['LabManager', 'LabClerk', 'SalesRep'], 0)
+    lims.sites.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(AddSolution, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
-    lims.testruns.manage_permission(AddEightFrameRun, ['LabManager', 'LabClerk'], 0)
+    lims.solutions.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.testruns.manage_permission(AddNoFrameRun, ['LabManager', 'LabClerk'], 0)
-    lims.testruns.manage_permission(AddTestRun, ['LabManager', 'LabClerk'], 0)
+    lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.testruns.manage_permission(AddThreeFrameRun, ['LabManager', 'LabClerk'], 0)
+    lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
+    lims.testruns.manage_permission(AddTestRun, ['LabManager', 'LabClerk'], 0)
+    lims.testruns.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.samples.manage_permission(AddClinicalSample, ['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
     lims.samples.manage_permission(AddRandDSample, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
+    lims.samples.manage_permission(copy_or_move, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.samples.manage_permission(AddQCSample, ['LabManager', 'LabClerk'], 0)
+    lims.samples.manage_permission(copy_or_move, ['LabManager', 'LabClerk'], 0)
 
     # Modify portal content
     lims.ichipassay.manage_permission(ModifyPortalContent, ['LabManager'], 0)
@@ -169,7 +187,7 @@ def structure_permissions(lims):
     lims.providers.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.sites.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'SalesRep'], 0)
     lims.solutions.manage_permission(ModifyPortalContent, ['LabManager'], 0)
-    lims.testruns.manage_permission(ModifyPortalContent, ['Manager'], 0)
+    lims.testruns.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk'], 0)
     lims.samples.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk'], 0)
     lims.samples.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk', 'RandDManager', 'RandDLabClerk'], 0)
     lims.samples.manage_permission(ModifyPortalContent, ['LabManager', 'LabClerk'], 0)

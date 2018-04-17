@@ -3,23 +3,23 @@
   <property name="title">Contains workflow definitions for your portal
   </property>
 
-  <object name="ichiplot_workflow" meta_type="Workflow"/>
-  <object name="ichip_workflow" meta_type="Workflow"/>
-  <object name="clinicalsample_workflow" meta_type="Workflow"/>
-  <object name="qcsample_workflow" meta_type="Workflow"/>
-  <object name="qcaliquot_workflow" meta_type="Workflow"/>
-  <object name="clinicalaliquot_workflow" meta_type="Workflow"/>
-  <object name="material_workflow" meta_type="Workflow"/>
-  <object name="solution_workflow" meta_type="Workflow"/>
+  <object name="assaybillingrequest_workflow" meta_type="Workflow"/>
   <object name="assayrequest_workflow" meta_type="Workflow"/>
   <object name="billingprogram_workflow" meta_type="Workflow"/>
-  <object name="assaybillingrequest_workflow" meta_type="Workflow"/>
-  <object name="ichipassay_workflow" meta_type="Workflow"/>
-  <object name="site_workflow" meta_type="Workflow"/>
-  <object name="commercialrun_workflow" meta_type="Workflow"/>
+  <object name="clinicalaliquot_workflow" meta_type="Workflow"/>
+  <object name="clinicalsample_workflow" meta_type="Workflow"/>
   <object name="commercialbox_workflow" meta_type="Workflow"/>
+  <object name="ichip_workflow" meta_type="Workflow"/>
+  <object name="ichipassay_workflow" meta_type="Workflow"/>
+  <object name="ichiplot_workflow" meta_type="Workflow"/>
+  <object name="material_workflow" meta_type="Workflow"/>
+  <object name="qcaliquot_workflow" meta_type="Workflow"/>
   <object name="qcbox_workflow" meta_type="Workflow"/>
+  <object name="qcsample_workflow" meta_type="Workflow"/>
   <object name="randdbox_workflow" meta_type="Workflow"/>
+  <object name="site_workflow" meta_type="Workflow"/>
+  <object name="solution_workflow" meta_type="Workflow"/>
+  <object name="testrun_workflow" meta_type="Workflow"/>
 
   <bindings>
 
@@ -75,8 +75,8 @@
       <bound-workflow workflow_id="site_workflow"/>
     </type>
 
-    <type type_id="EightFrameRun">
-      <bound-workflow workflow_id="commercialrun_workflow"/>
+    <type type_id="TestRun">
+      <bound-workflow workflow_id="testrun_workflow"/>
     </type>
 
     <type type_id="CommercialBox">

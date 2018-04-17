@@ -62,16 +62,16 @@ class IiChipLot(BaseModel):
         constraint=NonZeroConstraint,
     )
 
+    # XXX This should be a Text input, same as iChipAssay's framecount
+    # and the two should match: refactor ichip.I*ChipsInUSVocabulary
     frames = schema.Choice(
         title=_(u"iChip Frame Layout"),
         description=_(u"iChip Frame Layout"),
-        values=[_(u"1"),
-                _(u"3"),
-                _(u"8")],
+        values=[_(u"1"), _(u"3"), _(u"8")],
         required=True,
     )
-    # Allow mutiple selections!
-    # Need to connect this to iChipAssay.name
+    # XXX Allow mutiple selections!
+    # XXX Need to connect this to iChipAssay.name
     form.widget(intended_assay=CheckBoxFieldWidget)
     intended_assay = schema.List(
         title=_(u"Intended Assay(s)"),
