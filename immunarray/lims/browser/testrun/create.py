@@ -465,9 +465,6 @@ class CreateTestRunView(BrowserView):
             solutions=solutions
             )
         except Exception as e:
-            import pdb
-            pdb.set_trace()
-            pass
             run = create(
                 folder,
                 'TestRun',
