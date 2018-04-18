@@ -450,8 +450,7 @@ class CreateTestRunView(BrowserView):
         except (ValueError, TypeError):
             raise TypeError("Run number must be a number.")
 
-        try:
-            run = create(
+        run = create(
             folder,
             'TestRun',
             title=values['assay_name'],
@@ -463,21 +462,7 @@ class CreateTestRunView(BrowserView):
             run_operator=operator.title if operator else '',
             plates=plates,
             solutions=solutions
-            )
-        except Exception as e:
-            run = create(
-                folder,
-                'TestRun',
-                title=values['assay_name'],
-                assay_name=assay.title,
-                assay_uid=assay.UID(),
-                run_number=run_number,
-                run_date=values['run_date'],
-                run_planner=planner.title if planner else '',
-                run_operator=operator.title if operator else '',
-                plates=plates,
-                solutions=solutions
-            )
+        )
         return run
 
     def transmogrify_inputs(self, plates):
