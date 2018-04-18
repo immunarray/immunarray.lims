@@ -143,9 +143,6 @@ def structure_permissions(lims):
 
     # Custom Add Permissions
     # Include copy_or_move, it's required to insert new content.
-    import pdb
-    pdb.set_trace()
-    pass
     lims.ichipassay.manage_permission(AddiChipAssay, ['LabManager'], 0)
     lims.ichipassay.manage_permission(copy_or_move, ['LabManager'], 0)
     lims.ichiplots.manage_permission(AddiChipLot, ['LabManager', 'LabClerk'], 0)
