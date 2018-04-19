@@ -83,8 +83,13 @@ class ImportDataAnalysis(BrowserView):
             self.unlock()
 
     def locked(self):
+        pid = str(os.getpid())
         fn = join(self.filepath, 'lock')
-        return exists(fn)
+        if exists(fn) and pid in open(fn).read():
+            return True
+        else:
+            self.unlock()
+            return False
 
     def lock(self):
         fn = join(self.filepath, 'lock')
