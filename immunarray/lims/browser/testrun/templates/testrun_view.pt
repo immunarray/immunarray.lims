@@ -111,7 +111,7 @@
           <input class="pat-pickadate"
                  name="run_date"
                  tal:attributes="value python:context.run_date"
-                 data-pat-pickadate='{"date": {"format": "dd-mmm-yyyy"}, "time": false}'>
+                 data-pat-pickadate='{"time": false}'>
         </td>
       </tr>
       <tr>
