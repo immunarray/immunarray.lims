@@ -16,6 +16,7 @@ class IClinicalSample(ISample):
     that is applicable to all aliquots made from this material, location of
     tests ordered on sample
     """
+    # Clinical Samples "Veracis ID" is stored here, in USN field.
     usn = schema.TextLine(
         title=_(u"Unique Sample Number"),
         description=_(u"Sample ID from the blood draw kit"),

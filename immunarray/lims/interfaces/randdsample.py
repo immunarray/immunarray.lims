@@ -47,6 +47,8 @@ class IRandDSample(ISample):
         required=False,
     )
 
+    # Unlike Clinical Samples which store this value in "usn" field,
+    # RandD/QC samples have a dedicated veracis_id field.
     veracis_id = schema.TextLine(
         title=_(u"R&D Veracis Sample ID"),
         description=_(u"R&D Veracis Sample ID"),
