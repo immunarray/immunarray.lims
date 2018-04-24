@@ -1,19 +1,30 @@
 import logging
 import os
 from os.path import exists, join
+from pprint import pformat
+from shutil import rmtree
 from time import strptime, time
 
+import datetime
 import openpyxl
 from Products.Five import BrowserView
+from bika.lims.interfaces.limsroot import ILIMSRoot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
+from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from plone.api.content import find, transition
 
 logger = logging.getLogger('ImportDataAnalysis')
 
 all_cols = [chr(x) for x in range(65, 91)]  # A..Z
+
+
+class SpreadsheetParseError(Exception):
+    """Error getting required values from spreadsheet.  The parser
+    is quite brittle, if anything is unexpected we will probably end up here.
+    """
 
 
 class ImportDataAnalysis(BrowserView):
@@ -62,23 +73,19 @@ class ImportDataAnalysis(BrowserView):
     """
 
     def __init__(self, context, request):
-        import pdb;pdb.set_trace()
         BrowserView.__init__(self, context, request)
         self.context = context
         self.request = request
         self.filepath = os.environ.get('DATA_ANALYSIS_PATH')
-        self.threshold = int(os.environ.get('DATA_ANALYSIS_AGE_THRESHOLD', 12000))
+        self.threshold = int(
+            os.environ.get('DATA_ANALYSIS_AGE_THRESHOLD', 12000))
 
     def __call__(self):
         if self.locked():
             return
         try:
             self.lock()
-            paths = self.get_pending_folders()
-            for path in paths:
-                self.process_results_xlsx(path)
-                self.process_out_figures(path)
-                self.process_raw_flipped(path)
+            map(self.process_results, self.get_pending_folders())
         finally:
             self.unlock()
 
@@ -104,61 +111,62 @@ class ImportDataAnalysis(BrowserView):
         """Return a list of full paths, who's file mtimes are outisde
         the safety threshold.
         """
-        import pdb;pdb.set_trace()
         paths = []
-        for fname in os.listdir(self.filepath):
-            if fname == 'lock':
+        for x in os.listdir(self.filepath):
+            path = join(self.filepath, x)
+            if not exists(join(path, 'Out', 'Results', 'SLEkey_Results.xlsx')):
                 continue
-            path = join(self.filepath, fname)
-            # Check the modified time of all files inside this path:
-            for root, dirs, files in os.walk(path):
-                if files:
-                    mtimes = [os.stat(join(root, f)).st_mtime for f in files]
-                    if time() < max(mtimes) + self.threshold:
-                        logger.info("%s: Newer than threshold." % path)
-                        break
-            else:
-                paths.append(path)
+            # Check the modified time
+            mtime = os.stat(path).st_mtime
+            if time() < mtime + self.threshold:
+                logger.info("%s: Newer than threshold." % path)
+                continue
+            paths.append(path)
         return paths
+
+    def process_results(self, path):
+        self.process_results_xlsx(path)
+        self.process_out_figures(path)
+        self.process_raw_flipped(path)
+        # If we made it this far without raising an exception,
+        # then everything's fine and we can remove the folder.
+        rmtree(path)
 
     def process_results_xlsx(self, path):
         """Take values from path/Out/Results/SLEkey_Results.xlsx, and write
         them to the database
         """
         # Get the first sheet
-        import pdb;pdb.set_trace()
         filename = join(path, 'Out', 'Results', 'SLEkey_Results.xlsx')
         wb = openpyxl.load_workbook(filename)
         ws = wb.get_sheet_by_name('Sheet1')
 
         # header rows for blocks containg QC and Clinical aliquot/sample info
         qc_head_row = self.findnextSerial_Numberrow(ws, 1)
-        clin_head_row = self.findnextSerial_Numberrow(ws, qc_head_row)
+        clin_head_row = self.findnextSerial_Numberrow(ws, qc_head_row + 1)
 
-        # get the run nr so we can loop the plates
-        for col in all_cols:
-            if 'session' in ws["%s%s" % (col, qc_head_row)].value.lower():
-                run_number = int(ws["%s%s" % (col, qc_head_row + 1)].value)
-        # noinspection PyUnboundLocalVariable
-        run = self.get_test_run(run_number)
+        run = self.get_run(qc_head_row, ws)
 
         # get column letters of all qc headers that start with "ichip*"
         qc_ichip_cols = []
+        passfail_col = None
         for col in all_cols:
             coord = "%s%s" % (col, qc_head_row)
-            if ws[coord].value.lower().startswith("fina"):
-                passfail_col = coord
-            if ws[coord].value.lower().startswith("ichip"):
-                qc_ichip_cols.append(col)
+            val = "%s" % ws[coord].value
+            if val:
+                if val.lower().startswith("fina"):
+                    passfail_col = coord
+                if val.lower().startswith("ichip"):
+                    qc_ichip_cols.append(col)
 
         ichip_passfail_combos = []
-        for row in range(qc_head_row + 1, clin_head_row):
-            # noinspection PyUnboundLocalVariable
-            passfail = ws["%s%s" % (passfail_col, row)].value
-            ichip_titles = []
-            for col in qc_ichip_cols:
-                ichip_titles.append(ws["%s%s" % (col, row)].value)
-            ichip_passfail_combos.append([ichip_titles, passfail])
+        if passfail_col:
+            for row in range(qc_head_row + 1, clin_head_row):
+                passfail = "%s" % ws["%s%s" % (passfail_col, row)].value
+                ichip_titles = []
+                for col in qc_ichip_cols:
+                    ichip_titles.append(ws["%s%s" % (col, row)].value)
+                ichip_passfail_combos.append([ichip_titles, passfail])
 
         # for each plate
         for plate in run.plates:
@@ -190,29 +198,32 @@ class ImportDataAnalysis(BrowserView):
                 'SLE_key_Score': '',
                 'SLE_key_Classification': '',
                 'Assay_QC_Status': ''}
+        if not all(cols):
+            msg = "One of the column headers can't be located:" % pformat(cols)
+            raise SpreadsheetParseError(msg)
+
         for col in all_cols:
             coord = "%s%s" % (col, clin_head_row)
             value = ws[coord].value
             if value in cols:
                 cols[value] = col
 
-        # get values from each row and colum into aliquot_results.
-        # aliquot results is:
-        # key=sample_id: [SLE_key_Score,
-        #                 SLE_key_Classification,
-        #                 Assay_QC_Status]
+        # get values from each row and colum into aliquot_results. results is:
+        # {sample_id: [SLE_key_Score,
+        #              SLE_key_Classification,
+        #              Assay_QC_Status],}
         aliquot_results = {}
         first_empty = self.get_first_empty_row(ws, clin_head_row)
+
         for row in range(clin_head_row + 1, first_empty):
             sample_id = ws["%s%s" % (cols['Sample_ID'], row)].value
+            # @formatter:off
             aliquot_results[sample_id] = {
-                'SLE_key_Score':
-                    ws["%s%s" % (cols['SLE_key_Score'], row)].value,
-                'SLE_key_Classification':
-                    ws["%s%s" % (cols['SLE_key_Classification'], row)].value,
-                'Assay_QC_Status':
-                    ws["%s%s" % (cols['Assay_QC_Status'], row)].value
+                'SLE_key_Score': ws["%s%s" % (cols['SLE_key_Score'], row)].value,
+                'SLE_key_Classification': "%s" % ws["%s%s" % (cols['SLE_key_Classification'], row)].value,
+                'Assay_QC_Status': "%s" % ws["%s%s" % (cols['Assay_QC_Status'], row)].value
             }
+            # @formatter:on
 
         _used_uids = []
         for plate in run.plates:
@@ -223,19 +234,52 @@ class ImportDataAnalysis(BrowserView):
                 brains = find(UID=uid)
                 if brains:
                     aliquot = brains[0].getObject()
-                    sample = aliquot.aq_parent
+                    sample = self.get_sample_from_aliquot(aliquot)
                     if IClinicalSample.providedBy(sample):
                         if sample.title not in aliquot_results:
-                            raise Exception("What do.")
+                            msg = "Sample '%s' not in aliquot results: %s" % \
+                                  (sample.title, pformat(aliquot_results))
+                            raise RuntimeError(msg)
+                        result = aliquot_results[sample.title]
                         ar = self.get_ar_from_sample(sample, run.assay_name)
-                        state = aliquot_results['Assay_QC_Status'].lower()
+                        state = result['Assay_QC_Status'].lower()
                         ar.aliquot_evaluated = aliquot.title
                         ar.date_resulted = self.get_date(ws)
+                        import pdb
+                        pdb.set_trace()
+                        pass
                         transition(ar, 'qc_' + state)
-                    numeric_result = aliquot_results['SLE_key_Score']
+                    numeric_result = result['SLE_key_Score']
                     aliquot.numeric_result = numeric_result
-                    text_result = aliquot_results['SLE_key_Classification']
+                    text_result = result['SLE_key_Classification']
                     aliquot.text_result = text_result
+
+    def get_run(self, qc_head_row, ws):
+        # get the run nr so we can loop the plates
+        for col in all_cols:
+            if 'session' in ws["%s%s" % (col, qc_head_row)].value.lower():
+                run_number = int(ws["%s%s" % (col, qc_head_row + 1)].value)
+                break
+        else:
+            msg = "Can't find cell 'session' in range(%s%s,%s%s)" % \
+                  (min(all_cols), qc_head_row, max(all_cols), qc_head_row)
+            raise SpreadsheetParseError(msg)
+        brains = find(object_provides=IVeracisRunBase.__identifier__,
+                      run_number=run_number)
+        if not brains:
+            msg = "No test run found with run_number=%s." % run_number
+            raise RuntimeError(msg)
+        run = brains[0].getObject()
+        return run
+
+    def get_sample_from_aliquot(self, aliquot):
+        parent = aliquot.aq_parent
+        while not (ISample.providedBy(parent)):
+            parent = parent.aq_parent
+            if ILIMSRoot.providedBy(parent):
+                msg = "Cannot find ISample parent of Aliquot: %s" % aliquot
+                raise RuntimeError(msg)
+        return parent
 
     def get_ar_from_sample(self, sample, assay_name):
         for y in sample.objectValues():
@@ -251,23 +295,24 @@ class ImportDataAnalysis(BrowserView):
         """Dig up the next row who's first column contains 'Serial_Number'
         """
         for i in range(start_row, 999):
-            if ws['A%s' % i].value.lower() == 'serial_number':
+            value = "%s" % ws['A%s' % i].value
+            if value.lower() == 'serial_number':
                 return i
+        msg = "Can't find cell 'serial_number' in range(A%s,A999)" % start_row
+        raise SpreadsheetParseError(msg)
 
     def get_date(self, ws):
         for y in range(1, 999):
-            if ws['A%s' % y].value.lower() == 'analysis date':
-                val = ws['B%s' % y].value
-                return strptime(val, '%d-%b-%y')
-
-    def get_test_run(self, run_number):
-        """get test run object
-        """
-        brains = find(IVeracisRunBase.__identifier__, run_number=run_number)
-        if not brains:
-            msg = "No test run found with run_number=%s." % run_number
-            raise RuntimeError(msg)
-        return brains[0].getObject()
+            headervalue = "%s" % ws['A%s' % y].value
+            if headervalue.lower() == 'analysis date':
+                xy = 'C%s' % y
+                value = ws[xy].value
+                if isinstance(value, datetime.datetime):
+                    return value
+                msg = "Check that cell has valid date and Date format: %s" % xy
+                raise SpreadsheetParseError(msg)
+        msg = "Can't find cell 'analysis date' in range(A1,A999)"
+        raise SpreadsheetParseError(msg)
 
     def get_qc_aliquots_from_run(self, run):
         aliquots = []
@@ -281,9 +326,9 @@ class ImportDataAnalysis(BrowserView):
         return aliquots
 
     def process_out_figures(self, path):
-        """
+        """Store and log.
         """
 
     def process_raw_flipped(self, path):
-        """
+        """Store and log.
         """
