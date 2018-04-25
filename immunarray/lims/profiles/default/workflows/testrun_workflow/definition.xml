@@ -22,7 +22,7 @@
   </state>
 
   <state state_id="scanning" title="Scanning">
-    <exit-transition transition_id="resulted"/>
+    <exit-transition transition_id="result"/>
     <exit-transition transition_id="abort_run"/>
   </state>
 
@@ -68,7 +68,7 @@
   </transition>
 
   <transition transition_id="result"
-              title="Result"
+              title="Results Entered"
               new_state="resulted"
               before_script=""
               after_script=""
