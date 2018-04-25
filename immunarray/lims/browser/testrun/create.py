@@ -557,8 +557,8 @@ class CreateTestRunView(BrowserView):
             if IClinicalSample.providedBy(sample):
                 assayrequest = self.get_assay_request_from_sample(sample)
                 wf = get_tool('portal_workflow')
-                transitions = wf.getTransitionsFor(assayrequest)
-                if action_id in transitions \
+                t_ids = [t['id'] for t in wf.getTransitionsFor(assayrequest)]
+                if action_id in t_ids \
                         and assayrequest not in transitioned:
                     transition(assayrequest, action_id)
                     transitioned.append(assayrequest)
