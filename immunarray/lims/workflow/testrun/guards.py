@@ -6,7 +6,7 @@ def guard_queue(instance):
     return True
 
 
-def guard_in_process(instance):
+def guard_begin_process(instance):
     """
     if testrun.solutions(instance):
         return False

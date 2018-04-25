@@ -19,7 +19,7 @@
 
   <state state_id="in_queue" title="Queued">
     <exit-transition transition_id="make_available"/>
-    <exit-transition transition_id="in_process"/>
+    <exit-transition transition_id="begin_process"/>
   </state>
 
   <state state_id="in_process" title="In Process">
@@ -44,19 +44,19 @@
   <state state_id="rejected" title="Rejected">
   </state>
 
-  <transition transition_id="in_process"
-              title="In Process"
+  <transition transition_id="begin_process"
+              title="Begin Process"
               new_state="in_process"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=in_process"
+    <action url="%(content_url)s/content_status_modify?workflow_action=begin_process"
             category="workflow"
-            icon="">In Process
+            icon="">Begin Process
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('make_available')</guard-expression>
+      <guard-expression>python:here.guard_handler('begin_process')</guard-expression>
     </guard>
   </transition>
 

@@ -80,7 +80,7 @@
 
   <state state_id="in_queue" title="Queued">
     <description>Queued</description>
-    <exit-transition transition_id="in_process"/>
+    <exit-transition transition_id="begin_process"/>
     <exit-transition transition_id="release"/>
     <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="broken"/>
@@ -300,15 +300,15 @@
     </guard>
   </transition>
 
-  <transition transition_id="in_process"
-              title="In Process"
-              new_state="in_process"
+  <transition transition_id="begin_process"
+              title="Begin Process"
+              new_state="begin_process"
               before_script=""
               after_script=""
               trigger="USER">
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('in_process')
+      <guard-expression>python:here.guard_handler('begin_process')
       </guard-expression>
     </guard>
   </transition>

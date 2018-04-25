@@ -19,19 +19,19 @@
   <state state_id="discarded" title="Discard">
   </state>
 
-  <transition transition_id="in_process"
-              title="Active Box"
+  <transition transition_id="activate"
+              title="Activate Box"
               new_state="active"
               before_script=""
               after_script=""
               trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=in_process"
+    <action url="%(content_url)s/content_status_modify?workflow_action=activate"
             category="workflow"
-            icon="">Active
+            icon="">Activate Box
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('in_process')</guard-expression>
+      <guard-expression>python:here.guard_handler('activate')</guard-expression>
     </guard>
   </transition>
 

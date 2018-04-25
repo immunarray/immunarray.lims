@@ -195,7 +195,7 @@ class ImportDataAnalysis(BrowserView):
             # 'consume' qc aliquots.
             for uid in plate.values():
                 brains = find(object_provides=IQCAliquot.__identifier__,
-                              UID=uid, review_state='in_process')
+                              UID=uid, review_state='begin_process')
                 if brains:
                     transition(brains[0].getObject(), 'done')
 
