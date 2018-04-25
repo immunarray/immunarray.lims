@@ -10,7 +10,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.browser.testrun import DuplicateWellSelected, \
     InvalidAssaySelected, NoIchipLotsFound, NoWorkingAliquotsFound, \
     NotEnoughUniqueIChipLots, ObjectInInvalidState, QCAliquotNotFound, \
-    QCSampleNotFound, get_serializeArray_form_values
+    QCSampleNotFound, get_serializeArray_form_values, transition_plate_contents
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
@@ -437,7 +437,7 @@ class CreateTestRunView(BrowserView):
 
         solutions = [values[x] for x in values if x.startswith('solution-')]
 
-        self.transition_plate_contents(ichips, aliquots, 'queue')
+        transition_plate_contents(ichips, aliquots, 'queue')
         lab_users = LabUsersUserVocabulary(self).by_value
         planner = lab_users.get(values['run_planner'], '')
         operator = lab_users.get(values['run_planner'], '')
@@ -525,51 +525,3 @@ class CreateTestRunView(BrowserView):
             if any(values):
                 newplates.append(plate)
         return newplates
-
-    def transition_plate_contents(self, ichips, aliquots, action_id):
-        """Chips, aliquots, and assay requests move together through
-        identical states during the test run.
-        """
-        transitioned = []
-        try:
-            for ichip in ichips:
-                if ichip not in transitioned:
-                    transition(ichip, action_id)
-                    transitioned.append(ichip)
-        except InvalidParameterError:
-            # noinspection PyUnboundLocalVariable
-            msg = "Can't invoke '%s' transition on %s" % (action_id, ichip)
-            raise ObjectInInvalidState(msg)
-
-        try:
-            for aliquot in aliquots:
-                if aliquot not in transitioned:
-                    transition(aliquot, action_id)
-                    transitioned.append(aliquot)
-        except InvalidParameterError:
-            # noinspection PyUnboundLocalVariable
-            msg = "Can't invoke '%s' transition on %s" % (action_id, aliquot)
-            raise ObjectInInvalidState(msg)
-
-        # get AssayRequests associated with all aliquots, and queue them.
-        for aliquot in aliquots:
-            sample = self.get_parent_sample_from_aliquot(aliquot)
-            if IClinicalSample.providedBy(sample):
-                assayrequest = self.get_assay_request_from_sample(sample)
-                wf = get_tool('portal_workflow')
-                t_ids = [t['id'] for t in wf.getTransitionsFor(assayrequest)]
-                if action_id in t_ids \
-                        and assayrequest not in transitioned:
-                    transition(assayrequest, action_id)
-                    transitioned.append(assayrequest)
-
-    def get_parent_sample_from_aliquot(self, aliquot):
-        parent = aliquot.aq_parent
-        while not ISample.providedBy(parent):
-            parent = parent.aq_parent
-        return parent
-
-    def get_assay_request_from_sample(self, sample):
-        for child in sample.objectValues():
-            if IAssayRequest.providedBy(child):
-                return child
