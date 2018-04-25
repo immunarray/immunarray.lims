@@ -9,20 +9,16 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.browser.testrun import DuplicateWellSelected, \
     InvalidAssaySelected, NoIchipLotsFound, NoWorkingAliquotsFound, \
-    NotEnoughUniqueIChipLots, ObjectInInvalidState, QCAliquotNotFound, \
+    NotEnoughUniqueIChipLots, QCAliquotNotFound, \
     QCSampleNotFound, get_serializeArray_form_values, transition_plate_contents
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
-from immunarray.lims.interfaces.assayrequest import IAssayRequest
-from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.interfaces.ichipassay import IiChipAssay
-from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
-from plone.api.content import create, find, get_state, transition
-from plone.api.exc import InvalidParameterError
+from plone.api.content import create, find, get_state
 from plone.api.portal import get_tool
 
 
