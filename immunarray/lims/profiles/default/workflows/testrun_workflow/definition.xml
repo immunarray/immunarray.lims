@@ -75,7 +75,7 @@
               trigger="USER">
     <action url="%(content_url)s/content_status_modify?workflow_action=result"
             category="workflow"
-            icon="">Result
+            icon="">Results Entered
     </action>
     <guard>
       <guard-permission>Modify portal content</guard-permission>
