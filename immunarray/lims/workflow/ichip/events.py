@@ -100,13 +100,13 @@ def after_use_for_validation(instance):
     pass
 
 
-def after_used_qc_fail(instance):
+def after_qc_fail(instance):
     """
     """
     pass
 
 
-def after_used_qc_pass(instance):
+def after_qc_pass(instance):
     """
     """
     pass

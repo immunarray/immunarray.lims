@@ -78,7 +78,7 @@
     <exit-transition transition_id="release"/>
   </state>
 
-  <state state_id="queued" title="Queued">
+  <state state_id="in_queue" title="Queued">
     <description>Queued</description>
     <exit-transition transition_id="in_process"/>
     <exit-transition transition_id="release"/>
@@ -89,8 +89,8 @@
 
   <state state_id="in_process" title="In Process">
     <description>In Process</description>
-    <exit-transition transition_id="used_qc_pass"/>
-    <exit-transition transition_id="used_qc_fail"/>
+    <exit-transition transition_id="qc_pass"/>
+    <exit-transition transition_id="qc_fail"/>
   </state>
 
 
@@ -173,7 +173,6 @@
       </guard-expression>
     </guard>
   </transition>
-
 
   <transition transition_id="use_for_training"
               title="Use for training"
@@ -291,7 +290,7 @@
 
   <transition transition_id="queue"
               title="Queue iChip"
-              new_state="queued"
+              new_state="in_queue"
               before_script=""
               after_script=""
               trigger="USER">
@@ -314,28 +313,28 @@
     </guard>
   </transition>
 
-  <transition transition_id="used_qc_pass"
+  <transition transition_id="qc_pass"
               title="QC Pass"
-              new_state="used_qc_pass"
+              new_state="qc_pass"
               before_script=""
               after_script=""
               trigger="USER">
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('used_qc_pass')
+      <guard-expression>python:here.guard_handler('qc_pass')
       </guard-expression>
     </guard>
   </transition>
 
-  <transition transition_id="used_qc_fail"
+  <transition transition_id="qc_fail"
               title="QC Fail"
-              new_state="used_qc_fail"
+              new_state="qc_fail"
               before_script=""
               after_script=""
               trigger="USER">
     <guard>
       <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('used_qc_fail')
+      <guard-expression>python:here.guard_handler('qc_fail')
       </guard-expression>
     </guard>
   </transition>

@@ -105,13 +105,13 @@ def guard_use_for_validation(instance):
     return True
 
 
-def guard_used_qc_fail(instance):
+def guard_qc_fail(instance):
     """
     """
     return True
 
 
-def guard_used_qc_pass(instance):
+def guard_qc_pass(instance):
     """
     """
     return True
