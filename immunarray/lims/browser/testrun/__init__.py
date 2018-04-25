@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
-from immunarray.lims.interfaces.assayrequest import IAssayRequest
-from immunarray.lims.interfaces.clinicalsample import IClinicalSample
-from immunarray.lims.interfaces.sample import ISample
-from plone.api.content import transition
-from plone.api.exc import InvalidParameterError
-from plone.api.portal import get_tool
 
-class InvalidAliquotIdentifier(Exception):
-    """Value of Aliquot (title?) entered in ctest form
-    cannot be resolved to an aliquot in the sytem
-    """
 
 class InvalidAssaySelected(Exception):
     """Selected iChip Assay not found
@@ -111,57 +101,3 @@ def get_serializeArray_form_values(request):
 
     form_values['plates'] = plates
     return form_values
-
-
-def transition_plate_contents(ichips, aliquots, action_id):
-    """Chips, aliquots, and assay requests move together through
-    identical states during the test run.
-
-    This function is made use of wherever plate contents must be moved
-    together through some state.
-    """
-    transitioned = []
-    try:
-        for ichip in ichips:
-            if ichip not in transitioned:
-                transition(ichip, action_id)
-                transitioned.append(ichip)
-    except InvalidParameterError:
-        # noinspection PyUnboundLocalVariable
-        msg = "Can't invoke '%s' transition on %s" % (action_id, ichip)
-        raise ObjectInInvalidState(msg)
-
-    try:
-        for aliquot in aliquots:
-            if aliquot not in transitioned:
-                transition(aliquot, action_id)
-                transitioned.append(aliquot)
-    except InvalidParameterError:
-        # noinspection PyUnboundLocalVariable
-        msg = "Can't invoke '%s' transition on %s" % (action_id, aliquot)
-        raise ObjectInInvalidState(msg)
-
-    # get AssayRequests associated with all aliquots, and queue them.
-    for aliquot in aliquots:
-        sample = get_parent_sample_from_aliquot(aliquot)
-        if IClinicalSample.providedBy(sample):
-            assayrequest = get_assay_request_from_sample(sample)
-            wf = get_tool('portal_workflow')
-            t_ids = [t['id'] for t in wf.getTransitionsFor(assayrequest)]
-            if action_id in t_ids \
-                    and assayrequest not in transitioned:
-                transition(assayrequest, action_id)
-                transitioned.append(assayrequest)
-
-
-def get_parent_sample_from_aliquot(aliquot):
-    parent = aliquot.aq_parent
-    while not ISample.providedBy(parent):
-        parent = parent.aq_parent
-    return parent
-
-
-def get_assay_request_from_sample(sample):
-    for child in sample.objectValues():
-        if IAssayRequest.providedBy(child):
-            return child

@@ -10,7 +10,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.browser.testrun import DuplicateWellSelected, \
     InvalidAssaySelected, NoIchipLotsFound, NoWorkingAliquotsFound, \
     NotEnoughUniqueIChipLots, ObjectInInvalidState, QCAliquotNotFound, \
-    QCSampleNotFound, get_serializeArray_form_values, transition_plate_contents
+    QCSampleNotFound, get_serializeArray_form_values
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
@@ -465,6 +465,52 @@ class CreateTestRunView(BrowserView):
 
         return ichips_for_assay
 
+    def save_run(self):
+        """Create initial run
+        """
+
+        values = get_serializeArray_form_values(self.request)
+
+        try:
+            assay = find(object_provides=IiChipAssay.__identifier__,
+                         Title=values['assay_name'])[0].getObject()
+        except IndexError:
+            raise InvalidAssaySelected(values['assay_name'])
+
+        plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
+        plates = self.remove_empty_plates(plates)
+        plates = self.reorder_plates(plates)
+
+        solutions = [values[x] for x in values if x.startswith('solution-')]
+
+        self.transition_plate_contents(ichips, aliquots, 'queue')
+        lab_users = LabUsersUserVocabulary(self).by_value
+        planner = lab_users.get(values['run_planner'], '')
+        operator = lab_users.get(values['run_planner'], '')
+
+        brain = find(object_provides=ITestRuns.__identifier__)[0]
+        folder = brain.getObject()
+
+        try:
+            run_number = int(values['run_number'])
+        except (ValueError, TypeError):
+            raise TypeError("Run number must be a number.")
+
+        run = create(
+            folder,
+            'TestRun',
+            title=values['assay_name'],
+            assay_name=assay.title,
+            assay_uid=assay.UID(),
+            run_number=run_number,
+            run_date=values['run_date'],
+            run_planner=planner.title if planner else '',
+            run_operator=operator.title if operator else '',
+            plates=plates,
+            solutions=solutions
+        )
+        return run
+
     def transmogrify_inputs(self, plates):
         """Convert titles to UIDs for all ichips and aliquots
         """
@@ -525,3 +571,51 @@ class CreateTestRunView(BrowserView):
             if any(values):
                 newplates.append(plate)
         return newplates
+
+    def transition_plate_contents(self, ichips, aliquots, action_id):
+        """Chips, aliquots, and assay requests move together through
+        identical states during the test run.
+        """
+        transitioned = []
+        try:
+            for ichip in ichips:
+                if ichip not in transitioned:
+                    transition(ichip, action_id)
+                    transitioned.append(ichip)
+        except InvalidParameterError:
+            # noinspection PyUnboundLocalVariable
+            msg = "Can't invoke '%s' transition on %s" % (action_id, ichip)
+            raise ObjectInInvalidState(msg)
+
+        try:
+            for aliquot in aliquots:
+                if aliquot not in transitioned:
+                    transition(aliquot, action_id)
+                    transitioned.append(aliquot)
+        except InvalidParameterError:
+            # noinspection PyUnboundLocalVariable
+            msg = "Can't invoke '%s' transition on %s" % (action_id, aliquot)
+            raise ObjectInInvalidState(msg)
+
+        # get AssayRequests associated with all aliquots, and queue them.
+        for aliquot in aliquots:
+            sample = self.get_parent_sample_from_aliquot(aliquot)
+            if IClinicalSample.providedBy(sample):
+                assayrequest = self.get_assay_request_from_sample(sample)
+                wf = get_tool('portal_workflow')
+                t_ids = [t['id'] for t in wf.getTransitionsFor(assayrequest)]
+                if action_id in t_ids \
+                        and assayrequest not in transitioned:
+                    transition(assayrequest, action_id)
+                    transitioned.append(assayrequest)
+
+    def get_parent_sample_from_aliquot(self, aliquot):
+        parent = aliquot.aq_parent
+        while not ISample.providedBy(parent):
+            parent = parent.aq_parent
+        return parent
+
+    def get_assay_request_from_sample(self, sample):
+        for child in sample.objectValues():
+            if IAssayRequest.providedBy(child):
+                return child
