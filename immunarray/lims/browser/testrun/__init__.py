@@ -97,7 +97,7 @@ def get_serializeArray_form_values(request):
     # name starts with one plate_keys, will be included in the "plates"
     # element of the returned list
     plate_keys = ['chip-', 'comments', 'scan-slot', 'well-number']
-    plates = [{}] * nr_plates
+    plates = [{} for x in range(nr_plates)]
     form_values = {}
     for k, v in intermediate.items():
         if any([k.startswith(pk) for pk in plate_keys]):
