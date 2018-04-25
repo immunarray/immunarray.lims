@@ -1,11 +1,11 @@
+import datetime
 import logging
 import os
 from os.path import exists, join
 from pprint import pformat
 from shutil import rmtree
-from time import strptime, time
+from time import time
 
-import datetime
 import openpyxl
 from Products.Five import BrowserView
 from bika.lims.interfaces.limsroot import ILIMSRoot
@@ -14,7 +14,7 @@ from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
-from plone.api.content import find, transition
+from plone.api.content import find, get_state, transition
 
 logger = logging.getLogger('ImportDataAnalysis')
 
@@ -24,6 +24,12 @@ all_cols = [chr(x) for x in range(65, 91)]  # A..Z
 class SpreadsheetParseError(Exception):
     """Error getting required values from spreadsheet.  The parser
     is quite brittle, if anything is unexpected we will probably end up here.
+    """
+
+
+class RunInIncorrectState(Exception):
+    """Test run is in the incorrect state.  Test run must be in state 'resulted'
+    before results can be imported.
     """
 
 
@@ -270,6 +276,13 @@ class ImportDataAnalysis(BrowserView):
             msg = "No test run found with run_number=%s." % run_number
             raise RuntimeError(msg)
         run = brains[0].getObject()
+        # verify that run is in correct state for import.
+        state = get_state(run)
+        if state != 'resulted':
+            msg = "Test run %s is in state '%s'.  Expected state: 'resulted'" \
+                  % (
+                run.title, state)
+            raise RunInIncorrectState(msg)
         return run
 
     def get_sample_from_aliquot(self, aliquot):
