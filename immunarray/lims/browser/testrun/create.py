@@ -58,6 +58,52 @@ class CreateTestRunView(BrowserView):
 
         return self.template()
 
+    def save_run(self):
+        """Create initial run
+        """
+
+        values = get_serializeArray_form_values(self.request)
+
+        try:
+            assay = find(object_provides=IiChipAssay.__identifier__,
+                         Title=values['assay_name'])[0].getObject()
+        except IndexError:
+            raise InvalidAssaySelected(values['assay_name'])
+
+        plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
+        plates = self.remove_empty_plates(plates)
+        plates = self.reorder_plates(plates)
+
+        solutions = [values[x] for x in values if x.startswith('solution-')]
+
+        transition_plate_contents(ichips, aliquots, 'queue')
+        lab_users = LabUsersUserVocabulary(self).by_value
+        planner = lab_users.get(values['run_planner'], '')
+        operator = lab_users.get(values['run_planner'], '')
+
+        brain = find(object_provides=ITestRuns.__identifier__)[0]
+        folder = brain.getObject()
+
+        try:
+            run_number = int(values['run_number'])
+        except (ValueError, TypeError):
+            raise TypeError("Run number must be a number.")
+
+        run = create(
+            folder,
+            'TestRun',
+            title=values['assay_name'],
+            assay_name=assay.title,
+            assay_uid=assay.UID(),
+            run_number=run_number,
+            run_date=values['run_date'],
+            run_planner=planner.title if planner else '',
+            run_operator=operator.title if operator else '',
+            plates=plates,
+            solutions=solutions
+        )
+        return run
+
     @property
     def assay_name(self):
         """get assay name from the form, or from self.context for edit views
@@ -414,52 +460,6 @@ class CreateTestRunView(BrowserView):
             ichips_for_assay.append([ichiplot, filtered])
 
         return ichips_for_assay
-
-    def save_run(self):
-        """Create initial run
-        """
-
-        values = get_serializeArray_form_values(self.request)
-
-        try:
-            assay = find(object_provides=IiChipAssay.__identifier__,
-                         Title=values['assay_name'])[0].getObject()
-        except IndexError:
-            raise InvalidAssaySelected(values['assay_name'])
-
-        plates, ichips, aliquots = self.transmogrify_inputs(values['plates'])
-        plates = self.remove_empty_plates(plates)
-        plates = self.reorder_plates(plates)
-
-        solutions = [values[x] for x in values if x.startswith('solution-')]
-
-        transition_plate_contents(ichips, aliquots, 'queue')
-        lab_users = LabUsersUserVocabulary(self).by_value
-        planner = lab_users.get(values['run_planner'], '')
-        operator = lab_users.get(values['run_planner'], '')
-
-        brain = find(object_provides=ITestRuns.__identifier__)[0]
-        folder = brain.getObject()
-
-        try:
-            run_number = int(values['run_number'])
-        except (ValueError, TypeError):
-            raise TypeError("Run number must be a number.")
-
-        run = create(
-            folder,
-            'TestRun',
-            title=values['assay_name'],
-            assay_name=assay.title,
-            assay_uid=assay.UID(),
-            run_number=run_number,
-            run_date=values['run_date'],
-            run_planner=planner.title if planner else '',
-            run_operator=operator.title if operator else '',
-            plates=plates,
-            solutions=solutions
-        )
-        return run
 
     def transmogrify_inputs(self, plates):
         """Convert titles to UIDs for all ichips and aliquots
