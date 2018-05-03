@@ -13,7 +13,11 @@ def after_re_run(instance):
     """
 
 
-def after_result(instance):
+def after_qc_fail(instance):
+    """
+    """
+
+def after_qc_pass(instance):
     """
     """
 

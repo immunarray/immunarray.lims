@@ -23,9 +23,20 @@
   </state>
 
   <state state_id="in_process" title="In Process">
-    <exit-transition transition_id="result"/>
+    <exit-transition transition_id="qc_pass"/>
+    <exit-transition transition_id="qc_fail"/>
     <exit-transition transition_id="make_available"/>
     <exit-transition transition_id="reject"/>
+  </state>
+
+    <state state_id="qc_failed" title="QC Failed">
+    <description>QC Failed</description>
+    <exit-transition transition_id="discard"/>
+  </state>
+
+  <state state_id="qc_passed" title="QC Passed">
+    <description>QC Passed</description>
+    <exit-transition transition_id="discard"/>
   </state>
 
   <state state_id="re_run" title="Re_Run">
@@ -57,6 +68,32 @@
     <guard>
       <guard-permission>Modify portal content</guard-permission>
       <guard-expression>python:here.guard_handler('begin_process')</guard-expression>
+    </guard>
+  </transition>
+
+    <transition transition_id="qc_pass"
+              title="QC Pass"
+              new_state="qc_passed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('qc_pass')
+      </guard-expression>
+    </guard>
+  </transition>
+
+  <transition transition_id="qc_fail"
+              title="QC Fail"
+              new_state="qc_failed"
+              before_script=""
+              after_script=""
+              trigger="USER">
+    <guard>
+      <guard-permission>Modify portal content</guard-permission>
+      <guard-expression>python:here.guard_handler('qc_fail')
+      </guard-expression>
     </guard>
   </transition>
 
@@ -105,22 +142,6 @@
     <guard>
       <guard-permission>Modify portal content</guard-permission>
       <guard-expression>python:here.guard_handler('re_run')</guard-expression>
-    </guard>
-  </transition>
-
-  <transition transition_id="result"
-              title="Result"
-              new_state="resulted"
-              before_script=""
-              after_script=""
-              trigger="USER">
-    <action url="%(content_url)s/content_status_modify?workflow_action=result"
-            category="workflow"
-            icon="">Result
-    </action>
-    <guard>
-      <guard-permission>Modify portal content</guard-permission>
-      <guard-expression>python:here.guard_handler('result')</guard-expression>
     </guard>
   </transition>
 

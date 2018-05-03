@@ -16,7 +16,13 @@ def guard_re_run(instance):
     return True
 
 
-def guard_result(instance):
+def guard_qc_fail(instance):
+    """
+    """
+    return True
+
+
+def guard_qc_pass(instance):
     """
     """
     return True

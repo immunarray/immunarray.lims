@@ -93,6 +93,15 @@
     <exit-transition transition_id="qc_fail"/>
   </state>
 
+  <state state_id="qc_failed" title="QC Failed">
+    <description>QC Failed</description>
+    <exit-transition transition_id="discard"/>
+  </state>
+
+  <state state_id="qc_passed" title="QC Passed">
+    <description>QC Passed</description>
+    <exit-transition transition_id="discard"/>
+  </state>
 
   <state state_id="broken" title="Broken">
     <description>Broken</description>
@@ -315,7 +324,7 @@
 
   <transition transition_id="qc_pass"
               title="QC Pass"
-              new_state="qc_pass"
+              new_state="qc_passed"
               before_script=""
               after_script=""
               trigger="USER">
@@ -328,7 +337,7 @@
 
   <transition transition_id="qc_fail"
               title="QC Fail"
-              new_state="qc_fail"
+              new_state="qc_failed"
               before_script=""
               after_script=""
               trigger="USER">

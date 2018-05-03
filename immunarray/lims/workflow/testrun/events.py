@@ -1,4 +1,3 @@
-from immunarray.lims import logger
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
 from immunarray.lims.interfaces.clinicalaliquot import IClinicalAliquot
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
@@ -10,11 +9,27 @@ from plone.api.content import find, transition
 def after_queue(instance):
     """
     """
+    assayrequests, clinicalaliquots, ichips, qcaliquots = run_objects(instance)
+    for obj in set(qcaliquots):
+        transition(obj, "queue")
+    for obj in set(clinicalaliquots):
+        transition(obj, "queue")
+    for obj in set(ichips):
+        transition(obj, "queue")
+    for obj in set(assayrequests):
+        transition(obj, "queue")
 
 
 def after_begin_process(instance):
     """
     """
+    assayrequests, clinicalaliquots, ichips, qcaliquots = run_objects(instance)
+    for obj in set(qcaliquots):
+        transition(obj, "begin_process")
+    for obj in set(clinicalaliquots):
+        transition(obj, "begin_process")
+    for obj in set(assayrequests):
+        transition(obj, "begin_process")
 
 
 def after_result(instance):
@@ -22,19 +37,29 @@ def after_result(instance):
     """
 
 
-def after_report(instance):
+def after_cancel_run(instance):
+    """When cancelling a test run, objects that were linked here must
+    be freed for use in a future test run, or cancelled.
+    - cancels iChip and Aliquot objects
+    - make_available on AssayRequest objects.
     """
-    """
+    assayrequests, clinicalaliquots, ichips, qcaliquots = run_objects(instance)
+    for obj in set(qcaliquots):
+        transition(obj, "make_available")
+    for obj in set(clinicalaliquots):
+        transition(obj, "make_available")
+    for obj in set(ichips):
+        transition(obj, "make_available")
+    for obj in set(assayrequests):
+        transition(obj, "make_available")
 
 
-def after_wet_work_done(instance):
+def after_abort_run(instance):
+    """There are only one type of object supporting abort, and that is the
+    Test Run itself.  So, I guess we don't abort any other objects here when
+    the run is aborted.
     """
-    """
-
-
-def after_scanning(instance):
-    """
-    """
+    # XXX: need a way to show aborted links in the UI
 
 
 def get_assayrequest_from_aliquot(aliquot):
@@ -48,27 +73,21 @@ def get_assayrequest_from_aliquot(aliquot):
             return child
 
 
-def after_cancel_run(instance):
-    """When cancelling a test run, objects that were linked here must
-    be freed for use in a future test run, or cancelled.
-    - cancels iChip and Aliquot objects
-    - make_available on AssayRequest objects.
-    """
+def run_objects(instance):
     clinicalaliquots = []
     qcaliquots = []
     ichips = []
     assayrequests = []
-
     for plate in instance.plates:
         for key, value in plate.items():
-            obj = get_object(value)
+            brains = find(UID=value)
+            if brains:
+                obj = brains[0].getObject()
             _items = qcaliquots + clinicalaliquots + ichips + assayrequests
             if not obj or obj in _items:
                 continue
-            # ichip
             if IiChip.providedBy(obj):
                 ichips.append(obj)
-            # aliquot
             elif IQCAliquot.providedBy(obj):
                 qcaliquots.append(obj)
             elif IClinicalAliquot.providedBy(obj):
@@ -76,33 +95,4 @@ def after_cancel_run(instance):
                 # get assayrequest
                 ar = get_assayrequest_from_aliquot(obj)
                 assayrequests.append(ar)
-
-    for obj in set(qcaliquots):
-        logger.info("transitioning %s with make_available" % obj)
-        transition(obj, "make_available")
-
-    for obj in set(clinicalaliquots):
-        logger.info("transitioning %s with make_available" % obj)
-        transition(obj, "make_available")
-
-    for obj in set(ichips):
-        logger.info("transitioning %s with make_available" % obj)
-        transition(obj, "make_available")
-
-    for obj in set(assayrequests):
-        logger.info("transitioning %s with make_available" % obj)
-        transition(obj, "make_available")
-
-
-def after_abort_run(instance):
-    """There are only one type of object supporting abort, and that is the
-    Test Run itself.  So, I guess we don't abort any other objects here when
-    the run is aborted.
-    """
-    # XXX: need a way to show aborted links in the UI
-
-
-def get_object(uid):
-    brains = find(UID=uid)
-    if brains:
-        return brains[0].getObject()
+    return assayrequests, clinicalaliquots, ichips, qcaliquots

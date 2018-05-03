@@ -1,5 +1,3 @@
-from immunarray.lims.interfaces import testrrun
-
 def guard_queue(instance):
     """
     """
