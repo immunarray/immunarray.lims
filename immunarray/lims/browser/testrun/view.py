@@ -7,17 +7,15 @@ import transaction
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from immunarray.lims.browser.testrun import DuplicateWellSelected, \
-    InvalidAssaySelected, ObjectInInvalidState, get_serializeArray_form_values
+    InvalidAssaySelected, get_serializeArray_form_values
 from immunarray.lims.interfaces import ITestRuns
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
-from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
-from plone.api.content import find, transition
-from plone.api.exc import InvalidParameterError
+from plone.api.content import find
 
 
 class ViewTestRunView(BrowserView):
@@ -32,18 +30,20 @@ class ViewTestRunView(BrowserView):
     def __call__(self):
         request = self.request
 
+        # noinspection PyBroadException
         try:
             if request.form.get('ctest_action', '') == 'save_run':
                 self.save_run()
                 return json.dumps(
                     {'success': True,
                      'redirect_url': self.context.absolute_url() + '/view'})
-        except Exception as e:
+        except Exception:
             msg = "<br/>" + traceback.format_exc().split("\n", 1)[-1]
             msg = msg.replace("\n", "<br/>").replace(" ", "&nbsp;&nbsp;")
             transaction.abort()
             return json.dumps({'success': False, 'message': msg})
 
+        # noinspection PyArgumentList
         return self.template()
 
     def error(self, e):
