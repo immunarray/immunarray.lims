@@ -1,20 +1,26 @@
 import datetime
 import logging
 import os
+from AccessControl import Unauthorized
 from os.path import exists, join
 from pprint import pformat
-from shutil import rmtree
 from time import time
 
 import openpyxl
 from Products.Five import BrowserView
 from bika.lims.interfaces.limsroot import ILIMSRoot
+from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
+from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
-from plone.api.content import find, get_state, transition
+from plone.api.content import create, find, get_state, transition
+from plone.protect.interfaces import IDisableCSRFProtection
+from shutil import rmtree
+from zExceptions import BadRequest
+from zope.interface import alsoProvides
 
 logger = logging.getLogger('ImportDataAnalysis')
 
@@ -28,8 +34,8 @@ class SpreadsheetParseError(Exception):
 
 
 class RunInIncorrectState(Exception):
-    """Test run is in the incorrect state.  Test run must be in state 'resulted'
-    before results can be imported.
+    """Test run is in the incorrect state.  Test run must be in state 'scanning'
+    before results can be imported, and state changed to 'resulted' here.
     """
 
 
@@ -79,6 +85,7 @@ class ImportDataAnalysis(BrowserView):
     """
 
     def __init__(self, context, request):
+        alsoProvides(request, IDisableCSRFProtection)
         BrowserView.__init__(self, context, request)
         self.context = context
         self.request = request
@@ -118,8 +125,8 @@ class ImportDataAnalysis(BrowserView):
         the safety threshold.
         """
         paths = []
-        for x in os.listdir(self.filepath):
-            path = join(self.filepath, x)
+        for fn in os.listdir(self.filepath):
+            path = join(self.filepath, fn)
             if not exists(join(path, 'Out', 'Results', 'SLEkey_Results.xlsx')):
                 continue
             # Check the modified time
@@ -131,17 +138,22 @@ class ImportDataAnalysis(BrowserView):
         return paths
 
     def process_results(self, path):
+        # import results and files from path
         self.process_results_xlsx(path)
         self.process_out_figures(path)
         self.process_raw_flipped(path)
-        # If we made it this far without raising an exception,
-        # then everything's fine and we can remove the folder.
+        # transition run to 'resulted'
+        run = self.get_run(path)
+        transition(run, 'result')
+        # remove uploaded directory
         rmtree(path)
 
     def process_results_xlsx(self, path):
         """Take values from path/Out/Results/SLEkey_Results.xlsx, and write
         them to the database
         """
+        run = self.get_run(path)
+
         # Get the first sheet
         filename = join(path, 'Out', 'Results', 'SLEkey_Results.xlsx')
         wb = openpyxl.load_workbook(filename)
@@ -150,8 +162,6 @@ class ImportDataAnalysis(BrowserView):
         # header rows for blocks containg QC and Clinical aliquot/sample info
         qc_head_row = self.findnextSerial_Numberrow(ws, 1)
         clin_head_row = self.findnextSerial_Numberrow(ws, qc_head_row + 1)
-
-        run = self.get_run(qc_head_row, ws)
 
         # get column letters of all qc headers that start with "ichip*"
         qc_ichip_cols = []
@@ -178,6 +188,7 @@ class ImportDataAnalysis(BrowserView):
         for plate in run.plates:
             plate_ichips = []
             plate_ichiplot_titles = []
+
             # get all unique ichip lot numbers in a list
             for key, uid in plate.items():
                 if key.startswith('ichip-id'):
@@ -186,7 +197,6 @@ class ImportDataAnalysis(BrowserView):
                     ichiplot_title = ichip.title.upper().split('-')[0]
                     if ichiplot_title not in plate_ichiplot_titles:
                         plate_ichiplot_titles.append(ichiplot_title)
-
             for combo in ichip_passfail_combos:
                 if sorted(plate_ichiplot_titles) == sorted(combo[0]):
                     for ichip in plate_ichips:
@@ -195,7 +205,7 @@ class ImportDataAnalysis(BrowserView):
             # 'consume' qc aliquots.
             for uid in plate.values():
                 brains = find(object_provides=IQCAliquot.__identifier__,
-                              UID=uid, review_state='begin_process')
+                              UID=uid, review_state='in_process')
                 if brains:
                     transition(brains[0].getObject(), 'done')
 
@@ -207,7 +217,6 @@ class ImportDataAnalysis(BrowserView):
         if not all(cols):
             msg = "One of the column headers can't be located:" % pformat(cols)
             raise SpreadsheetParseError(msg)
-
         for col in all_cols:
             coord = "%s%s" % (col, clin_head_row)
             value = ws[coord].value
@@ -220,16 +229,16 @@ class ImportDataAnalysis(BrowserView):
         #              Assay_QC_Status],}
         aliquot_results = {}
         first_empty = self.get_first_empty_row(ws, clin_head_row)
-
         for row in range(clin_head_row + 1, first_empty):
             sample_id = ws["%s%s" % (cols['Sample_ID'], row)].value
-            # @formatter:off
+            score = ws["%s%s" % (cols['SLE_key_Score'], row)].value
+            classif = ws["%s%s" % (cols['SLE_key_Classification'], row)].value
+            status = ws["%s%s" % (cols['Assay_QC_Status'], row)].value
             aliquot_results[sample_id] = {
-                'SLE_key_Score': ws["%s%s" % (cols['SLE_key_Score'], row)].value,
-                'SLE_key_Classification': "%s" % ws["%s%s" % (cols['SLE_key_Classification'], row)].value,
-                'Assay_QC_Status': "%s" % ws["%s%s" % (cols['Assay_QC_Status'], row)].value
+                'SLE_key_Score': score,
+                'SLE_key_Classification': "%s" % classif,
+                'Assay_QC_Status': "%s" % status
             }
-            # @formatter:on
 
         _used_uids = []
         for plate in run.plates:
@@ -238,52 +247,107 @@ class ImportDataAnalysis(BrowserView):
                     continue
                 _used_uids.append(uid)
                 brains = find(UID=uid)
-                if brains:
-                    aliquot = brains[0].getObject()
-                    sample = self.get_sample_from_aliquot(aliquot)
-                    if IClinicalSample.providedBy(sample):
-                        if sample.title not in aliquot_results:
-                            msg = "Sample '%s' not in aliquot results: %s" % \
-                                  (sample.title, pformat(aliquot_results))
-                            raise RuntimeError(msg)
-                        result = aliquot_results[sample.title]
-                        ar = self.get_ar_from_sample(sample, run.assay_name)
-                        state = result['Assay_QC_Status'].lower()
-                        ar.aliquot_evaluated = aliquot.title
-                        ar.date_resulted = self.get_date(ws)
-                        import pdb
-                        pdb.set_trace()
-                        pass
+                if not brains:
+                    continue
+                aliquot = brains[0].getObject()
+                if not IAliquot.providedBy(aliquot):
+                    continue
+                sample = self.get_sample_from_aliquot(aliquot)
+                if IClinicalSample.providedBy(sample):
+                    if sample.title not in aliquot_results:
+                        msg = "Sample '%s' not in spreadsheet results: %s" % \
+                              (sample.title, pformat(aliquot_results))
+                        raise RuntimeError(msg)
+                    result = aliquot_results[sample.title]
+                    ar = self.get_ar_from_sample(sample, run.assay_name)
+                    state = result['Assay_QC_Status'].lower()
+                    ar.aliquot_evaluated = aliquot.title
+                    ar.date_resulted = self.get_date(ws)
+                    # assayrequest is associated with multiple aliquots,
+                    # so we only transition if the AR's state is expected.
+                    if get_state(ar) == 'in_process':
                         transition(ar, 'qc_' + state)
-                    numeric_result = result['SLE_key_Score']
-                    aliquot.numeric_result = numeric_result
-                    text_result = result['SLE_key_Classification']
-                    aliquot.text_result = text_result
+                numeric_result = result['SLE_key_Score']
+                aliquot.numeric_result = numeric_result
+                text_result = result['SLE_key_Classification']
+                aliquot.text_result = text_result
 
-    def get_run(self, qc_head_row, ws):
+    def process_out_figures(self, path):
+        """Store images in samples
+        """
+        figpath = join(path, 'Out', 'Figures')
+        created = []
+        for fn in os.listdir(figpath):
+            if 'png' not in fn:
+                continue
+            sample_id = fn.split('_')[0]
+            brains = find(object_provides=ISample.__identifier__, id=sample_id)
+            if not brains:
+                msg = "%s/%s: Can't find sample '%s'" % (figpath, fn, sample_id)
+                raise RuntimeError(msg)
+            sample = brains[0].getObject()
+            try:
+                img = create(container=sample, type='Image', id=fn, title=fn)
+            except BadRequest as e:
+                msg = "Run import has already been performed! (%s)" % e.message
+                raise BadRequest(msg)
+            except Unauthorized:
+                msg = "Failed to create %s in sample %s" % (fn, sample.title)
+                raise Unauthorized(msg)
+            created.append((fn, img))
+
+    def process_raw_flipped(self, path):
+        """Store flipped images in ichips
+        """
+        flpath = join(path, 'Raw', 'Flipped')
+        created = []
+        for fn in os.listdir(flpath):
+            if 'jpg' not in fn:
+                continue
+            splits = fn.lower().split('_')
+            ichip_id = splits[1].replace('.', '-') + "_%03d" % int(splits[2])
+            brains = find(object_provides=IiChip.__identifier__, id=ichip_id)
+            if not brains:
+                msg = "%s/%s: Can't find ichip '%s'" % (flpath, fn, ichip_id)
+                raise RuntimeError(msg)
+            ichip = brains[0].getObject()
+            try:
+                img = create(container=ichip, type='Image', id=fn, title=fn)
+            except BadRequest as e:
+                msg = "Run import has already been performed! (%s)" % e.message
+                raise BadRequest(msg)
+            except Unauthorized:
+                msg = "Failed to create %s in ichip %s" % (fn, ichip.title)
+                raise Unauthorized(msg)
+            created.append(img)
+
+    def get_run(self, path):
+        run_nr = self.get_run_nr(path)
         # get the run nr so we can loop the plates
-        for col in all_cols:
-            if 'session' in ws["%s%s" % (col, qc_head_row)].value.lower():
-                run_number = int(ws["%s%s" % (col, qc_head_row + 1)].value)
-                break
-        else:
-            msg = "Can't find cell 'session' in range(%s%s,%s%s)" % \
-                  (min(all_cols), qc_head_row, max(all_cols), qc_head_row)
-            raise SpreadsheetParseError(msg)
         brains = find(object_provides=IVeracisRunBase.__identifier__,
-                      run_number=run_number)
+                      run_number=run_nr)
         if not brains:
-            msg = "No test run found with run_number=%s." % run_number
+            msg = "No test run found with run_number=%s." % run_nr
             raise RuntimeError(msg)
         run = brains[0].getObject()
+
         # verify that run is in correct state for import.
         state = get_state(run)
-        if state != 'resulted':
-            msg = "Test run %s is in state '%s'.  Expected state: 'resulted'" \
-                  % (
-                run.title, state)
+        if state != 'scanning':
+            msg = "Test run %s is in state '%s'.  Expected state: 'scanning'" \
+                  % (run.title, state)
             raise RunInIncorrectState(msg)
+
         return run
+
+    def get_run_nr(self, path):
+        try:
+            csv = [i for i in os.listdir(path) if i.lower().endswith('.csv')][0]
+        except Exception as e:
+            msg = "Cannot discover run for %s: (%s)" % (path, e.message)
+            raise RuntimeError(msg)
+        run_nr = int(csv.split('.')[0])
+        return run_nr
 
     def get_sample_from_aliquot(self, aliquot):
         parent = aliquot.aq_parent
@@ -337,11 +401,3 @@ class ImportDataAnalysis(BrowserView):
                 if brains:
                     aliquots.append(brains[0].getObject())
         return aliquots
-
-    def process_out_figures(self, path):
-        """Store and log.
-        """
-
-    def process_raw_flipped(self, path):
-        """Store and log.
-        """
