@@ -1,12 +1,13 @@
 import datetime
 import logging
 import os
-from AccessControl import Unauthorized
 from os.path import exists, join
 from pprint import pformat
+from shutil import rmtree
 from time import time
 
 import openpyxl
+from AccessControl import Unauthorized
 from Products.Five import BrowserView
 from bika.lims.interfaces.limsroot import ILIMSRoot
 from immunarray.lims.interfaces.aliquot import IAliquot
@@ -18,7 +19,6 @@ from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
 from plone.api.content import create, find, get_state, transition
 from plone.protect.interfaces import IDisableCSRFProtection
-from shutil import rmtree
 from zExceptions import BadRequest
 from zope.interface import alsoProvides
 
@@ -139,11 +139,12 @@ class ImportDataAnalysis(BrowserView):
 
     def process_results(self, path):
         # import results and files from path
-        self.process_results_xlsx(path)
-        self.process_out_figures(path)
-        self.process_raw_flipped(path)
+        log = self.process_results_xlsx(path)
+        log += self.process_out_figures(path)
+        log += self.process_raw_flipped(path)
         # transition run to 'resulted'
         run = self.get_run(path)
+        run.import_log = log
         transition(run, 'result')
         # remove uploaded directory
         rmtree(path)
@@ -240,6 +241,8 @@ class ImportDataAnalysis(BrowserView):
                 'Assay_QC_Status': "%s" % status
             }
 
+        log = []
+
         _used_uids = []
         for plate in run.plates:
             for uid in plate.values():
@@ -267,16 +270,21 @@ class ImportDataAnalysis(BrowserView):
                     # so we only transition if the AR's state is expected.
                     if get_state(ar) == 'in_process':
                         transition(ar, 'qc_' + state)
-                numeric_result = result['SLE_key_Score']
-                aliquot.numeric_result = numeric_result
-                text_result = result['SLE_key_Classification']
-                aliquot.text_result = text_result
+                aliquot.numeric_result = result['SLE_key_Score']
+                aliquot.text_result = result['SLE_key_Classification']
+                log.append("Sample: %s, Aliquot: %s, Results: %s, %s" % (
+                    sample.title,
+                    aliquot.title,
+                    result['SLE_key_Score'],
+                    result['SLE_key_Classification'],
+                ))
+        return log
 
     def process_out_figures(self, path):
         """Store images in samples
         """
         figpath = join(path, 'Out', 'Figures')
-        created = []
+        log = []
         for fn in os.listdir(figpath):
             if 'png' not in fn:
                 continue
@@ -294,13 +302,14 @@ class ImportDataAnalysis(BrowserView):
             except Unauthorized:
                 msg = "Failed to create %s in sample %s" % (fn, sample.title)
                 raise Unauthorized(msg)
-            created.append((fn, img))
+            log.append("Added image to sample: " % img)
+            return log
 
     def process_raw_flipped(self, path):
         """Store flipped images in ichips
         """
         flpath = join(path, 'Raw', 'Flipped')
-        created = []
+        log = []
         for fn in os.listdir(flpath):
             if 'jpg' not in fn:
                 continue
@@ -319,7 +328,8 @@ class ImportDataAnalysis(BrowserView):
             except Unauthorized:
                 msg = "Failed to create %s in ichip %s" % (fn, ichip.title)
                 raise Unauthorized(msg)
-            created.append(img)
+            log.append("Added image to sample: " % img)
+            return log
 
     def get_run(self, path):
         run_nr = self.get_run_nr(path)

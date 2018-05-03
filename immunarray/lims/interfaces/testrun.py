@@ -170,3 +170,6 @@ class ITestRun(IVeracisRunBase):
     ichip_humidity = Attribute("""iChip Humidity
     Humidity is logged before and after each ichip is prepared.
     """)
+
+    import_log = Attribute("""TestRun result import log.
+    """)
