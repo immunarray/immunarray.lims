@@ -27,6 +27,7 @@
   <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
 
   <browser:resourceDirectory name="immunarray.lims" directory="static"/>
+  <browser:resourceDirectory name="immunarray.reports" directory="reports"/>
 
 
 </configure>

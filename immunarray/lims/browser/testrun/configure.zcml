@@ -3,8 +3,6 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="immunarray.lims">
 
-  <browser:resourceDirectory name="immunarray.reports" directory="reports"/>
-
   <browser:page
       name="ctest"
       for="immunarray.lims.interfaces.ITestRuns"
