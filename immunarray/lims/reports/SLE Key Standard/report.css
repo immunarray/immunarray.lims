@@ -1,0 +1,95 @@
+@page{margin:0cm 0cm 0cm 0cm}
+/*table{
+    border-collapse: collapse;
+    margin-top:-1px;
+    margin-bottom:-1px;
+}*/
+#Veracis_image{
+    text-align: left;
+}
+#SLE-key_image{
+    text-align: right;
+}
+#lab_report_header{
+    vertical-align:middle;
+}
+p{
+    margin-top:0px;
+    margin-bottom:0px;
+    margin-right:0px;
+    margin-left:0px;
+}
+#table1{}
+.alpha td{}
+#table2{
+    border-collapse: collapse;
+    border-color: #660066;
+    margin-top:-5px;
+    margin-bottom:-4px;
+}
+.beta th{}
+.beta td{
+    height:0.24in;
+    width:3.88in;
+}
+#table3{
+    border-collapse: collapse;
+    margin-top:-16px;
+    margin-bottom:0px;
+}
+.gama td{
+    padding: 0px;
+    border: 0.5pt solid black;
+    width:1.94in;
+}
+#table4{
+    margin-top:-1px;
+    margin-bottom:0px;
+}
+.delta td{}
+#table5{
+    margin-top:-20px;
+    margin-bottom:0px;
+}
+.epsilon td{}
+#table6{}
+#table7{}
+#table8{
+    border-collapse:collapse;
+}
+.theta tr, td{
+    padding:0;
+}
+#table9{}
+#table10{}
+#table11{}
+#table12{}
+#table13{}
+#table14{}
+#table15{
+    border-collapse: collapse;
+    margin-top:0px;
+    margin-bottom:0px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.rotate {
+    transform: rotate(-90.0deg);
+    white-space: nowrap;
+}
+.omicron tr{
+    border: 0.5pt solid black;
+    padding:0;
+}
+.omicron td{
+    padding: 0;
+    border: 0.5pt solid black;
+    vertical-align: center;
+    text-align:center;
+}
+.omicron p{
+    font-family:Helvetica;
+    font-size:9pt;
+
+}
+#table16{}

@@ -4,6 +4,7 @@ from immunarray.lims.permissions import AddClinicalAliquot, AddClinicalSample, \
     AddRandDSample, AddRandDAliquot, AddQCAliquot, AddQCSample
 from bika.lims.permissions import disallow_default_contenttypes
 from bika.lims.utils.limsroot import getLims
+from plone.app.contenttypes import permissions
 
 def ClinicalAliquotAdded(clinicalaliquot, event):
     """A new Clinical Sample has been created!
@@ -17,6 +18,7 @@ def ClinicalAliquotAdded(clinicalaliquot, event):
     # Don't allow other aliquots to be added (only R&D Aliquots should be added)
     clinicalaliquot.manage_permission(AddRandDAliquot, [], 0)
     clinicalaliquot.manage_permission(AddQCAliquot, [], 0)
+    clinicalaliquot.manage_permission(permissions.AddImage, ['LabManager', 'LabClerk'], 0)
     disallow_default_contenttypes(clinicalaliquot)
 
 
@@ -29,6 +31,7 @@ def RandDAliquotAdded(randdaliquot, event):
     # Don't allow other aliquots to be added (only R&D Aliquots should be added)
     randdaliquot.manage_permission(AddClinicalAliquot, [], 0)
     randdaliquot.manage_permission(AddQCAliquot, [], 0)
+    randdaliquot.manage_permission(permissions.AddImage, ['LabManager', 'LabClerk'], 0)
     disallow_default_contenttypes(randdaliquot)
 
 
@@ -42,4 +45,5 @@ def QCAliquotAdded(qcaliquot, event):
     # Don't allow other aliquots to be added (only QC Aliquots should be added)
     qcaliquot.manage_permission(AddClinicalAliquot, [], 0)
     qcaliquot.manage_permission(AddRandDAliquot, [], 0)
+    qcaliquot.manage_permission(permissions.AddImage, ['LabManager', 'LabClerk'], 0)
     disallow_default_contenttypes(qcaliquot)

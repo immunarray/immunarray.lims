@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
+import os
+
 from immunarray.lims import normalize
-from immunarray.lims.interfaces.provider import IProvider
-from plone.api.content import find
+from os.path import exists, join
+from pkg_resources import resource_filename
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
-from pkg_resources import resource_listdir, resource_filename
+
 
 @implementer(IVocabularyFactory)
 class TestRunReports(object):
     def __call__(self, context):
-
-        path = resource_filename('immunarray.lims', ''
-            )
-
-
-
-        brains = find(.__identifer__)
-        values = [b.getObject() for b in brains]
-        names = [" ".join([str(v.site_ID), v.first_name, v.last_name])
-                 for v in values]
-        items = [(n, normalize(n)) for n in names]
+        path = resource_filename('immunarray.lims', 'reports')
+        reports = [x for x in os.listdir(path) if exists(join(x, 'report.pt'))]
+        items = [(t, normalize(t)) for t in sorted(reports)]
         return SimpleVocabulary.fromItems(items)
 
 
-ProvidersVocabulary = Providers()
+TestRunReportsVocabulary = TestRunReports()
