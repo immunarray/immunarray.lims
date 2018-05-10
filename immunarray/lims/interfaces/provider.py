@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from bika.lims.interfaces.person import IPerson
 from immunarray.lims import messageFactory as _
+from immunarray.lims.vocabularies.testrun_reports import \
+    TestRunReportsVocabulary
+from plone.autoform import directives as form
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 
 
@@ -23,7 +27,8 @@ class IProvider(IPerson):
     credentials = schema.Choice(
         title=_(u"Provider Credentials"),
         description=_(u"Provider credentials (M.D.  D.O.)"),
-        values=[_(u'MD'), _(u'DO'), _(u'PA-C'), _(u'MD/PhD'), _(u'PhD'), _(u'NP'),],
+        values=[_(u'MD'), _(u'DO'), _(u'PA-C'), _(u'MD/PhD'), _(u'PhD'),
+                _(u'NP'), ],
         required=False,
     )
 
@@ -52,9 +57,10 @@ class IProvider(IPerson):
         required=True,
     )
 
-    test_report_preference = schema.Choice(
+    form.widget(test_report_preference=CheckBoxFieldWidget)
+    test_report_preference = schema.List(
         title=_(u"Laboratory Report Preference"),
         description=_(u"Laboratory Report Preference"),
-        values=[],
-        required=True,
+        required=False,
+        value_type=schema.Choice(source=TestRunReportsVocabulary),
     )

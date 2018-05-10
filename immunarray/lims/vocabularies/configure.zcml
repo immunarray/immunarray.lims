@@ -25,6 +25,10 @@
       component="immunarray.lims.vocabularies.provider.ProvidersVocabulary"/>
 
   <utility
+      name="immunarray.lims.vocabularies.testrun_reports.TestRunReportsVocabulary"
+      component="immunarray.lims.vocabularies.testrun_reports.TestRunReportsVocabulary"/>
+
+  <utility
       name="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
       component="immunarray.lims.vocabularies.ichipassay.IChipAssayListVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
@@ -58,5 +62,6 @@
       name="immunarray.lims.vocabularies.users.UserVocabulary"
       component="immunarray.lims.vocabularies.users.UserVocabulary"
       provides="zope.schema.interfaces.IContextSourceBinder"/>
+
 
 </configure>
