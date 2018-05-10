@@ -1,6 +1,8 @@
-import datetime
 import logging
 import os
+
+from datetime import datetime
+
 from os.path import exists, join
 from pprint import pformat
 from shutil import rmtree
@@ -138,14 +140,14 @@ class ImportDataAnalysis(BrowserView):
         return paths
 
     def process_results(self, path):
+        self.run = self.get_run(path)
         # import results and files from path
         log = self.process_results_xlsx(path)
         log += self.process_out_figures(path)
         log += self.process_raw_flipped(path)
         # transition run to 'resulted'
-        run = self.get_run(path)
-        run.import_log = log
-        transition(run, 'result')
+        self.run.import_log = log
+        transition(self.run, 'result')
         # remove uploaded directory
         rmtree(path)
 
@@ -272,7 +274,9 @@ class ImportDataAnalysis(BrowserView):
                         transition(ar, 'qc_' + state)
                 aliquot.numeric_result = result['SLE_key_Score']
                 aliquot.text_result = result['SLE_key_Classification']
-                log.append("Sample: %s, Aliquot: %s, Results: %s, %s" % (
+                ts = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M")
+                log.append("%s: Sample: %s, Aliquot: %s, Results: %s, %s" % (
+                    ts,
                     sample.title,
                     aliquot.title,
                     result['SLE_key_Score'],
@@ -288,22 +292,47 @@ class ImportDataAnalysis(BrowserView):
         for fn in os.listdir(figpath):
             if 'png' not in fn:
                 continue
-            sample_id = fn.split('_')[0]
-            brains = find(object_provides=ISample.__identifier__, id=sample_id)
-            if not brains:
-                msg = "%s/%s: Can't find sample '%s'" % (figpath, fn, sample_id)
-                raise RuntimeError(msg)
-            sample = brains[0].getObject()
+
+            aliquot = self.get_aliquot_from_fn(fn)
+
             try:
-                img = create(container=sample, type='Image', id=fn, title=fn)
+                img = create(container=aliquot, type='Image', id=fn, title=fn)
             except BadRequest as e:
                 msg = "Run import has already been performed! (%s)" % e.message
                 raise BadRequest(msg)
             except Unauthorized:
-                msg = "Failed to create %s in sample %s" % (fn, sample.title)
+                msg = "Failed to create %s in aliquot %s" % (fn, aliquot.title)
                 raise Unauthorized(msg)
-            log.append("Added image to sample: " % img)
-            return log
+            ts = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M")
+            log.append("%s: Added image to aliquot %s: %s" %
+                       (ts, aliquot.title, img))
+        return log
+
+    def get_aliquot_from_fn(self, fn):
+        sample_id = fn.split('_')[0]
+        brains = find(object_provides=ISample.__identifier__, id=sample_id)
+        if not brains:
+            msg = "%s: Can't find sample '%s'" % (fn, sample_id)
+            raise RuntimeError(msg)
+        sample = brains[0].getObject()
+        # run through the plates, till we find one containing an aliquot
+        # which is a child of this sample:
+        aliquot = None
+        for plate in self.run.plates:
+            for key, value in plate.items():
+                try:
+                    obj = find(UID=value)[0].getObject()
+                except IndexError:
+                    continue
+                if obj.aq_parent.aq_parent == sample:
+                    aliquot = obj
+                    break
+            if aliquot:
+                break
+        else:
+            msg = "Aliquot not found for file: %s" % fn
+            raise RuntimeError(msg)
+        return aliquot
 
     def process_raw_flipped(self, path):
         """Store flipped images in ichips
@@ -328,8 +357,9 @@ class ImportDataAnalysis(BrowserView):
             except Unauthorized:
                 msg = "Failed to create %s in ichip %s" % (fn, ichip.title)
                 raise Unauthorized(msg)
-            log.append("Added image to sample: " % img)
-            return log
+            ts = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M")
+            log.append(u"%s: Added image to ichip %s: %s" % (ts, ichip.id, img))
+        return log
 
     def get_run(self, path):
         run_nr = self.get_run_nr(path)
@@ -394,20 +424,9 @@ class ImportDataAnalysis(BrowserView):
             if headervalue.lower() == 'analysis date':
                 xy = 'C%s' % y
                 value = ws[xy].value
-                if isinstance(value, datetime.datetime):
+                if isinstance(value, datetime):
                     return value
                 msg = "Check that cell has valid date and Date format: %s" % xy
                 raise SpreadsheetParseError(msg)
         msg = "Can't find cell 'analysis date' in range(A1,A999)"
         raise SpreadsheetParseError(msg)
-
-    def get_qc_aliquots_from_run(self, run):
-        aliquots = []
-        plates = run.plates
-        for plate in plates:
-            for uid in plate.values():
-                brains = find(object_provides=IQCAliquot.__identifier__,
-                              UID=uid)
-                if brains:
-                    aliquots.append(brains[0].getObject())
-        return aliquots
