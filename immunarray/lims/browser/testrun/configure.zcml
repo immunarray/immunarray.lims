@@ -3,6 +3,8 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="immunarray.lims">
 
+  <browser:resourceDirectory name="immunarray.reports" directory="reports"/>
+
   <browser:page
       name="ctest"
       for="immunarray.lims.interfaces.ITestRuns"
@@ -14,6 +16,13 @@
       name="view"
       for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
       class="immunarray.lims.browser.testrun.view.ViewTestRunView"
+      permission="zope2.View"
+  />
+
+  <browser:page
+      name="results"
+      for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
+      class="immunarray.lims.browser.testrun.results.ResultsView"
       permission="zope2.View"
   />
 
