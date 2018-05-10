@@ -153,17 +153,20 @@
             <td><strong>Box</strong></td>
           </tr>
 
-          <tr tal:repeat="frame_nr python:range(1, view.framecount+1)">
+          <tr tal:repeat="frame_nr python:range(1, context.framecount+1)">
             <td>
               <tal:comment tal:replace="nothing">
                 <!-- The number of times 'well-number-1' appears in the submitted form decides how many plates were submitted. -->
               </tal:comment>
-              <select tal:attributes="name python:'well-number-%s'%frame_nr">
-                <tal:options repeat="x python: range(1, view.framecount+1)">
+              <select tal:attributes="name python:'well-number-%s'%frame_nr"
+                      tal:condition="view/can_edit">
+                <tal:options repeat="x python: range(1, context.framecount+1)">
                   <option tal:attributes="value x" tal:content="x" tal:condition="python:x==frame_nr" selected="selected"/>
                   <option tal:attributes="value x" tal:content="x" tal:condition="python:x!=frame_nr"/>
                 </tal:options>
               </select>
+              <span tal:condition="python: not view.can_edit"
+                    tal:content="frame_nr"></span>
             </td>
             <td tal:repeat="i python:range(1,5)" colspan="2">
               <input type="hidden" tal:attributes="
@@ -251,7 +254,11 @@
       </tr>
       <tr class="ichip-print-lot-humidity" style="display:hidden">
         <td></td>
-        <td><input class="ichip-print-lot-hunidity" type="text"></td>
+        <td>
+          <input tal:condition="view/can_edit"
+                   class="ichip-print-lot-hunidity" type="text">
+          <span tal:condition="python: not view.can_edit"> XXX </span>
+        </td>
       </tr>
     </table>
 
@@ -378,7 +385,7 @@
       <td><strong>Box</strong></td>
     </tr>
 
-    <tr tal:repeat="frame_nr python:range(1, view.framecount+1)">
+    <tr tal:repeat="frame_nr python:range(1, context.framecount+1)">
       <tal:comment tal:replace="nothing">
         <!-- The number of times 'well-number-1' appears in the submitted form decides how many plates were submitted. -->
       </tal:comment>
