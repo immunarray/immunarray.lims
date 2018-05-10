@@ -15,11 +15,11 @@ from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.vocabularies.ichipassay import IChipAssayListVocabulary
 from immunarray.lims.vocabularies.users import LabUsersUserVocabulary
-from plone.api.content import find
+from plone.api.content import find, get_state
 
 
 class ViewTestRunView(BrowserView):
-    template = ViewPageTemplateFile("templates/testrun_view.pt")
+    template = ViewPageTemplateFile("templates/view.pt")
 
     def __init__(self, context, request):
         BrowserView.__init__(self, context, request)
@@ -45,6 +45,21 @@ class ViewTestRunView(BrowserView):
 
         # noinspection PyArgumentList
         return self.template()
+
+    @property
+    def state(self):
+        """return the current review_state of context
+        """
+        return get_state(self.context)
+
+    @property
+    def can_edit(self):
+        """Mostly about "modify portal content" permission, which should
+        be set in different states; but that's not always possible, maybe
+        there are still things to edit in these states.
+        """
+        return self.state not in (
+            'scanning', 'resulted', 'cancelled', 'aborted')
 
     def error(self, e):
         """Make a nice string from a traceback, to print in the browser

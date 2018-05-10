@@ -289,7 +289,7 @@
 
   </form>
   <script src="++resource++immunarray.lims/js/test_run.js"></script>
-  <-- The template is duplicated in testrun_create.pt and testrun_view.pt.  Both must be kept in sync
+  <-- The template is duplicated in testrun/templates/create.pt and testrun/templates/view.pt.  Both must be kept in sync
   -->
   <table id="blank-plate" class="plate-container beta hidden">
     <tr>
@@ -310,89 +310,22 @@
       <td><strong>Sample<br>class</strong></td>
       <td><strong>Box</strong></td>
     </tr>
-    <tr>
+
+    <tr tal:repeat="frame_nr python:range(1, view.framecount+1)">
       <tal:comment tal:replace="nothing">
         <!-- The number of times 'well-number-1' appears in the submitted form decides how many plates were submitted. -->
       </tal:comment>
       <td> 1 <input type="hidden" name="well-number-1" value="1"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-1" class="sampleid-aliquot chip-1 well-1"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-1" class="sampleid-aliquot chip-2 well-1"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-1" class="sampleid-aliquot chip-3 well-1"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-1" class="sampleid-aliquot chip-4 well-1"/></td>
+      <td colspan="2" tal:repeat="i python:range(1,5)">
+        <input type="text" tal:attributes="
+               name python:'chip-%s_well-%s'%(i, frame_nr);
+               class python:'sampleid-aliquot chip-%s well-%s'%(i, frame_nr)"/>
+      </td>
       <td/>
       <td/>
       <td/>
     </tr>
-    <tr>
-      <td> 2 <input type="hidden" name="well-number-2" value="2"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-2" class="sampleid-aliquot chip-1 well-2"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-2" class="sampleid-aliquot chip-2 well-2"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-2" class="sampleid-aliquot chip-3 well-2"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-2" class="sampleid-aliquot chip-4 well-2"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
-    <tr>
-      <td> 3 <input type="hidden" name="well-number-3" value="3"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-3" class="sampleid-aliquot chip-1 well-3"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-3" class="sampleid-aliquot chip-2 well-3"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-3" class="sampleid-aliquot chip-3 well-3"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-3" class="sampleid-aliquot chip-4 well-3"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
-    <tr>
-      <td> 4 <input type="hidden" name="well-number-4" value="4"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-4" class="sampleid-aliquot chip-1 well-4"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-4" class="sampleid-aliquot chip-2 well-4"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-4" class="sampleid-aliquot chip-3 well-4"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-4" class="sampleid-aliquot chip-4 well-4"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
-    <tr>
-      <td> 5 <input type="hidden" name="well-number-5" value="5"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-5" class="sampleid-aliquot chip-1 well-5"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-5" class="sampleid-aliquot chip-2 well-5"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-5" class="sampleid-aliquot chip-3 well-5"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-5" class="sampleid-aliquot chip-4 well-5"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
-    <tr>
-      <td> 6 <input type="hidden" name="well-number-6" value="6"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-6" class="sampleid-aliquot chip-1 well-6"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-6" class="sampleid-aliquot chip-2 well-6"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-6" class="sampleid-aliquot chip-3 well-6"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-6" class="sampleid-aliquot chip-4 well-6"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
-    <tr>
-      <td> 7 <input type="hidden" name="well-number-7" value="7"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-7" class="sampleid-aliquot chip-1 well-7"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-7" class="sampleid-aliquot chip-2 well-7"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-7" class="sampleid-aliquot chip-3 well-7"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-7" class="sampleid-aliquot chip-4 well-7"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
-    <tr>
-      <td> 8 <input type="hidden" name="well-number-8" value="8"/></td>
-      <td colspan="2"><input type="text" name="chip-1_well-8" class="sampleid-aliquot chip-1 well-8"/></td>
-      <td colspan="2"><input type="text" name="chip-2_well-8" class="sampleid-aliquot chip-2 well-8"/></td>
-      <td colspan="2"><input type="text" name="chip-3_well-8" class="sampleid-aliquot chip-3 well-8"/></td>
-      <td colspan="2"><input type="text" name="chip-4_well-8" class="sampleid-aliquot chip-4 well-8"/></td>
-      <td/>
-      <td/>
-      <td/>
-    </tr>
+
     <tr>
       <td rowspan="4"></td>
       <td>iChip 1</td>

@@ -27,7 +27,7 @@ from plone.api.portal import get_tool
 
 
 class CreateTestRunView(BrowserView):
-    template = ViewPageTemplateFile("templates/testrun_create.pt")
+    template = ViewPageTemplateFile("templates/create.pt")
 
     def __init__(self, context, request):
         BrowserView.__init__(self, context, request)
@@ -80,7 +80,7 @@ class CreateTestRunView(BrowserView):
 
         solutions = [values[x] for x in values if x.startswith('solution-')]
 
-        transition_plate_contents(ichips, aliquots, 'queue')
+        self.transition_plate_contents(ichips, aliquots, 'queue')
         lab_users = LabUsersUserVocabulary(self).by_value
         planner = lab_users.get(values['run_planner'], '')
         operator = lab_users.get(values['run_planner'], '')
@@ -107,6 +107,13 @@ class CreateTestRunView(BrowserView):
             solutions=solutions
         )
         return run
+
+    @property
+    def framecount(self):
+        """A default which prints nothing.  The fields are reset from JS,
+        when an assay is selected.
+        """
+        return 1
 
     @property
     def assay_name(self):
