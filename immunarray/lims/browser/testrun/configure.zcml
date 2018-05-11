@@ -18,13 +18,6 @@
   />
 
   <browser:page
-      name="results"
-      for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
-      class="immunarray.lims.browser.testrun.results.ResultsView"
-      permission="zope2.View"
-  />
-
-  <browser:page
       for="immunarray.lims.interfaces.veracisrunbase.IVeracisRunBase"
       name="csv"
       class=".download_csv.DownloadCSV"
