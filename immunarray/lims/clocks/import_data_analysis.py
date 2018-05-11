@@ -1,6 +1,5 @@
 import logging
 import os
-from AccessControl import Unauthorized
 from datetime import datetime
 from os.path import exists, join
 from pprint import pformat
@@ -9,6 +8,7 @@ from time import time
 
 import openpyxl
 import pdfkit
+from AccessControl import Unauthorized
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims.interfaces.limsroot import ILIMSRoot
@@ -144,7 +144,10 @@ class ImportDataAnalysis(BrowserView):
         return paths
 
     def process_results(self, path):
+        self.path = path
         self.run = self.get_run(path)
+        if not self.run:
+            return
         # import results and files from path
         log = self.process_results_xlsx(path)
         log += self.process_out_figures(path)
@@ -154,10 +157,10 @@ class ImportDataAnalysis(BrowserView):
         transition(self.run, 'result')
 
         # send result report
-        self.send_result_reports(self.run)
+        self.send_result_reports()
 
         # remove uploaded directory
-        rmtree(path)
+        #rmtree(path)
 
     def process_results_xlsx(self, path):
         """Take values from path/Out/Results/SLEkey_Results.xlsx, and write
@@ -317,7 +320,7 @@ class ImportDataAnalysis(BrowserView):
         return log
 
     # noinspection PyArgumentList
-    def send_result_reports(self, run):
+    def send_result_reports(self):
         path = resource_filename('immunarray.lims', 'reports')
         reports = [r for r in os.listdir(path)
                    if exists(join(path, r, 'report.pt'))]
@@ -325,9 +328,8 @@ class ImportDataAnalysis(BrowserView):
             ptfn = join(path, report, 'report.pt')
             template = ViewPageTemplateFile(ptfn)
             pdffn = '%s - %s.pdf' % (self.run.run_number, report)
-            outpath = join(self.outpath, pdffn)
             html = template(self)
-            pdfkit.from_string(html, outpath)
+            pdfkit.from_string(html, join(self.outpath, pdffn))
 
     def get_aliquot_from_fn(self, fn):
         sample_id = fn.split('_')[0]
@@ -395,6 +397,8 @@ class ImportDataAnalysis(BrowserView):
         # verify that run is in correct state for import.
         state = get_state(run)
         if state != 'scanning':
+            if state == 'resulted':
+                return None
             msg = "Test run %s is in state '%s'.  Expected state: 'scanning'" \
                   % (run.title, state)
             raise RunInIncorrectState(msg)
@@ -461,10 +465,17 @@ class ImportDataAnalysis(BrowserView):
         sample = aliquot.aq_parent
         while not ISample.providedBy(sample):
             sample = sample.aq_parent
-        try:
-            return aliquot['%s_ReportFigure.png' % sample.id]
-        except:
-            return ''
+        fn = join(self.path, 'Out', 'Figures',
+                  '%s_ReportFigure.png' % sample.id)
+        return fn
+
+    def get_UnivarFigure(self, aliquot, fignr):
+        sample = aliquot.aq_parent
+        while not ISample.providedBy(sample):
+            sample = sample.aq_parent
+        fn = join(self.path, 'Raw', 'Flipped', '%s_UnivarFigure_%s.png' %
+                  (sample.id, fignr))
+        return fn
 
     def get_all_aliquots(self):
         return self.get_aliquots(IAliquot.__identifier__)
@@ -483,3 +494,6 @@ class ImportDataAnalysis(BrowserView):
                 if brains:
                     items.add(brains[0].getObject())
         return items
+
+    def get_reports_dir(self):
+        return resource_filename('immunarray.lims', 'reports')

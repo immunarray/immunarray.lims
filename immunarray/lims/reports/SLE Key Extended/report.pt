@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link type="text/css" src="++resource++immunarray.reports/SLE Key Extended/report.css"/>
+    <link type="text/css" tal:attributes="
+        src python:view.get_reports_dir() + '/SLE Key Extended/report.css'"/>
   </head>
   <body>
     <!--Report Header first image is SLE-key, second image is the VERACIS logo-->
@@ -9,7 +10,8 @@
       <tr>
         <td>
           <div id="Veracis_image">
-            <img tal:attributes="src python: '++resource++immunarray.reports/images/SLE-keylogo-Registered.jpg"
+            <img tal:attributes="
+                src python:view.get_reports_dir() + '/images/SLE-keylogo-Registered.jpg'"
                  style="width:1.88in;height:1.11in">
           </div>
         </td>
@@ -20,7 +22,8 @@
         </td>
         <td>
           <div id="SLE-key_image">
-            <img tal:attributes="src python: '{portal_url}/++resource++immunarray.images/images/report_right_image.jpg"
+            <img tal:attributes="
+                src python:view.get_reports_dir() + '/images/report_right_image.jpg'"
                  style="width:1.79in;height:1.1in">
           </div>
         </td>
@@ -208,8 +211,7 @@
       <tr tal:repeat="aliquot view/get_all_aliquots">
         <td>
           <center>
-            <img tal:define="sample python:view.get_parent_sample_from_aliquot(aliquot)"
-                 tal:attributes="src python:aliquot['%s_ReportFigure.png'%sample.id]"
+            <img tal:attributes="src python:view.get_ReportFigure(aliquot)"
                  style="width:6.24in;height:4.68in"/>
           </center>
         </td>
@@ -217,19 +219,18 @@
     </table>
     <!-- Check Box for Patient Result-->
     <table id="table8" class="theta" style="width:8.0in">
-      <tr>
+      <tr tal:repeat="aliquot view/get_all_aliquots">
         <td>
           <strong><p style="font-family:Helvetica; background-color:grey; color:black; font-size:16pt; text-align:center">
             Results:</p></strong>
         </td>
-        <td tal:condition="">
-          <strong><p style="font-family:Helvetica; background-color:grey; color:black; font-size:16pt; text-align:center">
-            ☒ SLE Ruled Out
-            <p></strong>
+        <td>
+          <span tal:content="python: '☒' if 'sle not not ruled out' in aliquot.text_result.lower() else '☐'"/>
+          <strong>SLE NOT Ruled Out</strong>
         </td>
         <td>
-          <strong><p style="font-family:Helvetica; background-color:grey; color:black; font-size:16pt; text-align:center">
-            ☐ SLE NOT Ruled Out</p></strong>
+          <span tal:content="python: '☒' if 'sle ruled out' in aliquot.text_result.lower() else '☐'"/>
+          <strong>SLE Ruled Out</strong>
         </td>
       </tr>
     </table>
@@ -245,7 +246,8 @@
       <tr>
         <td>
           <div id="Veracis_image">
-            <img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/SLE-keylogo-Registered.jpg" style="width:1.88in;height:1.11in"></div>
+            <img tal:attributes="src python:view.get_reports_dir() + '/images/SLE-keylogo-Registered.jpg'"
+                 style="width:1.88in;height:1.11in"></div>
         </td>
         <td>
           <div id="lab_report_header">
@@ -253,7 +255,9 @@
           </div>
         </td>
         <td>
-          <div id="SLE-key_image"><img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/report_right_image.jpg" style="width:1.79in;height:1.1in">
+          <div id="SLE-key_image">
+            <img tal:attributes="src python:view.get_reports_dir() + '/images/report_right_image.jpg'"
+                 style="width:1.79in;height:1.1in">
           </div>
         </td>
 
@@ -303,52 +307,152 @@
       </tr>
     </table>
 
+    <!-- Extended Image 1-->
+    <table id="table7" class="eta" style="width:8.0in">
+      <tr tal:repeat="aliquot view/get_all_aliquots">
+        <td>
+          <center>
+            <img tal:attributes="src python:view.get_UnivarFigure(aliquot, 1)"
+                 style="width:4.2in;height:6.0in">
+          </center>
+        </td>
+      </tr>
+    </table>
 
-    <tr tal:repeat="aliquot view/get_all_aliquots">
-      <td>
-        <center>
-          <img tal:define="sample python:view.get_parent_sample_from_aliquot(aliquot)"
-               tal:attributes="src python:aliquot['%s_ReportFigure.png'%sample.id]"
-               style="width:6.24in;height:4.68in"/>
+    <footer id="page2_footer">
+      <p style="font-family:Calibri;font-size:8pt; text-align:center"><br><br><br><br><br>Page 2 of 3<br><br>Dr. Richard Atkinson, M.D. Laboratory
+        Director ●
+        CLIA No. 49D2093788 ● NPI No. 1952777211 ● 737 N. Fifth St., Suite 304, Richmond, VA 23219<br>Phone No. (844) 753-5391 (SLE-key 1) ● Fax No. (844)
+        239-4561 ● PP-015.03v02 ● Effective Date: 12/21/15</p>
+    </footer>
+    <!--Report Header first image is SLE-key, second image is the VERACIS logo-->
+    <table id="table1" class="alpha" style="width:8.0in">
+      <tr>
+        <td>
+          <div id="Veracis_image">
+            <img tal:attributes="src python:view.get_reports_dir() + '/images/SLE-keylogo-Registered.jpg'"
+                 style="width:1.88in;height:1.11in"></div>
+        </td>
+        <td>
+          <div id="lab_report_header">
+            <strong><p style="text-align:center;font-family:Helvetica;font-size:20pt">Laboratory<br>Report</p></strong>
+          </div>
+        </td>
+        <td>
+          <div id="SLE-key_image">
+            <img tal:attributes="src python:view.get_reports_dir() + '/images/report_right_image.jpg'"
+                 style="width:1.79in;height:1.1in">
+          </div>
+        </td>
 
-          <!-- Extended Image 1-->
-          <table id="table7" class="eta" style="width:8.0in">
-            <tr tal:repeat="aliquot view/get_all_aliquots">
-              <td>
-                <center>
-                  <img tal:define="sample python:view.get_parent_sample_from_aliquot(aliquot)"
-                       tal:attributes="src python:aliquot['%s_UnivarFigure_1'%sample.id]"
-                       style="width:4.2in;height:6.0in">
-                </center>
-              </td>
-            </tr>
-          </table>
-          <footer id="page2_footer">
-            <p style="font-family:Calibri;font-size:8pt; text-align:center"><br><br><br><br><br>Page 2 of 3<br><br>Dr. Richard Atkinson, M.D. Laboratory
-              Director ●
-              CLIA No. 49D2093788 ● NPI No. 1952777211 ● 737 N. Fifth St., Suite 304, Richmond, VA 23219<br>Phone No. (844) 753-5391 (SLE-key 1) ● Fax No. (844)
-              239-4561 ● PP-015.03v02 ● Effective Date: 12/21/15</p>
-          </footer>
-          <!--Report Header first image is SLE-key, second image is the VERACIS logo-->
-          <table id="table1" class="alpha" style="width:8.0in">
-            <tr>
-              <td>
-                <div id="Veracis_image">
-                  <img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/SLE-keylogo-Registered.jpg" style="width:1.88in;height:1.11in"></div>
-              </td>
-              <td>
-                <div id="lab_report_header">
-                  <strong><p style="text-align:center;font-family:Helvetica;font-size:20pt">Laboratory<br>Report</p></strong>
-                </div>
-              </td>
-              <td>
-                <div id="SLE-key_image">
-                  <img src="/home/jpitts/Documents/LIMS/Reports/Test_Report_files/report_right_image.jpg" style="width:1.79in;height:1.1in">
-                </div>
-              </td>
+      </tr>
+    </table>
+    <!-- Supplemental Information Header page 3-->
+    <table id="table XX" class="mu" style="width:8.0in">
+      <tr>
+        <td>
+          <p style="font-family:Helvetica; background-color:#660066; color:white; font-size:12pt">Supplemental Information - Continued</p>
+        </td>
+      </tr>
+    </table>
+    <!-- Extended Image 1-->
+    <table id="table7" class="eta" style="width:8.0in">
+      <tr tal:repeat="aliquot view/get_all_aliquots">
+        <td>
+          <center>
+            <img tal:attributes="src python:view.get_UnivarFigure(aliquot, 2)"
+                 style="width:4.2in;height:6.0in">
+          </center>
+        </td>
+      </tr>
+    </table>
+    <!-- Explanation of Statistics Header-->
+    <table id="table14" class="ksi" style="width:8.0in">
+      <tr>
+        <td>
+          <p style="font-family:Helvetica; background-color:#660066; color:white; font-size:12pt">Explanation of Statistics</p>
+        </td>
+      </tr>
+    </table>
+    <!-- Explanation of Statistics Text-->
+    <table id="table15" class="omicron" style="width:6.93in">
+      <tr>
+        <td class="rotate" rowspan="5" style="width:0.34in"><strong><p>Test Results</p></strong></td>
+        <td colspan="4" style="height:0.23in"><p><strong>Condition</strong></p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><p>Known SLE</p></td>
+        <td><p>Known Healthy Control (HC)</p></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><p>Test Cannot Rule Out SLE</p></td>
+        <td><p><strong>A</strong> (true positive)</p></td>
+        <td><p><strong>B</strong> (false positive)</p></td>
+        <td><p>Total Test Positive (A+B)</p></td>
+      </tr>
+      <tr>
+        <td><p>Test Rules Out SLE</p></td>
+        <td><p><strong>C</strong> (false negative)</p></td>
+        <td><p><strong>D</strong> (true negative)</p></td>
+        <td><p>Total Test Negative (C+D)</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><p>Total Condition Positive <br>(A+C)</p></td>
+        <td><p>Total Condition Negative<br>(B+D)</p></td>
+        <td></td>
+      </tr>
+    </table>
+    <!-- Definitions of Sensitivity, Specificty, and Negative Predictive Value -->
+    <table id="table16" class="pi" style="width:8.0in">
+      <tr>
+        <td>
+          <p style="font-family:Helvetica;font-size:9pt"><strong>Sensitivity:</strong> Probability that test cannot rule out SLE correctly in known SLE
+            patients
+            (A/(A+C) x 100) (94% for SLE-key®)<br><strong>Specificity:</strong> Probability the test rules out SLE correctly in known healthy patients
+            (D/(B+D))
+            x 100) (75% for SLE-key®)<br><strong>Negative Predictive Value:</strong> Probability of patients testing as ruled out from SLE being correctly
+            excluded (D/(C+D)). (93% for SLE-key® validation study)
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p id="End of Report" style="font-family:Helvetica;font-size:16pt;text-align:center"><br><br><br><strong>End of Report</strong></p>
+    <!-- Footer Page 2-->
+    <footer id="page2_footer">
+      <p style="font-family:Calibri;font-size:8pt; text-align:center"><br><br>Page 3 of 3<br><br>Dr. Richard Atkinson, M.D. Laboratory Director ● CLIA No.
+        49D2093788 ● NPI No. 1952777211 ● 737 N. Fifth St., Suite 304, Richmond, VA 23219<br>Phone No. (844) 753-5391 (SLE-key 1) ● Fax No. (844) 239-4561
+        ●
+        PP-015.03v02 ● Effective Date: 12/21/15</p>
+    </footer>
+    <!-- End of Page 2 -->
+  </body>
+</html>
 
-            </tr>
-          </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <!-- Supplemental Information Header page 3-->
           <table id="table XX" class="mu" style="width:8.0in">
             <tr>
@@ -357,79 +461,5 @@
               </td>
             </tr>
           </table>
-          <!-- Extended Image 1-->
-          <table id="table7" class="eta" style="width:8.0in">
-            <tr tal:repeat="aliquot view/get_all_aliquots">
-              <td>
-                <center>
-                  <img tal:define="sample python:view.get_parent_sample_from_aliquot(aliquot)"
-                       tal:attributes="src python:aliquot['%s_UnivarFigure_2'%sample.id]"
-                       style="width:4.2in;height:6.0in">
-                </center>
-              </td>
-            </tr>
-          </table>
           <!-- Explanation of Statistics Header-->
           <table id="table14" class="ksi" style="width:8.0in">
-            <tr>
-              <td>
-                <p style="font-family:Helvetica; background-color:#660066; color:white; font-size:12pt">Explanation of Statistics</p>
-              </td>
-            </tr>
-          </table>
-          <!-- Explanation of Statistics Text-->
-          <table id="table15" class="omicron" style="width:6.93in">
-            <tr>
-              <td class="rotate" rowspan="5" style="width:0.34in"><strong><p>Test Results</p></strong></td>
-              <td colspan="4" style="height:0.23in"><p><strong>Condition</strong></p></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><p>Known SLE</p></td>
-              <td><p>Known Healthy Control (HC)</p></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td><p>Test Cannot Rule Out SLE</p></td>
-              <td><p><strong>A</strong> (true positive)</p></td>
-              <td><p><strong>B</strong> (false positive)</p></td>
-              <td><p>Total Test Positive (A+B)</p></td>
-            </tr>
-            <tr>
-              <td><p>Test Rules Out SLE</p></td>
-              <td><p><strong>C</strong> (false negative)</p></td>
-              <td><p><strong>D</strong> (true negative)</p></td>
-              <td><p>Total Test Negative (C+D)</p></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><p>Total Condition Positive <br>(A+C)</p></td>
-              <td><p>Total Condition Negative<br>(B+D)</p></td>
-              <td></td>
-            </tr>
-          </table>
-          <!-- Definitions of Sensitivity, Specificty, and Negative Predictive Value -->
-          <table id="table16" class="pi" style="width:8.0in">
-            <tr>
-              <td>
-                <p style="font-family:Helvetica;font-size:9pt"><strong>Sensitivity:</strong> Probability that test cannot rule out SLE correctly in known SLE
-                  patients
-                  (A/(A+C) x 100) (94% for SLE-key®)<br><strong>Specificity:</strong> Probability the test rules out SLE correctly in known healthy patients
-                  (D/(B+D))
-                  x 100) (75% for SLE-key®)<br><strong>Negative Predictive Value:</strong> Probability of patients testing as ruled out from SLE being correctly
-                  excluded (D/(C+D)). (93% for SLE-key® validation study)
-                </p>
-              </td>
-            </tr>
-          </table>
-          <p id="End of Report" style="font-family:Helvetica;font-size:16pt;text-align:center"><br><br><br><strong>End of Report</strong></p>
-          <!-- Footer Page 2-->
-          <footer id="page2_footer">
-            <p style="font-family:Calibri;font-size:8pt; text-align:center"><br><br>Page 3 of 3<br><br>Dr. Richard Atkinson, M.D. Laboratory Director ● CLIA No.
-              49D2093788 ● NPI No. 1952777211 ● 737 N. Fifth St., Suite 304, Richmond, VA 23219<br>Phone No. (844) 753-5391 (SLE-key 1) ● Fax No. (844) 239-4561
-              ●
-              PP-015.03v02 ● Effective Date: 12/21/15</p>
-          </footer>
-          <!-- End of Page 2 -->
-  </body>
-</html>
