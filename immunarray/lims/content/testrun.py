@@ -28,4 +28,4 @@ class TestRun(BaseContainer):
 
     @import_log.setter
     def import_log(self, value):
-        pass
+        self._import_log = value
