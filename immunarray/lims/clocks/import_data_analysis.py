@@ -1,24 +1,26 @@
 import logging
 import os
-
+from AccessControl import Unauthorized
 from datetime import datetime
-
 from os.path import exists, join
 from pprint import pformat
 from shutil import rmtree
 from time import time
 
 import openpyxl
-from AccessControl import Unauthorized
+import pdfkit
 from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims.interfaces.limsroot import ILIMSRoot
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
+from immunarray.lims.interfaces.clinicalaliquot import IClinicalAliquot
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
 from immunarray.lims.interfaces.ichip import IiChip
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
+from pkg_resources import resource_filename
 from plone.api.content import create, find, get_state, transition
 from plone.protect.interfaces import IDisableCSRFProtection
 from zExceptions import BadRequest
@@ -49,6 +51,7 @@ class ImportDataAnalysis(BrowserView):
         environment-vars +=
             DATA_ANALYSIS_PATH /path/to/file/drop/folder
             DATA_ANALYSIS_AGE_THRESHOLD 120
+            TESTRUN_RESULTS_OUTPUT_PATH /stick/final/pdfs/here
 
         parts =
             import_data_analysis
@@ -92,6 +95,7 @@ class ImportDataAnalysis(BrowserView):
         self.context = context
         self.request = request
         self.filepath = os.environ.get('DATA_ANALYSIS_PATH')
+        self.outpath = os.environ.get('TESTRUN_RESULTS_OUTPUT_PATH')
         self.threshold = int(
             os.environ.get('DATA_ANALYSIS_AGE_THRESHOLD', 12000))
 
@@ -148,6 +152,10 @@ class ImportDataAnalysis(BrowserView):
         # transition run to 'resulted'
         self.run.import_log = log
         transition(self.run, 'result')
+
+        # send result report
+        self.send_result_reports(self.run)
+
         # remove uploaded directory
         rmtree(path)
 
@@ -308,6 +316,19 @@ class ImportDataAnalysis(BrowserView):
                        (ts, aliquot.title, img))
         return log
 
+    # noinspection PyArgumentList
+    def send_result_reports(self, run):
+        path = resource_filename('immunarray.lims', 'reports')
+        reports = [r for r in os.listdir(path)
+                   if exists(join(path, r, 'report.pt'))]
+        for report in reports:
+            ptfn = join(path, report, 'report.pt')
+            template = ViewPageTemplateFile(ptfn)
+            pdffn = '%s - %s.pdf' % (self.run.run_number, report)
+            outpath = join(self.outpath, pdffn)
+            html = template(self)
+            pdfkit.from_string(html, outpath)
+
     def get_aliquot_from_fn(self, fn):
         sample_id = fn.split('_')[0]
         brains = find(object_provides=ISample.__identifier__, id=sample_id)
@@ -430,3 +451,35 @@ class ImportDataAnalysis(BrowserView):
                 raise SpreadsheetParseError(msg)
         msg = "Can't find cell 'analysis date' in range(A1,A999)"
         raise SpreadsheetParseError(msg)
+
+    def state(self):
+        """return the current review_state of context
+        """
+        return get_state(self.context)
+
+    def get_ReportFigure(self, aliquot):
+        sample = aliquot.aq_parent
+        while not ISample.providedBy(sample):
+            sample = sample.aq_parent
+        try:
+            return aliquot['%s_ReportFigure.png' % sample.id]
+        except:
+            return ''
+
+    def get_all_aliquots(self):
+        return self.get_aliquots(IAliquot.__identifier__)
+
+    def get_clinical_aliquots(self):
+        return self.get_aliquots(IClinicalAliquot.__identifier__)
+
+    def get_qc_aliquots(self):
+        return self.get_aliquots(IQCAliquot.__identifier__)
+
+    def get_aliquots(self, *interfaces):
+        items = set()
+        for plate in self.run.plates:
+            for key, val in plate.items():
+                brains = find(object_provides=interfaces, UID=val)
+                if brains:
+                    items.add(brains[0].getObject())
+        return items
