@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" tal:attributes="href python:view.get_reports_dir() + '/SLE Key Standard/report.css'"/>
+    <!-- https://wkhtmltopdf.org/usage/wkhtmltopdf.txt -->
+    <script>
+      function subst() {
+          var vars = {};
+          var query_strings_from_url = document.location.search.substring(1).split('&');
+          for (var query_string in query_strings_from_url) {
+              if (query_strings_from_url.hasOwnProperty(query_string)) {
+                  var temp_var = query_strings_from_url[query_string].split('=', 2);
+                  vars[temp_var[0]] = decodeURI(temp_var[1]);
+              }
+          }
+          var css_selector_classes = ['page', 'frompage', 'topage', 'webpage', 'section', 'subsection', 'date', 'isodate', 'time', 'title', 'doctitle', 'sitepage', 'sitepages'];
+          for (var css_class in css_selector_classes) {
+              if (css_selector_classes.hasOwnProperty(css_class)) {
+                  var element = document.getElementsByClassName(css_selector_classes[css_class]);
+                  for (var j = 0; j < element.length; ++j) {
+                      element[j].textContent = vars[css_selector_classes[css_class]];
+                  }
+              }
+          }
+      }
+    </script>
+  </head>
+  <body style="border:0; margin: 0;" onload="subst()">
+    <table class="footer">
+      <tr>
+        <td>
+          Page <span class="page"></span> of <span class="topage"></span>
+          <br>
+          Dr. Richard Atkinson, M.D. Laboratory Director ● CLIA No. 49D2093788 ● NPI No. 1952777211 ● 737 N. Fifth St., Suite 304, Richmond, VA 23219
+          <br>
+          Phone No. (844) 753-5391 (SLE-key 1) ● Fax No. (844) 239-4561 ● PP-015.03v02 ●Effective Date: 12/21/15
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,9 +1,9 @@
 import logging
 import os
+import tempfile
 from datetime import datetime
 from os.path import exists, join
 from pprint import pformat
-from shutil import rmtree
 from time import time
 
 import openpyxl
@@ -157,10 +157,10 @@ class ImportDataAnalysis(BrowserView):
         transition(self.run, 'result')
 
         # send result report
-        self.send_result_reports()
+        self.create_pdf_files()
 
         # remove uploaded directory
-        #rmtree(path)
+        # rmtree(path)
 
     def process_results_xlsx(self, path):
         """Take values from path/Out/Results/SLEkey_Results.xlsx, and write
@@ -319,17 +319,46 @@ class ImportDataAnalysis(BrowserView):
                        (ts, aliquot.title, img))
         return log
 
-    # noinspection PyArgumentList
-    def send_result_reports(self):
+    def create_pdf_files(self):
         path = resource_filename('immunarray.lims', 'reports')
         reports = [r for r in os.listdir(path)
                    if exists(join(path, r, 'report.pt'))]
-        for report in reports:
-            ptfn = join(path, report, 'report.pt')
-            template = ViewPageTemplateFile(ptfn)
-            pdffn = '%s - %s.pdf' % (self.run.run_number, report)
-            html = template(self)
-            pdfkit.from_string(html, join(self.outpath, pdffn))
+        # generate report for all aliquots if ANY images exist for them.
+        # the report is responsible for assuming correctly which images exist.
+        for aliquot in self.get_all_aliquots():
+            if not any([self.get_UnivarFigure(aliquot, 1),
+                        self.get_UnivarFigure(aliquot, 2),
+                        self.get_ReportFigure(aliquot)]):
+                continue
+            # available as `view.aliquot` in the report's template
+            self.aliquot = aliquot
+            for report in reports:
+              while 1:
+                # header and footer must be rendered to actual html files
+                options = {}
+                htfn = join(path, report, 'report-header.pt')
+                if exists(htfn):
+                    hfn = tempfile.mktemp(suffix=".html")
+                    html = ViewPageTemplateFile(htfn)(self).encode('utf-8')
+                    open(hfn, 'w').write(html)
+                    options['--header-html'] = hfn
+                ftfn = join(path, report, 'report-footer.pt')
+                if exists(ftfn):
+                    ftn = tempfile.mktemp(suffix=".html")
+                    html = ViewPageTemplateFile(ftfn)(self).encode('utf-8')
+                    open(ftn, 'w').write(html)
+                    options['--footer-html'] = ftn
+                # then render the report template itself
+                template = ViewPageTemplateFile(join(path, report, 'report.pt'))
+                fn = join(self.outpath, '%s - %s' % (aliquot.title, report))
+                html = unicode(template(self))
+
+                fn = fn.replace(' ', '')  # XXX debug stuff
+                pdfkit.from_string(html, fn + '.pdf', options=options)
+                os.system('evince %s' % fn + '.pdf')
+                import pdb
+                pdb.set_trace()
+                pass
 
     def get_aliquot_from_fn(self, fn):
         sample_id = fn.split('_')[0]
@@ -467,7 +496,8 @@ class ImportDataAnalysis(BrowserView):
             sample = sample.aq_parent
         fn = join(self.path, 'Out', 'Figures',
                   '%s_ReportFigure.png' % sample.id)
-        return fn
+        if exists(fn):
+            return fn
 
     def get_UnivarFigure(self, aliquot, fignr):
         sample = aliquot.aq_parent
@@ -475,7 +505,8 @@ class ImportDataAnalysis(BrowserView):
             sample = sample.aq_parent
         fn = join(self.path, 'Raw', 'Flipped', '%s_UnivarFigure_%s.png' %
                   (sample.id, fignr))
-        return fn
+        if exists(fn):
+            return fn
 
     def get_all_aliquots(self):
         return self.get_aliquots(IAliquot.__identifier__)

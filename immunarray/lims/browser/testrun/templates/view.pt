@@ -437,6 +437,12 @@
 
   </table>
 
+    <table class="table">
+      <tr tal:repeat="log view/context/import_log">
+        <td tal:content="log"/>
+      </tr>
+    </table>
+
 </metal:main>
 </body>
 </html>

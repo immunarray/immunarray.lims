@@ -1,95 +1,102 @@
-@page{margin:0cm 0cm 0cm 0cm}
-/*table{
-    border-collapse: collapse;
-    margin-top:-1px;
-    margin-bottom:-1px;
-}*/
-#Veracis_image{
-    text-align: left;
+@page{
+    margin:1.2in 5mm 2cm 5mm; /*header/footer height must match margin sizes*/
+    size: a4 portrait;
+    marks: crop cross;
+    bleed: auto;
 }
-#SLE-key_image{
-    text-align: right;
+
+.page-break {
+    page-break-after: always;
 }
-#lab_report_header{
-    vertical-align:middle;
+
+.keep-together {
+    page-break-inside: avoid;
 }
-p{
-    margin-top:0px;
-    margin-bottom:0px;
-    margin-right:0px;
-    margin-left:0px;
+
+body {
+    font-family: Helvetica;
+    font-size: 16px;
 }
-#table1{}
-.alpha td{}
-#table2{
-    border-collapse: collapse;
-    border-color: #660066;
-    margin-top:-5px;
-    margin-bottom:-4px;
-}
-.beta th{}
-.beta td{
-    height:0.24in;
-    width:3.88in;
-}
-#table3{
-    border-collapse: collapse;
-    margin-top:-16px;
-    margin-bottom:0px;
-}
-.gama td{
-    padding: 0px;
-    border: 0.5pt solid black;
-    width:1.94in;
-}
-#table4{
-    margin-top:-1px;
-    margin-bottom:0px;
-}
-.delta td{}
-#table5{
-    margin-top:-20px;
-    margin-bottom:0px;
-}
-.epsilon td{}
-#table6{}
-#table7{}
-#table8{
-    border-collapse:collapse;
-}
-.theta tr, td{
-    padding:0;
-}
-#table9{}
-#table10{}
-#table11{}
-#table12{}
-#table13{}
-#table14{}
-#table15{
-    border-collapse: collapse;
-    margin-top:0px;
-    margin-bottom:0px;
-    margin-left:auto;
-    margin-right:auto;
-}
-.rotate {
-    transform: rotate(-90.0deg);
-    white-space: nowrap;
-}
-.omicron tr{
-    border: 0.5pt solid black;
-    padding:0;
-}
-.omicron td{
-    padding: 0;
-    border: 0.5pt solid black;
-    vertical-align: center;
+
+h1 {
     text-align:center;
 }
-.omicron p{
-    font-family:Helvetica;
-    font-size:9pt;
 
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    padding: 0px;
+    width: 100%;
 }
-#table16{}
+
+table th {
+    font-size: 22px;
+    font-weight: strong;
+    background-color: #660066;
+    color: white;
+}
+
+table.report-header { border: none; }
+table.report-header td { border: none; }
+
+table.info {
+    border: 1px solid black;
+}
+
+table.info th {
+    width:50%;
+}
+
+table.info td {
+    border: 1px solid black;
+    width: 25%;
+    font-weight: normal;
+}
+
+table.about {
+  font-size:90%;
+}
+
+img.report-figure {
+    height: 6in;
+}
+
+table.text-result {
+    background-color: grey;
+    color: black;
+    text-align: center;
+    font-weight: strong;
+    font-size: 24px;
+}
+
+.omicron tr {
+    border: 1px solid black;
+    padding: 0;
+}
+.omicron td {
+    padding: 2;
+    border: 1px solid black;
+    vertical-align: center;
+    text-align: center;
+}
+
+.rotated {
+    transform: rotate(-90deg);
+    white-space: nowrap;
+}
+
+table.header {
+    text-align: center;
+    height: 1.1in /*Set this to within height of top margin*/
+}
+
+table.footer {
+    font-family: Calibri;
+    font-size:80%;
+    text-align:center;
+    height: 2cm /*Set this to within height of bottom margin*/
+}
+
+.left-align { text-align: left; }
+.right-align { text-align: right; }
+.middle-align { vertical-align:middle; }
