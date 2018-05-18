@@ -333,8 +333,7 @@ class ImportDataAnalysis(BrowserView):
             # available as `view.aliquot` in the report's template
             self.aliquot = aliquot
             for report in reports:
-              while 1:
-                # header and footer must be rendered to actual html files
+                # header and footer (if any) get rendered to actual html files
                 options = {}
                 htfn = join(path, report, 'report-header.pt')
                 if exists(htfn):
@@ -355,10 +354,11 @@ class ImportDataAnalysis(BrowserView):
 
                 fn = fn.replace(' ', '')  # XXX debug stuff
                 pdfkit.from_string(html, fn + '.pdf', options=options)
-                os.system('evince %s' % fn + '.pdf')
-                import pdb
-                pdb.set_trace()
-                pass
+                if 'extended' in report.lower():
+                    os.system('evince %s' % fn + '.pdf')
+                    import pdb
+                    pdb.set_trace()
+                    pass
 
     def get_aliquot_from_fn(self, fn):
         sample_id = fn.split('_')[0]
@@ -503,7 +503,7 @@ class ImportDataAnalysis(BrowserView):
         sample = aliquot.aq_parent
         while not ISample.providedBy(sample):
             sample = sample.aq_parent
-        fn = join(self.path, 'Raw', 'Flipped', '%s_UnivarFigure_%s.png' %
+        fn = join(self.path, 'Out', 'Figures', '%s_UnivarFigure_%s.png' %
                   (sample.id, fignr))
         if exists(fn):
             return fn

@@ -160,7 +160,8 @@
     </table>
 
     <table tal:define="img python:view.get_UnivarFigure(view.aliquot, 1)"
-           tal:condition="img">
+           tal:condition="img"
+           class="page-break">
       <tr>
         <td>
           <center>
@@ -206,7 +207,7 @@
         </td>
       </tr>
       <tr>
-        <td></td>
+        <tcd></tcd>
         <td>Known SLE</td>
         <td>Known Healthy Control (HC)</td>
         <td></td>
@@ -232,19 +233,17 @@
     </table>
 
     <!-- Definitions of Sensitivity, Specificty, and Negative Predictive Value -->
-    <table class="pi" style="width:8.0in">
+    <table class="about" style="width:8.0in">
       <tr>
         <td>
-          <p style="font-family:Helvetica;font-size:9pt"><strong>Sensitivity:</strong> Probability that test cannot rule out SLE correctly in known SLE
-            patients
-            (A/(A+C) x 100) (94% for SLE-key®)<br><strong>Specificity:</strong> Probability the test rules out SLE correctly in known healthy patients
-            (D/(B+D))
-            x 100) (75% for SLE-key®)<br><strong>Negative Predictive Value:</strong> Probability of patients testing as ruled out from SLE being correctly
-            excluded (D/(C+D)). (93% for SLE-key® validation study)
-          </p>
+          <strong>Sensitivity:</strong> Probability that test cannot rule out SLE correctly in known SLE  patients(A/(A+C) x 100) (94% for SLE-key®)
+          <br>
+          <strong>Specificity:</strong> Probability the test rules out SLE correctly in known healthy patients(D/(B+D))x 100) (75% for SLE-key®)
+          <br>
+          <strong>Negative Predictive Value:</strong> Probability of patients testing as ruled out from SLE being correctlyexcluded (D/(C+D)). (93% for SLE-key® validation study)
         </td>
       </tr>
     </table>
-    <p id="End of Report" style="font-family:Helvetica;font-size:16pt;text-align:center"><br><br><br><strong>End of Report</strong></p>
+    <p style="font-family:Helvetica;font-size:16pt;text-align:center"><strong>End of Report</strong></p>
   </body>
 </html>

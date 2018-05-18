@@ -61,6 +61,10 @@ img.report-figure {
     height: 6in;
 }
 
+img.univar-figure {
+    height: 8in;
+}
+
 table.text-result {
     background-color: grey;
     color: black;

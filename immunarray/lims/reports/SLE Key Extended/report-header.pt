@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" tal:attributes="href python:view.get_reports_dir() + '/SLE Key Standard/report.css'"/>
+    <link rel="stylesheet" type="text/css" tal:attributes="href python:view.get_reports_dir() + '/SLE Key Extended/report.css'"/>
   </head>
   <body>
     <table class="header">
