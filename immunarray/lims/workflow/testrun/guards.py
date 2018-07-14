@@ -12,10 +12,12 @@ def guard_begin_process(instance):
     return True
 
 
-def guard_result(instance):
+def guard_resulted(instance):
+    """This action can only be taken by the importer; so we need a guard
+    here to be sure that an attribute is set (by the importer), to prevent
+    manually shifting to "resulted" state and bypassing the importer.
     """
-    """
-    return True
+    return getattr(instance, "import_log", False)
 
 
 def guard_report(instance):

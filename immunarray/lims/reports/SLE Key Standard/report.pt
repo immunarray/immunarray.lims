@@ -14,54 +14,56 @@
         <th colspan="2">Healthcare Provider Information</th>
       </tr>
     </table>
-    <table class="info">
+    <table class="info"
+        tal:define="patient python:view.patient_from_aliquot(view.aliquot);
+                    provider python:view.provider_from_aliquot(view.aliquot);">
       <tr>
         <td>Patient First Name:</td>
-        <td>PatientFN:</td>
+        <td>PatientFN:<span tal:content="patient/first_name|nothing"/></td>
         <td>Ordering Healthcare Provider:</td>
-        <td>Ordering Provider:</td>
+        <td>Ordering Provider:<span tal:content=provider/title|nothing"/></td>
       </tr>
       <tr>
         <td>Patient Last Name:</td>
-        <td>PatientLN:</td>
+        <td>PatientLN:<span tal:content="python:1"/></td>
         <td>Institution/Practice:</td>
-        <td>Somewhere ; ;* special char:</td>
+        <td>Somewhere ; ;* special char:<span tal:content="python:1"/></td>
       </tr>
       <tr>
         <td>Sample ID:</td>
-        <td>1234-12345:</td>
+        <td>1234-12345:<span tal:content="python:1"/></td>
         <td>Mailing Address:</td>
-        <td>MailFax Email:</td>
+        <td>MailFax Email:<span tal:content="python:1"/></td>
       </tr>
       <tr>
         <td>Gender:</td>
-        <td>Female:</td>
+        <td>Female:<span tal:content="python:1"/></td>
         <td>Street:</td>
-        <td>123456 Center Street:</td>
+        <td>123456 Center Street:<span tal:content="python:1"/></td>
       </tr>
       <tr>
         <td>Date of Birth:</td>
-        <td>2/16/1956:</td>
+        <td>2/16/1956:<span tal:content="python:1"/></td>
         <td>City:</td>
-        <td>Palm Springs:</td>
+        <td>Palm Springs:<span tal:content="python:1"/></td>
       </tr>
       <tr>
         <td>Collection Date:</td>
-        <td>6/16/2016:</td>
+        <td>6/16/2016:<span tal:content="python:1"/></td>
         <td>Phone:</td>
-        <td>(123) 785-1234:</td>
+        <td>(123) 785-1234:<span tal:content="python:1"/></td>
       </tr>
       <tr>
         <td>Receipt Date:</td>
-        <td>6/17/2016:</td>
+        <td>6/17/2016:<span tal:content="python:1"/></td>
         <td>Fax:</td>
-        <td>(123) 785-5678:</td>
+        <td>(123) 785-5678:<span tal:content="python:1"/></td>
       </tr>
       <tr>
         <td>Report Date:</td>
-        <td>6/23/2016:</td>
+        <td>6/23/2016:<span tal:content="python:1"/></td>
         <td>Email:</td>
-        <td>John.lovescats@yahoo.com:</td>
+        <td>John.lovescats@yahoo.com:<span tal:content="python:1"/></td>
       </tr>
     </table>
 

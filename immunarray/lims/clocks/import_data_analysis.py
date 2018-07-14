@@ -1,28 +1,29 @@
 import logging
-import os
-import tempfile
-from datetime import datetime
-from os.path import exists, join
-from pprint import pformat
-from time import time
-
 import openpyxl
+import os
 import pdfkit
+import tempfile
 from AccessControl import Unauthorized
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims.interfaces.limsroot import ILIMSRoot
+from datetime import datetime
 from immunarray.lims.interfaces.aliquot import IAliquot
 from immunarray.lims.interfaces.assayrequest import IAssayRequest
 from immunarray.lims.interfaces.clinicalaliquot import IClinicalAliquot
 from immunarray.lims.interfaces.clinicalsample import IClinicalSample
+from immunarray.lims.interfaces.provider import IProvider
 from immunarray.lims.interfaces.ichip import IiChip
+from immunarray.lims.interfaces.patient import IPatient
 from immunarray.lims.interfaces.qcaliquot import IQCAliquot
 from immunarray.lims.interfaces.sample import ISample
 from immunarray.lims.interfaces.veracisrunbase import IVeracisRunBase
+from os.path import exists, join
 from pkg_resources import resource_filename
 from plone.api.content import create, find, get_state, transition
 from plone.protect.interfaces import IDisableCSRFProtection
+from pprint import pformat
+from time import time
 from zExceptions import BadRequest
 from zope.interface import alsoProvides
 
@@ -351,14 +352,7 @@ class ImportDataAnalysis(BrowserView):
                 template = ViewPageTemplateFile(join(path, report, 'report.pt'))
                 fn = join(self.outpath, '%s - %s' % (aliquot.title, report))
                 html = unicode(template(self))
-
-                fn = fn.replace(' ', '')  # XXX debug stuff
                 pdfkit.from_string(html, fn + '.pdf', options=options)
-                if 'extended' in report.lower():
-                    os.system('evince %s' % fn + '.pdf')
-                    import pdb
-                    pdb.set_trace()
-                    pass
 
     def get_aliquot_from_fn(self, fn):
         sample_id = fn.split('_')[0]
@@ -385,6 +379,28 @@ class ImportDataAnalysis(BrowserView):
             msg = "Aliquot not found for file: %s" % fn
             raise RuntimeError(msg)
         return aliquot
+
+    def patient_from_aliquot(self, aliquot):
+        brains = find(object_provides=IPatient.__identifier__)
+        sample = self.get_sample_from_aliquot(aliquot)
+        for brain in brains:
+            patient = brain.getObject()
+            if sample.usn in patient.tested_unique_sample_ids:
+                return patient
+        aid = aliquot.id
+        raise RuntimeError("Cannot find patient linked with aliquot %s" % aid)
+
+    def provider_from_aliquot(self, aliquot):
+        sample = self.get_sample_from_aliquot(aliquot)
+        provider_name = sample.sample_ordering_healthcare_provider
+        brains = find(object_provides=IProvider.__identifier__, Title=provider_name)
+        if len(brains) > 1:
+            raise RuntimeError("Found more than one provider with title='%s'" % provider_name)
+        try:
+            provider = brains[0].getObject()
+        except IndexError:
+            raise RuntimeError("Provider not found matching title='%s'" % provider_name)
+        return provider
 
     def process_raw_flipped(self, path):
         """Store flipped images in ichips

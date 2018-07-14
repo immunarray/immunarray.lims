@@ -14,7 +14,9 @@
         <th colspan="2">Healthcare Provider Information</th>
       </tr>
     </table>
-    <table class="info">
+    <table class="info"
+        tal:define="patient python:view.patient_from_aliquot(view.aliquot);
+                    provider python:view.provider_from_aliquot(view.aliquot);">
       <tr>
         <td>Patient First Name:</td>
         <td>PatientFN:</td>
@@ -233,7 +235,7 @@
     </table>
 
     <!-- Definitions of Sensitivity, Specificty, and Negative Predictive Value -->
-    <table class="about" style="width:8.0in">
+    <table class="about">
       <tr>
         <td>
           <strong>Sensitivity:</strong> Probability that test cannot rule out SLE correctly in known SLE  patients(A/(A+C) x 100) (94% for SLE-key®)
